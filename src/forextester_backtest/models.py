@@ -81,6 +81,9 @@ class Trade:
     gross_pnl: float
     commission: float
     net_pnl: float
+    initial_stop: float | None = None
+    first_target: float | None = None
+    first_target_reached: bool = False
 
     def as_dict(self) -> dict[str, Any]:
         value = asdict(self)

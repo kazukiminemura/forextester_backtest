@@ -9,7 +9,15 @@ from pathlib import Path
 from forextester_backtest.data import OLE_EPOCH, HistoryRepository
 from forextester_backtest.engine import BacktestEngine
 from forextester_backtest.models import InstrumentMetadata
+from forextester_backtest.presets import automatic_preset_name, resolve_preset
 from forextester_backtest.strategies import SmaCrossoverStrategy
+from forextester_backtest.tamukai import (
+    TamukaiBacktester,
+    TamukaiConfig,
+    _ArmedOrder,
+    _four_hour_bars,
+    _pivot_states,
+)
 
 
 def ole(value: datetime) -> float:
@@ -54,22 +62,23 @@ class HistoryRepositoryTest(unittest.TestCase):
         self.assertEqual(4, len(bars))
         self.assertEqual(12.0, bars[0].open)
         ticks = list(
-            self.repository.ticks(
-                "TESTUSD", start=datetime(2024, 1, 1, 0, 0, 1)
-            )
+            self.repository.ticks("TESTUSD", start=datetime(2024, 1, 1, 0, 0, 1))
         )
         self.assertEqual([11.0, 12.0], [tick.bid for tick in ticks])
 
     def test_aggregates_timeframe(self) -> None:
         bars = list(self.repository.bars("TESTUSD", timeframe="5m"))
         self.assertEqual(2, len(bars))
-        self.assertEqual((10.0, 13.0, 7.0, 8.0, 50.0), (
-            bars[0].open,
-            bars[0].high,
-            bars[0].low,
-            bars[0].close,
-            bars[0].volume,
-        ))
+        self.assertEqual(
+            (10.0, 13.0, 7.0, 8.0, 50.0),
+            (
+                bars[0].open,
+                bars[0].high,
+                bars[0].low,
+                bars[0].close,
+                bars[0].volume,
+            ),
+        )
 
 
 class BacktestEngineTest(unittest.TestCase):
@@ -91,6 +100,163 @@ class BacktestEngineTest(unittest.TestCase):
         self.assertEqual(1, result.trade_count)
         self.assertEqual(3.0, result.trades[0].entry_price)
         self.assertEqual(1.0, result.net_profit)
+
+
+class PresetSelectionTest(unittest.TestCase):
+    def test_jpy_cross_takes_precedence_for_usdjpy(self) -> None:
+        self.assertEqual("jpy-cross", automatic_preset_name("USDJPY"))
+        self.assertEqual("jpy-cross", automatic_preset_name("EURJPY"))
+
+    def test_usd_cross_uses_eurusd_exploration_values(self) -> None:
+        self.assertEqual("usd-cross", automatic_preset_name("EURUSD"))
+        self.assertEqual("usd-cross", automatic_preset_name("USDCAD"))
+        preset = resolve_preset("EURUSD", "auto")
+        self.assertEqual(
+            ("long", 0.75, 0.5, 1.0),
+            (
+                preset.direction,
+                preset.max_range_atr,
+                preset.first_target_r,
+                preset.first_target_fraction,
+            ),
+        )
+
+    def test_non_usd_non_jpy_cross_keeps_pine_defaults(self) -> None:
+        self.assertEqual("pine", automatic_preset_name("EURGBP"))
+        self.assertEqual("pine", automatic_preset_name("XAUUSD"))
+        self.assertEqual("pine", automatic_preset_name("BTCUSD"))
+        self.assertEqual("jpy-cross", resolve_preset("EURUSD", "usdjpy-70").name)
+
+
+class TamukaiBacktesterTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.metadata = InstrumentMetadata(
+            "TESTUSD", {"decimals": "2", "spread": "0", "lot": "1"}
+        )
+
+    def test_defaults_match_attached_pine_inputs(self) -> None:
+        config = TamukaiConfig()
+        self.assertEqual(
+            (4, 21, 2, 2, 2),
+            (
+                config.higher_hours,
+                config.htf_sma_length,
+                config.htf_pivot_left,
+                config.htf_pivot_right,
+                config.htf_slope_bars,
+            ),
+        )
+        self.assertEqual(
+            (0.03, 21, 3, 12, 0.50, 1.50, 0.25),
+            (
+                config.min_slope_atr,
+                config.ltf_sma_length,
+                config.range_bars,
+                config.pullback_lookback,
+                config.min_pullback_atr,
+                config.max_range_atr,
+                config.zone_tolerance_atr,
+            ),
+        )
+        self.assertEqual(
+            (4.0, 4.0, 1.5, 80.0, 2.5, 2.0, 8),
+            (
+                config.entry_buffer_pips,
+                config.stop_buffer_pips,
+                config.min_room_r,
+                config.max_risk_pips,
+                config.max_risk_atr,
+                config.max_chase_atr,
+                config.order_expiry_bars,
+            ),
+        )
+
+    def test_four_hour_state_uses_aligned_buckets(self) -> None:
+        from forextester_backtest.models import Bar
+
+        start = datetime(2024, 1, 1)
+        hourly = [
+            Bar(
+                start + timedelta(hours=i),
+                float(i),
+                float(i + 2),
+                float(i - 1),
+                float(i + 1),
+                1,
+            )
+            for i in range(8)
+        ]
+        higher, mapping = _four_hour_bars(hourly)
+        self.assertEqual([0, 0, 0, 0, 1, 1, 1, 1], mapping)
+        self.assertEqual(2, len(higher))
+        self.assertEqual(
+            (0.0, 5.0, -1.0, 4.0),
+            (
+                higher[0].open,
+                higher[0].high,
+                higher[0].low,
+                higher[0].close,
+            ),
+        )
+
+    def test_pivot_is_not_available_before_right_bar_confirmation(self) -> None:
+        from forextester_backtest.models import Bar
+
+        start = datetime(2024, 1, 1)
+        highs = (1.0, 2.0, 5.0, 3.0, 2.0)
+        bars = [
+            Bar(start + timedelta(hours=i), value, value, value - 1, value, 1)
+            for i, value in enumerate(highs)
+        ]
+        states = _pivot_states(bars, 2, 2)
+        self.assertIsNone(states[3].last_high)
+        self.assertEqual(5.0, states[4].last_high)
+
+    def test_stop_entry_takes_half_at_one_r_then_stops_runner(self) -> None:
+        from forextester_backtest.models import Bar
+
+        engine = TamukaiBacktester(self.metadata, lots=1, initial_capital=100)
+        engine._armed = _ArmedOrder(1, 0, 100, 90, 100, 90)
+        first = Bar(datetime(2024, 1, 1), 95, 111, 89, 105, 1)
+        second = Bar(datetime(2024, 1, 1, 1), 100, 101, 89, 90, 1)
+        self.assertFalse(engine._process_execution(first))
+        self.assertIsNotNone(engine._position)
+        assert engine._position is not None
+        self.assertTrue(engine._position.first_target_reached)
+        self.assertTrue(engine._process_execution(second))
+        self.assertEqual(1, len(engine._trades))
+        self.assertTrue(engine._trades[0].first_target_reached)
+        self.assertAlmostEqual(0.0, engine._trades[0].net_pnl)
+
+    def test_full_target_closes_entire_position(self) -> None:
+        from forextester_backtest.models import Bar
+
+        config = TamukaiConfig(first_target_r=0.5, first_target_fraction=1.0)
+        engine = TamukaiBacktester(
+            self.metadata, config=config, lots=1, initial_capital=100
+        )
+        engine._armed = _ArmedOrder(1, 0, 100, 90, 100, 90)
+        bar = Bar(datetime(2024, 1, 1), 95, 106, 94, 105, 1)
+        self.assertTrue(engine._process_execution(bar))
+        self.assertEqual(1, len(engine._trades))
+        self.assertTrue(engine._trades[0].first_target_reached)
+        self.assertAlmostEqual(5.0, engine._trades[0].net_pnl)
+
+    def test_pending_order_waits_for_allowed_entry_hour(self) -> None:
+        from forextester_backtest.models import Bar
+
+        config = TamukaiConfig(entry_hours=(1,))
+        engine = TamukaiBacktester(
+            self.metadata, config=config, lots=1, initial_capital=100
+        )
+        engine._armed = _ArmedOrder(1, 0, 100, 90, 100, 90)
+        blocked = Bar(datetime(2024, 1, 1), 95, 111, 94, 105, 1)
+        engine._process_execution(blocked)
+        self.assertIsNone(engine._position)
+        self.assertIsNotNone(engine._armed)
+        allowed = Bar(datetime(2024, 1, 1, 1), 95, 101, 94, 100, 1)
+        engine._process_execution(allowed)
+        self.assertIsNotNone(engine._position)
 
 
 if __name__ == "__main__":

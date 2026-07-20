@@ -1,0 +1,6 @@
+{
+  "direction": "long",
+  "max_range_atr": 0.75,
+  "first_target_r": 0.5,
+  "first_target_fraction": 1.0
+}
