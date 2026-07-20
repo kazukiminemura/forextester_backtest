@@ -149,21 +149,51 @@ class PresetSelectionTest(unittest.TestCase):
         )
         source = path.read_text(encoding="utf-8")
         self.assertTrue(source.startswith("//@version=6\n"))
-        self.assertIn('indicator("田向式 ペア別押し目レンジ・シグナル"', source)
+        self.assertIn(
+            'indicator("田向式 ペア別押し目レンジ・シグナル RR1 v2"', source
+        )
         self.assertIn('plot(close, "Compile guard", display=display.none)', source)
         self.assertNotIn("strategy(", source)
         self.assertIn('activePreset == "JPYクロス" ? 1.0', source)
         self.assertIn('activePreset == "EURUSD研究" ? 0.75', source)
         self.assertIn('isXauUsd ? "XAUUSD研究"', source)
-        self.assertIn("isXauResearch ? 1.25", source)
-        self.assertIn("isXauResearch ? 0.75", source)
-        self.assertIn("isXauResearch ? 0.20", source)
+        self.assertIn("isXauResearch ? 1.0", source)
+        self.assertIn("isXauResearch ? 4", source)
+        self.assertIn("isXauResearch ? 0.06", source)
+        self.assertIn("isXauResearch ? 0.25", source)
+        self.assertIn("isXauResearch ? 0.40", source)
+        self.assertIn("isXauResearch ? 2.0", source)
         self.assertIn("isXauResearch ? 0.0", source)
-        self.assertIn('"注意: OOS -0.484R / 16件"', source)
+        self.assertIn('"研究: OOS PF 1.22 / 13件"', source)
+        self.assertNotIn("i_customTargetR", source)
+        self.assertNotIn("i_customTargetFraction", source)
+        self.assertNotIn("firstTargetReached", source)
+        self.assertIn("float fixedTargetR = 1.0", source)
+        self.assertIn('"Pending TP 1:1"', source)
+        self.assertIn('"RR 1:1 / 100%"', source)
+        self.assertIn('"田向式 RR1 v2"', source)
+        self.assertIn("table.new(position.top_right, 2, 11", source)
         self.assertIn("barstate.isconfirmed", source)
         self.assertIn("lookahead=barmerge.lookahead_on", source)
         self.assertIn('"このインジケーターは1時間足専用です', source)
         self.assertIn("i_showTable or not isOneHourChart", source)
+
+    def test_tradingview_indicator_includes_opportunity_scanner(self) -> None:
+        path = (
+            Path(__file__).parents[1]
+            / "scripts"
+            / "tradingview"
+            / "tamukai_pair_signal_indicator.pine"
+        )
+        source = path.read_text(encoding="utf-8")
+        self.assertEqual(10, source.count("input.symbol("))
+        self.assertEqual(10, source.count("= f_scanPair(i_scanSymbol"))
+        self.assertIn('state == 2 ? "BUY待ち"', source)
+        self.assertIn('state == -2 ? "SELL待ち"', source)
+        self.assertIn('"Entry候補"', source)
+        self.assertIn("alertcondition(scanNewChance", source)
+        scanner_path = path.with_name("tamukai_opportunity_scanner.pine")
+        self.assertFalse(scanner_path.exists())
 
 
 class TamukaiBacktesterTest(unittest.TestCase):
