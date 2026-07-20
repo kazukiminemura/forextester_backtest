@@ -86,9 +86,16 @@ def build_parser() -> argparse.ArgumentParser:
     _add_range(backtest)
     backtest.add_argument(
         "--preset",
-        choices=("auto", "pine", "jpy-cross", "usd-cross", "usdjpy-70"),
+        choices=(
+            "auto",
+            "pine",
+            "jpy-cross",
+            "eurusd-research",
+            "usd-cross",
+            "usdjpy-70",
+        ),
         default="auto",
-        help="autoはJPYクロス・USDクロスを判定して探索済み設定を使用",
+        help="autoはJPYクロスとEURUSD専用の探索済み設定を使用",
     )
     backtest.add_argument("--lots", type=float, default=0.1)
     backtest.add_argument("--initial-capital", type=float, default=10_000.0)
@@ -186,13 +193,15 @@ def _csv_values(row: Bar | Tick | Trade, fields: list[str]) -> list[object]:
     ]
 
 
-def _write_trades(path: Path, trades: Sequence[Trade]) -> None:
+def _write_trades(
+    path: Path, trades: Sequence[Trade], symbol: str, preset_name: str
+) -> None:
     with path.open("w", encoding="utf-8-sig", newline="") as stream:
         fields = list(Trade.__dataclass_fields__)
         writer = csv.writer(stream, lineterminator="\n")
-        writer.writerow(fields)
+        writer.writerow(["symbol", "preset", *fields])
         for trade in trades:
-            writer.writerow(_csv_values(trade, fields))
+            writer.writerow([symbol, preset_name, *_csv_values(trade, fields)])
 
 
 def _print_result(result: BacktestResult, preset_name: str | None = None) -> None:
@@ -274,6 +283,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "backtest":
             metadata = repository.metadata(args.symbol)
             preset = resolve_preset(metadata.symbol, args.preset)
+            if preset.validation == "recent OOS failed":
+                print(
+                    "warning: EURUSD research preset failed recent OOS validation "
+                    "(2023-2024 expectancy < 0)",
+                    file=sys.stderr,
+                )
             config = TamukaiConfig(
                 higher_hours=args.higher_hours,
                 htf_sma_length=args.htf_sma,
@@ -331,7 +346,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             else:
                 _print_result(result, preset.name)
             if args.trades_output:
-                _write_trades(args.trades_output, result.trades)
+                _write_trades(
+                    args.trades_output, result.trades, metadata.symbol, preset.name
+                )
         return 0
     except (FileNotFoundError, KeyError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)

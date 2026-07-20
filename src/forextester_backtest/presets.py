@@ -12,11 +12,16 @@ class StrategyPreset:
     first_target_r: float
     first_target_fraction: float
     direction: str
+    validation: str
 
 
-PINE_PRESET = StrategyPreset("pine", 1.5, 1.0, 0.5, "both")
-JPY_CROSS_PRESET = StrategyPreset("jpy-cross", 1.0, 0.5, 1.0, "long")
-USD_CROSS_PRESET = StrategyPreset("usd-cross", 0.75, 0.5, 1.0, "long")
+PINE_PRESET = StrategyPreset("pine", 1.5, 1.0, 0.5, "both", "baseline")
+JPY_CROSS_PRESET = StrategyPreset(
+    "jpy-cross", 1.0, 0.5, 1.0, "long", "USDJPY true OOS passed"
+)
+EURUSD_RESEARCH_PRESET = StrategyPreset(
+    "eurusd-research", 0.75, 0.5, 1.0, "long", "recent OOS failed"
+)
 
 _FX_CURRENCIES = frozenset({"AUD", "CAD", "CHF", "EUR", "GBP", "JPY", "NZD", "USD"})
 
@@ -31,8 +36,8 @@ def automatic_preset_name(symbol: str) -> str:
         return "pine"
     if quote == "JPY":
         return "jpy-cross"
-    if base == "USD" or quote == "USD":
-        return "usd-cross"
+    if normalized == "EURUSD":
+        return "eurusd-research"
     return "pine"
 
 
@@ -40,10 +45,12 @@ def resolve_preset(symbol: str, requested: str) -> StrategyPreset:
     name = automatic_preset_name(symbol) if requested == "auto" else requested
     if name == "usdjpy-70":
         name = "jpy-cross"
+    if name == "usd-cross":
+        name = "eurusd-research"
     presets = {
         "pine": PINE_PRESET,
         "jpy-cross": JPY_CROSS_PRESET,
-        "usd-cross": USD_CROSS_PRESET,
+        "eurusd-research": EURUSD_RESEARCH_PRESET,
     }
     try:
         return presets[name]

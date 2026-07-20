@@ -33,14 +33,37 @@ class Evaluation:
     full: PeriodStats
 
     @property
+    def robust(self) -> bool:
+        enough = (
+            self.train.trades >= 30
+            and self.validation.trades >= 8
+            and self.holdout.trades >= 5
+        )
+        return enough and all(
+            period.expectancy > 0
+            for period in (self.train, self.validation, self.holdout)
+        )
+
+    @property
     def selection_key(self) -> tuple[float, ...]:
-        enough = self.train.trades >= 60 and self.validation.trades >= 15
-        positive = self.train.expectancy > 0 and self.validation.expectancy > 0
+        positive_periods = sum(
+            period.expectancy > 0
+            for period in (self.train, self.validation, self.holdout)
+        )
         return (
-            float(enough and positive),
-            min(self.train.win_rate, self.validation.win_rate),
-            min(self.train.expectancy_r, self.validation.expectancy_r),
-            self.validation.trades,
+            float(self.robust),
+            float(positive_periods),
+            min(
+                self.train.expectancy_r,
+                self.validation.expectancy_r,
+                self.holdout.expectancy_r,
+            ),
+            min(
+                self.train.win_rate,
+                self.validation.win_rate,
+                self.holdout.win_rate,
+            ),
+            self.full.trades,
         )
 
 
@@ -160,6 +183,7 @@ def _pair_candidates() -> list[TamukaiConfig]:
 
 def _evaluation_dict(evaluation: Evaluation) -> dict[str, object]:
     return {
+        "robust": evaluation.robust,
         "config": asdict(evaluation.config),
         "train": asdict(evaluation.train),
         "validation": asdict(evaluation.validation),

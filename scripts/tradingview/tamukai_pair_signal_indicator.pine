@@ -1,0 +1,368 @@
+//@version=6
+// This source code is subject to the terms of the Mozilla Public License 2.0
+// 田向式 4Hダウ + 1H押し目レンジを、売買注文を出さないインジケーターとして表示する。
+// 確定済み4Hバー・確定済みピボット・確定1Hバーだけを使う。
+indicator("田向式 ペア別押し目レンジ・シグナル", overlay=true,
+     max_labels_count=300, max_lines_count=100)
+// TradingViewの必須出力判定を宣言直後に満たす非表示プロット。
+plot(close, "Compile guard", display=display.none)
+
+// =====================================================================
+// 1. Inputs and pair presets
+// =====================================================================
+string gPreset = "プリセット"
+string i_preset = input.string("Auto", "プリセット", options=["Auto", "Pine既定", "JPYクロス", "EURUSD研究", "XAUUSD研究", "Custom"], group=gPreset)
+string i_customDirection = input.string("Both", "Custom方向", options=["Both", "Long", "Short"], group=gPreset)
+float i_customMaxRangeAtr = input.float(1.50, "Custom 最大レンジ幅（ATR倍）", minval=0.1, step=0.05, group=gPreset)
+float i_customTargetR = input.float(1.0, "Custom 利確R", minval=0.1, step=0.05, group=gPreset)
+float i_customTargetFraction = input.float(0.50, "Custom 利確割合", minval=0.1, maxval=1.0, step=0.05, group=gPreset)
+
+bool isJpyCross = syminfo.type == "forex" and syminfo.currency == "JPY"
+bool isEurUsd = syminfo.type == "forex" and syminfo.basecurrency == "EUR" and syminfo.currency == "USD"
+bool isXauUsd = syminfo.basecurrency == "XAU" and syminfo.currency == "USD"
+string autoPreset = isJpyCross ? "JPYクロス" : isEurUsd ? "EURUSD研究" : isXauUsd ? "XAUUSD研究" : "Pine既定"
+string activePreset = i_preset == "Auto" ? autoPreset : i_preset
+
+bool isXauResearch = activePreset == "XAUUSD研究"
+float presetMaxRangeAtr = activePreset == "JPYクロス" ? 1.0 : activePreset == "EURUSD研究" ? 0.75 : isXauResearch ? 1.25 : activePreset == "Custom" ? i_customMaxRangeAtr : 1.50
+float presetTargetR = isXauResearch ? 0.75 : activePreset == "JPYクロス" or activePreset == "EURUSD研究" ? 0.50 : activePreset == "Custom" ? i_customTargetR : 1.0
+float presetTargetFraction = activePreset == "JPYクロス" or activePreset == "EURUSD研究" ? 1.0 : activePreset == "Custom" ? i_customTargetFraction : 0.50
+bool allowLong = not isXauResearch and (activePreset == "JPYクロス" or activePreset == "EURUSD研究" or activePreset == "Pine既定" or (activePreset == "Custom" and i_customDirection != "Short"))
+bool allowShort = isXauResearch or activePreset == "Pine既定" or (activePreset == "Custom" and i_customDirection != "Long")
+
+string gTimeframe = "時間足"
+string i_higherTf = input.timeframe("240", "上位足", group=gTimeframe)
+int i_htfSmaLen = input.int(21, "上位足 SMA期間", minval=2, group=gTimeframe)
+int i_htfPivotLeft = input.int(2, "上位足 左ピボット", minval=1, maxval=20, group=gTimeframe)
+int i_htfPivotRight = input.int(2, "上位足 右ピボット", minval=1, maxval=20, group=gTimeframe)
+int i_htfSlopeBars = input.int(2, "SMA傾き確認本数", minval=1, maxval=10, group=gTimeframe)
+float i_minSlopeAtr = input.float(0.03, "横ばい除外幅（上位足ATR倍）", minval=0.0, step=0.01, group=gTimeframe)
+
+string gPullback = "1H 押し・小レンジ"
+int i_ltfSmaLen = input.int(21, "1H SMA期間", minval=2, group=gPullback)
+int i_rangeBars = input.int(3, "小レンジ本数", minval=2, maxval=12, group=gPullback)
+int i_pullbackLookback = input.int(12, "押し・戻り探索本数", minval=3, maxval=50, group=gPullback)
+float i_minPullbackAtr = input.float(0.50, "最小押し・戻り幅（1H ATR倍）", minval=0.0, step=0.1, group=gPullback)
+float i_zoneToleranceAtr = input.float(0.25, "SMA・旧高安値の許容幅（1H ATR倍）", minval=0.0, step=0.05, group=gPullback)
+int i_ltfPivotLeft = input.int(2, "追随用 左ピボット", minval=1, maxval=20, group=gPullback)
+int i_ltfPivotRight = input.int(2, "追随用 右ピボット", minval=1, maxval=20, group=gPullback)
+
+string gRisk = "注文候補・リスク"
+float i_entryBufferPips = input.float(4.0, "エントリーバッファ（pips）", minval=0.0, step=0.1, group=gRisk)
+float i_stopBufferPips = input.float(4.0, "損切りバッファ（pips）", minval=0.0, step=0.1, group=gRisk)
+float i_minRoomR = input.float(1.5, "上位足の壁までの最低RR", minval=0.1, step=0.1, group=gRisk)
+float i_maxRiskPips = input.float(80.0, "最大損切り幅（pips、0=無効）", minval=0.0, step=1.0, group=gRisk)
+float i_maxRiskAtr = input.float(2.5, "最大損切り幅（1H ATR倍）", minval=0.1, step=0.1, group=gRisk)
+float i_maxChaseAtr = input.float(2.0, "21SMAからの最大乖離（4H ATR倍）", minval=0.1, step=0.1, group=gRisk)
+int i_orderExpiryBars = input.int(8, "待機シグナルの有効本数", minval=1, maxval=48, group=gRisk)
+bool i_allowSignals = input.bool(true, "新規シグナル許可（重要指標前はOFF）", group=gRisk)
+
+string gShow = "表示"
+bool i_showSma = input.bool(true, "21SMA", group=gShow)
+bool i_showRange = input.bool(true, "待機レンジ・Entry・SL", group=gShow)
+bool i_showStructure = input.bool(true, "4Hダウ高値・安値", group=gShow)
+bool i_showTable = input.bool(true, "状態テーブル", group=gShow)
+bool i_showGuide = input.bool(true, "使い方ガイド", group=gShow)
+
+color cBull = color.new(#00C853, 0)
+color cBear = color.new(#D50000, 0)
+color cWarn = color.new(#FF9800, 0)
+color cNeutral = color.new(color.gray, 0)
+color cRange = color.new(#FFD54F, 0)
+
+// =====================================================================
+// 2. Helpers and confirmed higher-timeframe values
+// =====================================================================
+f_levelInZone(float level, float zoneLow, float zoneHigh, float tolerance) =>
+    not na(level) and level >= zoneLow - tolerance and level <= zoneHigh + tolerance
+
+f_nearestAbove(float price, float levelA, float levelB) =>
+    float result = na
+    if not na(levelA) and levelA > price
+        result := levelA
+    if not na(levelB) and levelB > price and (na(result) or levelB < result)
+        result := levelB
+    result
+
+f_nearestBelow(float price, float levelA, float levelB) =>
+    float result = na
+    if not na(levelA) and levelA < price
+        result := levelA
+    if not na(levelB) and levelB < price and (na(result) or levelB > result)
+        result := levelB
+    result
+
+f_htfPack() =>
+    float ph = ta.pivothigh(high, i_htfPivotLeft, i_htfPivotRight)
+    float pl = ta.pivotlow(low, i_htfPivotLeft, i_htfPivotRight)
+    float lastHigh = ta.valuewhen(not na(ph), ph, 0)
+    float prevHigh = ta.valuewhen(not na(ph), ph, 1)
+    float lastLow = ta.valuewhen(not na(pl), pl, 0)
+    float prevLow = ta.valuewhen(not na(pl), pl, 1)
+    float smaNow = ta.sma(close, i_htfSmaLen)
+    float smaPast = smaNow[i_htfSlopeBars]
+    float atrNow = ta.atr(14)
+    [lastHigh[1], prevHigh[1], lastLow[1], prevLow[1], close[1], smaNow[1], smaPast[1], atrNow[1]]
+
+[htfLastHigh, htfPrevHigh, htfLastLow, htfPrevLow, htfClose, htfSma, htfSmaPast, htfAtr] = request.security(
+     syminfo.tickerid, i_higherTf, f_htfPack(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+
+// =====================================================================
+// 3. 4H Dow structure and 1H setup
+// =====================================================================
+bool hasHtfStructure = not na(htfLastHigh) and not na(htfPrevHigh) and not na(htfLastLow) and not na(htfPrevLow)
+bool htfHigherHigh = hasHtfStructure and htfLastHigh > htfPrevHigh
+bool htfHigherLow = hasHtfStructure and htfLastLow > htfPrevLow
+bool htfLowerHigh = hasHtfStructure and htfLastHigh < htfPrevHigh
+bool htfLowerLow = hasHtfStructure and htfLastLow < htfPrevLow
+int htfTrend = htfHigherHigh and htfHigherLow ? 1 : htfLowerHigh and htfLowerLow ? -1 : 0
+
+float htfSmaSlope = htfSma - htfSmaPast
+float htfSlopeThreshold = htfAtr * i_minSlopeAtr
+bool htfSmaRising = htfSmaSlope > htfSlopeThreshold
+bool htfSmaFalling = htfSmaSlope < -htfSlopeThreshold
+bool htfLongBias = htfTrend == 1 and htfClose > htfSma and htfSmaRising
+bool htfShortBias = htfTrend == -1 and htfClose < htfSma and htfSmaFalling
+bool longChaseOk = htfClose - htfSma <= htfAtr * i_maxChaseAtr
+bool shortChaseOk = htfSma - htfClose <= htfAtr * i_maxChaseAtr
+
+bool isOneHourChart = timeframe.in_seconds() == 60 * 60
+float ltfAtr = ta.atr(14)
+float ltfSma = ta.sma(close, i_ltfSmaLen)
+float pipSize = syminfo.type == "forex" ? syminfo.mintick * 10.0 : syminfo.mintick
+// XAUUSD研究は配信元のmintick差に左右されず、Python探索時の価格差0.20 USDを再現する。
+float entryBuffer = isXauResearch ? 0.20 : i_entryBufferPips * pipSize
+float stopBuffer = isXauResearch ? 0.20 : i_stopBufferPips * pipSize
+float effectiveMaxRiskPips = isXauResearch ? 0.0 : i_maxRiskPips
+
+float rangeHighCandidate = ta.highest(high[1], i_rangeBars)
+float rangeLowCandidate = ta.lowest(low[1], i_rangeBars)
+float commonPriceHigh = ta.lowest(high[1], i_rangeBars)
+float commonPriceLow = ta.highest(low[1], i_rangeBars)
+float rangeWidth = rangeHighCandidate - rangeLowCandidate
+bool candlesOverlap = commonPriceHigh >= commonPriceLow
+bool compactRange = candlesOverlap and rangeWidth > syminfo.mintick and rangeWidth <= ltfAtr * presetMaxRangeAtr
+
+float impulseHigh = ta.highest(high[i_rangeBars + 1], i_pullbackLookback)
+float impulseLow = ta.lowest(low[i_rangeBars + 1], i_pullbackLookback)
+bool longPullback = not na(impulseHigh) and impulseHigh - rangeLowCandidate >= ltfAtr * i_minPullbackAtr and rangeHighCandidate < impulseHigh
+bool shortPullback = not na(impulseLow) and rangeHighCandidate - impulseLow >= ltfAtr * i_minPullbackAtr and rangeLowCandidate > impulseLow
+
+float zoneTolerance = ltfAtr * i_zoneToleranceAtr
+bool longAtReference = f_levelInZone(ltfSma, rangeLowCandidate, rangeHighCandidate, zoneTolerance) or f_levelInZone(htfPrevHigh, rangeLowCandidate, rangeHighCandidate, zoneTolerance)
+bool shortAtReference = f_levelInZone(ltfSma, rangeLowCandidate, rangeHighCandidate, zoneTolerance) or f_levelInZone(htfPrevLow, rangeLowCandidate, rangeHighCandidate, zoneTolerance)
+bool longStructureHeld = not na(htfLastLow) and rangeLowCandidate > htfLastLow
+bool shortStructureHeld = not na(htfLastHigh) and rangeHighCandidate < htfLastHigh
+
+float longEntryCandidate = rangeHighCandidate + entryBuffer
+float longStopCandidate = rangeLowCandidate - stopBuffer
+float shortEntryCandidate = rangeLowCandidate - entryBuffer
+float shortStopCandidate = rangeHighCandidate + stopBuffer
+float longRiskCandidate = longEntryCandidate - longStopCandidate
+float shortRiskCandidate = shortStopCandidate - shortEntryCandidate
+bool longRiskOk = longRiskCandidate > syminfo.mintick and longRiskCandidate <= ltfAtr * i_maxRiskAtr and (effectiveMaxRiskPips == 0 or longRiskCandidate / pipSize <= effectiveMaxRiskPips)
+bool shortRiskOk = shortRiskCandidate > syminfo.mintick and shortRiskCandidate <= ltfAtr * i_maxRiskAtr and (effectiveMaxRiskPips == 0 or shortRiskCandidate / pipSize <= effectiveMaxRiskPips)
+
+float upperHtfWall = f_nearestAbove(longEntryCandidate, htfLastHigh, htfPrevHigh)
+float lowerHtfWall = f_nearestBelow(shortEntryCandidate, htfLastLow, htfPrevLow)
+float longRoomR = not na(upperHtfWall) and longRiskCandidate > 0 ? (upperHtfWall - longEntryCandidate) / longRiskCandidate : na
+float shortRoomR = not na(lowerHtfWall) and shortRiskCandidate > 0 ? (shortEntryCandidate - lowerHtfWall) / shortRiskCandidate : na
+bool longRoomOk = na(upperHtfWall) or longRoomR >= i_minRoomR
+bool shortRoomOk = na(lowerHtfWall) or shortRoomR >= i_minRoomR
+
+bool longSetup = isOneHourChart and i_allowSignals and allowLong and htfLongBias and longChaseOk and compactRange and longPullback and longAtReference and longStructureHeld and longRiskOk and longRoomOk and high < longEntryCandidate
+bool shortSetup = isOneHourChart and i_allowSignals and allowShort and htfShortBias and shortChaseOk and compactRange and shortPullback and shortAtReference and shortStructureHeld and shortRiskOk and shortRoomOk and low > shortEntryCandidate
+
+// =====================================================================
+// 4. Indicator-only pending and virtual position state
+// =====================================================================
+float ltfPivotLow = ta.pivotlow(low, i_ltfPivotLeft, i_ltfPivotRight)
+float ltfPivotHigh = ta.pivothigh(high, i_ltfPivotLeft, i_ltfPivotRight)
+float lastConfirmedLtfLow = ta.valuewhen(not na(ltfPivotLow), ltfPivotLow, 0)
+float lastConfirmedLtfHigh = ta.valuewhen(not na(ltfPivotHigh), ltfPivotHigh, 0)
+
+var int armedDirection = 0
+var int armedAtBar = na
+var float armedRangeHigh = na
+var float armedRangeLow = na
+var float armedEntry = na
+var float armedStop = na
+var int virtualDirection = 0
+var float virtualEntry = na
+var float virtualStop = na
+var float virtualTarget = na
+var bool firstTargetReached = false
+
+bool longSignal = false
+bool shortSignal = false
+bool targetSignal = false
+bool stopSignal = false
+bool armedLongSignal = false
+bool armedShortSignal = false
+
+if barstate.isconfirmed
+    bool closedThisBar = false
+    if virtualDirection == 1
+        float trailCandidate = lastConfirmedLtfLow - stopBuffer
+        if firstTargetReached and not na(trailCandidate) and trailCandidate > virtualStop and trailCandidate < close
+            virtualStop := trailCandidate
+        bool hitStop = low <= virtualStop
+        bool hitTarget = not firstTargetReached and high >= virtualTarget
+        if hitStop
+            stopSignal := true
+            virtualDirection := 0
+            closedThisBar := true
+        else if hitTarget
+            targetSignal := true
+            firstTargetReached := true
+            if presetTargetFraction >= 1.0
+                virtualDirection := 0
+                closedThisBar := true
+    else if virtualDirection == -1
+        float trailCandidate = lastConfirmedLtfHigh + stopBuffer
+        if firstTargetReached and not na(trailCandidate) and trailCandidate < virtualStop and trailCandidate > close
+            virtualStop := trailCandidate
+        bool hitStop = high >= virtualStop
+        bool hitTarget = not firstTargetReached and low <= virtualTarget
+        if hitStop
+            stopSignal := true
+            virtualDirection := 0
+            closedThisBar := true
+        else if hitTarget
+            targetSignal := true
+            firstTargetReached := true
+            if presetTargetFraction >= 1.0
+                virtualDirection := 0
+                closedThisBar := true
+
+    if virtualDirection == 0 and not closedThisBar
+        bool orderExpired = armedDirection != 0 and not na(armedAtBar) and bar_index - armedAtBar > i_orderExpiryBars
+        bool longOrderInvalid = armedDirection == 1 and (not htfLongBias or not longChaseOk or low < armedRangeLow or orderExpired or not i_allowSignals)
+        bool shortOrderInvalid = armedDirection == -1 and (not htfShortBias or not shortChaseOk or high > armedRangeHigh or orderExpired or not i_allowSignals)
+        if longOrderInvalid or shortOrderInvalid
+            armedDirection := 0
+
+        bool pendingLongHit = armedDirection == 1 and bar_index > armedAtBar and high >= armedEntry
+        bool pendingShortHit = armedDirection == -1 and bar_index > armedAtBar and low <= armedEntry
+        if pendingLongHit
+            virtualDirection := 1
+            virtualEntry := armedEntry
+            virtualStop := armedStop
+            virtualTarget := virtualEntry + (virtualEntry - virtualStop) * presetTargetR
+            firstTargetReached := false
+            armedDirection := 0
+            longSignal := true
+        else if pendingShortHit
+            virtualDirection := -1
+            virtualEntry := armedEntry
+            virtualStop := armedStop
+            virtualTarget := virtualEntry - (virtualStop - virtualEntry) * presetTargetR
+            firstTargetReached := false
+            armedDirection := 0
+            shortSignal := true
+
+        if virtualDirection == 0 and armedDirection == 0
+            if longSetup
+                armedDirection := 1
+                armedAtBar := bar_index
+                armedRangeHigh := rangeHighCandidate
+                armedRangeLow := rangeLowCandidate
+                armedEntry := longEntryCandidate
+                armedStop := longStopCandidate
+                armedLongSignal := true
+            else if shortSetup
+                armedDirection := -1
+                armedAtBar := bar_index
+                armedRangeHigh := rangeHighCandidate
+                armedRangeLow := rangeLowCandidate
+                armedEntry := shortEntryCandidate
+                armedStop := shortStopCandidate
+                armedShortSignal := true
+
+    if virtualDirection == 0 and closedThisBar
+        virtualEntry := na
+        virtualStop := na
+        virtualTarget := na
+        firstTargetReached := false
+
+// =====================================================================
+// 5. Chart output, table, and alerts
+// =====================================================================
+plot(i_showSma ? ltfSma : na, "1H SMA", color=color.new(color.blue, 0), linewidth=2)
+plot(i_showStructure ? htfLastHigh : na, "4H High 1", color=color.new(#6A1B9A, 10), linewidth=2, style=plot.style_stepline)
+plot(i_showStructure ? htfLastLow : na, "4H Low 1", color=color.new(#1565C0, 10), linewidth=2, style=plot.style_stepline)
+plot(i_showStructure ? htfPrevHigh : na, "4H High 2", color=color.new(#6A1B9A, 55), linewidth=1, style=plot.style_stepline)
+plot(i_showStructure ? htfPrevLow : na, "4H Low 2", color=color.new(#1565C0, 55), linewidth=1, style=plot.style_stepline)
+
+bool showPending = i_showRange and virtualDirection == 0 and armedDirection != 0
+plot(showPending ? armedRangeHigh : na, "Range high", color=cRange, linewidth=3, style=plot.style_linebr)
+plot(showPending ? armedRangeLow : na, "Range low", color=cRange, linewidth=3, style=plot.style_linebr)
+plot(showPending ? armedEntry : na, "Pending entry", color=armedDirection == 1 ? cBull : cBear, linewidth=2, style=plot.style_linebr)
+plot(showPending ? armedStop : na, "Pending SL", color=cBear, linewidth=2, style=plot.style_linebr)
+plot(virtualDirection != 0 ? virtualEntry : na, "Virtual entry", color=color.white, linewidth=1, style=plot.style_linebr)
+plot(virtualDirection != 0 and not firstTargetReached ? virtualTarget : na, "Target", color=cBull, linewidth=2, style=plot.style_linebr)
+plot(virtualDirection != 0 ? virtualStop : na, "Structural SL", color=cBear, linewidth=2, style=plot.style_linebr)
+
+plotshape(armedLongSignal, title="BUY setup", text="SET\nBUY", style=shape.labelup, location=location.belowbar, color=color.new(cBull, 45), textcolor=color.white, size=size.tiny)
+plotshape(armedShortSignal, title="SELL setup", text="SET\nSELL", style=shape.labeldown, location=location.abovebar, color=color.new(cBear, 45), textcolor=color.white, size=size.tiny)
+plotshape(longSignal, title="BUY breakout", text="BUY", style=shape.labelup, location=location.belowbar, color=cBull, textcolor=color.white, size=size.small)
+plotshape(shortSignal, title="SELL breakout", text="SELL", style=shape.labeldown, location=location.abovebar, color=cBear, textcolor=color.white, size=size.small)
+plotshape(targetSignal, title="Target reached", text="TP", style=shape.circle, location=location.abovebar, color=cBull, textcolor=color.white, size=size.tiny)
+plotshape(stopSignal, title="Stop reached", text="SL", style=shape.xcross, location=location.belowbar, color=cBear, textcolor=color.white, size=size.small)
+
+// 1H以外ではシグナルを止め、時間足間違いを必ず画面上へ表示する。
+bgcolor(not isOneHourChart ? color.new(cWarn, 92) : na, title="1H chart required")
+var label timeframeWarning = na
+if barstate.islast
+    label.delete(timeframeWarning)
+    if not isOneHourChart
+        timeframeWarning := label.new(bar_index, high + ltfAtr * 2.0,
+             "このインジケーターは1時間足専用です\n上部の 4h を 1h に変更してください",
+             style=label.style_label_down, color=cWarn, textcolor=color.white, size=size.large)
+
+string trendText = htfLongBias ? "4H UP" : htfShortBias ? "4H DOWN" : "4H NEUTRAL"
+string setupText = not isOneHourChart ? "1Hへ変更" : not i_allowSignals ? "新規停止" : virtualDirection == 1 ? "LONG監視" : virtualDirection == -1 ? "SHORT監視" : armedDirection == 1 ? "BUY STOP待機" : armedDirection == -1 ? "SELL STOP待機" : "条件待ち"
+string validationText = activePreset == "JPYクロス" ? "USDJPY OOS: 12件 / 83.33%" : activePreset == "EURUSD研究" ? "注意: 直近OOS失敗" : isXauResearch ? "注意: OOS -0.484R / 16件" : activePreset == "Pine既定" ? "未最適化" : "手動設定"
+color validationColor = activePreset == "EURUSD研究" or isXauResearch ? cWarn : activePreset == "JPYクロス" ? cBull : cNeutral
+float displayedEntry = virtualDirection != 0 ? virtualEntry : armedDirection != 0 ? armedEntry : na
+float displayedStop = virtualDirection != 0 ? virtualStop : armedDirection != 0 ? armedStop : na
+
+var table status = table.new(position.top_right, 2, 10, border_width=1)
+if (i_showTable or not isOneHourChart) and barstate.islast
+    color header = color.new(color.black, 0)
+    color cell = color.new(color.black, 20)
+    table.cell(status, 0, 0, "田向式", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 0, setupText, text_color=color.white, bgcolor=htfLongBias ? cBull : htfShortBias ? cBear : cNeutral)
+    table.cell(status, 0, 1, "Preset", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 1, activePreset, text_color=color.white, bgcolor=cell)
+    table.cell(status, 0, 2, "検証", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 2, validationText, text_color=color.white, bgcolor=validationColor)
+    table.cell(status, 0, 3, "方向", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 3, allowLong and allowShort ? "LONG + SHORT" : allowLong ? "LONG" : "SHORT", text_color=color.white, bgcolor=cell)
+    table.cell(status, 0, 4, "4H状態", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 4, trendText, text_color=color.white, bgcolor=cell)
+    table.cell(status, 0, 5, "レンジ上限", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 5, str.tostring(presetMaxRangeAtr, "#.##") + " ATR", text_color=color.white, bgcolor=cell)
+    table.cell(status, 0, 6, "利確", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 6, str.tostring(presetTargetR, "#.##") + "R / " + str.tostring(presetTargetFraction * 100, "#") + "%", text_color=color.white, bgcolor=cell)
+    table.cell(status, 0, 7, "Chart", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 7, isOneHourChart ? "1H OK" : "1H専用", text_color=color.white, bgcolor=isOneHourChart ? cBull : cWarn)
+    table.cell(status, 0, 8, "Entry", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 8, na(displayedEntry) ? "-" : str.tostring(displayedEntry, format.mintick), text_color=color.white, bgcolor=cell)
+    table.cell(status, 0, 9, "SL", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 9, na(displayedStop) ? "-" : str.tostring(displayedStop, format.mintick), text_color=color.white, bgcolor=cell)
+
+var table guide = table.new(position.bottom_right, 1, 5, border_width=1)
+if i_showGuide and barstate.islast
+    table.cell(guide, 0, 0, "SET = 条件成立、逆指値待機", text_color=color.white, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 1, "BUY / SELL = レンジ突破", text_color=color.white, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 2, "TP / SL = 仮想到達表示", text_color=color.white, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 3, "確定足のみ・1Hチャート専用", text_color=color.white, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 4, "注文は発注しません", text_color=cWarn, bgcolor=color.new(color.black, 10))
+
+alertcondition(armedLongSignal, title="田向式 BUY setup", message="4H上昇 + 1H押し目レンジ: BUY STOP待機")
+alertcondition(armedShortSignal, title="田向式 SELL setup", message="4H下降 + 1H戻りレンジ: SELL STOP待機")
+alertcondition(longSignal, title="田向式 BUY breakout", message="1H押し目レンジ上抜け BUY")
+alertcondition(shortSignal, title="田向式 SELL breakout", message="1H戻りレンジ下抜け SELL")
+alertcondition(targetSignal, title="田向式 Target reached", message="仮想ポジションが利確候補へ到達")
+alertcondition(stopSignal, title="田向式 Stop reached", message="仮想ポジションが構造SLへ到達")

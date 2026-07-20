@@ -36,29 +36,39 @@ forextester-backtest backtest EURUSD --start 2024-01-01 --end 2024-08-30 --lots 
 ```
 
 `--preset auto`（既定）は銘柄名からプリセットを自動選択します。JPYクロス
-（`USDJPY`、`EURJPY` など）はUSDJPYの探索値、USDクロス（`EURUSD`、
-`USDCAD` など）はEURUSDで独立探索した値を使用します。`USDJPY` はJPYクロスを
-優先します。主要8通貨同士のFXペアだけを自動分類するため、`XAUUSD`、`BTCUSD`
-などはUSDクロスとして扱いません。USDもJPYも含まない銘柄はPine既定値です。
+（`USDJPY`、`EURJPY` など）はUSDJPYの探索値、`EURUSD`だけはEURUSDで独立探索した
+研究用設定を使用します。EURUSD設定をGBPUSDへ移した未使用期間テストが4戦全敗
+だったため、他のUSDクロスには共有せずPine既定値を使用します。`XAUUSD`、
+`BTCUSD`などもFXクロスとして扱いません。
 
 ```powershell
 python -m forextester_backtest backtest USDJPY --start 2004-01-01 --end 2024-08-30 --lots 0.1 --trades-output trades.csv
 ```
 
-JPYクロスは「買いのみ・小レンジ1.0 ATR以下・0.5R全決済」、USDクロスは
+JPYクロスは「買いのみ・小レンジ1.0 ATR以下・0.5R全決済」、EURUSD研究設定は
 「買いのみ・小レンジ0.75 ATR以下・0.5R全決済」です。
 添付Pineと同じ設定へ戻す場合は `--preset pine` を指定します。個別の
 `--direction`、`--max-range-atr`、`--target-r`、`--target-fraction` はプリセットより優先されます。
 
-プリセットを明示する場合は `--preset jpy-cross` または `--preset usd-cross` を
-指定します。旧名称 `--preset usdjpy-70` も `jpy-cross` の別名として利用できます。
+プリセットを明示する場合は `--preset jpy-cross` または
+`--preset eurusd-research` を指定します。旧名称 `--preset usdjpy-70` と
+`--preset usd-cross` は互換性のための別名として残しています。
 
 探索条件、期間別成績、過学習上の注意は
 [`docs/usdjpy_optimization.md`](docs/usdjpy_optimization.md) を参照してください。
 EURUSDの独立探索結果は
 [`docs/eurusd_optimization.md`](docs/eurusd_optimization.md) を参照してください。
+XAUUSD（金）の探索結果と不採用理由は
+[`docs/xauusd_optimization.md`](docs/xauusd_optimization.md) を参照してください。
+
+TradingViewへ追加できるシグナル表示用Pine Scriptは
+[`scripts/tradingview/tamukai_pair_signal_indicator.pine`](scripts/tradingview/tamukai_pair_signal_indicator.pine)、
+追加手順は[`scripts/tradingview/README.md`](scripts/tradingview/README.md)にあります。
 
 `--end` を日付だけで指定した場合は、その日の23:59:59までを含みます。
+
+取引CSVには、別銘柄の実行結果との取り違えを防ぐため `symbol` と `preset` を
+各行へ出力します。
 
 既定の履歴場所は `C:\ForexTester6\data\History` です。別の場所は各コマンドの
 前に `--history-dir PATH` を指定します。

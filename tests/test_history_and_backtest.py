@@ -6,9 +6,10 @@ import unittest
 from datetime import datetime, timedelta
 from pathlib import Path
 
+from forextester_backtest.cli import _write_trades
 from forextester_backtest.data import OLE_EPOCH, HistoryRepository
 from forextester_backtest.engine import BacktestEngine
-from forextester_backtest.models import InstrumentMetadata
+from forextester_backtest.models import InstrumentMetadata, Trade
 from forextester_backtest.presets import automatic_preset_name, resolve_preset
 from forextester_backtest.strategies import SmaCrossoverStrategy
 from forextester_backtest.tamukai import (
@@ -107,9 +108,10 @@ class PresetSelectionTest(unittest.TestCase):
         self.assertEqual("jpy-cross", automatic_preset_name("USDJPY"))
         self.assertEqual("jpy-cross", automatic_preset_name("EURJPY"))
 
-    def test_usd_cross_uses_eurusd_exploration_values(self) -> None:
-        self.assertEqual("usd-cross", automatic_preset_name("EURUSD"))
-        self.assertEqual("usd-cross", automatic_preset_name("USDCAD"))
+    def test_eurusd_research_values_are_not_shared_with_usd_crosses(self) -> None:
+        self.assertEqual("eurusd-research", automatic_preset_name("EURUSD"))
+        self.assertEqual("pine", automatic_preset_name("USDCAD"))
+        self.assertEqual("pine", automatic_preset_name("GBPUSD"))
         preset = resolve_preset("EURUSD", "auto")
         self.assertEqual(
             ("long", 0.75, 0.5, 1.0),
@@ -120,12 +122,48 @@ class PresetSelectionTest(unittest.TestCase):
                 preset.first_target_fraction,
             ),
         )
+        self.assertEqual("recent OOS failed", preset.validation)
 
     def test_non_usd_non_jpy_cross_keeps_pine_defaults(self) -> None:
         self.assertEqual("pine", automatic_preset_name("EURGBP"))
         self.assertEqual("pine", automatic_preset_name("XAUUSD"))
         self.assertEqual("pine", automatic_preset_name("BTCUSD"))
         self.assertEqual("jpy-cross", resolve_preset("EURUSD", "usdjpy-70").name)
+
+    def test_trade_csv_identifies_symbol_and_preset(self) -> None:
+        now = datetime(2024, 1, 1)
+        trade = Trade("long", now, 1.0, now, 1.1, 0.1, 10_000, 100, 0, 100)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "trades.csv"
+            _write_trades(path, [trade], "EURUSD", "eurusd-research")
+            rows = path.read_text(encoding="utf-8-sig").splitlines()
+        self.assertTrue(rows[0].startswith("symbol,preset,direction"))
+        self.assertTrue(rows[1].startswith("EURUSD,eurusd-research,long"))
+
+    def test_tradingview_indicator_contains_current_pair_presets(self) -> None:
+        path = (
+            Path(__file__).parents[1]
+            / "scripts"
+            / "tradingview"
+            / "tamukai_pair_signal_indicator.pine"
+        )
+        source = path.read_text(encoding="utf-8")
+        self.assertTrue(source.startswith("//@version=6\n"))
+        self.assertIn('indicator("田向式 ペア別押し目レンジ・シグナル"', source)
+        self.assertIn('plot(close, "Compile guard", display=display.none)', source)
+        self.assertNotIn("strategy(", source)
+        self.assertIn('activePreset == "JPYクロス" ? 1.0', source)
+        self.assertIn('activePreset == "EURUSD研究" ? 0.75', source)
+        self.assertIn('isXauUsd ? "XAUUSD研究"', source)
+        self.assertIn("isXauResearch ? 1.25", source)
+        self.assertIn("isXauResearch ? 0.75", source)
+        self.assertIn("isXauResearch ? 0.20", source)
+        self.assertIn("isXauResearch ? 0.0", source)
+        self.assertIn('"注意: OOS -0.484R / 16件"', source)
+        self.assertIn("barstate.isconfirmed", source)
+        self.assertIn("lookahead=barmerge.lookahead_on", source)
+        self.assertIn('"このインジケーターは1時間足専用です', source)
+        self.assertIn("i_showTable or not isOneHourChart", source)
 
 
 class TamukaiBacktesterTest(unittest.TestCase):
