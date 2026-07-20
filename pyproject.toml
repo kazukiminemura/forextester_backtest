@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forextester-backtest"
+version = "0.1.0"
+description = "Read Forex Tester 6 history files and run streaming backtests"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "forextester_backtest contributors"}]
+dependencies = []
+
+[project.scripts]
+forextester-backtest = "forextester_backtest.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
