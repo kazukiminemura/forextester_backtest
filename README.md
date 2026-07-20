@@ -1,7 +1,8 @@
 # Forex Tester History Backtester
 
 Forex Tester 6 の `History` ディレクトリを読み取り専用で参照し、バー抽出、
-時間足集約、tick 抽出、簡易ストラテジーのバックテストを行う Python ツールです。
+時間足集約、tick 抽出、田向式「4Hダウ＋1H押し目レンジ」のバックテストを行う
+Python ツールです。
 
 ## セットアップ
 
@@ -30,9 +31,32 @@ forextester-backtest bars EURUSD --start 2024-01-01 --end 2024-01-07 --timeframe
 # tickを抽出（巨大ファイルも日時から二分探索するため全件ロードしません）
 forextester-backtest ticks EURUSD --start "2024-08-30 20:59:50" --end "2024-08-30 21:00:00" --limit 100
 
-# SMA 20/50 クロスを1時間足でバックテスト
-forextester-backtest backtest EURUSD --start 2023-01-01 --end 2024-01-01 --timeframe 1h --fast 20 --slow 50 --lots 0.1 --trades-output trades.csv
+# 田向式 4Hダウ＋1H押し目レンジをバックテスト
+forextester-backtest backtest EURUSD --start 2024-01-01 --end 2024-08-30 --lots 0.1 --trades-output trades.csv
 ```
+
+`--preset auto`（既定）は銘柄名からプリセットを自動選択します。JPYクロス
+（`USDJPY`、`EURJPY` など）はUSDJPYの探索値、USDクロス（`EURUSD`、
+`USDCAD` など）はEURUSDで独立探索した値を使用します。`USDJPY` はJPYクロスを
+優先します。主要8通貨同士のFXペアだけを自動分類するため、`XAUUSD`、`BTCUSD`
+などはUSDクロスとして扱いません。USDもJPYも含まない銘柄はPine既定値です。
+
+```powershell
+python -m forextester_backtest backtest USDJPY --start 2004-01-01 --end 2024-08-30 --lots 0.1 --trades-output trades.csv
+```
+
+JPYクロスは「買いのみ・小レンジ1.0 ATR以下・0.5R全決済」、USDクロスは
+「買いのみ・小レンジ0.75 ATR以下・0.5R全決済」です。
+添付Pineと同じ設定へ戻す場合は `--preset pine` を指定します。個別の
+`--direction`、`--max-range-atr`、`--target-r`、`--target-fraction` はプリセットより優先されます。
+
+プリセットを明示する場合は `--preset jpy-cross` または `--preset usd-cross` を
+指定します。旧名称 `--preset usdjpy-70` も `jpy-cross` の別名として利用できます。
+
+探索条件、期間別成績、過学習上の注意は
+[`docs/usdjpy_optimization.md`](docs/usdjpy_optimization.md) を参照してください。
+EURUSDの独立探索結果は
+[`docs/eurusd_optimization.md`](docs/eurusd_optimization.md) を参照してください。
 
 `--end` を日付だけで指定した場合は、その日の23:59:59までを含みます。
 
@@ -45,12 +69,28 @@ forextester-backtest --history-dir D:\History symbols
 
 ## バックテストの前提
 
-- シグナルはバー終値で計算し、次のバー始値で約定します（先読み防止）。
+- 参照元は [`tamukai_1h_pullback_range_strategy.pine`](https://github.com/kazukiminemura/chart_analyser_y/blob/main/scrips/tamukai_1h_pullback_range_strategy.pine) です。
+- 確定済み4時間足のダウ構造、21SMA、ATR、確定済みピボットだけで方向を判定します。
+- 直前3本の1時間足から小レンジを作り、押し・戻り、SMA・旧高安値、SL幅、上位足の壁までの余地を検査します。
+- 条件成立後にレンジ外へ逆指値を置き、既定8本で失効します。条件成立バー内では約定しません。
+- 構造SLを固定し、半分を1Rで利確後、残りを確定1時間足ピボットで追随します。
+- 開始日より前の履歴も4H構造と指標のウォームアップに使いますが、注文は指定期間内だけです。
+- 重要指標カレンダーは取得しません。Pine版の手動停止は `--disable-entries` で全期間に適用できます。
 - `Bars.dat` は Bid 価格として扱い、買い約定時に `info.dat` の spread を加算します。
+- 同一バー内の価格経路はTradingView同様、始値に近い高値・安値側を先に通るOHLC経路で判定します。tick再生ではありません。
 - 最終バーで未決済ポジションを強制決済します。
 - 損益は銘柄のクオート通貨基準です。たとえば EURUSD は USD、EURJPY は JPY です。
 - 口座通貨への換算、スワップ、スリッページ、証拠金・ロスカットは未実装です。
 - `ticks.dat` は参照できますが、現在のバックテスト約定モデルはバー単位です。
+
+Pine版の表示専用の日足・週足ラインと状態テーブルは、売買判定に使われないため移植していません。
+また、Pine版の「資産の10%」ではなく、CLIの `--lots` で固定数量を指定します。
+
+主要パラメータはPine版と同じ既定値です。変更可能な全項目は次で確認できます。
+
+```powershell
+forextester-backtest backtest --help
+```
 
 このため、結果は手法の一次検証用です。実運用判断には、口座通貨換算、可変スプレッド、
 スリッページ、スワップ、ブローカー固有ルールを追加してください。
@@ -72,6 +112,13 @@ engine = BacktestEngine(history.metadata("EURUSD"), lots=0.1)
 result = engine.run(history.bars("EURUSD", timeframe="1h"), MyStrategy())
 print(result.as_dict())
 ```
+
+田向式専用エンジンは `TamukaiBacktester`、設定値は `TamukaiConfig` から利用できます。
+
+## ライセンスと出典
+
+田向式戦略モジュールは、MPL-2.0で公開された上記Pine Scriptを基にしています。
+原典URLとMPL-2.0表示をコードに残し、パッケージのライセンス表記もMPL-2.0にしています。
 
 ## データ形式
 

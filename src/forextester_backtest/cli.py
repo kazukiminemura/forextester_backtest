@@ -11,9 +11,10 @@ from pathlib import Path
 from typing import Iterable, Sequence
 
 from .data import HistoryRepository
-from .engine import BacktestEngine, BacktestResult
+from .engine import BacktestResult
 from .models import Bar, Tick, Trade
-from .strategies import SmaCrossoverStrategy
+from .presets import resolve_preset
+from .tamukai import TamukaiBacktester, TamukaiConfig
 
 
 def _datetime(value: str) -> datetime:
@@ -30,6 +31,18 @@ def _end_datetime(value: str) -> datetime:
     if len(value.strip()) == 10:
         return parsed.replace(hour=23, minute=59, second=59, microsecond=999_999)
     return parsed
+
+
+def _hours(value: str) -> tuple[int, ...]:
+    try:
+        hours = tuple(sorted({int(item.strip()) for item in value.split(",")}))
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(
+            "時間帯は 3,6,8,9 のように指定してください"
+        ) from exc
+    if not hours or any(hour < 0 or hour > 23 for hour in hours):
+        raise argparse.ArgumentTypeError("時間帯は0から23で指定してください")
+    return hours
 
 
 def _add_range(parser: argparse.ArgumentParser) -> None:
@@ -66,14 +79,55 @@ def build_parser() -> argparse.ArgumentParser:
     ticks.add_argument("--limit", type=int, default=1000, help="最大出力件数")
     ticks.add_argument("--output", type=Path, help="CSV保存先（省略時は標準出力）")
 
-    backtest = commands.add_parser("backtest", help="SMAクロスをバックテスト")
+    backtest = commands.add_parser(
+        "backtest", help="田向式 4Hダウ＋1H押し目レンジをバックテスト"
+    )
     backtest.add_argument("symbol")
     _add_range(backtest)
-    backtest.add_argument("--timeframe", default="1h", help="1m, 5m, 1h, 1d")
-    backtest.add_argument("--fast", type=int, default=20)
-    backtest.add_argument("--slow", type=int, default=50)
+    backtest.add_argument(
+        "--preset",
+        choices=("auto", "pine", "jpy-cross", "usd-cross", "usdjpy-70"),
+        default="auto",
+        help="autoはJPYクロス・USDクロスを判定して探索済み設定を使用",
+    )
     backtest.add_argument("--lots", type=float, default=0.1)
     backtest.add_argument("--initial-capital", type=float, default=10_000.0)
+    backtest.add_argument("--higher-hours", type=int, default=4)
+    backtest.add_argument("--htf-sma", type=int, default=21)
+    backtest.add_argument("--htf-pivot-left", type=int, default=2)
+    backtest.add_argument("--htf-pivot-right", type=int, default=2)
+    backtest.add_argument("--slope-bars", type=int, default=2)
+    backtest.add_argument("--min-slope-atr", type=float, default=0.03)
+    backtest.add_argument("--ltf-sma", type=int, default=21)
+    backtest.add_argument("--range-bars", type=int, default=3)
+    backtest.add_argument("--pullback-lookback", type=int, default=12)
+    backtest.add_argument("--min-pullback-atr", type=float, default=0.50)
+    backtest.add_argument("--max-range-atr", type=float)
+    backtest.add_argument("--zone-tolerance-atr", type=float, default=0.25)
+    backtest.add_argument("--ltf-pivot-left", type=int, default=2)
+    backtest.add_argument("--ltf-pivot-right", type=int, default=2)
+    backtest.add_argument("--entry-buffer-pips", type=float, default=4.0)
+    backtest.add_argument("--stop-buffer-pips", type=float, default=4.0)
+    backtest.add_argument("--min-room-r", type=float, default=1.5)
+    backtest.add_argument("--max-risk-pips", type=float, default=80.0)
+    backtest.add_argument("--max-risk-atr", type=float, default=2.5)
+    backtest.add_argument("--max-chase-atr", type=float, default=2.0)
+    backtest.add_argument("--order-expiry-bars", type=int, default=8)
+    backtest.add_argument("--min-range-atr", type=float, default=0.0)
+    backtest.add_argument("--target-r", type=float)
+    backtest.add_argument("--target-fraction", type=float)
+    backtest.add_argument("--move-stop-to-breakeven", action="store_true")
+    backtest.add_argument("--direction", choices=("both", "long", "short"))
+    backtest.add_argument(
+        "--entry-hours",
+        type=_hours,
+        help="新規約定を許可するデータ時間（例: 3,6,8,9）",
+    )
+    backtest.add_argument(
+        "--disable-entries",
+        action="store_true",
+        help="全期間の新規エントリーを停止",
+    )
     backtest.add_argument("--json", action="store_true", help="結果をJSON表示")
     backtest.add_argument("--trades-output", type=Path, help="取引明細CSV保存先")
     return parser
@@ -107,7 +161,9 @@ def _write_rows(
     if limit <= 0:
         raise ValueError("limit は1以上にしてください")
     selected = islice(rows, limit)
-    stream = output.open("w", encoding="utf-8-sig", newline="") if output else sys.stdout
+    stream = (
+        output.open("w", encoding="utf-8-sig", newline="") if output else sys.stdout
+    )
     try:
         writer = csv.writer(stream, lineterminator="\n")
         first = next(selected, None)
@@ -139,7 +195,9 @@ def _write_trades(path: Path, trades: Sequence[Trade]) -> None:
             writer.writerow(_csv_values(trade, fields))
 
 
-def _print_result(result: BacktestResult) -> None:
+def _print_result(result: BacktestResult, preset_name: str | None = None) -> None:
+    if preset_name:
+        print(f"{'Preset':20} {preset_name}")
     values = result.as_dict()
     labels = {
         "symbol": "Symbol",
@@ -189,7 +247,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                             "pnl_currency": metadata.pnl_currency,
                         },
                         "data": {
-                            key: (_format_time(value) if isinstance(value, datetime) else value)
+                            key: (
+                                _format_time(value)
+                                if isinstance(value, datetime)
+                                else value
+                            )
                             for key, value in asdict(summary).items()
                         },
                     },
@@ -199,9 +261,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         elif args.command == "bars":
             _write_rows(
-                repository.bars(
-                    args.symbol, args.start, args.end, args.timeframe
-                ),
+                repository.bars(args.symbol, args.start, args.end, args.timeframe),
                 args.limit,
                 args.output,
             )
@@ -213,18 +273,63 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         elif args.command == "backtest":
             metadata = repository.metadata(args.symbol)
-            strategy = SmaCrossoverStrategy(args.fast, args.slow)
-            engine = BacktestEngine(metadata, args.lots, args.initial_capital)
-            result = engine.run(
-                repository.bars(
-                    args.symbol, args.start, args.end, args.timeframe
+            preset = resolve_preset(metadata.symbol, args.preset)
+            config = TamukaiConfig(
+                higher_hours=args.higher_hours,
+                htf_sma_length=args.htf_sma,
+                htf_pivot_left=args.htf_pivot_left,
+                htf_pivot_right=args.htf_pivot_right,
+                htf_slope_bars=args.slope_bars,
+                min_slope_atr=args.min_slope_atr,
+                ltf_sma_length=args.ltf_sma,
+                range_bars=args.range_bars,
+                pullback_lookback=args.pullback_lookback,
+                min_pullback_atr=args.min_pullback_atr,
+                max_range_atr=(
+                    args.max_range_atr
+                    if args.max_range_atr is not None
+                    else preset.max_range_atr
                 ),
-                strategy,
+                zone_tolerance_atr=args.zone_tolerance_atr,
+                ltf_pivot_left=args.ltf_pivot_left,
+                ltf_pivot_right=args.ltf_pivot_right,
+                entry_buffer_pips=args.entry_buffer_pips,
+                stop_buffer_pips=args.stop_buffer_pips,
+                min_room_r=args.min_room_r,
+                max_risk_pips=args.max_risk_pips,
+                max_risk_atr=args.max_risk_atr,
+                max_chase_atr=args.max_chase_atr,
+                order_expiry_bars=args.order_expiry_bars,
+                allow_entries=not args.disable_entries,
+                min_range_atr=args.min_range_atr,
+                first_target_r=(
+                    args.target_r
+                    if args.target_r is not None
+                    else preset.first_target_r
+                ),
+                first_target_fraction=(
+                    args.target_fraction
+                    if args.target_fraction is not None
+                    else preset.first_target_fraction
+                ),
+                move_stop_to_break_even=args.move_stop_to_breakeven,
+                direction=args.direction or preset.direction,
+                entry_hours=args.entry_hours,
+            )
+            engine = TamukaiBacktester(
+                metadata, config, args.lots, args.initial_capital
+            )
+            # Read the earlier 1H history as indicator/pivot warm-up. The
+            # engine only permits orders inside the requested date range.
+            result = engine.run(
+                repository.bars(args.symbol, None, args.end, "1h"),
+                start=args.start,
+                end=args.end,
             )
             if args.json:
                 print(json.dumps(result.as_dict(), ensure_ascii=False, indent=2))
             else:
-                _print_result(result)
+                _print_result(result, preset.name)
             if args.trades_output:
                 _write_trades(args.trades_output, result.trades)
         return 0

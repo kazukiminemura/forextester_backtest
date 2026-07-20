@@ -1,0 +1,6 @@
+{
+  "first_target_r": 0.35,
+  "first_target_fraction": 1.0,
+  "move_stop_to_break_even": false,
+  "direction": "long"
+}
