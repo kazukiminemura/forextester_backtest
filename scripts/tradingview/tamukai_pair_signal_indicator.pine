@@ -419,7 +419,7 @@ if barstate.islast
 
 string trendText = htfLongBias ? "4H UP" : htfShortBias ? "4H DOWN" : "4H NEUTRAL"
 string setupText = not isOneHourChart ? "1Hへ変更" : not i_allowSignals ? "新規停止" : virtualDirection == 1 ? "LONG監視" : virtualDirection == -1 ? "SHORT監視" : armedDirection == 1 ? "BUY STOP待機" : armedDirection == -1 ? "SELL STOP待機" : "条件待ち"
-string validationText = isXauResearch ? "研究: OOS PF 1.22 / 13件" : activePreset == "Custom" ? "RR 1:1固定" : "RR1変更後: 未検証"
+string validationText = isXauResearch ? "研究: OOS PF 1.22 / 13件" : activePreset == "JPYクロス" ? "RR1: OOS PF 0.53 / 45件" : activePreset == "Custom" ? "RR 1:1固定" : "RR1変更後: 未検証"
 color validationColor = activePreset == "Custom" ? cNeutral : cWarn
 float displayedEntry = virtualDirection != 0 ? virtualEntry : armedDirection != 0 ? armedEntry : na
 float displayedStop = virtualDirection != 0 ? virtualStop : armedDirection != 0 ? armedStop : na

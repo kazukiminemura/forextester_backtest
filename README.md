@@ -50,12 +50,18 @@ JPYクロスは「買いのみ・小レンジ1.0 ATR以下・0.5R全決済」、
 添付Pineと同じ設定へ戻す場合は `--preset pine` を指定します。個別の
 `--direction`、`--max-range-atr`、`--target-r`、`--target-fraction` はプリセットより優先されます。
 
+TradingView版は決済をRR 1:1へ統一しています。JPYクロス共通値をRR 1:1で
+再探索した結果、2023～2024年のホールドアウトを通過した候補がなかったため、
+共通パラメータは変更していません。
+
 プリセットを明示する場合は `--preset jpy-cross` または
 `--preset eurusd-research` を指定します。旧名称 `--preset usdjpy-70` と
 `--preset usd-cross` は互換性のための別名として残しています。
 
 探索条件、期間別成績、過学習上の注意は
 [`docs/usdjpy_optimization.md`](docs/usdjpy_optimization.md) を参照してください。
+JPYクロスをRR 1:1で再検証した結果は
+[`docs/jpy_cross_rr1_optimization.md`](docs/jpy_cross_rr1_optimization.md) を参照してください。
 EURUSDの独立探索結果は
 [`docs/eurusd_optimization.md`](docs/eurusd_optimization.md) を参照してください。
 XAUUSD（金）の探索結果と不採用理由は
