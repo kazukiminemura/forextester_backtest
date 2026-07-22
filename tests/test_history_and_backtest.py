@@ -107,6 +107,32 @@ class PresetSelectionTest(unittest.TestCase):
     def test_jpy_cross_takes_precedence_for_usdjpy(self) -> None:
         self.assertEqual("jpy-cross", automatic_preset_name("USDJPY"))
         self.assertEqual("jpy-cross", automatic_preset_name("EURJPY"))
+        preset = resolve_preset("USDJPY", "auto")
+        self.assertEqual(
+            (0.03, 1.0, 1.5, 1.0, 1.0, "long"),
+            (
+                preset.min_slope_atr,
+                preset.max_range_atr,
+                preset.min_room_r,
+                preset.first_target_r,
+                preset.first_target_fraction,
+                preset.direction,
+            ),
+        )
+
+    def test_jpy_frequency_is_explicit_and_keeps_strict_rr1(self) -> None:
+        preset = resolve_preset("USDJPY", "jpy-frequency")
+        self.assertEqual(
+            (0.03, 1.0, 1.0, 1.0, 1.0, "long"),
+            (
+                preset.min_slope_atr,
+                preset.max_range_atr,
+                preset.min_room_r,
+                preset.first_target_r,
+                preset.first_target_fraction,
+                preset.direction,
+            ),
+        )
 
     def test_eurusd_research_values_are_not_shared_with_usd_crosses(self) -> None:
         self.assertEqual("eurusd-research", automatic_preset_name("EURUSD"))
@@ -149,12 +175,12 @@ class PresetSelectionTest(unittest.TestCase):
         )
         source = path.read_text(encoding="utf-8")
         self.assertTrue(source.startswith("//@version=6\n"))
-        self.assertIn(
-            'indicator("田向式 ペア別押し目レンジ・シグナル RR1 v2"', source
-        )
+        self.assertIn('indicator("田向式 ペア別押し目レンジ・シグナル RR1 v2"', source)
         self.assertIn('plot(close, "Compile guard", display=display.none)', source)
         self.assertNotIn("strategy(", source)
-        self.assertIn('activePreset == "JPYクロス" ? 1.0', source)
+        self.assertIn('activePreset == "JPYクロス" or isJpyFrequency ? 1.0', source)
+        self.assertIn('activePreset == "JPY頻度優先"', source)
+        self.assertIn('"研究: USDJPY OOS 15件 / 80%"', source)
         self.assertIn('activePreset == "EURUSD研究" ? 0.75', source)
         self.assertIn('isXauUsd ? "XAUUSD研究"', source)
         self.assertIn("isXauResearch ? 1.0", source)
@@ -172,7 +198,7 @@ class PresetSelectionTest(unittest.TestCase):
         self.assertIn('"Pending TP 1:1"', source)
         self.assertIn('"RR 1:1 / 100%"', source)
         self.assertIn('"田向式 RR1 v2"', source)
-        self.assertIn("table.new(position.top_right, 2, 11", source)
+        self.assertIn("table.new(position.top_right, 2, 12", source)
         self.assertIn("barstate.isconfirmed", source)
         self.assertIn("lookahead=barmerge.lookahead_on", source)
         self.assertIn('"このインジケーターは1時間足専用です', source)

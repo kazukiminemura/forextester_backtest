@@ -181,6 +181,30 @@ def _pair_candidates() -> list[TamukaiConfig]:
     return candidates
 
 
+def _frequency_candidates() -> list[TamukaiConfig]:
+    """Relax entry filters while preserving the strict 1R full exit."""
+    candidates: list[TamukaiConfig] = []
+    base = TamukaiConfig(
+        direction="long",
+        first_target_r=1.0,
+        first_target_fraction=1.0,
+    )
+    for min_slope in (0.0, 0.03):
+        for min_pullback in (0.0, 0.25, 0.5):
+            for max_range in (1.0, 1.25, 1.5, 2.0):
+                for min_room in (0.5, 1.0, 1.5, 2.0):
+                    candidates.append(
+                        replace(
+                            base,
+                            min_slope_atr=min_slope,
+                            min_pullback_atr=min_pullback,
+                            max_range_atr=max_range,
+                            min_room_r=min_room,
+                        )
+                    )
+    return candidates
+
+
 def _evaluation_dict(evaluation: Evaluation) -> dict[str, object]:
     return {
         "robust": evaluation.robust,
@@ -197,7 +221,15 @@ def main() -> int:
     parser.add_argument("symbol", nargs="?", default="USDJPY")
     parser.add_argument("--history-dir", default=r"C:\ForexTester6\data\History")
     parser.add_argument(
-        "--stage", choices=("exit", "filter", "robust", "pair"), default="exit"
+        "--stage",
+        choices=(
+            "exit",
+            "filter",
+            "robust",
+            "pair",
+            "frequency",
+        ),
+        default="exit",
     )
     parser.add_argument("--seed-json", type=Path)
     parser.add_argument("--top", type=int, default=10)
@@ -229,8 +261,10 @@ def main() -> int:
         candidates = _filter_candidates(TamukaiConfig(**seed_values))
     elif args.stage == "robust":
         candidates = _robust_candidates()
-    else:
+    elif args.stage == "pair":
         candidates = _pair_candidates()
+    else:
+        candidates = _frequency_candidates()
 
     evaluations: list[Evaluation] = []
     for index, config in enumerate(candidates, 1):

@@ -8,19 +8,31 @@ from dataclasses import dataclass
 @dataclass(frozen=True, slots=True)
 class StrategyPreset:
     name: str
+    min_slope_atr: float
     max_range_atr: float
+    min_room_r: float
     first_target_r: float
     first_target_fraction: float
     direction: str
     validation: str
 
 
-PINE_PRESET = StrategyPreset("pine", 1.5, 1.0, 0.5, "both", "baseline")
+PINE_PRESET = StrategyPreset("pine", 0.03, 1.5, 1.5, 1.0, 0.5, "both", "baseline")
 JPY_CROSS_PRESET = StrategyPreset(
-    "jpy-cross", 1.0, 0.5, 1.0, "long", "USDJPY true OOS passed"
+    "jpy-cross", 0.03, 1.0, 1.5, 1.0, 1.0, "long", "strict RR1"
+)
+JPY_FREQUENCY_RESEARCH_PRESET = StrategyPreset(
+    "jpy-frequency", 0.03, 1.0, 1.0, 1.0, 1.0, "long", "frequency research"
 )
 EURUSD_RESEARCH_PRESET = StrategyPreset(
-    "eurusd-research", 0.75, 0.5, 1.0, "long", "recent OOS failed"
+    "eurusd-research",
+    0.03,
+    0.75,
+    1.5,
+    0.5,
+    1.0,
+    "long",
+    "recent OOS failed",
 )
 
 _FX_CURRENCIES = frozenset({"AUD", "CAD", "CHF", "EUR", "GBP", "JPY", "NZD", "USD"})
@@ -50,6 +62,7 @@ def resolve_preset(symbol: str, requested: str) -> StrategyPreset:
     presets = {
         "pine": PINE_PRESET,
         "jpy-cross": JPY_CROSS_PRESET,
+        "jpy-frequency": JPY_FREQUENCY_RESEARCH_PRESET,
         "eurusd-research": EURUSD_RESEARCH_PRESET,
     }
     try:

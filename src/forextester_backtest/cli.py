@@ -90,6 +90,7 @@ def build_parser() -> argparse.ArgumentParser:
             "auto",
             "pine",
             "jpy-cross",
+            "jpy-frequency",
             "eurusd-research",
             "usd-cross",
             "usdjpy-70",
@@ -104,7 +105,7 @@ def build_parser() -> argparse.ArgumentParser:
     backtest.add_argument("--htf-pivot-left", type=int, default=2)
     backtest.add_argument("--htf-pivot-right", type=int, default=2)
     backtest.add_argument("--slope-bars", type=int, default=2)
-    backtest.add_argument("--min-slope-atr", type=float, default=0.03)
+    backtest.add_argument("--min-slope-atr", type=float)
     backtest.add_argument("--ltf-sma", type=int, default=21)
     backtest.add_argument("--range-bars", type=int, default=3)
     backtest.add_argument("--pullback-lookback", type=int, default=12)
@@ -115,7 +116,7 @@ def build_parser() -> argparse.ArgumentParser:
     backtest.add_argument("--ltf-pivot-right", type=int, default=2)
     backtest.add_argument("--entry-buffer-pips", type=float, default=4.0)
     backtest.add_argument("--stop-buffer-pips", type=float, default=4.0)
-    backtest.add_argument("--min-room-r", type=float, default=1.5)
+    backtest.add_argument("--min-room-r", type=float)
     backtest.add_argument("--max-risk-pips", type=float, default=80.0)
     backtest.add_argument("--max-risk-atr", type=float, default=2.5)
     backtest.add_argument("--max-chase-atr", type=float, default=2.0)
@@ -289,13 +290,23 @@ def main(argv: Sequence[str] | None = None) -> int:
                     "(2023-2024 expectancy < 0)",
                     file=sys.stderr,
                 )
+            elif preset.validation == "frequency research":
+                print(
+                    "warning: jpy-frequency increases signals but failed the "
+                    "2023-2024 holdout; use for research only",
+                    file=sys.stderr,
+                )
             config = TamukaiConfig(
                 higher_hours=args.higher_hours,
                 htf_sma_length=args.htf_sma,
                 htf_pivot_left=args.htf_pivot_left,
                 htf_pivot_right=args.htf_pivot_right,
                 htf_slope_bars=args.slope_bars,
-                min_slope_atr=args.min_slope_atr,
+                min_slope_atr=(
+                    args.min_slope_atr
+                    if args.min_slope_atr is not None
+                    else preset.min_slope_atr
+                ),
                 ltf_sma_length=args.ltf_sma,
                 range_bars=args.range_bars,
                 pullback_lookback=args.pullback_lookback,
@@ -310,7 +321,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                 ltf_pivot_right=args.ltf_pivot_right,
                 entry_buffer_pips=args.entry_buffer_pips,
                 stop_buffer_pips=args.stop_buffer_pips,
-                min_room_r=args.min_room_r,
+                min_room_r=(
+                    args.min_room_r
+                    if args.min_room_r is not None
+                    else preset.min_room_r
+                ),
                 max_risk_pips=args.max_risk_pips,
                 max_risk_atr=args.max_risk_atr,
                 max_chase_atr=args.max_chase_atr,

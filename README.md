@@ -45,16 +45,17 @@ forextester-backtest backtest EURUSD --start 2024-01-01 --end 2024-08-30 --lots 
 python -m forextester_backtest backtest USDJPY --start 2004-01-01 --end 2024-08-30 --lots 0.1 --trades-output trades.csv
 ```
 
-JPYクロスは「買いのみ・小レンジ1.0 ATR以下・0.5R全決済」、EURUSD研究設定は
+JPYクロスは「買いのみ・小レンジ1.0 ATR以下・1R全決済」、EURUSD研究設定は
 「買いのみ・小レンジ0.75 ATR以下・0.5R全決済」です。
 添付Pineと同じ設定へ戻す場合は `--preset pine` を指定します。個別の
 `--direction`、`--max-range-atr`、`--target-r`、`--target-fraction` はプリセットより優先されます。
 
-TradingView版は決済をRR 1:1へ統一しています。JPYクロス共通値をRR 1:1で
-再探索した結果、2023～2024年のホールドアウトを通過した候補がなかったため、
-共通パラメータは変更していません。
+取引回数を増やす研究用設定は `--preset jpy-frequency` です。RR 1:1全決済を
+維持したまま壁までの最低余地だけを1.5Rから1.0Rへ緩和します。USDJPYの
+2024-09～2026-07では12件から15件へ増えましたが、2023～2024年のホールドアウトは
+不合格なので、`auto`では選択しません。
 
-プリセットを明示する場合は `--preset jpy-cross` または
+プリセットを明示する場合は `--preset jpy-cross`、`--preset jpy-frequency` または
 `--preset eurusd-research` を指定します。旧名称 `--preset usdjpy-70` と
 `--preset usd-cross` は互換性のための別名として残しています。
 

@@ -11,7 +11,7 @@ plot(close, "Compile guard", display=display.none)
 // 1. Inputs and pair presets
 // =====================================================================
 string gPreset = "プリセット"
-string i_preset = input.string("Auto", "プリセット", options=["Auto", "Pine既定", "JPYクロス", "EURUSD研究", "XAUUSD研究", "Custom"], group=gPreset)
+string i_preset = input.string("Auto", "プリセット", options=["Auto", "Pine既定", "JPYクロス", "JPY頻度優先", "EURUSD研究", "XAUUSD研究", "Custom"], group=gPreset)
 string i_customDirection = input.string("Both", "Custom方向", options=["Both", "Long", "Short"], group=gPreset)
 float i_customMaxRangeAtr = input.float(1.50, "Custom 最大レンジ幅（ATR倍）", minval=0.1, step=0.05, group=gPreset)
 
@@ -22,9 +22,10 @@ string autoPreset = isJpyCross ? "JPYクロス" : isEurUsd ? "EURUSD研究" : is
 string activePreset = i_preset == "Auto" ? autoPreset : i_preset
 
 bool isXauResearch = activePreset == "XAUUSD研究"
-float presetMaxRangeAtr = activePreset == "JPYクロス" ? 1.0 : activePreset == "EURUSD研究" ? 0.75 : activePreset == "Custom" ? i_customMaxRangeAtr : 1.50
+bool isJpyFrequency = activePreset == "JPY頻度優先"
+float presetMaxRangeAtr = activePreset == "JPYクロス" or isJpyFrequency ? 1.0 : activePreset == "EURUSD研究" ? 0.75 : activePreset == "Custom" ? i_customMaxRangeAtr : 1.50
 float fixedTargetR = 1.0
-bool allowLong = isXauResearch or activePreset == "JPYクロス" or activePreset == "EURUSD研究" or activePreset == "Pine既定" or (activePreset == "Custom" and i_customDirection != "Short")
+bool allowLong = isXauResearch or activePreset == "JPYクロス" or isJpyFrequency or activePreset == "EURUSD研究" or activePreset == "Pine既定" or (activePreset == "Custom" and i_customDirection != "Short")
 bool allowShort = not isXauResearch and (activePreset == "Pine既定" or (activePreset == "Custom" and i_customDirection != "Long"))
 
 string gTimeframe = "時間足"
@@ -57,7 +58,7 @@ float effectiveMinSlopeAtr = isXauResearch ? 0.06 : i_minSlopeAtr
 int effectiveRangeBars = isXauResearch ? 4 : i_rangeBars
 float effectiveMinPullbackAtr = isXauResearch ? 0.25 : i_minPullbackAtr
 float effectiveZoneToleranceAtr = isXauResearch ? 0.40 : i_zoneToleranceAtr
-float effectiveMinRoomR = isXauResearch ? 1.0 : i_minRoomR
+float effectiveMinRoomR = isXauResearch ? 1.0 : isJpyFrequency ? 1.0 : i_minRoomR
 float effectiveMaxRiskAtr = isXauResearch ? 2.0 : i_maxRiskAtr
 int effectiveOrderExpiryBars = isXauResearch ? 8 : i_orderExpiryBars
 
@@ -67,6 +68,15 @@ bool i_showRange = input.bool(true, "待機レンジ・Entry・SL", group=gShow)
 bool i_showStructure = input.bool(true, "4Hダウ高値・安値", group=gShow)
 bool i_showTable = input.bool(true, "状態テーブル", group=gShow)
 bool i_showGuide = input.bool(true, "使い方ガイド", group=gShow)
+
+string gTriangle = "三角持ち合い"
+bool i_showTriangle = input.bool(true, "三角持ち合いを表示", group=gTriangle,
+     tooltip="探索期間内の主要な確定高値・安値から、現在へ収束する大きな三角持ち合いを描画します")
+int i_trianglePivotBars = input.int(2, "ピボット左右本数", minval=1, maxval=10, group=gTriangle)
+int i_triangleLookbackBars = input.int(500, "主要点の探索本数", minval=100, maxval=2000, group=gTriangle)
+int i_triangleMinBars = input.int(6, "最小形成本数", minval=3, maxval=50, group=gTriangle)
+int i_triangleMaxApexBars = input.int(80, "頂点までの最大本数", minval=10, maxval=200, group=gTriangle,
+     tooltip="現在足から理論上の交点までが遠すぎる、ほぼ平行な形を除外します")
 
 string gScanner = "通貨ペア・チャンス一覧"
 bool i_showScanner = input.bool(true, "10銘柄を一覧表示", group=gScanner)
@@ -86,6 +96,7 @@ color cBear = color.new(#D50000, 0)
 color cWarn = color.new(#FF9800, 0)
 color cNeutral = color.new(color.gray, 0)
 color cRange = color.new(#FFD54F, 0)
+color cTriangle = color.new(#00BCD4, 0)
 color cWatchBull = color.new(#1B5E20, 15)
 color cWatchBear = color.new(#7F0000, 15)
 color cScannerCell = color.new(color.black, 15)
@@ -144,7 +155,7 @@ f_scanPair(string symbol) =>
     float scanMinPullbackAtr = scanXauUsd ? 0.25 : 0.50
     float scanMaxRangeAtr = scanJpyCross ? 1.0 : scanEurUsd ? 0.75 : 1.50
     float scanZoneToleranceAtr = scanXauUsd ? 0.40 : 0.25
-    float scanMinRoomR = scanXauUsd ? 1.0 : 1.5
+    float scanMinRoomR = scanXauUsd ? 1.0 : scanJpyCross and isJpyFrequency ? 1.0 : 1.5
     float scanMaxRiskAtr = scanXauUsd ? 2.0 : 2.5
     float scanMaxRiskPips = scanXauUsd ? 0.0 : 80.0
     bool scanAllowShort = not scanXauUsd and not scanJpyCross and not scanEurUsd
@@ -288,7 +299,120 @@ bool longSetup = isOneHourChart and i_allowSignals and allowLong and htfLongBias
 bool shortSetup = isOneHourChart and i_allowSignals and allowShort and htfShortBias and shortChaseOk and compactRange and shortPullback and shortAtReference and shortStructureHeld and shortRiskOk and shortRoomOk and low > shortEntryCandidate
 
 // =====================================================================
-// 4. Indicator-only pending and fixed RR 1:1 virtual position state
+// 4. Confirmed 1H triangle consolidation
+// =====================================================================
+float trianglePivotHigh = ta.pivothigh(high, i_trianglePivotBars, i_trianglePivotBars)
+float trianglePivotLow = ta.pivotlow(low, i_trianglePivotBars, i_trianglePivotBars)
+var float[] triangleHighPrices = array.new_float()
+var int[] triangleHighBars = array.new_int()
+var float[] triangleLowPrices = array.new_float()
+var int[] triangleLowBars = array.new_int()
+
+if not na(trianglePivotHigh)
+    array.push(triangleHighPrices, trianglePivotHigh)
+    array.push(triangleHighBars, bar_index - i_trianglePivotBars)
+if not na(trianglePivotLow)
+    array.push(triangleLowPrices, trianglePivotLow)
+    array.push(triangleLowBars, bar_index - i_trianglePivotBars)
+
+while array.size(triangleHighBars) > 0 and bar_index - array.get(triangleHighBars, 0) > i_triangleLookbackBars
+    array.shift(triangleHighBars)
+    array.shift(triangleHighPrices)
+while array.size(triangleLowBars) > 0 and bar_index - array.get(triangleLowBars, 0) > i_triangleLookbackBars
+    array.shift(triangleLowBars)
+    array.shift(triangleLowPrices)
+
+float triangleLastHigh = array.size(triangleHighPrices) > 0 ? array.get(triangleHighPrices, array.size(triangleHighPrices) - 1) : na
+int triangleLastHighBar = array.size(triangleHighBars) > 0 ? array.get(triangleHighBars, array.size(triangleHighBars) - 1) : int(na)
+float triangleLastLow = array.size(triangleLowPrices) > 0 ? array.get(triangleLowPrices, array.size(triangleLowPrices) - 1) : na
+int triangleLastLowBar = array.size(triangleLowBars) > 0 ? array.get(triangleLowBars, array.size(triangleLowBars) - 1) : int(na)
+
+// 直近高値より上にある過去の確定高値から最高点、直近安値より下にある過去の確定安値から最安点を選ぶ。
+float triangleAnchorHigh = na
+int triangleAnchorHighBar = na
+int triangleHighCount = array.size(triangleHighPrices)
+if triangleHighCount >= 2
+    for i = 0 to triangleHighCount - 2
+        float candidateHigh = array.get(triangleHighPrices, i)
+        int candidateHighBar = array.get(triangleHighBars, i)
+        if candidateHigh > triangleLastHigh and (na(triangleAnchorHigh) or candidateHigh > triangleAnchorHigh)
+            triangleAnchorHigh := candidateHigh
+            triangleAnchorHighBar := candidateHighBar
+
+float triangleAnchorLow = na
+int triangleAnchorLowBar = na
+int triangleLowCount = array.size(triangleLowPrices)
+if triangleLowCount >= 2
+    for i = 0 to triangleLowCount - 2
+        float candidateLow = array.get(triangleLowPrices, i)
+        int candidateLowBar = array.get(triangleLowBars, i)
+        if candidateLow < triangleLastLow and (na(triangleAnchorLow) or candidateLow < triangleAnchorLow)
+            triangleAnchorLow := candidateLow
+            triangleAnchorLowBar := candidateLowBar
+
+bool hasTrianglePivots = not na(triangleAnchorHigh) and not na(triangleAnchorHighBar) and
+     not na(triangleAnchorLow) and not na(triangleAnchorLowBar) and
+     not na(triangleLastHigh) and not na(triangleLastHighBar) and
+     not na(triangleLastLow) and not na(triangleLastLowBar)
+int triangleHighLegBars = hasTrianglePivots ? triangleLastHighBar - triangleAnchorHighBar : 0
+int triangleLowLegBars = hasTrianglePivots ? triangleLastLowBar - triangleAnchorLowBar : 0
+float triangleUpperSlope = triangleHighLegBars > 0 ?
+     (triangleLastHigh - triangleAnchorHigh) / triangleHighLegBars : na
+float triangleLowerSlope = triangleLowLegBars > 0 ?
+     (triangleLastLow - triangleAnchorLow) / triangleLowLegBars : na
+int triangleComparisonStartBar = hasTrianglePivots ? math.max(triangleAnchorHighBar, triangleAnchorLowBar) : int(na)
+int triangleLastPivotBar = hasTrianglePivots ? math.max(triangleLastHighBar, triangleLastLowBar) : int(na)
+float triangleUpperAtComparisonStart = hasTrianglePivots and not na(triangleUpperSlope) ?
+     triangleLastHigh + triangleUpperSlope * (triangleComparisonStartBar - triangleLastHighBar) : na
+float triangleLowerAtComparisonStart = hasTrianglePivots and not na(triangleLowerSlope) ?
+     triangleLastLow + triangleLowerSlope * (triangleComparisonStartBar - triangleLastLowBar) : na
+float triangleUpperNow = hasTrianglePivots and not na(triangleUpperSlope) ?
+     triangleLastHigh + triangleUpperSlope * (bar_index - triangleLastHighBar) : na
+float triangleLowerNow = hasTrianglePivots and not na(triangleLowerSlope) ?
+     triangleLastLow + triangleLowerSlope * (bar_index - triangleLastLowBar) : na
+float triangleSlopeDelta = triangleUpperSlope - triangleLowerSlope
+float triangleApexX = hasTrianglePivots and not na(triangleSlopeDelta) and math.abs(triangleSlopeDelta) > 0.0000000001 ?
+     (triangleLastLow - triangleLastHigh +
+      triangleUpperSlope * triangleLastHighBar -
+      triangleLowerSlope * triangleLastLowBar) / triangleSlopeDelta : na
+int triangleApexBar = not na(triangleApexX) ? int(math.round(triangleApexX)) : int(na)
+float triangleApexPrice = not na(triangleApexBar) ?
+     triangleLastHigh + triangleUpperSlope * (triangleApexBar - triangleLastHighBar) : na
+
+// ATRの1%/bar以内を水平とみなし、対称・上昇・下降の3種類を区別する。
+float triangleFlatSlopeTolerance = ltfAtr * 0.01
+bool triangleUpperFalling = not na(triangleUpperSlope) and triangleUpperSlope < -triangleFlatSlopeTolerance
+bool triangleUpperFlat = not na(triangleUpperSlope) and math.abs(triangleUpperSlope) <= triangleFlatSlopeTolerance
+bool triangleLowerRising = not na(triangleLowerSlope) and triangleLowerSlope > triangleFlatSlopeTolerance
+bool triangleLowerFlat = not na(triangleLowerSlope) and math.abs(triangleLowerSlope) <= triangleFlatSlopeTolerance
+bool triangleSymmetric = triangleUpperFalling and triangleLowerRising
+bool triangleAscending = triangleUpperFlat and triangleLowerRising
+bool triangleDescending = triangleUpperFalling and triangleLowerFlat
+string triangleType = triangleSymmetric ? "対称" :
+     triangleAscending ? "上昇" : triangleDescending ? "下降" : ""
+bool triangleSlopesConverge = triangleSymmetric or triangleAscending or triangleDescending
+bool triangleHasSpan = triangleHighLegBars >= i_triangleMinBars and triangleLowLegBars >= i_triangleMinBars
+bool triangleWithinDrawingWindow = not na(triangleAnchorHighBar) and not na(triangleAnchorLowBar) and
+     triangleAnchorHighBar >= bar_index - 9999 and triangleAnchorLowBar >= bar_index - 9999
+bool triangleGeometryOpen = not na(triangleUpperAtComparisonStart) and not na(triangleLowerAtComparisonStart) and
+     not na(triangleUpperNow) and not na(triangleLowerNow) and
+     triangleUpperAtComparisonStart > triangleLowerAtComparisonStart
+int triangleKeepBreakoutBars = 48
+bool triangleApexInRange = not na(triangleApexBar) and
+     triangleApexBar >= bar_index - triangleKeepBreakoutBars and
+     triangleApexBar - bar_index <= i_triangleMaxApexBars
+float triangleBreakTolerance = ltfAtr * 0.10
+bool triangleActive = isOneHourChart and triangleSlopesConverge and
+     triangleHasSpan and triangleWithinDrawingWindow and triangleGeometryOpen and
+     triangleApexInRange
+bool triangleBreakUp = triangleActive and close > triangleUpperNow + triangleBreakTolerance
+bool triangleBreakDown = triangleActive and close < triangleLowerNow - triangleBreakTolerance
+string triangleStatus = not triangleActive ? "未成立" :
+     triangleBreakUp ? triangleType + "・上抜け" :
+     triangleBreakDown ? triangleType + "・下抜け" : triangleType + "・形成中"
+
+// =====================================================================
+// 5. Indicator-only pending and fixed RR 1:1 virtual position state
 // =====================================================================
 var int armedDirection = 0
 var int armedAtBar = na
@@ -381,7 +505,7 @@ if barstate.isconfirmed
         virtualTarget := na
 
 // =====================================================================
-// 5. Chart output, table, and alerts
+// 6. Chart output, table, and alerts
 // =====================================================================
 plot(i_showSma ? ltfSma : na, "1H SMA", color=color.new(color.blue, 0), linewidth=2)
 plot(i_showStructure ? htfLastHigh : na, "4H High 1", color=color.new(#6A1B9A, 10), linewidth=2, style=plot.style_stepline)
@@ -399,6 +523,44 @@ plot(showPending ? pendingTarget : na, "Pending TP 1:1", color=cBull, linewidth=
 plot(virtualDirection != 0 ? virtualEntry : na, "Virtual entry", color=color.white, linewidth=1, style=plot.style_linebr)
 plot(virtualDirection != 0 ? virtualTarget : na, "Target 1:1", color=cBull, linewidth=2, style=plot.style_linebr)
 plot(virtualDirection != 0 ? virtualStop : na, "Structural SL", color=cBear, linewidth=2, style=plot.style_linebr)
+
+var line triangleUpperLine = na
+var line triangleLowerLine = na
+var linefill triangleFill = na
+
+// 最新の有効な三角持ち合いだけを表示し、非成立またはブレイク後は描画を除去する。
+if barstate.islast
+    if i_showTriangle and triangleActive
+        if na(triangleUpperLine)
+            triangleUpperLine := line.new(triangleAnchorHighBar, triangleAnchorHigh,
+                 triangleApexBar, triangleApexPrice, xloc=xloc.bar_index,
+                 extend=extend.none, color=cTriangle, width=2)
+        else
+            line.set_xy1(triangleUpperLine, triangleAnchorHighBar, triangleAnchorHigh)
+            line.set_xy2(triangleUpperLine, triangleApexBar, triangleApexPrice)
+            line.set_color(triangleUpperLine, cTriangle)
+        if na(triangleLowerLine)
+            triangleLowerLine := line.new(triangleAnchorLowBar, triangleAnchorLow,
+                 triangleApexBar, triangleApexPrice, xloc=xloc.bar_index,
+                 extend=extend.none, color=cTriangle, width=2)
+        else
+            line.set_xy1(triangleLowerLine, triangleAnchorLowBar, triangleAnchorLow)
+            line.set_xy2(triangleLowerLine, triangleApexBar, triangleApexPrice)
+            line.set_color(triangleLowerLine, cTriangle)
+        if na(triangleFill)
+            triangleFill := linefill.new(triangleUpperLine, triangleLowerLine, color.new(cTriangle, 96))
+        else
+            linefill.set_color(triangleFill, color.new(cTriangle, 96))
+    else
+        if not na(triangleFill)
+            linefill.delete(triangleFill)
+            triangleFill := na
+        if not na(triangleUpperLine)
+            line.delete(triangleUpperLine)
+            triangleUpperLine := na
+        if not na(triangleLowerLine)
+            line.delete(triangleLowerLine)
+            triangleLowerLine := na
 
 plotshape(armedLongSignal, title="BUY setup", text="SET\nBUY", style=shape.labelup, location=location.belowbar, color=color.new(cBull, 45), textcolor=color.white, size=size.tiny)
 plotshape(armedShortSignal, title="SELL setup", text="SET\nSELL", style=shape.labeldown, location=location.abovebar, color=color.new(cBear, 45), textcolor=color.white, size=size.tiny)
@@ -419,13 +581,13 @@ if barstate.islast
 
 string trendText = htfLongBias ? "4H UP" : htfShortBias ? "4H DOWN" : "4H NEUTRAL"
 string setupText = not isOneHourChart ? "1Hへ変更" : not i_allowSignals ? "新規停止" : virtualDirection == 1 ? "LONG監視" : virtualDirection == -1 ? "SHORT監視" : armedDirection == 1 ? "BUY STOP待機" : armedDirection == -1 ? "SELL STOP待機" : "条件待ち"
-string validationText = isXauResearch ? "研究: OOS PF 1.22 / 13件" : activePreset == "JPYクロス" ? "RR1: OOS PF 0.53 / 45件" : activePreset == "Custom" ? "RR 1:1固定" : "RR1変更後: 未検証"
+string validationText = isXauResearch ? "研究: OOS PF 1.22 / 13件" : isJpyFrequency ? "研究: USDJPY OOS 15件 / 80%" : activePreset == "JPYクロス" ? "RR1: OOS PF 0.53 / 45件" : activePreset == "Custom" ? "RR 1:1固定" : "RR1変更後: 未検証"
 color validationColor = activePreset == "Custom" ? cNeutral : cWarn
 float displayedEntry = virtualDirection != 0 ? virtualEntry : armedDirection != 0 ? armedEntry : na
 float displayedStop = virtualDirection != 0 ? virtualStop : armedDirection != 0 ? armedStop : na
 float displayedTarget = virtualDirection != 0 ? virtualTarget : armedDirection != 0 ? pendingTarget : na
 
-var table status = table.new(position.top_right, 2, 11, border_width=1)
+var table status = table.new(position.top_right, 2, 12, border_width=1)
 if (i_showTable or not isOneHourChart) and barstate.islast
     color header = color.new(color.black, 0)
     color cell = color.new(color.black, 20)
@@ -441,24 +603,29 @@ if (i_showTable or not isOneHourChart) and barstate.islast
     table.cell(status, 1, 4, trendText, text_color=color.white, bgcolor=cell)
     table.cell(status, 0, 5, "レンジ上限", text_color=color.white, bgcolor=header)
     table.cell(status, 1, 5, str.tostring(presetMaxRangeAtr, "#.##") + " ATR", text_color=color.white, bgcolor=cell)
-    table.cell(status, 0, 6, "利確", text_color=color.white, bgcolor=header)
-    table.cell(status, 1, 6, "RR 1:1 / 100%", text_color=color.white, bgcolor=cell)
-    table.cell(status, 0, 7, "Chart", text_color=color.white, bgcolor=header)
-    table.cell(status, 1, 7, isOneHourChart ? "1H OK" : "1H専用", text_color=color.white, bgcolor=isOneHourChart ? cBull : cWarn)
-    table.cell(status, 0, 8, "Entry", text_color=color.white, bgcolor=header)
-    table.cell(status, 1, 8, na(displayedEntry) ? "-" : str.tostring(displayedEntry, format.mintick), text_color=color.white, bgcolor=cell)
-    table.cell(status, 0, 9, "SL", text_color=color.white, bgcolor=header)
-    table.cell(status, 1, 9, na(displayedStop) ? "-" : str.tostring(displayedStop, format.mintick), text_color=color.white, bgcolor=cell)
-    table.cell(status, 0, 10, "TP (1:1)", text_color=color.white, bgcolor=header)
-    table.cell(status, 1, 10, na(displayedTarget) ? "-" : str.tostring(displayedTarget, format.mintick), text_color=color.white, bgcolor=cell)
+    table.cell(status, 0, 6, "三角持ち合い", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 6, triangleStatus,
+         text_color=triangleActive ? color.black : color.white,
+         bgcolor=triangleActive ? cTriangle : cell)
+    table.cell(status, 0, 7, "利確", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 7, "RR 1:1 / 100%", text_color=color.white, bgcolor=cell)
+    table.cell(status, 0, 8, "Chart", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 8, isOneHourChart ? "1H OK" : "1H専用", text_color=color.white, bgcolor=isOneHourChart ? cBull : cWarn)
+    table.cell(status, 0, 9, "Entry", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 9, na(displayedEntry) ? "-" : str.tostring(displayedEntry, format.mintick), text_color=color.white, bgcolor=cell)
+    table.cell(status, 0, 10, "SL", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 10, na(displayedStop) ? "-" : str.tostring(displayedStop, format.mintick), text_color=color.white, bgcolor=cell)
+    table.cell(status, 0, 11, "TP (1:1)", text_color=color.white, bgcolor=header)
+    table.cell(status, 1, 11, na(displayedTarget) ? "-" : str.tostring(displayedTarget, format.mintick), text_color=color.white, bgcolor=cell)
 
-var table guide = table.new(position.bottom_right, 1, 5, border_width=1)
+var table guide = table.new(position.bottom_right, 1, 6, border_width=1)
 if i_showGuide and barstate.islast
     table.cell(guide, 0, 0, "SET = 条件成立、逆指値待機", text_color=color.white, bgcolor=color.new(color.black, 10))
     table.cell(guide, 0, 1, "BUY / SELL = レンジ突破", text_color=color.white, bgcolor=color.new(color.black, 10))
     table.cell(guide, 0, 2, "TP / SL = 仮想到達表示", text_color=color.white, bgcolor=color.new(color.black, 10))
-    table.cell(guide, 0, 3, "確定足のみ・1Hチャート専用", text_color=color.white, bgcolor=color.new(color.black, 10))
-    table.cell(guide, 0, 4, "注文は発注しません", text_color=cWarn, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 3, "水色線 = 主要な三角持ち合い", text_color=cTriangle, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 4, "確定足のみ・1Hチャート専用", text_color=color.white, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 5, "注文は発注しません", text_color=cWarn, bgcolor=color.new(color.black, 10))
 
 // 設定した10銘柄を確定済み1H・4Hで走査し、左上へチャンスを一覧表示する。
 [scanState1, scanEntry1, scanClose1] = f_scanPair(i_scanSymbol1)
