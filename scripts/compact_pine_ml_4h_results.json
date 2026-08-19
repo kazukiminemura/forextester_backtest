@@ -1,0 +1,4770 @@
+[
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.485,
+    "require_htf_alignment": true,
+    "prequalified": true,
+    "passes_all": true,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 1104,
+        "wins": 623,
+        "win_rate": 56.43115942028986,
+        "profit_factor": 1.2952182952182951,
+        "expectancy_r": 0.1286231884057971,
+        "trades_per_month": 10.222222222222221,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 331,
+        "wins": 184,
+        "win_rate": 55.58912386706949,
+        "profit_factor": 1.251700680272109,
+        "expectancy_r": 0.11178247734138973,
+        "trades_per_month": 6.895833333333333,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.3021148036253776
+      },
+      "holdout_2023_2024": {
+        "trades": 325,
+        "wins": 184,
+        "win_rate": 56.61538461538461,
+        "profit_factor": 1.3049645390070923,
+        "expectancy_r": 0.13230769230769232,
+        "trades_per_month": 13.541666666666666,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.6153846153846154
+      },
+      "true_oos_2025_2026": {
+        "trades": 651,
+        "wins": 480,
+        "win_rate": 73.73271889400922,
+        "profit_factor": 2.807017543859649,
+        "expectancy_r": 0.47465437788018433,
+        "trades_per_month": 34.26315789473684,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.30721966205837176
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 149,
+        "wins": 81,
+        "win_rate": 54.36241610738255,
+        "profit_factor": 1.1911764705882353,
+        "expectancy_r": 0.087248322147651,
+        "trades_per_month": 12.416666666666666,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 135,
+        "wins": 74,
+        "win_rate": 54.81481481481482,
+        "profit_factor": 1.2131147540983607,
+        "expectancy_r": 0.0962962962962963,
+        "trades_per_month": 11.25,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 82,
+        "wins": 52,
+        "win_rate": 63.41463414634146,
+        "profit_factor": 1.7333333333333334,
+        "expectancy_r": 0.2682926829268293,
+        "trades_per_month": 6.833333333333333,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 130,
+        "wins": 68,
+        "win_rate": 52.307692307692314,
+        "profit_factor": 1.096774193548387,
+        "expectancy_r": 0.046153846153846156,
+        "trades_per_month": 10.833333333333334,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 90,
+        "wins": 58,
+        "win_rate": 64.44444444444444,
+        "profit_factor": 1.8125,
+        "expectancy_r": 0.28888888888888886,
+        "trades_per_month": 7.5,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 179,
+        "wins": 99,
+        "win_rate": 55.3072625698324,
+        "profit_factor": 1.2375,
+        "expectancy_r": 0.10614525139664804,
+        "trades_per_month": 14.916666666666666,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 148,
+        "wins": 91,
+        "win_rate": 61.48648648648649,
+        "profit_factor": 1.5964912280701755,
+        "expectancy_r": 0.22972972972972974,
+        "trades_per_month": 12.333333333333334,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 111,
+        "wins": 55,
+        "win_rate": 49.549549549549546,
+        "profit_factor": 0.9821428571428571,
+        "expectancy_r": -0.009009009009009009,
+        "trades_per_month": 9.25,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 80,
+        "wins": 45,
+        "win_rate": 56.25,
+        "profit_factor": 1.2857142857142858,
+        "expectancy_r": 0.125,
+        "trades_per_month": 6.666666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 47,
+        "wins": 23,
+        "win_rate": 48.93617021276596,
+        "profit_factor": 0.9583333333333334,
+        "expectancy_r": -0.02127659574468085,
+        "trades_per_month": 3.9166666666666665,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 155,
+        "wins": 79,
+        "win_rate": 50.967741935483865,
+        "profit_factor": 1.0394736842105263,
+        "expectancy_r": 0.01935483870967742,
+        "trades_per_month": 12.916666666666666,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 17,
+        "wins": 15,
+        "win_rate": 88.23529411764706,
+        "profit_factor": 7.5,
+        "expectancy_r": 0.7647058823529411,
+        "trades_per_month": 1.4166666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 112,
+        "wins": 67,
+        "win_rate": 59.82142857142857,
+        "profit_factor": 1.488888888888889,
+        "expectancy_r": 0.19642857142857142,
+        "trades_per_month": 9.333333333333334,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.8928571428571428
+      },
+      "2023": {
+        "trades": 114,
+        "wins": 67,
+        "win_rate": 58.77192982456141,
+        "profit_factor": 1.425531914893617,
+        "expectancy_r": 0.17543859649122806,
+        "trades_per_month": 9.5,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 211,
+        "wins": 117,
+        "win_rate": 55.45023696682464,
+        "profit_factor": 1.2446808510638299,
+        "expectancy_r": 0.10900473933649289,
+        "trades_per_month": 17.583333333333332,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.9478672985781991
+      },
+      "2025": {
+        "trades": 339,
+        "wins": 253,
+        "win_rate": 74.63126843657817,
+        "profit_factor": 2.941860465116279,
+        "expectancy_r": 0.49262536873156343,
+        "trades_per_month": 28.25,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.5899705014749262
+      },
+      "2026": {
+        "trades": 312,
+        "wins": 227,
+        "win_rate": 72.75641025641025,
+        "profit_factor": 2.6705882352941175,
+        "expectancy_r": 0.4551282051282051,
+        "trades_per_month": 26.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    },
+    "selected_by_validation_only": true
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.49,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 146,
+        "wins": 88,
+        "win_rate": 60.273972602739725,
+        "profit_factor": 1.5172413793103448,
+        "expectancy_r": 0.2054794520547945,
+        "trades_per_month": 1.3518518518518519,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 48,
+        "wins": 27,
+        "win_rate": 56.25,
+        "profit_factor": 1.2857142857142858,
+        "expectancy_r": 0.125,
+        "trades_per_month": 1.0,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 2.083333333333333
+      },
+      "holdout_2023_2024": {
+        "trades": 161,
+        "wins": 90,
+        "win_rate": 55.90062111801242,
+        "profit_factor": 1.267605633802817,
+        "expectancy_r": 0.11801242236024845,
+        "trades_per_month": 6.708333333333333,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 500,
+        "wins": 375,
+        "win_rate": 75.0,
+        "profit_factor": 3.0,
+        "expectancy_r": 0.5,
+        "trades_per_month": 26.31578947368421,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.4
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 25,
+        "wins": 14,
+        "win_rate": 56.00000000000001,
+        "profit_factor": 1.2727272727272727,
+        "expectancy_r": 0.12,
+        "trades_per_month": 2.0833333333333335,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 24,
+        "wins": 16,
+        "win_rate": 66.66666666666666,
+        "profit_factor": 2.0,
+        "expectancy_r": 0.3333333333333333,
+        "trades_per_month": 2.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 10,
+        "wins": 7,
+        "win_rate": 70.0,
+        "profit_factor": 2.3333333333333335,
+        "expectancy_r": 0.4,
+        "trades_per_month": 0.8333333333333334,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 20,
+        "wins": 15,
+        "win_rate": 75.0,
+        "profit_factor": 3.0,
+        "expectancy_r": 0.5,
+        "trades_per_month": 1.6666666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 9,
+        "wins": 5,
+        "win_rate": 55.55555555555556,
+        "profit_factor": 1.25,
+        "expectancy_r": 0.1111111111111111,
+        "trades_per_month": 0.75,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 20,
+        "wins": 13,
+        "win_rate": 65.0,
+        "profit_factor": 1.8571428571428572,
+        "expectancy_r": 0.3,
+        "trades_per_month": 1.6666666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 26,
+        "wins": 10,
+        "win_rate": 38.46153846153847,
+        "profit_factor": 0.625,
+        "expectancy_r": -0.23076923076923078,
+        "trades_per_month": 2.1666666666666665,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 6,
+        "wins": 3,
+        "win_rate": 50.0,
+        "profit_factor": 1.0,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.5,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 6,
+        "wins": 5,
+        "win_rate": 83.33333333333334,
+        "profit_factor": 5.0,
+        "expectancy_r": 0.6666666666666666,
+        "trades_per_month": 0.5,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 3,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": 0.0,
+        "expectancy_r": -1.0,
+        "trades_per_month": 0.25,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 9,
+        "wins": 6,
+        "win_rate": 66.66666666666666,
+        "profit_factor": 2.0,
+        "expectancy_r": 0.3333333333333333,
+        "trades_per_month": 0.75,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 1,
+        "wins": 1,
+        "win_rate": 100.0,
+        "profit_factor": null,
+        "expectancy_r": 1.0,
+        "trades_per_month": 0.08333333333333333,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 35,
+        "wins": 20,
+        "win_rate": 57.14285714285714,
+        "profit_factor": 1.3333333333333333,
+        "expectancy_r": 0.14285714285714285,
+        "trades_per_month": 2.9166666666666665,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 2.857142857142857
+      },
+      "2023": {
+        "trades": 38,
+        "wins": 19,
+        "win_rate": 50.0,
+        "profit_factor": 1.0,
+        "expectancy_r": 0.0,
+        "trades_per_month": 3.1666666666666665,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 123,
+        "wins": 71,
+        "win_rate": 57.72357723577236,
+        "profit_factor": 1.3653846153846154,
+        "expectancy_r": 0.15447154471544716,
+        "trades_per_month": 10.25,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 248,
+        "wins": 191,
+        "win_rate": 77.01612903225806,
+        "profit_factor": 3.3508771929824563,
+        "expectancy_r": 0.5403225806451613,
+        "trades_per_month": 20.666666666666668,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.8064516129032258
+      },
+      "2026": {
+        "trades": 252,
+        "wins": 184,
+        "win_rate": 73.01587301587301,
+        "profit_factor": 2.7058823529411766,
+        "expectancy_r": 0.4603174603174603,
+        "trades_per_month": 21.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.48,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 8706,
+        "wins": 4565,
+        "win_rate": 52.43510222834826,
+        "profit_factor": 1.102390726877566,
+        "expectancy_r": 0.04870204456696531,
+        "trades_per_month": 80.61111111111111,
+        "ambiguous_bars": 17,
+        "ambiguous_rate": 0.195267631518493
+      },
+      "validation_2019_2022": {
+        "trades": 1491,
+        "wins": 745,
+        "win_rate": 49.966465459423205,
+        "profit_factor": 0.9986595174262735,
+        "expectancy_r": -0.0006706908115358819,
+        "trades_per_month": 31.0625,
+        "ambiguous_bars": 4,
+        "ambiguous_rate": 0.2682763246143528
+      },
+      "holdout_2023_2024": {
+        "trades": 891,
+        "wins": 467,
+        "win_rate": 52.41301907968574,
+        "profit_factor": 1.1014150943396226,
+        "expectancy_r": 0.04826038159371493,
+        "trades_per_month": 37.125,
+        "ambiguous_bars": 5,
+        "ambiguous_rate": 0.5611672278338945
+      },
+      "true_oos_2025_2026": {
+        "trades": 982,
+        "wins": 683,
+        "win_rate": 69.55193482688391,
+        "profit_factor": 2.2842809364548495,
+        "expectancy_r": 0.3910386965376782,
+        "trades_per_month": 51.68421052631579,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.20366598778004072
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 1644,
+        "wins": 844,
+        "win_rate": 51.338199513382,
+        "profit_factor": 1.055,
+        "expectancy_r": 0.0267639902676399,
+        "trades_per_month": 137.0,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.12165450121654502
+      },
+      "2011": {
+        "trades": 1440,
+        "wins": 761,
+        "win_rate": 52.84722222222222,
+        "profit_factor": 1.1207658321060383,
+        "expectancy_r": 0.05694444444444444,
+        "trades_per_month": 120.0,
+        "ambiguous_bars": 3,
+        "ambiguous_rate": 0.20833333333333334
+      },
+      "2012": {
+        "trades": 628,
+        "wins": 314,
+        "win_rate": 50.0,
+        "profit_factor": 1.0,
+        "expectancy_r": 0.0,
+        "trades_per_month": 52.333333333333336,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.15923566878980894
+      },
+      "2013": {
+        "trades": 988,
+        "wins": 538,
+        "win_rate": 54.453441295546554,
+        "profit_factor": 1.1955555555555555,
+        "expectancy_r": 0.08906882591093117,
+        "trades_per_month": 82.33333333333333,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.20242914979757085
+      },
+      "2014": {
+        "trades": 518,
+        "wins": 283,
+        "win_rate": 54.633204633204635,
+        "profit_factor": 1.2042553191489362,
+        "expectancy_r": 0.09266409266409266,
+        "trades_per_month": 43.166666666666664,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.19305019305019305
+      },
+      "2015": {
+        "trades": 1233,
+        "wins": 657,
+        "win_rate": 53.284671532846716,
+        "profit_factor": 1.140625,
+        "expectancy_r": 0.06569343065693431,
+        "trades_per_month": 102.75,
+        "ambiguous_bars": 3,
+        "ambiguous_rate": 0.24330900243309003
+      },
+      "2016": {
+        "trades": 1109,
+        "wins": 589,
+        "win_rate": 53.11091073038774,
+        "profit_factor": 1.1326923076923077,
+        "expectancy_r": 0.062218214607754736,
+        "trades_per_month": 92.41666666666667,
+        "ambiguous_bars": 4,
+        "ambiguous_rate": 0.36068530207394045
+      },
+      "2017": {
+        "trades": 595,
+        "wins": 290,
+        "win_rate": 48.739495798319325,
+        "profit_factor": 0.9508196721311475,
+        "expectancy_r": -0.025210084033613446,
+        "trades_per_month": 49.583333333333336,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.16806722689075632
+      },
+      "2018": {
+        "trades": 551,
+        "wins": 289,
+        "win_rate": 52.45009074410163,
+        "profit_factor": 1.1030534351145038,
+        "expectancy_r": 0.04900181488203267,
+        "trades_per_month": 45.916666666666664,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 334,
+        "wins": 168,
+        "win_rate": 50.29940119760479,
+        "profit_factor": 1.0120481927710843,
+        "expectancy_r": 0.005988023952095809,
+        "trades_per_month": 27.833333333333332,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.29940119760479045
+      },
+      "2020": {
+        "trades": 653,
+        "wins": 306,
+        "win_rate": 46.86064318529862,
+        "profit_factor": 0.8818443804034583,
+        "expectancy_r": -0.06278713629402756,
+        "trades_per_month": 54.416666666666664,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.3062787136294028
+      },
+      "2021": {
+        "trades": 225,
+        "wins": 114,
+        "win_rate": 50.66666666666667,
+        "profit_factor": 1.027027027027027,
+        "expectancy_r": 0.013333333333333334,
+        "trades_per_month": 18.75,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 279,
+        "wins": 157,
+        "win_rate": 56.272401433691755,
+        "profit_factor": 1.2868852459016393,
+        "expectancy_r": 0.12544802867383512,
+        "trades_per_month": 23.25,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.35842293906810035
+      },
+      "2023": {
+        "trades": 416,
+        "wins": 223,
+        "win_rate": 53.605769230769226,
+        "profit_factor": 1.1554404145077721,
+        "expectancy_r": 0.07211538461538461,
+        "trades_per_month": 34.666666666666664,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.4807692307692308
+      },
+      "2024": {
+        "trades": 475,
+        "wins": 244,
+        "win_rate": 51.368421052631575,
+        "profit_factor": 1.0562770562770563,
+        "expectancy_r": 0.02736842105263158,
+        "trades_per_month": 39.583333333333336,
+        "ambiguous_bars": 3,
+        "ambiguous_rate": 0.631578947368421
+      },
+      "2025": {
+        "trades": 558,
+        "wins": 391,
+        "win_rate": 70.07168458781362,
+        "profit_factor": 2.341317365269461,
+        "expectancy_r": 0.4014336917562724,
+        "trades_per_month": 46.5,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.35842293906810035
+      },
+      "2026": {
+        "trades": 424,
+        "wins": 292,
+        "win_rate": 68.86792452830188,
+        "profit_factor": 2.212121212121212,
+        "expectancy_r": 0.37735849056603776,
+        "trades_per_month": 35.333333333333336,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.475,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 29470,
+        "wins": 14580,
+        "win_rate": 49.4740413980319,
+        "profit_factor": 0.9791806581598388,
+        "expectancy_r": -0.010519172039362062,
+        "trades_per_month": 272.8703703703704,
+        "ambiguous_bars": 71,
+        "ambiguous_rate": 0.24092297251442144
+      },
+      "validation_2019_2022": {
+        "trades": 5598,
+        "wins": 2739,
+        "win_rate": 48.92818863879957,
+        "profit_factor": 0.9580272822665268,
+        "expectancy_r": -0.021436227224008574,
+        "trades_per_month": 116.625,
+        "ambiguous_bars": 11,
+        "ambiguous_rate": 0.19649874955341196
+      },
+      "holdout_2023_2024": {
+        "trades": 2527,
+        "wins": 1270,
+        "win_rate": 50.257222002374355,
+        "profit_factor": 1.0103420843277646,
+        "expectancy_r": 0.0051444400474871385,
+        "trades_per_month": 105.29166666666667,
+        "ambiguous_bars": 11,
+        "ambiguous_rate": 0.4352987732489117
+      },
+      "true_oos_2025_2026": {
+        "trades": 2477,
+        "wins": 1397,
+        "win_rate": 56.398869600322975,
+        "profit_factor": 1.2935185185185185,
+        "expectancy_r": 0.12797739200645944,
+        "trades_per_month": 130.3684210526316,
+        "ambiguous_bars": 5,
+        "ambiguous_rate": 0.20185708518368994
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 5735,
+        "wins": 2834,
+        "win_rate": 49.41586748038361,
+        "profit_factor": 0.9769045156842469,
+        "expectancy_r": -0.011682650392327812,
+        "trades_per_month": 477.9166666666667,
+        "ambiguous_bars": 8,
+        "ambiguous_rate": 0.13949433304272016
+      },
+      "2011": {
+        "trades": 5340,
+        "wins": 2675,
+        "win_rate": 50.09363295880149,
+        "profit_factor": 1.00375234521576,
+        "expectancy_r": 0.0018726591760299626,
+        "trades_per_month": 445.0,
+        "ambiguous_bars": 7,
+        "ambiguous_rate": 0.1310861423220974
+      },
+      "2012": {
+        "trades": 2129,
+        "wins": 1041,
+        "win_rate": 48.896195396899955,
+        "profit_factor": 0.9568014705882353,
+        "expectancy_r": -0.02207609206200094,
+        "trades_per_month": 177.41666666666666,
+        "ambiguous_bars": 4,
+        "ambiguous_rate": 0.18788163457022078
+      },
+      "2013": {
+        "trades": 3328,
+        "wins": 1664,
+        "win_rate": 50.0,
+        "profit_factor": 1.0,
+        "expectancy_r": 0.0,
+        "trades_per_month": 277.3333333333333,
+        "ambiguous_bars": 7,
+        "ambiguous_rate": 0.21033653846153846
+      },
+      "2014": {
+        "trades": 1679,
+        "wins": 820,
+        "win_rate": 48.838594401429425,
+        "profit_factor": 0.9545983701979045,
+        "expectancy_r": -0.023228111971411555,
+        "trades_per_month": 139.91666666666666,
+        "ambiguous_bars": 6,
+        "ambiguous_rate": 0.357355568790947
+      },
+      "2015": {
+        "trades": 4015,
+        "wins": 2010,
+        "win_rate": 50.06226650062266,
+        "profit_factor": 1.0024937655860349,
+        "expectancy_r": 0.0012453300124533001,
+        "trades_per_month": 334.5833333333333,
+        "ambiguous_bars": 17,
+        "ambiguous_rate": 0.42341220423412207
+      },
+      "2016": {
+        "trades": 3834,
+        "wins": 1879,
+        "win_rate": 49.00886802295253,
+        "profit_factor": 0.9611253196930947,
+        "expectancy_r": -0.0198226395409494,
+        "trades_per_month": 319.5,
+        "ambiguous_bars": 9,
+        "ambiguous_rate": 0.2347417840375587
+      },
+      "2017": {
+        "trades": 1724,
+        "wins": 800,
+        "win_rate": 46.403712296983755,
+        "profit_factor": 0.8658008658008658,
+        "expectancy_r": -0.07192575406032482,
+        "trades_per_month": 143.66666666666666,
+        "ambiguous_bars": 11,
+        "ambiguous_rate": 0.6380510440835266
+      },
+      "2018": {
+        "trades": 1686,
+        "wins": 857,
+        "win_rate": 50.83036773428232,
+        "profit_factor": 1.0337756332931243,
+        "expectancy_r": 0.0166073546856465,
+        "trades_per_month": 140.5,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.11862396204033215
+      },
+      "2019": {
+        "trades": 985,
+        "wins": 510,
+        "win_rate": 51.776649746192895,
+        "profit_factor": 1.0736842105263158,
+        "expectancy_r": 0.03553299492385787,
+        "trades_per_month": 82.08333333333333,
+        "ambiguous_bars": 3,
+        "ambiguous_rate": 0.3045685279187817
+      },
+      "2020": {
+        "trades": 1789,
+        "wins": 857,
+        "win_rate": 47.90385690329793,
+        "profit_factor": 0.9195278969957081,
+        "expectancy_r": -0.041922861934041364,
+        "trades_per_month": 149.08333333333334,
+        "ambiguous_bars": 3,
+        "ambiguous_rate": 0.16769144773616546
+      },
+      "2021": {
+        "trades": 642,
+        "wins": 304,
+        "win_rate": 47.35202492211838,
+        "profit_factor": 0.8994082840236687,
+        "expectancy_r": -0.0529595015576324,
+        "trades_per_month": 53.5,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.1557632398753894
+      },
+      "2022": {
+        "trades": 2182,
+        "wins": 1068,
+        "win_rate": 48.94592117323556,
+        "profit_factor": 0.9587073608617595,
+        "expectancy_r": -0.021081576535288724,
+        "trades_per_month": 181.83333333333334,
+        "ambiguous_bars": 4,
+        "ambiguous_rate": 0.18331805682859761
+      },
+      "2023": {
+        "trades": 1263,
+        "wins": 613,
+        "win_rate": 48.53523357086302,
+        "profit_factor": 0.943076923076923,
+        "expectancy_r": -0.02929532858273951,
+        "trades_per_month": 105.25,
+        "ambiguous_bars": 5,
+        "ambiguous_rate": 0.395882818685669
+      },
+      "2024": {
+        "trades": 1264,
+        "wins": 657,
+        "win_rate": 51.97784810126582,
+        "profit_factor": 1.0823723228995057,
+        "expectancy_r": 0.03955696202531646,
+        "trades_per_month": 105.33333333333333,
+        "ambiguous_bars": 6,
+        "ambiguous_rate": 0.4746835443037975
+      },
+      "2025": {
+        "trades": 1640,
+        "wins": 917,
+        "win_rate": 55.91463414634147,
+        "profit_factor": 1.268326417704011,
+        "expectancy_r": 0.11829268292682926,
+        "trades_per_month": 136.66666666666666,
+        "ambiguous_bars": 5,
+        "ambiguous_rate": 0.3048780487804878
+      },
+      "2026": {
+        "trades": 837,
+        "wins": 480,
+        "win_rate": 57.34767025089605,
+        "profit_factor": 1.3445378151260505,
+        "expectancy_r": 0.14695340501792115,
+        "trades_per_month": 69.75,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.47,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 49622,
+        "wins": 24037,
+        "win_rate": 48.440207972270365,
+        "profit_factor": 0.9394957983193277,
+        "expectancy_r": -0.03119584055459272,
+        "trades_per_month": 459.462962962963,
+        "ambiguous_bars": 117,
+        "ambiguous_rate": 0.23578251581959617
+      },
+      "validation_2019_2022": {
+        "trades": 13216,
+        "wins": 6378,
+        "win_rate": 48.25968523002421,
+        "profit_factor": 0.9327288680900848,
+        "expectancy_r": -0.03480629539951574,
+        "trades_per_month": 275.3333333333333,
+        "ambiguous_bars": 29,
+        "ambiguous_rate": 0.21943099273607747
+      },
+      "holdout_2023_2024": {
+        "trades": 6934,
+        "wins": 3403,
+        "win_rate": 49.07701182578598,
+        "profit_factor": 0.9637496459926367,
+        "expectancy_r": -0.018459763484280356,
+        "trades_per_month": 288.9166666666667,
+        "ambiguous_bars": 28,
+        "ambiguous_rate": 0.4038073262186328
+      },
+      "true_oos_2025_2026": {
+        "trades": 6084,
+        "wins": 3046,
+        "win_rate": 50.06574621959238,
+        "profit_factor": 1.0026333113890717,
+        "expectancy_r": 0.0013149243918474688,
+        "trades_per_month": 320.2105263157895,
+        "ambiguous_bars": 16,
+        "ambiguous_rate": 0.26298487836949375
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 8620,
+        "wins": 4189,
+        "win_rate": 48.59628770301624,
+        "profit_factor": 0.9453847889866848,
+        "expectancy_r": -0.028074245939675176,
+        "trades_per_month": 718.3333333333334,
+        "ambiguous_bars": 15,
+        "ambiguous_rate": 0.17401392111368907
+      },
+      "2011": {
+        "trades": 8166,
+        "wins": 3986,
+        "win_rate": 48.8121479304433,
+        "profit_factor": 0.9535885167464114,
+        "expectancy_r": -0.02375704139113397,
+        "trades_per_month": 680.5,
+        "ambiguous_bars": 10,
+        "ambiguous_rate": 0.12245897624295861
+      },
+      "2012": {
+        "trades": 4255,
+        "wins": 2059,
+        "win_rate": 48.390129259694476,
+        "profit_factor": 0.9376138433515483,
+        "expectancy_r": -0.03219741480611046,
+        "trades_per_month": 354.5833333333333,
+        "ambiguous_bars": 7,
+        "ambiguous_rate": 0.1645123384253819
+      },
+      "2013": {
+        "trades": 5802,
+        "wins": 2820,
+        "win_rate": 48.60392967942089,
+        "profit_factor": 0.9456740442655935,
+        "expectancy_r": -0.027921406411582212,
+        "trades_per_month": 483.5,
+        "ambiguous_bars": 12,
+        "ambiguous_rate": 0.2068252326783868
+      },
+      "2014": {
+        "trades": 3262,
+        "wins": 1575,
+        "win_rate": 48.283261802575105,
+        "profit_factor": 0.9336099585062241,
+        "expectancy_r": -0.034334763948497854,
+        "trades_per_month": 271.8333333333333,
+        "ambiguous_bars": 9,
+        "ambiguous_rate": 0.27590435315757206
+      },
+      "2015": {
+        "trades": 6638,
+        "wins": 3248,
+        "win_rate": 48.93040072310937,
+        "profit_factor": 0.9581120943952802,
+        "expectancy_r": -0.021391985537812595,
+        "trades_per_month": 553.1666666666666,
+        "ambiguous_bars": 31,
+        "ambiguous_rate": 0.4670081349804158
+      },
+      "2016": {
+        "trades": 6233,
+        "wins": 2994,
+        "win_rate": 48.03465425958608,
+        "profit_factor": 0.9243593701759802,
+        "expectancy_r": -0.03930691480827852,
+        "trades_per_month": 519.4166666666666,
+        "ambiguous_bars": 15,
+        "ambiguous_rate": 0.24065458045884808
+      },
+      "2017": {
+        "trades": 3358,
+        "wins": 1553,
+        "win_rate": 46.247766527695056,
+        "profit_factor": 0.8603878116343491,
+        "expectancy_r": -0.07504466944609887,
+        "trades_per_month": 279.8333333333333,
+        "ambiguous_bars": 13,
+        "ambiguous_rate": 0.38713519952352593
+      },
+      "2018": {
+        "trades": 3288,
+        "wins": 1613,
+        "win_rate": 49.05717761557178,
+        "profit_factor": 0.9629850746268657,
+        "expectancy_r": -0.018856447688564478,
+        "trades_per_month": 274.0,
+        "ambiguous_bars": 5,
+        "ambiguous_rate": 0.15206812652068127
+      },
+      "2019": {
+        "trades": 1954,
+        "wins": 972,
+        "win_rate": 49.744114636642784,
+        "profit_factor": 0.9898167006109979,
+        "expectancy_r": -0.00511770726714432,
+        "trades_per_month": 162.83333333333334,
+        "ambiguous_bars": 7,
+        "ambiguous_rate": 0.35823950870010235
+      },
+      "2020": {
+        "trades": 3639,
+        "wins": 1782,
+        "win_rate": 48.96949711459192,
+        "profit_factor": 0.9596122778675282,
+        "expectancy_r": -0.020610057708161583,
+        "trades_per_month": 303.25,
+        "ambiguous_bars": 5,
+        "ambiguous_rate": 0.1374003847210772
+      },
+      "2021": {
+        "trades": 1657,
+        "wins": 770,
+        "win_rate": 46.46952323476162,
+        "profit_factor": 0.8680947012401353,
+        "expectancy_r": -0.07060953530476766,
+        "trades_per_month": 138.08333333333334,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 5966,
+        "wins": 2854,
+        "win_rate": 47.83774723432786,
+        "profit_factor": 0.9170951156812339,
+        "expectancy_r": -0.043245055313442846,
+        "trades_per_month": 497.1666666666667,
+        "ambiguous_bars": 17,
+        "ambiguous_rate": 0.28494803888702647
+      },
+      "2023": {
+        "trades": 3671,
+        "wins": 1765,
+        "win_rate": 48.079542359030235,
+        "profit_factor": 0.9260230849947534,
+        "expectancy_r": -0.03840915281939526,
+        "trades_per_month": 305.9166666666667,
+        "ambiguous_bars": 12,
+        "ambiguous_rate": 0.3268864069735767
+      },
+      "2024": {
+        "trades": 3263,
+        "wins": 1638,
+        "win_rate": 50.199203187250994,
+        "profit_factor": 1.008,
+        "expectancy_r": 0.00398406374501992,
+        "trades_per_month": 271.9166666666667,
+        "ambiguous_bars": 16,
+        "ambiguous_rate": 0.49034630707937477
+      },
+      "2025": {
+        "trades": 4147,
+        "wins": 2035,
+        "win_rate": 49.07161803713528,
+        "profit_factor": 0.9635416666666666,
+        "expectancy_r": -0.01856763925729443,
+        "trades_per_month": 345.5833333333333,
+        "ambiguous_bars": 13,
+        "ambiguous_rate": 0.3134796238244514
+      },
+      "2026": {
+        "trades": 1937,
+        "wins": 1011,
+        "win_rate": 52.194114610221995,
+        "profit_factor": 1.091792656587473,
+        "expectancy_r": 0.04388229220443986,
+        "trades_per_month": 161.41666666666666,
+        "ambiguous_bars": 3,
+        "ambiguous_rate": 0.15487867836861124
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.465,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 64698,
+        "wins": 31112,
+        "win_rate": 48.08803981575937,
+        "profit_factor": 0.9263383552670755,
+        "expectancy_r": -0.03823920368481251,
+        "trades_per_month": 599.0555555555555,
+        "ambiguous_bars": 168,
+        "ambiguous_rate": 0.2596679959195029
+      },
+      "validation_2019_2022": {
+        "trades": 19461,
+        "wins": 9331,
+        "win_rate": 47.94717640409023,
+        "profit_factor": 0.9211253701875617,
+        "expectancy_r": -0.041056471918195364,
+        "trades_per_month": 405.4375,
+        "ambiguous_bars": 40,
+        "ambiguous_rate": 0.20553928369559635
+      },
+      "holdout_2023_2024": {
+        "trades": 10492,
+        "wins": 5051,
+        "win_rate": 48.14144109797942,
+        "profit_factor": 0.9283219996324205,
+        "expectancy_r": -0.03717117804041174,
+        "trades_per_month": 437.1666666666667,
+        "ambiguous_bars": 44,
+        "ambiguous_rate": 0.41936713686618377
+      },
+      "true_oos_2025_2026": {
+        "trades": 8786,
+        "wins": 4280,
+        "win_rate": 48.71386296380605,
+        "profit_factor": 0.9498446515756769,
+        "expectancy_r": -0.0257227407238789,
+        "trades_per_month": 462.42105263157896,
+        "ambiguous_bars": 20,
+        "ambiguous_rate": 0.22763487366264512
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 10096,
+        "wins": 4856,
+        "win_rate": 48.098256735340726,
+        "profit_factor": 0.9267175572519084,
+        "expectancy_r": -0.03803486529318542,
+        "trades_per_month": 841.3333333333334,
+        "ambiguous_bars": 18,
+        "ambiguous_rate": 0.17828843106180667
+      },
+      "2011": {
+        "trades": 9634,
+        "wins": 4679,
+        "win_rate": 48.56757317832676,
+        "profit_factor": 0.9442986881937437,
+        "expectancy_r": -0.02864853643346481,
+        "trades_per_month": 802.8333333333334,
+        "ambiguous_bars": 13,
+        "ambiguous_rate": 0.13493875856342122
+      },
+      "2012": {
+        "trades": 6112,
+        "wins": 2926,
+        "win_rate": 47.87303664921466,
+        "profit_factor": 0.9183929692404269,
+        "expectancy_r": -0.04253926701570681,
+        "trades_per_month": 509.3333333333333,
+        "ambiguous_bars": 14,
+        "ambiguous_rate": 0.22905759162303663
+      },
+      "2013": {
+        "trades": 7650,
+        "wins": 3699,
+        "win_rate": 48.35294117647059,
+        "profit_factor": 0.9362186788154897,
+        "expectancy_r": -0.03294117647058824,
+        "trades_per_month": 637.5,
+        "ambiguous_bars": 24,
+        "ambiguous_rate": 0.3137254901960784
+      },
+      "2014": {
+        "trades": 4667,
+        "wins": 2243,
+        "win_rate": 48.06085279622884,
+        "profit_factor": 0.9253300330033003,
+        "expectancy_r": -0.03878294407542318,
+        "trades_per_month": 388.9166666666667,
+        "ambiguous_bars": 14,
+        "ambiguous_rate": 0.2999785729590743
+      },
+      "2015": {
+        "trades": 8398,
+        "wins": 4071,
+        "win_rate": 48.475827577994764,
+        "profit_factor": 0.9408366073492027,
+        "expectancy_r": -0.030483448440104786,
+        "trades_per_month": 699.8333333333334,
+        "ambiguous_bars": 34,
+        "ambiguous_rate": 0.4048582995951417
+      },
+      "2016": {
+        "trades": 7945,
+        "wins": 3812,
+        "win_rate": 47.97986154814349,
+        "profit_factor": 0.9223324461650133,
+        "expectancy_r": -0.04040276903713027,
+        "trades_per_month": 662.0833333333334,
+        "ambiguous_bars": 23,
+        "ambiguous_rate": 0.289490245437382
+      },
+      "2017": {
+        "trades": 5193,
+        "wins": 2416,
+        "win_rate": 46.52416714808396,
+        "profit_factor": 0.8700036010082823,
+        "expectancy_r": -0.06951665703832081,
+        "trades_per_month": 432.75,
+        "ambiguous_bars": 18,
+        "ambiguous_rate": 0.34662045060658575
+      },
+      "2018": {
+        "trades": 5003,
+        "wins": 2410,
+        "win_rate": 48.17109734159504,
+        "profit_factor": 0.9294253760123409,
+        "expectancy_r": -0.03657805316809914,
+        "trades_per_month": 416.9166666666667,
+        "ambiguous_bars": 10,
+        "ambiguous_rate": 0.1998800719568259
+      },
+      "2019": {
+        "trades": 3060,
+        "wins": 1488,
+        "win_rate": 48.627450980392155,
+        "profit_factor": 0.9465648854961832,
+        "expectancy_r": -0.027450980392156862,
+        "trades_per_month": 255.0,
+        "ambiguous_bars": 9,
+        "ambiguous_rate": 0.29411764705882354
+      },
+      "2020": {
+        "trades": 5321,
+        "wins": 2573,
+        "win_rate": 48.35557226085322,
+        "profit_factor": 0.9363173216885007,
+        "expectancy_r": -0.032888554782935536,
+        "trades_per_month": 443.4166666666667,
+        "ambiguous_bars": 5,
+        "ambiguous_rate": 0.09396729937981582
+      },
+      "2021": {
+        "trades": 3100,
+        "wins": 1474,
+        "win_rate": 47.54838709677419,
+        "profit_factor": 0.906519065190652,
+        "expectancy_r": -0.04903225806451613,
+        "trades_per_month": 258.3333333333333,
+        "ambiguous_bars": 5,
+        "ambiguous_rate": 0.16129032258064516
+      },
+      "2022": {
+        "trades": 7980,
+        "wins": 3796,
+        "win_rate": 47.56892230576441,
+        "profit_factor": 0.9072657743785851,
+        "expectancy_r": -0.04862155388471178,
+        "trades_per_month": 665.0,
+        "ambiguous_bars": 21,
+        "ambiguous_rate": 0.2631578947368421
+      },
+      "2023": {
+        "trades": 5829,
+        "wins": 2759,
+        "win_rate": 47.3323039972551,
+        "profit_factor": 0.8986970684039088,
+        "expectancy_r": -0.053353920054897926,
+        "trades_per_month": 485.75,
+        "ambiguous_bars": 22,
+        "ambiguous_rate": 0.3774232286841654
+      },
+      "2024": {
+        "trades": 4663,
+        "wins": 2292,
+        "win_rate": 49.15290585460004,
+        "profit_factor": 0.9666807254323071,
+        "expectancy_r": -0.016941882907999143,
+        "trades_per_month": 388.5833333333333,
+        "ambiguous_bars": 22,
+        "ambiguous_rate": 0.47179927085567236
+      },
+      "2025": {
+        "trades": 5955,
+        "wins": 2861,
+        "win_rate": 48.043660789252726,
+        "profit_factor": 0.9246929541047189,
+        "expectancy_r": -0.03912678421494543,
+        "trades_per_month": 496.25,
+        "ambiguous_bars": 15,
+        "ambiguous_rate": 0.2518891687657431
+      },
+      "2026": {
+        "trades": 2831,
+        "wins": 1419,
+        "win_rate": 50.12363122571529,
+        "profit_factor": 1.004957507082153,
+        "expectancy_r": 0.002472624514305899,
+        "trades_per_month": 235.91666666666666,
+        "ambiguous_bars": 5,
+        "ambiguous_rate": 0.17661603673613563
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.46,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 78440,
+        "wins": 37580,
+        "win_rate": 47.90922998470168,
+        "profit_factor": 0.9197258932941752,
+        "expectancy_r": -0.041815400305966345,
+        "trades_per_month": 726.2962962962963,
+        "ambiguous_bars": 225,
+        "ambiguous_rate": 0.2868434472208057
+      },
+      "validation_2019_2022": {
+        "trades": 25883,
+        "wins": 12252,
+        "win_rate": 47.3360893250396,
+        "profit_factor": 0.8988335411928692,
+        "expectancy_r": -0.05327821349920797,
+        "trades_per_month": 539.2291666666666,
+        "ambiguous_bars": 53,
+        "ambiguous_rate": 0.2047676080825252
+      },
+      "holdout_2023_2024": {
+        "trades": 13126,
+        "wins": 6253,
+        "win_rate": 47.638275179033975,
+        "profit_factor": 0.9097919394733013,
+        "expectancy_r": -0.04723449641932043,
+        "trades_per_month": 546.9166666666666,
+        "ambiguous_bars": 58,
+        "ambiguous_rate": 0.44187109553557824
+      },
+      "true_oos_2025_2026": {
+        "trades": 10842,
+        "wins": 5240,
+        "win_rate": 48.33056631617782,
+        "profit_factor": 0.935380221349518,
+        "expectancy_r": -0.03338867367644346,
+        "trades_per_month": 570.6315789473684,
+        "ambiguous_bars": 25,
+        "ambiguous_rate": 0.23058476295886365
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 11005,
+        "wins": 5295,
+        "win_rate": 48.114493412085416,
+        "profit_factor": 0.9273204903677759,
+        "expectancy_r": -0.03771013175829169,
+        "trades_per_month": 917.0833333333334,
+        "ambiguous_bars": 24,
+        "ambiguous_rate": 0.21808268968650613
+      },
+      "2011": {
+        "trades": 10672,
+        "wins": 5149,
+        "win_rate": 48.247751124437784,
+        "profit_factor": 0.9322831794314684,
+        "expectancy_r": -0.03504497751124438,
+        "trades_per_month": 889.3333333333334,
+        "ambiguous_bars": 17,
+        "ambiguous_rate": 0.15929535232383807
+      },
+      "2012": {
+        "trades": 7922,
+        "wins": 3803,
+        "win_rate": 48.00555415299167,
+        "profit_factor": 0.9232823500849721,
+        "expectancy_r": -0.03988891694016662,
+        "trades_per_month": 660.1666666666666,
+        "ambiguous_bars": 23,
+        "ambiguous_rate": 0.2903307245645039
+      },
+      "2013": {
+        "trades": 9174,
+        "wins": 4384,
+        "win_rate": 47.78722476564204,
+        "profit_factor": 0.9152400835073069,
+        "expectancy_r": -0.044255504687159365,
+        "trades_per_month": 764.5,
+        "ambiguous_bars": 27,
+        "ambiguous_rate": 0.2943100065402224
+      },
+      "2014": {
+        "trades": 6293,
+        "wins": 2996,
+        "win_rate": 47.60845383759733,
+        "profit_factor": 0.9087048832271762,
+        "expectancy_r": -0.047830923248053395,
+        "trades_per_month": 524.4166666666666,
+        "ambiguous_bars": 25,
+        "ambiguous_rate": 0.3972668043858255
+      },
+      "2015": {
+        "trades": 9808,
+        "wins": 4731,
+        "win_rate": 48.23613376835236,
+        "profit_factor": 0.9318495174315541,
+        "expectancy_r": -0.03527732463295269,
+        "trades_per_month": 817.3333333333334,
+        "ambiguous_bars": 45,
+        "ambiguous_rate": 0.4588091353996737
+      },
+      "2016": {
+        "trades": 9381,
+        "wins": 4487,
+        "win_rate": 47.83072167146359,
+        "profit_factor": 0.9168369431957499,
+        "expectancy_r": -0.04338556657072807,
+        "trades_per_month": 781.75,
+        "ambiguous_bars": 34,
+        "ambiguous_rate": 0.3624347084532566
+      },
+      "2017": {
+        "trades": 7230,
+        "wins": 3384,
+        "win_rate": 46.80497925311203,
+        "profit_factor": 0.8798751950078003,
+        "expectancy_r": -0.06390041493775933,
+        "trades_per_month": 602.5,
+        "ambiguous_bars": 20,
+        "ambiguous_rate": 0.2766251728907331
+      },
+      "2018": {
+        "trades": 6955,
+        "wins": 3351,
+        "win_rate": 48.18116462976276,
+        "profit_factor": 0.9298002219755827,
+        "expectancy_r": -0.03637670740474479,
+        "trades_per_month": 579.5833333333334,
+        "ambiguous_bars": 10,
+        "ambiguous_rate": 0.14378145219266716
+      },
+      "2019": {
+        "trades": 4631,
+        "wins": 2199,
+        "win_rate": 47.48434463398834,
+        "profit_factor": 0.9041940789473685,
+        "expectancy_r": -0.05031310732023321,
+        "trades_per_month": 385.9166666666667,
+        "ambiguous_bars": 13,
+        "ambiguous_rate": 0.28071690779529257
+      },
+      "2020": {
+        "trades": 6910,
+        "wins": 3329,
+        "win_rate": 48.17655571635311,
+        "profit_factor": 0.9296285953644233,
+        "expectancy_r": -0.036468885672937774,
+        "trades_per_month": 575.8333333333334,
+        "ambiguous_bars": 7,
+        "ambiguous_rate": 0.10130246020260492
+      },
+      "2021": {
+        "trades": 5046,
+        "wins": 2338,
+        "win_rate": 46.3337296868807,
+        "profit_factor": 0.8633677991137371,
+        "expectancy_r": -0.07332540626238605,
+        "trades_per_month": 420.5,
+        "ambiguous_bars": 11,
+        "ambiguous_rate": 0.21799445105033688
+      },
+      "2022": {
+        "trades": 9296,
+        "wins": 4386,
+        "win_rate": 47.1815834767642,
+        "profit_factor": 0.8932790224032586,
+        "expectancy_r": -0.05636833046471601,
+        "trades_per_month": 774.6666666666666,
+        "ambiguous_bars": 22,
+        "ambiguous_rate": 0.23666092943201378
+      },
+      "2023": {
+        "trades": 7328,
+        "wins": 3417,
+        "win_rate": 46.629366812227076,
+        "profit_factor": 0.8736895934543595,
+        "expectancy_r": -0.06741266375545851,
+        "trades_per_month": 610.6666666666666,
+        "ambiguous_bars": 32,
+        "ambiguous_rate": 0.43668122270742354
+      },
+      "2024": {
+        "trades": 5798,
+        "wins": 2836,
+        "win_rate": 48.91341842014488,
+        "profit_factor": 0.9574611748818366,
+        "expectancy_r": -0.02173163159710245,
+        "trades_per_month": 483.1666666666667,
+        "ambiguous_bars": 26,
+        "ambiguous_rate": 0.4484304932735426
+      },
+      "2025": {
+        "trades": 7337,
+        "wins": 3504,
+        "win_rate": 47.75793921221207,
+        "profit_factor": 0.9141664492564571,
+        "expectancy_r": -0.04484121575575849,
+        "trades_per_month": 611.4166666666666,
+        "ambiguous_bars": 20,
+        "ambiguous_rate": 0.2725909772386534
+      },
+      "2026": {
+        "trades": 3505,
+        "wins": 1736,
+        "win_rate": 49.52924393723252,
+        "profit_factor": 0.9813453928773318,
+        "expectancy_r": -0.0094151212553495,
+        "trades_per_month": 292.0833333333333,
+        "ambiguous_bars": 5,
+        "ambiguous_rate": 0.14265335235378032
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.495,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 1,
+        "wins": 1,
+        "win_rate": 100.0,
+        "profit_factor": null,
+        "expectancy_r": 1.0,
+        "trades_per_month": 0.009259259259259259,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 112,
+        "wins": 70,
+        "win_rate": 62.5,
+        "profit_factor": 1.6666666666666667,
+        "expectancy_r": 0.25,
+        "trades_per_month": 4.666666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 387,
+        "wins": 297,
+        "win_rate": 76.74418604651163,
+        "profit_factor": 3.3,
+        "expectancy_r": 0.5348837209302325,
+        "trades_per_month": 20.36842105263158,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.516795865633075
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 1,
+        "wins": 1,
+        "win_rate": 100.0,
+        "profit_factor": null,
+        "expectancy_r": 1.0,
+        "trades_per_month": 0.08333333333333333,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 23,
+        "wins": 14,
+        "win_rate": 60.86956521739131,
+        "profit_factor": 1.5555555555555556,
+        "expectancy_r": 0.21739130434782608,
+        "trades_per_month": 1.9166666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 89,
+        "wins": 56,
+        "win_rate": 62.92134831460674,
+        "profit_factor": 1.696969696969697,
+        "expectancy_r": 0.25842696629213485,
+        "trades_per_month": 7.416666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 177,
+        "wins": 143,
+        "win_rate": 80.7909604519774,
+        "profit_factor": 4.205882352941177,
+        "expectancy_r": 0.615819209039548,
+        "trades_per_month": 14.75,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 1.1299435028248588
+      },
+      "2026": {
+        "trades": 210,
+        "wins": 154,
+        "win_rate": 73.33333333333333,
+        "profit_factor": 2.75,
+        "expectancy_r": 0.4666666666666667,
+        "trades_per_month": 17.5,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.5,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 58,
+        "wins": 39,
+        "win_rate": 67.24137931034483,
+        "profit_factor": 2.0526315789473686,
+        "expectancy_r": 0.3448275862068966,
+        "trades_per_month": 2.4166666666666665,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 296,
+        "wins": 229,
+        "win_rate": 77.36486486486487,
+        "profit_factor": 3.417910447761194,
+        "expectancy_r": 0.5472972972972973,
+        "trades_per_month": 15.578947368421053,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 0.6756756756756757
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 3,
+        "wins": 2,
+        "win_rate": 66.66666666666666,
+        "profit_factor": 2.0,
+        "expectancy_r": 0.3333333333333333,
+        "trades_per_month": 0.25,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 55,
+        "wins": 37,
+        "win_rate": 67.27272727272727,
+        "profit_factor": 2.0555555555555554,
+        "expectancy_r": 0.34545454545454546,
+        "trades_per_month": 4.583333333333333,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 104,
+        "wins": 86,
+        "win_rate": 82.6923076923077,
+        "profit_factor": 4.777777777777778,
+        "expectancy_r": 0.6538461538461539,
+        "trades_per_month": 8.666666666666666,
+        "ambiguous_bars": 2,
+        "ambiguous_rate": 1.9230769230769231
+      },
+      "2026": {
+        "trades": 192,
+        "wins": 143,
+        "win_rate": 74.47916666666666,
+        "profit_factor": 2.9183673469387754,
+        "expectancy_r": 0.4895833333333333,
+        "trades_per_month": 16.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.505,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 27,
+        "wins": 18,
+        "win_rate": 66.66666666666666,
+        "profit_factor": 2.0,
+        "expectancy_r": 0.3333333333333333,
+        "trades_per_month": 1.125,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 187,
+        "wins": 143,
+        "win_rate": 76.47058823529412,
+        "profit_factor": 3.25,
+        "expectancy_r": 0.5294117647058824,
+        "trades_per_month": 9.842105263157896,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.53475935828877
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 27,
+        "wins": 18,
+        "win_rate": 66.66666666666666,
+        "profit_factor": 2.0,
+        "expectancy_r": 0.3333333333333333,
+        "trades_per_month": 2.25,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 35,
+        "wins": 28,
+        "win_rate": 80.0,
+        "profit_factor": 4.0,
+        "expectancy_r": 0.6,
+        "trades_per_month": 2.9166666666666665,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 2.857142857142857
+      },
+      "2026": {
+        "trades": 152,
+        "wins": 115,
+        "win_rate": 75.6578947368421,
+        "profit_factor": 3.108108108108108,
+        "expectancy_r": 0.5131578947368421,
+        "trades_per_month": 12.666666666666666,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.51,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 10,
+        "wins": 5,
+        "win_rate": 50.0,
+        "profit_factor": 1.0,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.4166666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 139,
+        "wins": 105,
+        "win_rate": 75.53956834532374,
+        "profit_factor": 3.088235294117647,
+        "expectancy_r": 0.5107913669064749,
+        "trades_per_month": 7.315789473684211,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.7194244604316548
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 10,
+        "wins": 5,
+        "win_rate": 50.0,
+        "profit_factor": 1.0,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.8333333333333334,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 17,
+        "wins": 13,
+        "win_rate": 76.47058823529412,
+        "profit_factor": 3.25,
+        "expectancy_r": 0.5294117647058824,
+        "trades_per_month": 1.4166666666666667,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 5.88235294117647
+      },
+      "2026": {
+        "trades": 122,
+        "wins": 92,
+        "win_rate": 75.40983606557377,
+        "profit_factor": 3.066666666666667,
+        "expectancy_r": 0.5081967213114754,
+        "trades_per_month": 10.166666666666666,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.515,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 2,
+        "wins": 2,
+        "win_rate": 100.0,
+        "profit_factor": null,
+        "expectancy_r": 1.0,
+        "trades_per_month": 0.08333333333333333,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 120,
+        "wins": 90,
+        "win_rate": 75.0,
+        "profit_factor": 3.0,
+        "expectancy_r": 0.5,
+        "trades_per_month": 6.315789473684211,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.8333333333333334
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 2,
+        "wins": 2,
+        "win_rate": 100.0,
+        "profit_factor": null,
+        "expectancy_r": 1.0,
+        "trades_per_month": 0.16666666666666666,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 11,
+        "wins": 8,
+        "win_rate": 72.72727272727273,
+        "profit_factor": 2.6666666666666665,
+        "expectancy_r": 0.45454545454545453,
+        "trades_per_month": 0.9166666666666666,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 9.090909090909092
+      },
+      "2026": {
+        "trades": 109,
+        "wins": 82,
+        "win_rate": 75.22935779816514,
+        "profit_factor": 3.037037037037037,
+        "expectancy_r": 0.5045871559633027,
+        "trades_per_month": 9.083333333333334,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.52,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 108,
+        "wins": 80,
+        "win_rate": 74.07407407407408,
+        "profit_factor": 2.857142857142857,
+        "expectancy_r": 0.48148148148148145,
+        "trades_per_month": 5.684210526315789,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 0.9259259259259258
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 8,
+        "wins": 5,
+        "win_rate": 62.5,
+        "profit_factor": 1.6666666666666667,
+        "expectancy_r": 0.25,
+        "trades_per_month": 0.6666666666666666,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 12.5
+      },
+      "2026": {
+        "trades": 100,
+        "wins": 75,
+        "win_rate": 75.0,
+        "profit_factor": 3.0,
+        "expectancy_r": 0.5,
+        "trades_per_month": 8.333333333333334,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.525,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 92,
+        "wins": 68,
+        "win_rate": 73.91304347826086,
+        "profit_factor": 2.8333333333333335,
+        "expectancy_r": 0.4782608695652174,
+        "trades_per_month": 4.842105263157895,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 1.0869565217391304
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 6,
+        "wins": 3,
+        "win_rate": 50.0,
+        "profit_factor": 1.0,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.5,
+        "ambiguous_bars": 1,
+        "ambiguous_rate": 16.666666666666664
+      },
+      "2026": {
+        "trades": 86,
+        "wins": 65,
+        "win_rate": 75.5813953488372,
+        "profit_factor": 3.0952380952380953,
+        "expectancy_r": 0.5116279069767442,
+        "trades_per_month": 7.166666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.53,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 75,
+        "wins": 57,
+        "win_rate": 76.0,
+        "profit_factor": 3.1666666666666665,
+        "expectancy_r": 0.52,
+        "trades_per_month": 3.9473684210526314,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 3,
+        "wins": 1,
+        "win_rate": 33.33333333333333,
+        "profit_factor": 0.5,
+        "expectancy_r": -0.3333333333333333,
+        "trades_per_month": 0.25,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2026": {
+        "trades": 72,
+        "wins": 56,
+        "win_rate": 77.77777777777779,
+        "profit_factor": 3.5,
+        "expectancy_r": 0.5555555555555556,
+        "trades_per_month": 6.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.535,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 56,
+        "wins": 44,
+        "win_rate": 78.57142857142857,
+        "profit_factor": 3.6666666666666665,
+        "expectancy_r": 0.5714285714285714,
+        "trades_per_month": 2.9473684210526314,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2026": {
+        "trades": 56,
+        "wins": 44,
+        "win_rate": 78.57142857142857,
+        "profit_factor": 3.6666666666666665,
+        "expectancy_r": 0.5714285714285714,
+        "trades_per_month": 4.666666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.54,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 48,
+        "wins": 39,
+        "win_rate": 81.25,
+        "profit_factor": 4.333333333333333,
+        "expectancy_r": 0.625,
+        "trades_per_month": 2.526315789473684,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2026": {
+        "trades": 48,
+        "wins": 39,
+        "win_rate": 81.25,
+        "profit_factor": 4.333333333333333,
+        "expectancy_r": 0.625,
+        "trades_per_month": 4.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.545,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 35,
+        "wins": 30,
+        "win_rate": 85.71428571428571,
+        "profit_factor": 6.0,
+        "expectancy_r": 0.7142857142857143,
+        "trades_per_month": 1.8421052631578947,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2026": {
+        "trades": 35,
+        "wins": 30,
+        "win_rate": 85.71428571428571,
+        "profit_factor": 6.0,
+        "expectancy_r": 0.7142857142857143,
+        "trades_per_month": 2.9166666666666665,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.55,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 25,
+        "wins": 21,
+        "win_rate": 84.0,
+        "profit_factor": 5.25,
+        "expectancy_r": 0.68,
+        "trades_per_month": 1.3157894736842106,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2026": {
+        "trades": 25,
+        "wins": 21,
+        "win_rate": 84.0,
+        "profit_factor": 5.25,
+        "expectancy_r": 0.68,
+        "trades_per_month": 2.0833333333333335,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.555,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 19,
+        "wins": 16,
+        "win_rate": 84.21052631578947,
+        "profit_factor": 5.333333333333333,
+        "expectancy_r": 0.6842105263157895,
+        "trades_per_month": 1.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2026": {
+        "trades": 19,
+        "wins": 16,
+        "win_rate": 84.21052631578947,
+        "profit_factor": 5.333333333333333,
+        "expectancy_r": 0.6842105263157895,
+        "trades_per_month": 1.5833333333333333,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  },
+  {
+    "model": {
+      "trees": 20,
+      "leaves": 15,
+      "learning_rate": 0.1,
+      "min_samples_leaf": 300,
+      "l2": 2.0
+    },
+    "threshold": 0.56,
+    "require_htf_alignment": true,
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 14,
+        "wins": 11,
+        "win_rate": 78.57142857142857,
+        "profit_factor": 3.6666666666666665,
+        "expectancy_r": 0.5714285714285714,
+        "trades_per_month": 0.7368421052631579,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    },
+    "annual_periods": {
+      "2010": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2011": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2012": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2013": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2014": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2015": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2016": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2017": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2018": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2019": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2020": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2021": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2022": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2023": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2024": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2025": {
+        "trades": 0,
+        "wins": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      },
+      "2026": {
+        "trades": 14,
+        "wins": 11,
+        "win_rate": 78.57142857142857,
+        "profit_factor": 3.6666666666666665,
+        "expectancy_r": 0.5714285714285714,
+        "trades_per_month": 1.1666666666666667,
+        "ambiguous_bars": 0,
+        "ambiguous_rate": 0.0
+      }
+    }
+  }
+]

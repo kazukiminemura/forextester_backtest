@@ -1,0 +1,421 @@
+//@version=6
+// 2026年用の固定11通貨・共有コンパクトMLエントリー。
+// 2025年末までに決済済みのデータだけで学習。注文は出さず、シグナルを表示する。
+indicator("固定11通貨 4H順張り コンパクトMLエントリー 2026", overlay=true,
+     max_labels_count=300, max_lines_count=300, dynamic_requests=true)
+
+string gModel = "エントリー"
+string i_timezone = input.string("Etc/UTC", "Forex Testerデータの時間帯", group=gModel)
+float i_spreadOverride = input.float(0.0, "スプレッド価格差（0=既定値）", minval=0.0, group=gModel)
+bool i_showEntryLine = input.bool(true, "エントリーラインを表示", group=gModel)
+int i_entryLineBars = input.int(12, "ラインの長さ", minval=1, maxval=96, group=gModel)
+bool i_only2026 = input.bool(true, "2026年だけに限定（検証条件）", group=gModel)
+
+string gScanner = "通貨ペア・チャンス一覧"
+bool i_showScanner = input.bool(true, "11通貨を一覧表示", group=gScanner)
+string i_scanSymbol1 = input.symbol("OANDA:AUDUSD", "1", group=gScanner)
+string i_scanSymbol2 = input.symbol("OANDA:EURUSD", "2", group=gScanner)
+string i_scanSymbol3 = input.symbol("OANDA:GBPUSD", "3", group=gScanner)
+string i_scanSymbol4 = input.symbol("OANDA:NZDUSD", "4", group=gScanner)
+string i_scanSymbol5 = input.symbol("OANDA:USDCHF", "5", group=gScanner)
+string i_scanSymbol6 = input.symbol("OANDA:USDJPY", "6", group=gScanner)
+string i_scanSymbol7 = input.symbol("OANDA:AUDJPY", "7", group=gScanner)
+string i_scanSymbol8 = input.symbol("OANDA:CHFJPY", "8", group=gScanner)
+string i_scanSymbol9 = input.symbol("OANDA:EURCHF", "9", group=gScanner)
+string i_scanSymbol10 = input.symbol("OANDA:GBPCHF", "10", group=gScanner)
+string i_scanSymbol11 = input.symbol("OANDA:GBPJPY", "11", group=gScanner)
+
+f_pairSpread(string pair) =>
+    switch pair
+        "AUDUSD" => 0.00012
+        "EURUSD" => 0.00011
+        "GBPUSD" => 0.00013999999999999999
+        "NZDUSD" => 0.00013999999999999999
+        "USDCHF" => 0.00014999999999999999
+        "USDJPY" => 0.012
+        "AUDJPY" => 0.014
+        "CHFJPY" => 0.017999999999999999
+        "EURCHF" => 0.00017000000000000001
+        "GBPCHF" => 0.00016000000000000001
+        "GBPJPY" => 0.017999999999999999
+        => na
+
+f_htfContext() =>
+    float pivotHigh = ta.pivothigh(high, 2, 2)
+    float pivotLow = ta.pivotlow(low, 2, 2)
+    float lastHigh = ta.valuewhen(not na(pivotHigh), pivotHigh, 0)
+    float previousHigh = ta.valuewhen(not na(pivotHigh), pivotHigh, 1)
+    float lastLow = ta.valuewhen(not na(pivotLow), pivotLow, 0)
+    float previousLow = ta.valuewhen(not na(pivotLow), pivotLow, 1)
+    [lastHigh[1], previousHigh[1], lastLow[1], previousLow[1]]
+
+string pair = syminfo.basecurrency + syminfo.currency
+bool supportedPair = pair == "AUDUSD" or pair == "EURUSD" or pair == "GBPUSD" or pair == "NZDUSD" or pair == "USDCHF" or pair == "USDJPY" or pair == "AUDJPY" or pair == "CHFJPY" or pair == "EURCHF" or pair == "GBPCHF" or pair == "GBPJPY"
+float defaultSpread = f_pairSpread(pair)
+float activeSpread = i_spreadOverride > 0.0 ? i_spreadOverride : defaultSpread
+bool correctTimeframe = timeframe.in_seconds() == 15 * 60
+bool yearAllowed = not i_only2026 or year(time, i_timezone) == 2026
+
+// Pythonと同じSMAシードのEMA。
+var float ema20 = na
+var float ema80 = na
+var float ema200 = na
+ema20 := bar_index == 19 ? ta.sma(close, 20) : bar_index > 19 ? ema20[1] + 2.0 / 21.0 * (close - ema20[1]) : na
+ema80 := bar_index == 79 ? ta.sma(close, 80) : bar_index > 79 ? ema80[1] + 2.0 / 81.0 * (close - ema80[1]) : na
+ema200 := bar_index == 199 ? ta.sma(close, 200) : bar_index > 199 ? ema200[1] + 2.0 / 201.0 * (close - ema200[1]) : na
+
+f_tree_0(array<float> x) => (array.get(x, 11) <= 0.29939827907257022 ? (array.get(x, 11) <= 0.1718364685486688 ? (array.get(x, 11) <= 0.11559239702736672 ? 0.011175361573546271 : (array.get(x, 1) <= -0.22586298330538898 ? 0.0096829496125696943 : 0.0034448866333108932)) : (array.get(x, 4) <= -0.14798580650292398 ? (array.get(x, 12) <= -0.50000000000000011 ? 0.010717139849091672 : -0.0002473507436065944) : (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 4) <= 0.78834710289918442 ? -0.0074924189763489971 : -0.023043995959702759) : -0.00089184582526483341))) : (array.get(x, 11) <= 0.57591798778950953 ? (array.get(x, 4) <= -0.065207826400389468 ? (array.get(x, 12) <= -0.50000000000000011 ? 0.0034721435694228934 : -0.0099656125697268633) : (array.get(x, 12) <= -0.70710678118654746 ? -0.036940147503726373 : -0.015463759234994595)) : (array.get(x, 6) <= -0.023832369253397587 ? -0.027980266609655014 : (array.get(x, 11) <= 0.79784676962087797 ? -0.04229361713664704 : -0.074253188378770763))))
+f_tree_1(array<float> x) => (array.get(x, 11) <= 0.26180304057403092 ? (array.get(x, 11) <= 0.15094275257639081 ? 0.0082109539327303738 : (array.get(x, 0) <= -0.22317044229483091 ? 0.0053446717607913644 : (array.get(x, 2) <= 0.46580331722890822 ? 0.0017165670939153961 : (array.get(x, 12) <= -0.70710678118654746 ? -0.013780027159110631 : -0.00093063204823737159)))) : (array.get(x, 11) <= 0.51152624251539947 ? (array.get(x, 4) <= -0.006020642452478046 ? (array.get(x, 12) <= -0.50000000000000011 ? (array.get(x, 4) <= -0.75284599170720978 ? 0.015164439955509368 : -0.0049126868903926584) : -0.0071333449880452912) : (array.get(x, 12) <= -0.70710678118654746 ? -0.029108971065441261 : (array.get(x, 11) <= 0.35321445132238594 ? -0.0065746372082802823 : -0.016723506753931437))) : (array.get(x, 11) <= 0.79784676962087797 ? (array.get(x, 6) <= 0.0029424697190327011 ? -0.017280805270880092 : -0.037048414072440659) : (array.get(x, 6) <= -0.08750924182513245 ? -0.029541788189485441 : -0.065450625726259967))))
+f_tree_2(array<float> x) => (array.get(x, 11) <= 0.29939827907257022 ? (array.get(x, 11) <= 0.19426009662647648 ? (array.get(x, 11) <= 0.12436057079074923 ? 0.0087600006855040515 : 0.0040691941195662726) : (array.get(x, 4) <= -0.4775516232710888 ? (array.get(x, 12) <= -0.70710678118654746 ? 0.014284350767856988 : 5.3746042190541517e-05) : (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 4) <= 0.46735357641683228 ? -0.0030562021762615449 : -0.019961563282303786) : -0.0022757916674820814))) : (array.get(x, 11) <= 0.64957733685149455 ? (array.get(x, 4) <= -0.32529989804167714 ? (array.get(x, 12) <= -0.50000000000000011 ? 0.0075813983582331329 : -0.0082949652141119917) : (array.get(x, 12) <= -0.50000000000000011 ? (array.get(x, 4) <= 0.7289510958976021 ? -0.018429561805663443 : -0.041516145447090501) : (array.get(x, 11) <= 0.43007360121869459 ? -0.0089776522191078855 : -0.020153107063845429))) : (array.get(x, 6) <= -0.08750924182513245 ? -0.022098864893498917 : -0.048190502928479165)))
+f_tree_3(array<float> x) => (array.get(x, 11) <= 0.32345355210778942 ? (array.get(x, 11) <= 0.19426009662647648 ? (array.get(x, 8) <= 0.018008380440364312 ? 0.007479076450684588 : 0.0030017498584507681) : (array.get(x, 8) <= 0.0 ? (array.get(x, 0) <= 1.2180115132736307 ? (array.get(x, 2) <= 0.37366672552741431 ? (array.get(x, 12) <= -0.50000000000000011 ? 0.0093289349349859538 : 0.001247590077291809) : -0.0025243466121212827) : -0.063994133623708829) : -0.0052862909161169149)) : (array.get(x, 11) <= 0.64957733685149455 ? (array.get(x, 4) <= -0.30101341712913615 ? (array.get(x, 12) <= -0.50000000000000011 ? 0.0068861810284559198 : -0.0082361109318179002) : (array.get(x, 12) <= -0.50000000000000011 ? (array.get(x, 4) <= 0.7289510958976021 ? -0.01954207360202511 : -0.041307619041350316) : -0.012886692699649874)) : (array.get(x, 4) <= -0.40010692485851673 ? -0.019687355117814824 : (array.get(x, 10) <= 0.78038865013390901 ? -0.031083979775776122 : -0.057335924438713208))))
+f_tree_4(array<float> x) => (array.get(x, 11) <= 0.25863310703230957 ? (array.get(x, 11) <= 0.13841629796713381 ? 0.0067177504865173132 : (array.get(x, 1) <= -0.20476876945558964 ? (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 4) <= -0.66611490085460701 ? (array.get(x, 12) <= -0.78656609248549314 ? 0.013549272877285646 : (array.get(x, 0) <= -0.9072698628227307 ? 0.090888161505023879 : 0.026355139156818821)) : 0.0035238953977159205) : 0.0021712505361935206) : (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 4) <= 0.46735357641683228 ? 0.00050791265154141025 : -0.014115799785173072) : 0.0011123360898533281))) : (array.get(x, 11) <= 0.51152624251539947 ? (array.get(x, 4) <= 0.45404238133116026 ? (array.get(x, 5) <= 0.15134447649020494 ? -0.0073781424984865401 : 0.0002041098448173164) : (array.get(x, 12) <= -0.50000000000000011 ? -0.025046687129887321 : -0.0074375412713045506)) : (array.get(x, 11) <= 0.99879968048506274 ? -0.021998837345323152 : -0.051125549900525202)))
+f_tree_5(array<float> x) => (array.get(x, 11) <= 0.3264647607144765 ? (array.get(x, 11) <= 0.18082676661423999 ? (array.get(x, 8) <= -0.019732706860515363 ? 0.0068476174594747172 : 0.0027741294435633993) : (array.get(x, 8) <= 0.0 ? (array.get(x, 0) <= 1.3612985187815314 ? 0.0015061773296013554 : -0.058270314780477672) : -0.0039251780044771908)) : (array.get(x, 11) <= 0.79784676962087797 ? (array.get(x, 4) <= -0.30101341712913615 ? (array.get(x, 12) <= -0.50000000000000011 ? (array.get(x, 1) <= -0.89991500609019026 ? 0.020771053293725819 : -0.0012357368952443902) : -0.0070578694878132859) : (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 4) <= 0.53351681303911302 ? -0.018020077711677747 : -0.037690657561693916) : (array.get(x, 11) <= 0.51152624251539947 ? -0.0098433690345302565 : -0.021304888363082596))) : (array.get(x, 6) <= -0.08750924182513245 ? (array.get(x, 9) <= 0.21480892528101214 ? 0.069473282682410917 : -0.025744213926018007) : -0.047938436401941877)))
+f_tree_6(array<float> x) => (array.get(x, 11) <= 0.36130766680475912 ? (array.get(x, 11) <= 0.21109068954684801 ? (array.get(x, 11) <= 0.099442722452332863 ? 0.0078114964589866102 : (array.get(x, 1) <= 0.14815720782779013 ? 0.0046500460521458628 : (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 12) <= -0.78656609248549314 ? -0.0028733057515771651 : (array.get(x, 1) <= 1.4907579080563353 ? -0.01239740281100757 : -0.056576753547808903)) : 0.0023520908976272588))) : (array.get(x, 4) <= -0.70897601742428973 ? (array.get(x, 12) <= -0.50000000000000011 ? 0.012118229005600743 : -0.0008060642876530857) : (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 4) <= 0.77245365925110576 ? -0.0043023069666079435 : -0.021783230658474217) : -0.0028985943056862684))) : (array.get(x, 11) <= 0.79784676962087797 ? (array.get(x, 4) <= -0.27679795554426267 ? -0.0050882550900533154 : (array.get(x, 12) <= -0.70710678118654746 ? -0.028669496525571506 : -0.013082857134845235)) : -0.035087352485740096))
+f_tree_7(array<float> x) => (array.get(x, 11) <= 0.27975075824362539 ? (array.get(x, 11) <= 0.1575385551552182 ? (array.get(x, 5) <= 2.3081842568156539 ? 0.0053618969313944578 : (array.get(x, 15) <= 0.30901699437494756 ? 0.0030285123401137901 : -0.011209244302800543)) : (array.get(x, 4) <= -0.72295361918095913 ? (array.get(x, 12) <= -0.50000000000000011 ? 0.011923167551532072 : 0.00052663600040851559) : (array.get(x, 12) <= -0.50000000000000011 ? (array.get(x, 4) <= 0.45404238133116026 ? 8.1605029163162339e-05 : (array.get(x, 3) <= -1.4020748668140564 ? -0.022721902915081121 : -0.0077824945823972832)) : 0.00039030044457418568))) : (array.get(x, 11) <= 0.44812504228217209 ? (array.get(x, 5) <= 0.17591668022697177 ? -0.0081223280857785057 : (array.get(x, 4) <= 0.39096180330746361 ? 0.0021312110768632771 : -0.0063673314903406461)) : (array.get(x, 11) <= 0.99879968048506274 ? (array.get(x, 6) <= 0.074402164809084612 ? -0.010655701087289238 : -0.022538542680930442) : -0.040038002889161234)))
+f_tree_8(array<float> x) => (array.get(x, 11) <= 0.23933515153762852 ? (array.get(x, 0) <= 0.10691098912583596 ? 0.0041124068751617702 : (array.get(x, 11) <= 0.11269126840383173 ? 0.0044185720907079966 : (array.get(x, 12) <= -0.50000000000000011 ? (array.get(x, 1) <= 0.37321310929368323 ? 0.00046782884501788622 : (array.get(x, 13) <= 0.25881904510252063 ? -0.004820188604731347 : -0.017658459974997522)) : 0.0012222899754078564))) : (array.get(x, 11) <= 0.44812504228217209 ? (array.get(x, 4) <= 0.46735357641683228 ? (array.get(x, 5) <= 0.54179161766764872 ? -0.0037568192673187967 : 0.0020269020068868315) : (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 14) <= -0.76942088429381328 ? -0.040944457849612849 : -0.015764000872640179) : -0.0048764686237826515)) : (array.get(x, 11) <= 0.99879968048506274 ? (array.get(x, 4) <= -0.27679795554426267 ? -0.0068198815182700075 : (array.get(x, 12) <= -0.60355339059327373 ? -0.034740196913131273 : -0.014625090079126591)) : -0.036437085310452692)))
+f_tree_9(array<float> x) => (array.get(x, 11) <= 0.36130766680475912 ? (array.get(x, 11) <= 0.20022608372898273 ? (array.get(x, 5) <= 2.3081842568156539 ? (array.get(x, 15) <= 0.30901699437494756 ? (array.get(x, 5) <= 0.10144675797234516 ? 0.00098163961013117223 : (array.get(x, 11) <= 0.084240443029496903 ? 0.017070028614273796 : 0.0040576726563787196)) : (array.get(x, 5) <= -2.3123070225703564 ? 0.019780946189280738 : 0.0036484946573115892)) : (array.get(x, 15) <= 0.30901699437494756 ? (array.get(x, 12) <= 0.25881904510252085 ? -0.0016889733698501554 : 0.0083609715073907041) : -0.012117022249235547)) : (array.get(x, 2) <= 0.37366672552741431 ? 0.00048219658334353456 : -0.0044169813203713435)) : (array.get(x, 11) <= 0.70775244965496587 ? (array.get(x, 6) <= 0.074402164809084612 ? -0.0051741575644384807 : (array.get(x, 12) <= -0.70710678118654746 ? -0.028997564340498157 : -0.011083773289253454)) : (array.get(x, 3) <= -0.35646540652923886 ? -0.010875808541280452 : -0.034585783784145084)))
+f_tree_10(array<float> x) => (array.get(x, 11) <= 0.39529756208811978 ? (array.get(x, 11) <= 0.21109068954684801 ? (array.get(x, 8) <= -0.12903182423261428 ? 0.0045990527954105206 : (array.get(x, 0) <= -1.421770629428315 ? 0.039266391629267212 : (array.get(x, 11) <= 0.10480528695921645 ? 0.0042195123066200158 : 0.0003718365384931966))) : (array.get(x, 8) <= 0.0089988569101837161 ? (array.get(x, 0) <= 1.2180115132736307 ? 0.00074727079840427538 : -0.054822758316545012) : (array.get(x, 0) <= -1.2150143029361655 ? 0.055232509300450698 : (array.get(x, 12) <= -0.37940952255126065 ? (array.get(x, 4) <= 0.14731213860623438 ? -0.0020554452774018159 : -0.013988568652749379) : -0.0031960020931566346)))) : (array.get(x, 4) <= -0.27679795554426267 ? -0.0043497189404415959 : (array.get(x, 11) <= 0.79784676962087797 ? (array.get(x, 12) <= -0.50000000000000011 ? (array.get(x, 6) <= 0.27875275041573894 ? -0.01961121234265939 : -0.051162379711912724) : -0.0095495966988235238) : -0.033013907398038299)))
+f_tree_11(array<float> x) => (array.get(x, 11) <= 0.30657204155951467 ? (array.get(x, 11) <= 0.13354362678191745 ? 0.0038399495799170827 : (array.get(x, 1) <= -0.32628429578622914 ? (array.get(x, 12) <= -0.50000000000000011 ? (array.get(x, 13) <= 0.49999999999999972 ? 0.0037293769853805358 : (array.get(x, 1) <= -1.5178122683562716 ? (array.get(x, 12) <= -0.70710678118654746 ? 0.070033733408662452 : 0.023787907450700398) : 0.01256040664828581)) : 0.00028350433647075893) : (array.get(x, 12) <= -0.50000000000000011 ? (array.get(x, 4) <= 0.45404238133116026 ? -0.0003153227049381282 : (array.get(x, 10) <= 1.1411344833407375 ? (array.get(x, 0) <= 1.2180115132736307 ? -0.010833063892223733 : -0.034654878735333093) : 0.0020470588980420618)) : 0.00030924868109656004))) : (array.get(x, 11) <= 0.55039172151151705 ? (array.get(x, 5) <= 0.17591668022697177 ? -0.0075030390761016662 : -0.0011430160946087921) : (array.get(x, 6) <= 0.14808046990106163 ? -0.011359640342025934 : -0.029011539491817735)))
+f_tree_12(array<float> x) => (array.get(x, 11) <= 0.24343416893906128 ? (array.get(x, 8) <= 0.018008380440364312 ? (array.get(x, 0) <= 1.2616479209891791 ? (array.get(x, 11) <= 0.10053335044281585 ? 0.0069096884404784694 : 0.002555417180998117) : -0.029301103105171561) : (array.get(x, 0) <= -1.2593754572194873 ? 0.032666151714251981 : 4.8016395587703852e-05)) : (array.get(x, 11) <= 0.55039172151151705 ? (array.get(x, 8) <= -1.328479481048385e-13 ? (array.get(x, 5) <= 0.25023638933263581 ? -0.0026098223850112372 : 0.0023458751999943027) : (array.get(x, 0) <= -1.3084872100170366 ? 0.053631682304706697 : (array.get(x, 5) <= -0.23280928526344347 ? (array.get(x, 15) <= 0.30901699437494756 ? -0.010260978411033685 : (array.get(x, 12) <= -0.50000000000000011 ? -0.011574429735996934 : 0.0030960415319034266)) : -0.0031294585983862367))) : (array.get(x, 6) <= -0.27328607993373855 ? 0.0090681721064642291 : (array.get(x, 10) <= 0.82474426012608382 ? -0.010743344259931873 : -0.024812469561529105))))
+f_tree_13(array<float> x) => (array.get(x, 11) <= 0.36130766680475912 ? (array.get(x, 11) <= 0.16498783067310888 ? (array.get(x, 5) <= 2.3081842568156539 ? 0.0032746049584192537 : (array.get(x, 15) <= 0.30901699437494756 ? (array.get(x, 12) <= 6.123233995736766e-17 ? -0.0032619659856055654 : 0.0061489653508030023) : (array.get(x, 3) <= -4.0255504026930939 ? 0.025817509081785824 : -0.012350863985725448))) : (array.get(x, 0) <= 0.23444347243482144 ? (array.get(x, 2) <= 0.10181078043890888 ? (array.get(x, 12) <= -0.25881904510252096 ? (array.get(x, 4) <= -0.49091264004369384 ? 0.0095147798240411072 : 0.00080754563777389013) : -0.00035587424663079484) : -0.0014370188550603181) : (array.get(x, 12) <= -0.50000000000000011 ? -0.0087306081751250923 : -0.00084847383018371309))) : (array.get(x, 6) <= 0.074402164809084612 ? -0.0039157119621721047 : (array.get(x, 11) <= 0.99879968048506274 ? (array.get(x, 12) <= -0.70710678118654746 ? -0.02459915886546267 : -0.0087407179784865559) : -0.044309603179922184)))
+f_tree_14(array<float> x) => (array.get(x, 11) <= 0.39529756208811978 ? (array.get(x, 1) <= -0.37254538445101565 ? (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 12) <= -0.78656609248549314 ? 0.0050838199253121618 : (array.get(x, 1) <= -1.4874679298462408 ? 0.058278505812371297 : 0.018796248879867909)) : 0.00086672394409547087) : (array.get(x, 11) <= 0.11269126840383173 ? 0.003417431582979324 : (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 4) <= 0.46735357641683228 ? -0.00038571790803361384 : (array.get(x, 10) <= 1.1933587760501632 ? (array.get(x, 0) <= 1.4256372508845854 ? -0.010590577034169546 : (array.get(x, 12) <= -0.78656609248549314 ? -0.0074658299180234006 : -0.079155509167958563)) : 0.0031383413961225989)) : -0.00026350260486530046))) : (array.get(x, 4) <= -0.27679795554426267 ? -0.002351994190164592 : (array.get(x, 5) <= 2.7936033539753033 ? (array.get(x, 12) <= -0.50000000000000011 ? -0.022612815613912634 : -0.01007750036976679) : 0.00010939965580863254)))
+f_tree_15(array<float> x) => (array.get(x, 11) <= 0.2262242660691593 ? (array.get(x, 1) <= -0.50224807122529458 ? (array.get(x, 13) <= -0.37940952255126065 ? 0.0003396055359090632 : (array.get(x, 5) <= -2.1579083113593223 ? (array.get(x, 15) <= 0.30901699437494756 ? 0.0083337800415250792 : 0.026366036700516179) : 0.0043082852102017408)) : 0.00062032211184784379) : (array.get(x, 11) <= 0.57591798778950953 ? (array.get(x, 4) <= -0.84468947666982896 ? (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 0) <= -1.421770629428315 ? 0.059577306812175768 : (array.get(x, 14) <= -0.76942088429381328 ? 0.032894325237905718 : 0.0071620830858889198)) : -0.00064884443275814723) : (array.get(x, 5) <= -0.43061735174194976 ? (array.get(x, 15) <= 0.30901699437494756 ? -0.0079427718356487008 : (array.get(x, 12) <= -0.25881904510252096 ? -0.0093608129598951994 : 0.0067901110494763064)) : -0.001198846260619169)) : (array.get(x, 3) <= -1.950478114694107 ? -0.0020068077567325436 : -0.016665114799268441)))
+f_tree_16(array<float> x) => (array.get(x, 11) <= 0.27975075824362539 ? (array.get(x, 8) <= -0.1143908855621607 ? (array.get(x, 0) <= 0.61922425234130296 ? 0.002746019185375446 : -0.015217934614684665) : (array.get(x, 0) <= -1.3592286682381762 ? 0.033058846327714345 : (array.get(x, 2) <= 4.3714801900822691 ? -0.00039413598209367667 : 0.0054847142065021035))) : (array.get(x, 5) <= 0.20072560033600012 ? (array.get(x, 4) <= -0.38718288656375305 ? (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 14) <= -0.76942088429381328 ? 0.035618085576288726 : 0.0024753869921939407) : (array.get(x, 3) <= -4.1006351348298651 ? 0.00070099892398339163 : -0.0083703701537598211)) : (array.get(x, 12) <= -0.25881904510252096 ? -0.015122537625856219 : -0.0050641091798067465)) : (array.get(x, 11) <= 0.99879968048506274 ? (array.get(x, 6) <= 0.12898978029498642 ? 0.0014623254314883069 : (array.get(x, 12) <= -0.70710678118654746 ? -0.015187697775489648 : -0.0025284818758160403)) : -0.026980419927920114)))
+f_tree_17(array<float> x) => (array.get(x, 11) <= 0.21789006602580191 ? (array.get(x, 5) <= 2.3081842568156539 ? (array.get(x, 15) <= 0.30901699437494756 ? (array.get(x, 5) <= -0.086941612188295464 ? -0.00078992498468446386 : 0.0034723788847231419) : (array.get(x, 5) <= -0.96933511761591973 ? 0.012162279420065935 : -0.0001825794851182348)) : (array.get(x, 15) <= 0.30901699437494756 ? 0.0017677554957140807 : -0.011050327890117612)) : (array.get(x, 2) <= -0.39181655633778922 ? (array.get(x, 12) <= -0.25881904510252096 ? (array.get(x, 1) <= -0.93408634109871924 ? (array.get(x, 13) <= -6.1232339957367648e-17 ? -0.00075695986997874093 : 0.020215935192564555) : 0.0013423905650372225) : -0.0015364788011985246) : (array.get(x, 11) <= 0.51152624251539947 ? (array.get(x, 12) <= 0.50000000000000011 ? -0.0048702057055165556 : -0.00034014292474090113) : (array.get(x, 10) <= 0.78038865013390901 ? (array.get(x, 6) <= -0.14943386087949762 ? 0.048681193770070748 : -0.0065818557920188899) : -0.020363454598931657))))
+f_tree_18(array<float> x) => (array.get(x, 11) <= 0.43885216365565871 ? (array.get(x, 8) <= 0.018008380440364312 ? (array.get(x, 0) <= 1.2616479209891791 ? (array.get(x, 11) <= 0.12690615353047863 ? 0.00410439449827438 : 0.0010209080101419063) : -0.028714732328090655) : (array.get(x, 11) <= 0.21109068954684801 ? (array.get(x, 7) <= 2.366172770283852 ? 1.1312630654169904e-05 : 0.01805220681226466) : (array.get(x, 0) <= -1.2150143029361655 ? 0.040256259607630004 : (array.get(x, 12) <= -0.37940952255126065 ? (array.get(x, 0) <= -0.36097090441023838 ? 0.018775035515232043 : -0.0067865508758014007) : -0.0019357133889873806)))) : (array.get(x, 5) <= 2.7469678452445292 ? (array.get(x, 3) <= -1.4020748668140564 ? -0.0032297709449828436 : (array.get(x, 10) <= 1.1767934637072566 ? (array.get(x, 11) <= 0.70775244965496587 ? -0.0080444250175840566 : (array.get(x, 8) <= -0.49433032954109385 ? 0.015350995945318519 : -0.023644692167279865)) : -0.039461404197273932)) : 0.0015072386035770006))
+f_tree_19(array<float> x) => (array.get(x, 11) <= 0.32345355210778942 ? (array.get(x, 8) <= 0.095394536439151967 ? (array.get(x, 0) <= 1.2616479209891791 ? (array.get(x, 7) <= -2.3489140863607574 ? -0.013048525729971379 : (array.get(x, 0) <= -2.4338855182949244 ? 0.044178808750865897 : (array.get(x, 2) <= 4.7966608234762536 ? 0.0015152825581386444 : 0.0091542933319956107))) : -0.027257470446865634) : (array.get(x, 9) <= 2.6555814271790288 ? -0.0010815387988661477 : 0.01046338447928496)) : (array.get(x, 5) <= 1.4888633721352136 ? (array.get(x, 6) <= -0.13299031763360694 ? (array.get(x, 12) <= -0.70710678118654746 ? (array.get(x, 14) <= -0.76942088429381328 ? 0.041270979824429586 : (array.get(x, 0) <= -1.1758401584945757 ? 0.068968208637645786 : 0.0019943529132780274)) : (array.get(x, 9) <= 0.21480892528101214 ? 0.059632431923795227 : -0.0030694967931098483)) : (array.get(x, 11) <= 0.70775244965496587 ? -0.0062708880926547143 : -0.017375153063138953)) : 0.00087133318161565813))
+
+f_predict(array<float> x) =>
+    float raw = -0.20481272347851165
+    raw += f_tree_0(x)
+    raw += f_tree_1(x)
+    raw += f_tree_2(x)
+    raw += f_tree_3(x)
+    raw += f_tree_4(x)
+    raw += f_tree_5(x)
+    raw += f_tree_6(x)
+    raw += f_tree_7(x)
+    raw += f_tree_8(x)
+    raw += f_tree_9(x)
+    raw += f_tree_10(x)
+    raw += f_tree_11(x)
+    raw += f_tree_12(x)
+    raw += f_tree_13(x)
+    raw += f_tree_14(x)
+    raw += f_tree_15(x)
+    raw += f_tree_16(x)
+    raw += f_tree_17(x)
+    raw += f_tree_18(x)
+    raw += f_tree_19(x)
+    1.0 / (1.0 + math.exp(-raw))
+
+f_weekdayIndex() =>
+    switch dayofweek(time, i_timezone)
+        dayofweek.monday => 0.0
+        dayofweek.tuesday => 1.0
+        dayofweek.wednesday => 2.0
+        dayofweek.thursday => 3.0
+        dayofweek.friday => 4.0
+        dayofweek.saturday => 5.0
+        => 6.0
+
+f_features(float direction) =>
+    float atr14 = ta.atr(14)
+    float atr56 = ta.atr(56)
+    float hourAngle = hour(time, i_timezone) * (2.0 * math.pi / 24.0)
+    float weekdayAngle = f_weekdayIndex() * (2.0 * math.pi / 5.0)
+    array.from(
+         direction * (close - close[1]) / atr14,
+         direction * (close - close[4]) / atr14,
+         direction * (close - close[16]) / atr14,
+         direction * (close - close[64]) / atr14,
+         direction * (close - ema20) / atr14,
+         direction * (ema80 - ema200) / atr14,
+         direction * (ta.rsi(close, 14) - 50.0) / 50.0,
+         direction * (close - open) / atr14,
+         direction * (close - (high + low) / 2.0) / atr14,
+         (high - low) / atr14,
+         atr14 / atr56,
+         activeSpread / atr14,
+         math.sin(hourAngle), math.cos(hourAngle),
+         math.sin(weekdayAngle), math.cos(weekdayAngle))
+
+f_scanFeatures(float direction, float spreadValue) =>
+    float atr14 = ta.atr(14)
+    float atr56 = ta.atr(56)
+    float hourAngle = hour(time, i_timezone) * (2.0 * math.pi / 24.0)
+    float weekdayAngle = f_weekdayIndex() * (2.0 * math.pi / 5.0)
+    array.from(
+         direction * (close - close[1]) / atr14,
+         direction * (close - close[4]) / atr14,
+         direction * (close - close[16]) / atr14,
+         direction * (close - close[64]) / atr14,
+         direction * (close - ta.ema(close, 20)) / atr14,
+         direction * (ta.ema(close, 80) - ta.ema(close, 200)) / atr14,
+         direction * (ta.rsi(close, 14) - 50.0) / 50.0,
+         direction * (close - open) / atr14,
+         direction * (close - (high + low) / 2.0) / atr14,
+         (high - low) / atr14,
+         atr14 / atr56,
+         spreadValue / atr14,
+         math.sin(hourAngle), math.cos(hourAngle),
+         math.sin(weekdayAngle), math.cos(weekdayAngle))
+
+f_scanProbabilities() =>
+    string requestedPair = syminfo.basecurrency + syminfo.currency
+    float requestedSpread = f_pairSpread(requestedPair)
+    bool calculationReady = bar_index >= 208 and not na(requestedSpread)
+    bool hourlyNow = minute(time, i_timezone) == 0
+    float longNow = calculationReady and hourlyNow ? f_predict(f_scanFeatures(1.0, requestedSpread)) : na
+    float shortNow = calculationReady and hourlyNow ? f_predict(f_scanFeatures(-1.0, requestedSpread)) : na
+    float lastHourlyLong = ta.valuewhen(hourlyNow, longNow, 0)
+    float lastHourlyShort = ta.valuewhen(hourlyNow, shortNow, 0)
+    int hourlyAge = ta.barssince(hourlyNow)
+    float entryOpen = hourlyAge == 1 ? open : na
+    [lastHourlyLong, lastHourlyShort, hourlyAge, entryOpen, requestedSpread]
+
+f_scanHtfTrend() =>
+    float pivotHigh = ta.pivothigh(high, 2, 2)
+    float pivotLow = ta.pivotlow(low, 2, 2)
+    float lastHigh = ta.valuewhen(not na(pivotHigh), pivotHigh, 0)
+    float previousHigh = ta.valuewhen(not na(pivotHigh), pivotHigh, 1)
+    float lastLow = ta.valuewhen(not na(pivotLow), pivotLow, 0)
+    float previousLow = ta.valuewhen(not na(pivotLow), pivotLow, 1)
+    int trend = lastHigh > previousHigh and lastLow > previousLow ? 1 :
+         lastHigh < previousHigh and lastLow < previousLow ? -1 : 0
+    trend[1]
+
+f_scanName(string symbol) =>
+    string value = str.replace_all(symbol, "OANDA:", "")
+    value := str.replace_all(value, "FX:", "")
+    value := str.replace_all(value, "FOREXCOM:", "")
+    value
+
+f_scanRow(table target, int row, string symbol, int trend,
+     float longValue, float shortValue, int hourlyAge,
+     float entryOpen, float requestedSpread) =>
+    bool fresh = hourlyAge >= 0 and hourlyAge <= 1
+    bool buyReady = fresh and trend == 1 and longValue >= 0.485 and longValue >= shortValue
+    bool sellReady = fresh and trend == -1 and shortValue >= 0.485 and shortValue >= longValue
+    string statusText = buyReady ? "BUY" : sellReady ? "SELL" :
+         trend == 1 ? "買い監視" : trend == -1 ? "売り監視" : "方向待ち"
+    color statusColor = buyReady ? color.rgb(34, 197, 94) :
+         sellReady ? color.rgb(239, 68, 68) :
+         trend == 1 ? color.rgb(21, 128, 61) :
+         trend == -1 ? color.rgb(185, 28, 28) : color.rgb(75, 85, 99)
+    float activeProbability = trend == 1 ? longValue : trend == -1 ? shortValue : math.max(longValue, shortValue)
+    float entryPrice = buyReady and not na(entryOpen) ? entryOpen + requestedSpread :
+         sellReady and not na(entryOpen) ? entryOpen : na
+    string entryText = buyReady or sellReady ?
+         na(entryPrice) ? "次足始値" : str.tostring(entryPrice, "#.#####") : "--"
+    table.cell(target, 0, row, f_scanName(symbol), text_color=color.white,
+         bgcolor=color.rgb(31, 41, 55))
+    table.cell(target, 1, row, trend == 1 ? "↑" : trend == -1 ? "↓" : "–",
+         text_color=color.white, bgcolor=statusColor)
+    table.cell(target, 2, row, statusText, text_color=color.white, bgcolor=statusColor)
+    table.cell(target, 3, row, na(activeProbability) ? "--" :
+         str.tostring(activeProbability * 100.0, "#.0") + "%",
+         text_color=color.white, bgcolor=color.rgb(17, 24, 39))
+    table.cell(target, 4, row, entryText, text_color=color.white,
+         bgcolor=buyReady or sellReady ? statusColor : color.rgb(17, 24, 39))
+
+bool hourlyBar = minute(time, i_timezone) == 0
+[htfLastHigh, htfPreviousHigh, htfLastLow, htfPreviousLow] = request.security(
+     syminfo.tickerid, "240", f_htfContext(),
+     gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+bool hasHtfTrend = not na(htfLastHigh) and not na(htfPreviousHigh) and
+     not na(htfLastLow) and not na(htfPreviousLow)
+int htfTrend = hasHtfTrend and htfLastHigh > htfPreviousHigh and
+     htfLastLow > htfPreviousLow ? 1 :
+     hasHtfTrend and htfLastHigh < htfPreviousHigh and
+     htfLastLow < htfPreviousLow ? -1 : 0
+bool ready = bar_index >= 208 and barstate.isconfirmed and correctTimeframe and
+     yearAllowed and supportedPair and not na(activeSpread)
+float longProbability = ready and hourlyBar ? f_predict(f_features(1.0)) : na
+float shortProbability = ready and hourlyBar ? f_predict(f_features(-1.0)) : na
+
+var float lastLongProbability = na
+var float lastShortProbability = na
+var int evaluatedBars = 0
+if not na(longProbability) and not na(shortProbability)
+    lastLongProbability := longProbability
+    lastShortProbability := shortProbability
+    evaluatedBars += 1
+
+var int pendingSignalBar = na
+var int pendingDirection = 0
+var float pendingClose = na
+var float pendingAtr = na
+var bool trackingTrade = false
+var int tradeDirection = 0
+var float trackedEntry = na
+var float trackedStop = na
+var float trackedTarget = na
+var int wins = 0
+var int losses = 0
+var int entryCount = 0
+var array<line> entryLines = array.new_line()
+
+bool buyEntry = ready and hourlyBar and not trackingTrade and na(pendingSignalBar) and
+     longProbability >= 0.485 and htfTrend == 1 and longProbability >= shortProbability
+bool sellEntry = ready and hourlyBar and not trackingTrade and na(pendingSignalBar) and
+     shortProbability >= 0.485 and htfTrend == -1 and shortProbability >= longProbability
+
+if buyEntry or sellEntry
+    entryCount += 1
+    pendingSignalBar := bar_index
+    pendingDirection := buyEntry ? 1 : -1
+    pendingClose := close
+    pendingAtr := ta.atr(14)
+
+if not na(pendingSignalBar) and bar_index == pendingSignalBar + 1
+    float entryPrice = pendingDirection == 1 ? open + activeSpread : open
+    trackedEntry := entryPrice
+    tradeDirection := pendingDirection
+    if tradeDirection == 1
+        trackedStop := pendingClose - pendingAtr * 2.0
+    else
+        trackedStop := pendingClose + pendingAtr * 2.0 + activeSpread
+    float risk = math.abs(entryPrice - trackedStop)
+    trackedTarget := tradeDirection == 1 ? entryPrice + risk : entryPrice - risk
+    trackingTrade := risk > 0.0
+    if i_showEntryLine
+        color entryColor = tradeDirection == 1 ? #00C853 : #D50000
+        line entryLine = line.new(bar_index, entryPrice, bar_index + i_entryLineBars,
+             entryPrice, xloc=xloc.bar_index, color=entryColor, width=2)
+        array.push(entryLines, entryLine)
+        if array.size(entryLines) > 200
+            line.delete(array.shift(entryLines))
+    pendingSignalBar := na
+    pendingDirection := 0
+    pendingClose := na
+    pendingAtr := na
+
+bool winThisBar = false
+bool lossThisBar = false
+if trackingTrade
+    bool hitStop = tradeDirection == 1 ? low <= trackedStop : high + activeSpread >= trackedStop
+    bool hitTarget = tradeDirection == 1 ? high >= trackedTarget : low + activeSpread <= trackedTarget
+    if hitStop or hitTarget
+        if hitStop
+            losses += 1
+            lossThisBar := true
+        else
+            wins += 1
+            winThisBar := true
+        trackingTrade := false
+        tradeDirection := 0
+        trackedEntry := na
+        trackedStop := na
+        trackedTarget := na
+
+int closedTrades = wins + losses
+float winRate = closedTrades > 0 ? wins * 100.0 / closedTrades : na
+float visibleEntry = trackingTrade ? trackedEntry : not na(pendingSignalBar) ?
+     pendingDirection == 1 ? pendingClose + activeSpread : pendingClose : na
+plot(visibleEntry, "Entry", color=color.white, linewidth=2,
+     style=plot.style_linebr)
+plot(trackingTrade ? trackedStop : na, "SL", color=color.red, linewidth=2,
+     style=plot.style_linebr)
+plot(trackingTrade ? trackedTarget : na, "TP 1R", color=color.lime, linewidth=2,
+     style=plot.style_linebr)
+plotshape(buyEntry, "ML BUY", shape.labelup, location.belowbar, color=#00C853,
+     text="BUY", textcolor=color.white, size=size.tiny)
+plotshape(sellEntry, "ML SELL", shape.labeldown, location.abovebar, color=#D50000,
+     text="SELL", textcolor=color.white, size=size.tiny)
+plotshape(winThisBar, "WIN", shape.circle, location.abovebar, color=#00C853,
+     text="W", textcolor=color.white, size=size.tiny)
+plotshape(lossThisBar, "LOSS", shape.circle, location.belowbar, color=#D50000,
+     text="L", textcolor=color.white, size=size.tiny)
+bgcolor(not correctTimeframe or not supportedPair or not yearAllowed ? color.new(color.orange, 88) : na)
+alertcondition(buyEntry, "コンパクトML BUY", "固定11通貨 コンパクトML: BUY")
+alertcondition(sellEntry, "コンパクトML SELL", "固定11通貨 コンパクトML: SELL")
+
+string runtimeStatus = "稼働中"
+if not correctTimeframe
+    runtimeStatus := "15分足に変更"
+else if not supportedPair
+    runtimeStatus := "対象外: " + pair
+else if not yearAllowed
+    runtimeStatus := "2026年外"
+else if bar_index < 208
+    runtimeStatus := "計算準備中"
+else if trackingTrade
+    runtimeStatus := "保有判定中"
+else if htfTrend == 0
+    runtimeStatus := "4H方向待ち"
+
+var table stats = table.new(position.middle_right, 2, 13, border_width=1)
+table.cell(stats, 0, 0, "Compact ML", bgcolor=color.new(color.blue, 35), text_color=color.white)
+table.cell(stats, 1, 0, runtimeStatus, bgcolor=color.new(color.blue, 35), text_color=color.white)
+table.cell(stats, 0, 1, "通貨 / 足")
+table.cell(stats, 1, 1, pair + " / " + timeframe.period)
+table.cell(stats, 0, 2, "検出数")
+table.cell(stats, 1, 2, str.tostring(entryCount))
+table.cell(stats, 0, 3, "当チャート勝率")
+table.cell(stats, 1, 3, na(winRate) ? "--" : str.tostring(winRate, "#.00") + "%")
+table.cell(stats, 0, 4, "勝ち / 負け")
+table.cell(stats, 1, 4, str.tostring(wins) + " / " + str.tostring(losses))
+table.cell(stats, 0, 5, "判定済み正時")
+table.cell(stats, 1, 5, str.tostring(evaluatedBars))
+table.cell(stats, 0, 6, "直近の買い確率")
+table.cell(stats, 1, 6, na(lastLongProbability) ? "--" : str.tostring(lastLongProbability, "#.000"))
+table.cell(stats, 0, 7, "直近の売り確率")
+table.cell(stats, 1, 7, na(lastShortProbability) ? "--" : str.tostring(lastShortProbability, "#.000"))
+table.cell(stats, 0, 8, "閾値")
+table.cell(stats, 1, 8, "0.485")
+table.cell(stats, 0, 9, "表示期間")
+table.cell(stats, 1, 9, i_only2026 ? "2026年のみ" : "全期間（参考）")
+table.cell(stats, 0, 10, "判定")
+table.cell(stats, 1, 10, "正時判定→次足 / RR1:1")
+table.cell(stats, 0, 11, "確定4H方向")
+table.cell(stats, 1, 11, htfTrend == 1 ? "上昇・買いのみ" : htfTrend == -1 ? "下降・売りのみ" : "方向待ち")
+table.cell(stats, 0, 12, "11通貨検証参考")
+table.cell(stats, 1, 12, "2026: 72.8% / 312件")
+
+[scanLong1, scanShort1, scanAge1, scanOpen1, scanSpread1] = request.security(i_scanSymbol1, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanLong2, scanShort2, scanAge2, scanOpen2, scanSpread2] = request.security(i_scanSymbol2, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanLong3, scanShort3, scanAge3, scanOpen3, scanSpread3] = request.security(i_scanSymbol3, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanLong4, scanShort4, scanAge4, scanOpen4, scanSpread4] = request.security(i_scanSymbol4, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanLong5, scanShort5, scanAge5, scanOpen5, scanSpread5] = request.security(i_scanSymbol5, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanLong6, scanShort6, scanAge6, scanOpen6, scanSpread6] = request.security(i_scanSymbol6, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanLong7, scanShort7, scanAge7, scanOpen7, scanSpread7] = request.security(i_scanSymbol7, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanLong8, scanShort8, scanAge8, scanOpen8, scanSpread8] = request.security(i_scanSymbol8, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanLong9, scanShort9, scanAge9, scanOpen9, scanSpread9] = request.security(i_scanSymbol9, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanLong10, scanShort10, scanAge10, scanOpen10, scanSpread10] = request.security(i_scanSymbol10, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanLong11, scanShort11, scanAge11, scanOpen11, scanSpread11] = request.security(i_scanSymbol11, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+int scanTrend1 = request.security(i_scanSymbol1, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+int scanTrend2 = request.security(i_scanSymbol2, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+int scanTrend3 = request.security(i_scanSymbol3, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+int scanTrend4 = request.security(i_scanSymbol4, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+int scanTrend5 = request.security(i_scanSymbol5, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+int scanTrend6 = request.security(i_scanSymbol6, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+int scanTrend7 = request.security(i_scanSymbol7, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+int scanTrend8 = request.security(i_scanSymbol8, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+int scanTrend9 = request.security(i_scanSymbol9, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+int scanTrend10 = request.security(i_scanSymbol10, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+int scanTrend11 = request.security(i_scanSymbol11, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+
+var table scanner = table.new(position.bottom_right, 5, 13, border_width=1)
+if barstate.islast and i_showScanner
+    table.cell(scanner, 0, 0, "通貨", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 1, 0, "4H", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 2, 0, "チャンス", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 3, 0, "ML値", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 4, 0, "Entry", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    f_scanRow(scanner, 1, i_scanSymbol1, scanTrend1, scanLong1, scanShort1, scanAge1, scanOpen1, scanSpread1)
+    f_scanRow(scanner, 2, i_scanSymbol2, scanTrend2, scanLong2, scanShort2, scanAge2, scanOpen2, scanSpread2)
+    f_scanRow(scanner, 3, i_scanSymbol3, scanTrend3, scanLong3, scanShort3, scanAge3, scanOpen3, scanSpread3)
+    f_scanRow(scanner, 4, i_scanSymbol4, scanTrend4, scanLong4, scanShort4, scanAge4, scanOpen4, scanSpread4)
+    f_scanRow(scanner, 5, i_scanSymbol5, scanTrend5, scanLong5, scanShort5, scanAge5, scanOpen5, scanSpread5)
+    f_scanRow(scanner, 6, i_scanSymbol6, scanTrend6, scanLong6, scanShort6, scanAge6, scanOpen6, scanSpread6)
+    f_scanRow(scanner, 7, i_scanSymbol7, scanTrend7, scanLong7, scanShort7, scanAge7, scanOpen7, scanSpread7)
+    f_scanRow(scanner, 8, i_scanSymbol8, scanTrend8, scanLong8, scanShort8, scanAge8, scanOpen8, scanSpread8)
+    f_scanRow(scanner, 9, i_scanSymbol9, scanTrend9, scanLong9, scanShort9, scanAge9, scanOpen9, scanSpread9)
+    f_scanRow(scanner, 10, i_scanSymbol10, scanTrend10, scanLong10, scanShort10, scanAge10, scanOpen10, scanSpread10)
+    f_scanRow(scanner, 11, i_scanSymbol11, scanTrend11, scanLong11, scanShort11, scanAge11, scanOpen11, scanSpread11)
+    table.cell(scanner, 0, 12, "基準", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 1, 12, "", bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 2, 12, "48.5%以上", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 3, 12, "勝率ではない", text_color=color.rgb(254, 240, 138), bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 4, 12, "成立時表示", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
