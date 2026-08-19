@@ -161,10 +161,11 @@ def _training_rows(
     prepared: dict[str, Prepared],
     opportunities: dict[str, Opportunities],
     prediction_year: int,
+    symbols: tuple[str, ...] = SYMBOLS,
 ) -> tuple[np.ndarray, np.ndarray]:
     x_rows = []
     y_rows = []
-    for symbol in SYMBOLS:
+    for symbol in symbols:
         data = prepared[symbol]
         rows = opportunities[symbol]
         resolved_long = rows.resolved_long >= 0

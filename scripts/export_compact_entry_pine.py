@@ -14,7 +14,21 @@ import numpy as np
 from forextester_backtest import HistoryRepository
 from research_compact_pine_ml import CompactModelConfig, _model
 from research_ml_strict_rr import _opportunities, _training_rows
-from research_strict_rr_portfolio import SYMBOLS, _prepare
+from research_strict_rr_portfolio import _prepare
+
+WATCHLIST_SYMBOLS = (
+    "XAUUSD", "EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "EURJPY",
+    "GBPJPY", "NZDJPY", "CADJPY", "NZDUSD", "AUDJPY", "USDCHF",
+    "EURAUD", "EURCHF", "GBPCHF", "AUDNZD", "EURGBP",
+)
+ML_SYMBOLS = tuple(
+    symbol
+    for symbol in WATCHLIST_SYMBOLS
+    if symbol not in {"XAUUSD", "CADJPY", "EURAUD", "AUDNZD"}
+)
+ANALYSIS_ONLY_SYMBOLS = tuple(
+    symbol for symbol in WATCHLIST_SYMBOLS if symbol not in ML_SYMBOLS
+)
 
 SPREADS = {
     "AUDUSD": 0.00012,
@@ -24,10 +38,12 @@ SPREADS = {
     "USDCHF": 0.00015,
     "USDJPY": 0.012,
     "AUDJPY": 0.014,
-    "CHFJPY": 0.018,
     "EURCHF": 0.00017,
     "GBPCHF": 0.00016,
     "GBPJPY": 0.018,
+    "EURJPY": 0.013,
+    "NZDJPY": 0.017,
+    "EURGBP": 0.00014,
 }
 CONFIG = CompactModelConfig(20, 15, 0.10, 300)
 DEFAULT_THRESHOLD = 0.487
@@ -78,21 +94,48 @@ def _pine(model, threshold: float, require_htf_alignment: bool) -> str:
     spread_cases = "\n".join(
         f'        "{symbol}" => {_number(spread)}' for symbol, spread in SPREADS.items()
     )
-    supported = " or ".join(f'pair == "{symbol}"' for symbol in SYMBOLS)
+    supported = " or ".join(f'pair == "{symbol}"' for symbol in ML_SYMBOLS)
+    analysis_only = " or ".join(
+        f'pair == "{symbol}"' for symbol in ANALYSIS_ONLY_SYMBOLS
+    )
+    scanner_inputs = "\n".join(
+        f'string i_scanSymbol{index} = input.symbol("OANDA:{symbol}", '
+        f'"{index}", group=gScanner)'
+        for index, symbol in enumerate(WATCHLIST_SYMBOLS, start=1)
+    )
+    scanner_m15_requests = "\n".join(
+        f'[scanLong{index}, scanShort{index}, scanAge{index}, scanOpen{index}, '
+        f'scanSpread{index}, scanClose{index}, scanAtr{index}] = '
+        f'request.security(i_scanSymbol{index}, "15", f_scanProbabilities(), '
+        'gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)'
+        for index in range(1, len(WATCHLIST_SYMBOLS) + 1)
+    )
+    scanner_htf_requests = "\n".join(
+        f'int scanTrend{index} = request.security(i_scanSymbol{index}, "240", '
+        'f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)'
+        for index in range(1, len(WATCHLIST_SYMBOLS) + 1)
+    )
+    scanner_rows = "\n".join(
+        f'    f_scanRow(scanner, {index}, i_scanSymbol{index}, scanTrend{index}, '
+        f'scanLong{index}, scanShort{index}, scanAge{index}, scanOpen{index}, '
+        f'scanSpread{index}, scanClose{index}, scanAtr{index})'
+        for index in range(1, len(WATCHLIST_SYMBOLS) + 1)
+    )
+    scanner_footer_row = len(WATCHLIST_SYMBOLS) + 1
+    scanner_table_rows = len(WATCHLIST_SYMBOLS) + 2
     htf_buy_filter = " and htfTrend == 1" if require_htf_alignment else ""
     htf_sell_filter = " and htfTrend == -1" if require_htf_alignment else ""
-    mode_title = "4H順張り コンパクトML" if require_htf_alignment else "コンパクトML"
     return f'''//@version=6
-// 2026年用の固定11通貨・共有コンパクトMLエントリー。
+// 2026年用の画像ウォッチリスト対応・共有コンパクトMLエントリー。
 // 2025年末までに決済済みのデータだけで学習。注文は出さず、シグナルを表示する。
-indicator("固定11通貨 {mode_title}エントリー 2026 [ANALYSIS PLAN]", overlay=true,
+indicator("13通貨ML + 4銘柄構造分析 2026 [ANALYSIS PLAN]", overlay=true,
      max_labels_count=500, max_lines_count=500, max_boxes_count=500, dynamic_requests=true)
 
 string gModel = "エントリー"
 string i_timezone = input.string("Etc/UTC", "Forex Testerデータの時間帯", group=gModel)
 float i_spreadOverride = input.float(0.0, "スプレッド価格差（0=既定値）", minval=0.0, group=gModel)
 int i_entryLineBars = input.int(48, "トレード計画の表示幅", minval=6, maxval=192, group=gModel)
-int i_historyTradeCount = input.int(150, "過去トレード保持数", minval=1, maxval=160, group=gModel)
+int i_historyTradeCount = input.int(50, "過去トレード保持数", minval=1, maxval=50, group=gModel)
 bool i_only2026 = input.bool(true, "2026年だけに限定（検証条件）", group=gModel)
 
 string gAnalysis = "チャート分析"
@@ -101,18 +144,8 @@ int i_analysisPivotBars = input.int(5, "スイング確定本数", minval=2, max
 int i_analysisScenarioBars = input.int(48, "シナリオ予測幅", minval=12, maxval=192, group=gAnalysis)
 
 string gScanner = "通貨ペア・チャンス一覧"
-bool i_showScanner = input.bool(true, "11通貨を一覧表示", group=gScanner)
-string i_scanSymbol1 = input.symbol("OANDA:AUDUSD", "1", group=gScanner)
-string i_scanSymbol2 = input.symbol("OANDA:EURUSD", "2", group=gScanner)
-string i_scanSymbol3 = input.symbol("OANDA:GBPUSD", "3", group=gScanner)
-string i_scanSymbol4 = input.symbol("OANDA:NZDUSD", "4", group=gScanner)
-string i_scanSymbol5 = input.symbol("OANDA:USDCHF", "5", group=gScanner)
-string i_scanSymbol6 = input.symbol("OANDA:USDJPY", "6", group=gScanner)
-string i_scanSymbol7 = input.symbol("OANDA:AUDJPY", "7", group=gScanner)
-string i_scanSymbol8 = input.symbol("OANDA:CHFJPY", "8", group=gScanner)
-string i_scanSymbol9 = input.symbol("OANDA:EURCHF", "9", group=gScanner)
-string i_scanSymbol10 = input.symbol("OANDA:GBPCHF", "10", group=gScanner)
-string i_scanSymbol11 = input.symbol("OANDA:GBPJPY", "11", group=gScanner)
+bool i_showScanner = input.bool(true, "画像の17銘柄を一覧表示", group=gScanner)
+{scanner_inputs}
 
 f_pairSpread(string pair) =>
     switch pair
@@ -130,6 +163,8 @@ f_htfContext() =>
 
 string pair = syminfo.basecurrency + syminfo.currency
 bool supportedPair = {supported}
+bool analysisOnlyPair = {analysis_only}
+bool chartSupported = supportedPair or analysisOnlyPair
 float defaultSpread = f_pairSpread(pair)
 float activeSpread = i_spreadOverride > 0.0 ? i_spreadOverride : defaultSpread
 bool correctTimeframe = timeframe.in_seconds() == 15 * 60
@@ -238,16 +273,21 @@ f_scanName(string symbol) =>
 f_scanRow(table target, int row, string symbol, int trend,
      float longValue, float shortValue, int hourlyAge,
      float entryOpen, float requestedSpread, float signalClose, float signalAtr) =>
+    bool mlEligible = not na(requestedSpread)
     bool fresh = hourlyAge >= 0 and hourlyAge <= 1
-    bool buyReady = fresh and trend == 1 and longValue >= {threshold} and longValue >= shortValue
-    bool sellReady = fresh and trend == -1 and shortValue >= {threshold} and shortValue >= longValue
-    string statusText = buyReady ? "BUY" : sellReady ? "SELL" :
+    bool buyReady = mlEligible and fresh and trend == 1 and longValue >= {threshold} and longValue >= shortValue
+    bool sellReady = mlEligible and fresh and trend == -1 and shortValue >= {threshold} and shortValue >= longValue
+    string statusText = not mlEligible ?
+         (trend == 1 ? "構造↑" : trend == -1 ? "構造↓" : "構造待ち") :
+         buyReady ? "BUY" : sellReady ? "SELL" :
          trend == 1 ? "買い監視" : trend == -1 ? "売り監視" : "方向待ち"
-    color statusColor = buyReady ? color.rgb(34, 197, 94) :
+    color statusColor = not mlEligible ? color.rgb(8, 145, 178) :
+         buyReady ? color.rgb(34, 197, 94) :
          sellReady ? color.rgb(239, 68, 68) :
          trend == 1 ? color.rgb(21, 128, 61) :
          trend == -1 ? color.rgb(185, 28, 28) : color.rgb(75, 85, 99)
-    float activeProbability = trend == 1 ? longValue : trend == -1 ? shortValue : math.max(longValue, shortValue)
+    float activeProbability = not mlEligible ? na :
+         trend == 1 ? longValue : trend == -1 ? shortValue : math.max(longValue, shortValue)
     float entryPrice = buyReady and not na(entryOpen) ? entryOpen + requestedSpread :
          sellReady and not na(entryOpen) ? entryOpen : na
     float stopPrice = buyReady ? signalClose - signalAtr * 2.0 :
@@ -294,6 +334,18 @@ int analysisLowBar2 = int(ta.valuewhen(not na(analysisPivotLow), bar_index - i_a
 bool analysisUpStructure = analysisHigh1 > analysisHigh2 and analysisLow1 > analysisLow2
 bool analysisDownStructure = analysisHigh1 < analysisHigh2 and analysisLow1 < analysisLow2
 int analysisDirection = analysisUpStructure ? 1 : analysisDownStructure ? -1 : htfTrend
+float analysisUpperPivotSlope = analysisHighBar1 > analysisHighBar2 ?
+     (analysisHigh1 - analysisHigh2) / (analysisHighBar1 - analysisHighBar2) : na
+float analysisLowerPivotSlope = analysisLowBar1 > analysisLowBar2 ?
+     (analysisLow1 - analysisLow2) / (analysisLowBar1 - analysisLowBar2) : na
+// 上昇時は安値側、下降時は高値側を基準にし、上下線へ必ず同じ傾きを使う。
+float analysisChannelSlope = analysisDirection == 1 and not na(analysisLowerPivotSlope) ? analysisLowerPivotSlope :
+     analysisDirection == -1 and not na(analysisUpperPivotSlope) ? analysisUpperPivotSlope :
+     not na(analysisUpperPivotSlope) and not na(analysisLowerPivotSlope) ?
+     (analysisUpperPivotSlope + analysisLowerPivotSlope) / 2.0 :
+     not na(analysisUpperPivotSlope) ? analysisUpperPivotSlope : analysisLowerPivotSlope
+int analysisChannelStartBar = not na(analysisHighBar2) and not na(analysisLowBar2) ?
+     math.min(analysisHighBar2, analysisLowBar2) : int(na)
 bool ready = bar_index >= 208 and barstate.isconfirmed and correctTimeframe and
      yearAllowed and supportedPair and not na(activeSpread)
 float longProbability = ready and hourlyBar ? f_predict(f_features(1.0)) : na
@@ -326,6 +378,8 @@ var int entryCount = 0
 var array<line> tradeLines = array.new_line()
 var array<label> tradeLabels = array.new_label()
 var array<box> tradeZones = array.new_box()
+var array<line> entryAnalysisLines = array.new_line()
+var array<int> entryAnalysisCounts = array.new_int()
 
 bool buyEntry = ready and hourlyBar and not trackingTrade and na(pendingSignalBar) and
      longProbability >= {threshold}{htf_buy_filter} and longProbability >= shortProbability
@@ -367,6 +421,46 @@ if not na(pendingSignalBar) and bar_index == pendingSignalBar + 1
         box riskZone = box.new(bar_index, riskTop, planEndBar, riskBottom,
              xloc=xloc.bar_index, border_color=color.new(color.red, 35),
              bgcolor=color.new(color.red, 88))
+        int entryAnalysisCount = 0
+        if not na(analysisHigh1)
+            line entryR1 = line.new(bar_index, analysisHigh1, planEndBar, analysisHigh1,
+                 xloc=xloc.bar_index, color=color.rgb(245, 158, 11), width=2)
+            array.push(entryAnalysisLines, entryR1)
+            entryAnalysisCount += 1
+        if not na(analysisHigh2)
+            line entryR2 = line.new(bar_index, analysisHigh2, planEndBar, analysisHigh2,
+                 xloc=xloc.bar_index, color=color.new(color.rgb(245, 158, 11), 45),
+                 width=1, style=line.style_dashed)
+            array.push(entryAnalysisLines, entryR2)
+            entryAnalysisCount += 1
+        if not na(analysisLow1)
+            line entryS1 = line.new(bar_index, analysisLow1, planEndBar, analysisLow1,
+                 xloc=xloc.bar_index, color=color.rgb(37, 99, 235), width=2)
+            array.push(entryAnalysisLines, entryS1)
+            entryAnalysisCount += 1
+        if not na(analysisLow2)
+            line entryS2 = line.new(bar_index, analysisLow2, planEndBar, analysisLow2,
+                 xloc=xloc.bar_index, color=color.new(color.rgb(37, 99, 235), 45),
+                 width=1, style=line.style_dashed)
+            array.push(entryAnalysisLines, entryS2)
+            entryAnalysisCount += 1
+        if not na(analysisChannelSlope) and not na(analysisChannelStartBar) and
+             not na(analysisHigh1) and not na(analysisLow1)
+            float entryUpperStart = analysisHigh1 + analysisChannelSlope * (analysisChannelStartBar - analysisHighBar1)
+            float entryUpperEnd = analysisHigh1 + analysisChannelSlope * (planEndBar - analysisHighBar1)
+            float entryLowerStart = analysisLow1 + analysisChannelSlope * (analysisChannelStartBar - analysisLowBar1)
+            float entryLowerEnd = analysisLow1 + analysisChannelSlope * (planEndBar - analysisLowBar1)
+            line entryUpperChannel = line.new(analysisChannelStartBar, entryUpperStart, planEndBar, entryUpperEnd,
+                 xloc=xloc.bar_index, color=color.new(color.rgb(6, 182, 212), 20),
+                 width=1, style=line.style_dashed)
+            array.push(entryAnalysisLines, entryUpperChannel)
+            entryAnalysisCount += 1
+            line entryLowerChannel = line.new(analysisChannelStartBar, entryLowerStart, planEndBar, entryLowerEnd,
+                 xloc=xloc.bar_index, color=color.new(color.rgb(6, 182, 212), 20),
+                 width=1, style=line.style_dashed)
+            array.push(entryAnalysisLines, entryLowerChannel)
+            entryAnalysisCount += 1
+        array.push(entryAnalysisCounts, entryAnalysisCount)
         line entryLine = line.new(bar_index, entryPrice, bar_index + i_entryLineBars,
              entryPrice, xloc=xloc.bar_index, color=color.yellow, width=2,
              style=line.style_solid)
@@ -407,6 +501,11 @@ if not na(pendingSignalBar) and bar_index == pendingSignalBar + 1
         int historyZoneLimit = i_historyTradeCount * 2
         while array.size(tradeZones) > historyZoneLimit
             box.delete(array.shift(tradeZones))
+        while array.size(entryAnalysisCounts) > i_historyTradeCount
+            int oldestAnalysisCount = array.shift(entryAnalysisCounts)
+            if oldestAnalysisCount > 0
+                for analysisIndex = 1 to oldestAnalysisCount
+                    line.delete(array.shift(entryAnalysisLines))
     pendingSignalBar := na
     pendingDirection := 0
     pendingClose := na
@@ -505,53 +604,66 @@ if barstate.islast
                  width=1, style=line.style_dashed)
             array.push(analysisLines, support2)
 
-        if not na(analysisHigh1) and not na(analysisHigh2) and analysisHighBar1 > analysisHighBar2
-            float upperSlope = (analysisHigh1 - analysisHigh2) / (analysisHighBar1 - analysisHighBar2)
-            float upperProjected = analysisHigh1 + upperSlope * (analysisEndBar - analysisHighBar1)
-            line upperChannel = line.new(analysisHighBar2, analysisHigh2, analysisEndBar, upperProjected,
+        if not na(analysisChannelSlope) and not na(analysisChannelStartBar) and
+             not na(analysisHigh1) and not na(analysisLow1)
+            float upperChannelStart = analysisHigh1 + analysisChannelSlope * (analysisChannelStartBar - analysisHighBar1)
+            float upperChannelEnd = analysisHigh1 + analysisChannelSlope * (analysisEndBar - analysisHighBar1)
+            float lowerChannelStart = analysisLow1 + analysisChannelSlope * (analysisChannelStartBar - analysisLowBar1)
+            float lowerChannelEnd = analysisLow1 + analysisChannelSlope * (analysisEndBar - analysisLowBar1)
+            line upperChannel = line.new(analysisChannelStartBar, upperChannelStart, analysisEndBar, upperChannelEnd,
+                 xloc=xloc.bar_index, color=color.rgb(29, 78, 216), width=2)
+            line lowerChannel = line.new(analysisChannelStartBar, lowerChannelStart, analysisEndBar, lowerChannelEnd,
                  xloc=xloc.bar_index, color=color.rgb(29, 78, 216), width=2)
             array.push(analysisLines, upperChannel)
-        if not na(analysisLow1) and not na(analysisLow2) and analysisLowBar1 > analysisLowBar2
-            float lowerSlope = (analysisLow1 - analysisLow2) / (analysisLowBar1 - analysisLowBar2)
-            float lowerProjected = analysisLow1 + lowerSlope * (analysisEndBar - analysisLowBar1)
-            line lowerChannel = line.new(analysisLowBar2, analysisLow2, analysisEndBar, lowerProjected,
-                 xloc=xloc.bar_index, color=color.rgb(29, 78, 216), width=2)
             array.push(analysisLines, lowerChannel)
 
         float analysisAtr = ta.atr(14)
-        if analysisDirection != 0 and not na(analysisAtr)
+        if not na(analysisAtr)
             int scenarioBar1 = bar_index + int(math.round(i_analysisScenarioBars / 3.0))
             int scenarioBar2 = bar_index + int(math.round(i_analysisScenarioBars * 2.0 / 3.0))
-            float scenarioTurn = analysisDirection == 1 ?
-                 (na(analysisLow1) ? close - analysisAtr : math.max(analysisLow1, close - analysisAtr)) :
-                 (na(analysisHigh1) ? close + analysisAtr : math.min(analysisHigh1, close + analysisAtr))
-            float scenarioTarget = analysisDirection == 1 ?
-                 (na(analysisHigh1) or analysisHigh1 <= close ? close + analysisAtr * 1.5 : analysisHigh1) :
-                 (na(analysisLow1) or analysisLow1 >= close ? close - analysisAtr * 1.5 : analysisLow1)
-            float scenarioExtension = analysisDirection == 1 ?
-                 scenarioTarget + analysisAtr : scenarioTarget - analysisAtr
-            color scenarioColor = analysisDirection == 1 ? color.rgb(22, 163, 74) : color.rgb(220, 38, 38)
-            line scenario1 = line.new(bar_index, close, scenarioBar1, scenarioTurn,
-                 xloc=xloc.bar_index, color=scenarioColor, width=2, style=line.style_dotted)
-            line scenario2 = line.new(scenarioBar1, scenarioTurn, scenarioBar2, scenarioTarget,
-                 xloc=xloc.bar_index, color=scenarioColor, width=2, style=line.style_dotted)
-            line scenario3 = line.new(scenarioBar2, scenarioTarget, analysisEndBar, scenarioExtension,
-                 xloc=xloc.bar_index, color=scenarioColor, width=2, style=line.style_dotted)
-            label scenarioLabel = label.new(analysisEndBar, scenarioExtension,
-                 analysisDirection == 1 ? "上昇シナリオ" : "下降シナリオ",
-                 xloc=xloc.bar_index, style=analysisDirection == 1 ? label.style_label_up : label.style_label_down,
-                 color=scenarioColor, textcolor=color.white, size=size.tiny)
-            array.push(analysisLines, scenario1)
-            array.push(analysisLines, scenario2)
-            array.push(analysisLines, scenario3)
-            array.push(analysisLabels, scenarioLabel)
-bgcolor(not correctTimeframe or not supportedPair or not yearAllowed ? color.new(color.orange, 88) : na)
+            float bullishTurn = na(analysisLow1) ? close - analysisAtr : math.max(analysisLow1, close - analysisAtr)
+            float bullishTarget = na(analysisHigh1) or analysisHigh1 <= close ? close + analysisAtr * 1.5 : analysisHigh1
+            float bullishExtension = bullishTarget + analysisAtr
+            float bearishTurn = na(analysisHigh1) ? close + analysisAtr : math.min(analysisHigh1, close + analysisAtr)
+            float bearishTarget = na(analysisLow1) or analysisLow1 >= close ? close - analysisAtr * 1.5 : analysisLow1
+            float bearishExtension = bearishTarget - analysisAtr
+            color bullishColor = color.new(color.rgb(22, 163, 74), analysisDirection == -1 ? 55 : 0)
+            color bearishColor = color.new(color.rgb(220, 38, 38), analysisDirection == 1 ? 55 : 0)
+            line bullishScenario1 = line.new(bar_index, close, scenarioBar1, bullishTurn,
+                 xloc=xloc.bar_index, color=bullishColor, width=2, style=line.style_dotted)
+            line bullishScenario2 = line.new(scenarioBar1, bullishTurn, scenarioBar2, bullishTarget,
+                 xloc=xloc.bar_index, color=bullishColor, width=2, style=line.style_dotted)
+            line bullishScenario3 = line.new(scenarioBar2, bullishTarget, analysisEndBar, bullishExtension,
+                 xloc=xloc.bar_index, color=bullishColor, width=2, style=line.style_dotted)
+            line bearishScenario1 = line.new(bar_index, close, scenarioBar1, bearishTurn,
+                 xloc=xloc.bar_index, color=bearishColor, width=2, style=line.style_dotted)
+            line bearishScenario2 = line.new(scenarioBar1, bearishTurn, scenarioBar2, bearishTarget,
+                 xloc=xloc.bar_index, color=bearishColor, width=2, style=line.style_dotted)
+            line bearishScenario3 = line.new(scenarioBar2, bearishTarget, analysisEndBar, bearishExtension,
+                 xloc=xloc.bar_index, color=bearishColor, width=2, style=line.style_dotted)
+            label bullishScenarioLabel = label.new(analysisEndBar, bullishExtension, "上昇シナリオ",
+                 xloc=xloc.bar_index, style=label.style_label_up,
+                 color=bullishColor, textcolor=color.white, size=size.tiny)
+            label bearishScenarioLabel = label.new(analysisEndBar, bearishExtension, "下降シナリオ",
+                 xloc=xloc.bar_index, style=label.style_label_down,
+                 color=bearishColor, textcolor=color.white, size=size.tiny)
+            array.push(analysisLines, bullishScenario1)
+            array.push(analysisLines, bullishScenario2)
+            array.push(analysisLines, bullishScenario3)
+            array.push(analysisLines, bearishScenario1)
+            array.push(analysisLines, bearishScenario2)
+            array.push(analysisLines, bearishScenario3)
+            array.push(analysisLabels, bullishScenarioLabel)
+            array.push(analysisLabels, bearishScenarioLabel)
+bgcolor(not correctTimeframe or not chartSupported or not yearAllowed ? color.new(color.orange, 88) : na)
 alertcondition(buyEntry, "コンパクトML BUY", "固定11通貨 コンパクトML: BUY")
 alertcondition(sellEntry, "コンパクトML SELL", "固定11通貨 コンパクトML: SELL")
 
 string runtimeStatus = "稼働中"
 if not correctTimeframe
     runtimeStatus := "15分足に変更"
+else if analysisOnlyPair
+    runtimeStatus := pair + " 構造分析のみ"
 else if not supportedPair
     runtimeStatus := "対象外: " + pair
 else if not yearAllowed
@@ -588,57 +700,27 @@ table.cell(stats, 0, 10, "判定")
 table.cell(stats, 1, 10, "正時判定→次足 / RR1:1")
 table.cell(stats, 0, 11, "確定4H方向")
 table.cell(stats, 1, 11, htfTrend == 1 ? "上昇・買いのみ" : htfTrend == -1 ? "下降・売りのみ" : "方向待ち")
-table.cell(stats, 0, 12, "11通貨検証参考")
-table.cell(stats, 1, 12, "2026: 72.8% / 312件")
+table.cell(stats, 0, 12, "13通貨検証参考")
+table.cell(stats, 1, 12, "拡張後は再検証が必要")
 
-[scanLong1, scanShort1, scanAge1, scanOpen1, scanSpread1, scanClose1, scanAtr1] = request.security(i_scanSymbol1, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-[scanLong2, scanShort2, scanAge2, scanOpen2, scanSpread2, scanClose2, scanAtr2] = request.security(i_scanSymbol2, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-[scanLong3, scanShort3, scanAge3, scanOpen3, scanSpread3, scanClose3, scanAtr3] = request.security(i_scanSymbol3, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-[scanLong4, scanShort4, scanAge4, scanOpen4, scanSpread4, scanClose4, scanAtr4] = request.security(i_scanSymbol4, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-[scanLong5, scanShort5, scanAge5, scanOpen5, scanSpread5, scanClose5, scanAtr5] = request.security(i_scanSymbol5, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-[scanLong6, scanShort6, scanAge6, scanOpen6, scanSpread6, scanClose6, scanAtr6] = request.security(i_scanSymbol6, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-[scanLong7, scanShort7, scanAge7, scanOpen7, scanSpread7, scanClose7, scanAtr7] = request.security(i_scanSymbol7, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-[scanLong8, scanShort8, scanAge8, scanOpen8, scanSpread8, scanClose8, scanAtr8] = request.security(i_scanSymbol8, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-[scanLong9, scanShort9, scanAge9, scanOpen9, scanSpread9, scanClose9, scanAtr9] = request.security(i_scanSymbol9, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-[scanLong10, scanShort10, scanAge10, scanOpen10, scanSpread10, scanClose10, scanAtr10] = request.security(i_scanSymbol10, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-[scanLong11, scanShort11, scanAge11, scanOpen11, scanSpread11, scanClose11, scanAtr11] = request.security(i_scanSymbol11, "15", f_scanProbabilities(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-int scanTrend1 = request.security(i_scanSymbol1, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
-int scanTrend2 = request.security(i_scanSymbol2, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
-int scanTrend3 = request.security(i_scanSymbol3, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
-int scanTrend4 = request.security(i_scanSymbol4, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
-int scanTrend5 = request.security(i_scanSymbol5, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
-int scanTrend6 = request.security(i_scanSymbol6, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
-int scanTrend7 = request.security(i_scanSymbol7, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
-int scanTrend8 = request.security(i_scanSymbol8, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
-int scanTrend9 = request.security(i_scanSymbol9, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
-int scanTrend10 = request.security(i_scanSymbol10, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
-int scanTrend11 = request.security(i_scanSymbol11, "240", f_scanHtfTrend(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+{scanner_m15_requests}
+{scanner_htf_requests}
 
-var table scanner = table.new(position.bottom_right, 6, 13, border_width=1)
+var table scanner = table.new(position.bottom_right, 6, {scanner_table_rows}, border_width=1)
 if barstate.islast and i_showScanner
     table.cell(scanner, 0, 0, "通貨", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
     table.cell(scanner, 1, 0, "4H", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
-    table.cell(scanner, 2, 0, "チャンス", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 2, 0, "チャンス/構造", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
     table.cell(scanner, 3, 0, "ML値", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
     table.cell(scanner, 4, 0, "Entry", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
     table.cell(scanner, 5, 0, "SL", text_color=color.white, bgcolor=color.rgb(153, 27, 27))
-    f_scanRow(scanner, 1, i_scanSymbol1, scanTrend1, scanLong1, scanShort1, scanAge1, scanOpen1, scanSpread1, scanClose1, scanAtr1)
-    f_scanRow(scanner, 2, i_scanSymbol2, scanTrend2, scanLong2, scanShort2, scanAge2, scanOpen2, scanSpread2, scanClose2, scanAtr2)
-    f_scanRow(scanner, 3, i_scanSymbol3, scanTrend3, scanLong3, scanShort3, scanAge3, scanOpen3, scanSpread3, scanClose3, scanAtr3)
-    f_scanRow(scanner, 4, i_scanSymbol4, scanTrend4, scanLong4, scanShort4, scanAge4, scanOpen4, scanSpread4, scanClose4, scanAtr4)
-    f_scanRow(scanner, 5, i_scanSymbol5, scanTrend5, scanLong5, scanShort5, scanAge5, scanOpen5, scanSpread5, scanClose5, scanAtr5)
-    f_scanRow(scanner, 6, i_scanSymbol6, scanTrend6, scanLong6, scanShort6, scanAge6, scanOpen6, scanSpread6, scanClose6, scanAtr6)
-    f_scanRow(scanner, 7, i_scanSymbol7, scanTrend7, scanLong7, scanShort7, scanAge7, scanOpen7, scanSpread7, scanClose7, scanAtr7)
-    f_scanRow(scanner, 8, i_scanSymbol8, scanTrend8, scanLong8, scanShort8, scanAge8, scanOpen8, scanSpread8, scanClose8, scanAtr8)
-    f_scanRow(scanner, 9, i_scanSymbol9, scanTrend9, scanLong9, scanShort9, scanAge9, scanOpen9, scanSpread9, scanClose9, scanAtr9)
-    f_scanRow(scanner, 10, i_scanSymbol10, scanTrend10, scanLong10, scanShort10, scanAge10, scanOpen10, scanSpread10, scanClose10, scanAtr10)
-    f_scanRow(scanner, 11, i_scanSymbol11, scanTrend11, scanLong11, scanShort11, scanAge11, scanOpen11, scanSpread11, scanClose11, scanAtr11)
-    table.cell(scanner, 0, 12, "基準", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
-    table.cell(scanner, 1, 12, "", bgcolor=color.rgb(30, 64, 175))
-    table.cell(scanner, 2, 12, "48.5%以上", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
-    table.cell(scanner, 3, 12, "勝率ではない", text_color=color.rgb(254, 240, 138), bgcolor=color.rgb(30, 64, 175))
-    table.cell(scanner, 4, 12, "成立時表示", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
-    table.cell(scanner, 5, 12, "ATR×2", text_color=color.white, bgcolor=color.rgb(153, 27, 27))
+{scanner_rows}
+    table.cell(scanner, 0, {scanner_footer_row}, "基準", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 1, {scanner_footer_row}, "", bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 2, {scanner_footer_row}, "48.5%以上", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 3, {scanner_footer_row}, "勝率ではない", text_color=color.rgb(254, 240, 138), bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 4, {scanner_footer_row}, "成立時表示", text_color=color.white, bgcolor=color.rgb(30, 64, 175))
+    table.cell(scanner, 5, {scanner_footer_row}, "ATR×2", text_color=color.white, bgcolor=color.rgb(153, 27, 27))
 '''
 
 
@@ -662,11 +744,11 @@ def main() -> int:
     end = datetime(2025, 12, 31, 23, 59, 59)
     prepared = {}
     opportunities = {}
-    for symbol in SYMBOLS:
+    for symbol in ML_SYMBOLS:
         print(f"Loading and labeling {symbol}...", file=sys.stderr, flush=True)
         prepared[symbol] = _prepare(repository, symbol, end, "15m")
         opportunities[symbol] = _opportunities(prepared[symbol], 4, 2.0)
-    x_train, y_train = _training_rows(prepared, opportunities, 2026)
+    x_train, y_train = _training_rows(prepared, opportunities, 2026, ML_SYMBOLS)
     model = _model(CONFIG)
     model.fit(x_train, y_train)
     sample = x_train[:: max(1, x_train.shape[0] // 10_000)][:10_000]
