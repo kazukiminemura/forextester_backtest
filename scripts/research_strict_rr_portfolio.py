@@ -64,6 +64,10 @@ class Candidate:
     ema_side_filter: bool = True
     max_trades_per_day: int = 0
     loss_cooldown_bars: int = 0
+    allowed_weekdays: tuple[int, ...] = (0, 1, 2, 3, 4)
+    trade_direction: int = 0
+    only_initial_htf_leg: bool = False
+    stop_after_loss_for_day: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -72,6 +76,11 @@ class RTrade:
     entry_time: datetime
     result_r: float
     ambiguous_bar: bool = False
+    direction: int = 0
+    daily_trade_number: int = 0
+    previous_result_r: float | None = None
+    initial_htf_leg: bool = False
+    hold_bars: int = 0
 
 
 @dataclass(slots=True)
@@ -80,6 +89,7 @@ class Prepared:
     years: np.ndarray
     hours: np.ndarray
     minutes: np.ndarray
+    weekdays: np.ndarray
     open: np.ndarray
     high: np.ndarray
     low: np.ndarray
@@ -423,6 +433,7 @@ def _prepare(repository: HistoryRepository, symbol: str, end: datetime, timefram
         years=np.asarray([time.year for time in times]),
         hours=np.asarray([time.hour for time in times]),
         minutes=np.asarray([time.minute for time in times]),
+        weekdays=np.asarray([time.weekday() for time in times]),
         open=np.asarray([bar.open for bar in bars], dtype=float),
         high=high,
         low=low,
@@ -458,7 +469,11 @@ def _signals(data: Prepared, candidate: Candidate) -> np.ndarray:
     trend_slope_bars = {"5m": 48, "15m": 16, "30m": 8}[candidate.timeframe]
     long_trend = (fast > slow) & (fast > np.roll(fast, trend_slope_bars))
     short_trend = (fast < slow) & (fast < np.roll(fast, trend_slope_bars))
-    session = (data.hours >= candidate.session_start) & (data.hours < candidate.session_end)
+    session = (
+        (data.hours >= candidate.session_start)
+        & (data.hours < candidate.session_end)
+        & np.isin(data.weekdays, candidate.allowed_weekdays)
+    )
     if candidate.signal_interval_minutes:
         session &= data.minutes % candidate.signal_interval_minutes == 0
     previous_close = np.roll(data.close, 1)
@@ -762,6 +777,10 @@ def _signals(data: Prepared, candidate: Candidate) -> np.ndarray:
         long_signal, short_signal = short_signal, long_signal
     direction[long_signal] = 1
     direction[short_signal] = -1
+    if candidate.trade_direction == 1:
+        direction[direction < 0] = 0
+    elif candidate.trade_direction == -1:
+        direction[direction > 0] = 0
     direction[: max(candidate.trend_slow, candidate.lookback) + 8] = 0
     if candidate.one_signal_per_day:
         last_day = None
@@ -787,6 +806,13 @@ def _simulate(
     cursor = 0
     last_loss_exit = -1_000_000
     daily_entries: dict[object, int] = {}
+    htf_leg_change = np.ones(data.htf_trend.size, dtype=bool)
+    if data.htf_trend.size > 1:
+        htf_leg_change[1:] = data.htf_trend[1:] != data.htf_trend[:-1]
+    htf_leg_ids = np.cumsum(htf_leg_change)
+    htf_leg_entries: dict[int, int] = {}
+    previous_result_r: float | None = None
+    last_loss_day = None
     while cursor < signal_indices.size:
         signal_index = int(signal_indices[cursor])
         entry_index = signal_index + 1
@@ -801,6 +827,13 @@ def _simulate(
             cursor += 1
             continue
         entry_day = data.times[entry_index].date()
+        leg_id = int(htf_leg_ids[signal_index])
+        if candidate.only_initial_htf_leg and htf_leg_entries.get(leg_id, 0) > 0:
+            cursor += 1
+            continue
+        if candidate.stop_after_loss_for_day and last_loss_day == entry_day:
+            cursor += 1
+            continue
         if (
             candidate.max_trades_per_day > 0
             and daily_entries.get(entry_day, 0) >= candidate.max_trades_per_day
@@ -861,7 +894,10 @@ def _simulate(
         ):
             cursor += 1
             continue
-        daily_entries[entry_day] = daily_entries.get(entry_day, 0) + 1
+        daily_trade_number = daily_entries.get(entry_day, 0) + 1
+        daily_entries[entry_day] = daily_trade_number
+        leg_trade_number = htf_leg_entries.get(leg_id, 0) + 1
+        htf_leg_entries[leg_id] = leg_trade_number
         exit_index = entry_index
         while exit_index < data.close.size:
             if direction == 1:
@@ -877,10 +913,19 @@ def _simulate(
                         data.times[entry_index],
                         -1.0 if hit_stop else 1.0,
                         hit_stop and hit_target,
+                        direction,
+                        daily_trade_number,
+                        previous_result_r,
+                        leg_trade_number == 1,
+                        exit_index - entry_index + 1,
                     )
                 )
                 if hit_stop:
                     last_loss_exit = exit_index
+                    last_loss_day = entry_day
+                    previous_result_r = -1.0
+                else:
+                    previous_result_r = 1.0
                 break
             exit_index += 1
         cursor = int(
@@ -1034,6 +1079,49 @@ def _candidates(timeframe: str, families: str) -> list[Candidate]:
                 (0.20, 0.40),
                 (0.10, 0.20),
                 (4, 8),
+            )
+        ]
+    if families == "yosuga-factors":
+        if timeframe != "15m":
+            raise ValueError("yosuga-factors family requires --timeframe 15m")
+        weekday_sets = (
+            (0, 1, 2, 3, 4),
+            (1, 2, 3),
+            (0, 1, 2, 3),
+            (1, 2, 3, 4),
+        )
+        sessions = ((6, 10), (8, 12), (10, 16), (12, 16), (14, 20), (6, 16))
+        return [
+            Candidate(
+                "yosuga_15m",
+                timeframe="15m",
+                lookback=5,
+                session_start=start,
+                session_end=end,
+                trend_fast=20,
+                trend_slow=50,
+                require_trend=False,
+                entry_ema=20,
+                atr_length=14,
+                pullback_lookback=8,
+                zone_atr=0.40,
+                swing_buffer_atr=0.10,
+                max_risk_atr=2.5,
+                cooldown_bars=4,
+                max_trades_per_day=max_daily,
+                loss_cooldown_bars=4,
+                allowed_weekdays=weekdays,
+                trade_direction=trade_direction,
+                only_initial_htf_leg=initial_only,
+                stop_after_loss_for_day=stop_after_loss,
+            )
+            for (start, end), weekdays, trade_direction, initial_only, max_daily, stop_after_loss in product(
+                sessions,
+                weekday_sets,
+                (-1, 0, 1),
+                (False, True),
+                (1, 2),
+                (False, True),
             )
         ]
     if families == "yosuga-five-minute":
@@ -1305,6 +1393,7 @@ def main() -> int:
             "yosuga-five-minute",
             "yosuga-sweep",
             "yosuga-fifteen-minute",
+            "yosuga-factors",
         ),
         default="breakout",
     )

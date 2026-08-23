@@ -72,10 +72,7 @@ class Evaluation:
         """Never use the 2023-2026 holdout periods for candidate ranking."""
         return (
             float(self.eligible),
-            float(
-                self._positive_pairs("train")
-                + self._positive_pairs("validation")
-            ),
+            float(self._positive_pairs("train") + self._positive_pairs("validation")),
             min(self.train.expectancy_r, self.validation.expectancy_r),
             min(
                 self.train.profit_factor or 0.0,
@@ -173,6 +170,34 @@ def _risk_candidates(seed: TamukaiConfig) -> list[TamukaiConfig]:
     ]
 
 
+def _thirty_minute_candidates() -> list[TamukaiConfig]:
+    """Retune signal horizons after moving entries from 1H to 30 minutes."""
+    base = TamukaiConfig(
+        entry_minutes=30,
+        direction="long",
+        first_target_r=1.0,
+        first_target_fraction=1.0,
+        move_stop_to_break_even=False,
+    )
+    return [
+        replace(
+            base,
+            range_bars=range_bars,
+            pullback_lookback=pullback_lookback,
+            max_range_atr=max_range,
+            min_slope_atr=min_slope,
+            min_room_r=min_room,
+        )
+        for range_bars, pullback_lookback, max_range, min_slope, min_room in product(
+            (3, 6),
+            (12, 24),
+            (0.75, 1.0),
+            (0.03, 0.06),
+            (1.0, 1.5),
+        )
+    ]
+
+
 def _load_seed(path: Path, index: int) -> TamukaiConfig:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if isinstance(payload, list):
@@ -213,7 +238,11 @@ def _evaluation_dict(item: Evaluation) -> dict[str, object]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--history-dir", default=r"C:\ForexTester6\data\History")
-    parser.add_argument("--stage", choices=("signal", "risk"), default="signal")
+    parser.add_argument(
+        "--stage",
+        choices=("signal", "risk", "thirty-minute"),
+        default="signal",
+    )
     parser.add_argument("--seed-json", type=Path)
     parser.add_argument("--seed-index", type=int, default=0)
     parser.add_argument("--top", type=int, default=20)
@@ -224,10 +253,17 @@ def main() -> int:
     end = datetime(2026, 7, 17, 23, 59, 59)
     bars_by_symbol = {}
     metadata_by_symbol = {}
+    entry_timeframe = "30m" if args.stage == "thirty-minute" else "1h"
     for symbol in PRIMARY_SYMBOLS:
-        print(f"Loading {symbol} 1H bars...", file=sys.stderr, flush=True)
+        print(
+            f"Loading {symbol} {entry_timeframe} bars...",
+            file=sys.stderr,
+            flush=True,
+        )
         metadata_by_symbol[symbol] = repository.metadata(symbol)
-        bars_by_symbol[symbol] = list(repository.bars(symbol, None, end, "1h"))
+        bars_by_symbol[symbol] = list(
+            repository.bars(symbol, None, end, entry_timeframe)
+        )
         print(
             f"Loaded {len(bars_by_symbol[symbol])} bars",
             file=sys.stderr,
@@ -236,10 +272,12 @@ def main() -> int:
 
     if args.stage == "signal":
         candidates = _signal_candidates()
-    else:
+    elif args.stage == "risk":
         if args.seed_json is None:
             parser.error("--stage risk requires --seed-json")
         candidates = _risk_candidates(_load_seed(args.seed_json, args.seed_index))
+    else:
+        candidates = _thirty_minute_candidates()
 
     evaluations: list[Evaluation] = []
     for index, config in enumerate(candidates, 1):

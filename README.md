@@ -1,7 +1,7 @@
 # Forex Tester History Backtester
 
 Forex Tester 6 の `History` ディレクトリを読み取り専用で参照し、バー抽出、
-時間足集約、tick 抽出、田向式「4Hダウ＋1H押し目レンジ」のバックテストを行う
+時間足集約、tick 抽出、田向式「4Hダウ＋15分足押し目レンジ」のバックテストを行う
 Python ツールです。
 
 ## セットアップ
@@ -25,13 +25,13 @@ forextester-backtest symbols
 # 銘柄情報
 forextester-backtest info EURUSD
 
-# 1時間足を表示（CSV）
-forextester-backtest bars EURUSD --start 2024-01-01 --end 2024-01-07 --timeframe 1h --limit 20
+# 15分足を表示（CSV）
+forextester-backtest bars EURUSD --start 2024-01-01 --end 2024-01-07 --timeframe 15m --limit 20
 
 # tickを抽出（巨大ファイルも日時から二分探索するため全件ロードしません）
 forextester-backtest ticks EURUSD --start "2024-08-30 20:59:50" --end "2024-08-30 21:00:00" --limit 100
 
-# 田向式 4Hダウ＋1H押し目レンジをバックテスト
+# 田向式 4Hダウ＋15分足押し目レンジをバックテスト
 forextester-backtest backtest EURUSD --start 2024-01-01 --end 2024-08-30 --lots 0.1 --trades-output trades.csv
 ```
 
@@ -50,10 +50,8 @@ JPYクロスは「買いのみ・小レンジ1.0 ATR以下・1R全決済」、EU
 添付Pineと同じ設定へ戻す場合は `--preset pine` を指定します。個別の
 `--direction`、`--max-range-atr`、`--target-r`、`--target-fraction` はプリセットより優先されます。
 
-取引回数を増やす研究用設定は `--preset jpy-frequency` です。RR 1:1全決済を
-維持したまま壁までの最低余地だけを1.5Rから1.0Rへ緩和します。USDJPYの
-2024-09～2026-07では12件から15件へ増えましたが、2023～2024年のホールドアウトは
-不合格なので、`auto`では選択しません。
+取引回数を増やす研究用設定は `--preset jpy-frequency` です。従来の1時間足・
+30分足成績を15分足へ引き継ぐことはできません。15分足は再検証前の研究設定です。
 
 プリセットを明示する場合は `--preset jpy-cross`、`--preset jpy-frequency` または
 `--preset eurusd-research` を指定します。旧名称 `--preset usdjpy-70` と
@@ -67,6 +65,12 @@ EURUSDの独立探索結果は
 [`docs/eurusd_optimization.md`](docs/eurusd_optimization.md) を参照してください。
 XAUUSD（金）の探索結果と不採用理由は
 [`docs/xauusd_optimization.md`](docs/xauusd_optimization.md) を参照してください。
+エントリーを1時間足に固定した代替ロジック3系統の比較結果は
+[`docs/alternative_logic_research.md`](docs/alternative_logic_research.md) を参照してください。
+56候補のうち学習・検証を通過した候補はなかったため、既定プリセットには
+追加していません。
+以前の30分足への切替内容と再検証結果は
+[`docs/thirty_minute_migration.md`](docs/thirty_minute_migration.md) を参照してください。
 
 TradingViewへ追加できるシグナル表示用Pine Scriptは
 [`scripts/tradingview/tamukai_pair_signal_indicator.pine`](scripts/tradingview/tamukai_pair_signal_indicator.pine)、
@@ -88,9 +92,10 @@ forextester-backtest --history-dir D:\History symbols
 
 - 参照元は [`tamukai_1h_pullback_range_strategy.pine`](https://github.com/kazukiminemura/chart_analyser_y/blob/main/scrips/tamukai_1h_pullback_range_strategy.pine) です。
 - 確定済み4時間足のダウ構造、21SMA、ATR、確定済みピボットだけで方向を判定します。
-- 直前3本の1時間足から小レンジを作り、押し・戻り、SMA・旧高安値、SL幅、上位足の壁までの余地を検査します。
+- 4時間足ADX/DIは比較用に残していますが、15分足復元版では既定0（無効）です。4時間足のダウ構造とSMA方向は常に必要です。
+- 直前3本の15分足から小レンジを作り、押し・戻り、SMA・旧高安値、SL幅、上位足の壁までの余地を検査します。
 - 条件成立後にレンジ外へ逆指値を置き、既定8本で失効します。条件成立バー内では約定しません。
-- 構造SLを固定し、半分を1Rで利確後、残りを確定1時間足ピボットで追随します。
+- JPYクロス既定値は構造SLと同距離の1Rで全決済します。
 - 開始日より前の履歴も4H構造と指標のウォームアップに使いますが、注文は指定期間内だけです。
 - 重要指標カレンダーは取得しません。Pine版の手動停止は `--disable-entries` で全期間に適用できます。
 - `Bars.dat` は Bid 価格として扱い、買い約定時に `info.dat` の spread を加算します。
@@ -104,6 +109,10 @@ Pine版の表示専用の日足・週足ラインと状態テーブルは、売�
 また、Pine版の「資産の10%」ではなく、CLIの `--lots` で固定数量を指定します。
 
 主要パラメータはPine版と同じ既定値です。変更可能な全項目は次で確認できます。
+バックテストのエントリー時間足は既定で`15m`です。比較用に
+`--entry-timeframe 30m`または`--entry-timeframe 1h`も指定できます。
+トレンド強度フィルターは既定で無効です。比較する場合は、たとえば
+`--htf-adx-length 14 --htf-adx-smoothing 14 --min-htf-adx 20`を指定します。
 
 ```powershell
 forextester-backtest backtest --help

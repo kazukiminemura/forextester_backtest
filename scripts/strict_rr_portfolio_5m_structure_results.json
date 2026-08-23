@@ -1,0 +1,4162 @@
+[
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6177,
+        "wins": 2539,
+        "win_rate": 41.104095839404245,
+        "profit_factor": 0.6979109400769654,
+        "expectancy_r": -0.17791808321191516,
+        "trades_per_month": 57.19444444444444
+      },
+      "validation_2019_2022": {
+        "trades": 2786,
+        "wins": 1117,
+        "win_rate": 40.093323761665474,
+        "profit_factor": 0.6692630317555422,
+        "expectancy_r": -0.1981335247666906,
+        "trades_per_month": 58.041666666666664
+      },
+      "holdout_2023_2024": {
+        "trades": 1331,
+        "wins": 580,
+        "win_rate": 43.57625845229151,
+        "profit_factor": 0.7723035952063915,
+        "expectancy_r": -0.1284748309541698,
+        "trades_per_month": 55.458333333333336
+      },
+      "true_oos_2025_2026": {
+        "trades": 1006,
+        "wins": 436,
+        "win_rate": 43.33996023856859,
+        "profit_factor": 0.7649122807017544,
+        "expectancy_r": -0.13320079522862824,
+        "trades_per_month": 52.94736842105263
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 14515,
+        "wins": 6175,
+        "win_rate": 42.54219772648984,
+        "profit_factor": 0.7404076738609112,
+        "expectancy_r": -0.14915604547020322,
+        "trades_per_month": 134.39814814814815
+      },
+      "validation_2019_2022": {
+        "trades": 6446,
+        "wins": 2584,
+        "win_rate": 40.086875581756125,
+        "profit_factor": 0.6690833764888658,
+        "expectancy_r": -0.19826248836487745,
+        "trades_per_month": 134.29166666666666
+      },
+      "holdout_2023_2024": {
+        "trades": 3183,
+        "wins": 1319,
+        "win_rate": 41.43889412503927,
+        "profit_factor": 0.7076180257510729,
+        "expectancy_r": -0.17122211749921457,
+        "trades_per_month": 132.625
+      },
+      "true_oos_2025_2026": {
+        "trades": 2384,
+        "wins": 977,
+        "win_rate": 40.98154362416108,
+        "profit_factor": 0.6943852167732765,
+        "expectancy_r": -0.18036912751677853,
+        "trades_per_month": 125.47368421052632
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 9224,
+        "wins": 4020,
+        "win_rate": 43.58196010407632,
+        "profit_factor": 0.7724827056110684,
+        "expectancy_r": -0.12836079791847355,
+        "trades_per_month": 85.4074074074074
+      },
+      "validation_2019_2022": {
+        "trades": 4134,
+        "wins": 1651,
+        "win_rate": 39.937106918238996,
+        "profit_factor": 0.6649214659685864,
+        "expectancy_r": -0.20125786163522014,
+        "trades_per_month": 86.125
+      },
+      "holdout_2023_2024": {
+        "trades": 1844,
+        "wins": 740,
+        "win_rate": 40.130151843817785,
+        "profit_factor": 0.6702898550724637,
+        "expectancy_r": -0.19739696312364424,
+        "trades_per_month": 76.83333333333333
+      },
+      "true_oos_2025_2026": {
+        "trades": 1327,
+        "wins": 573,
+        "win_rate": 43.18010550113037,
+        "profit_factor": 0.7599469496021221,
+        "expectancy_r": -0.1363978899773926,
+        "trades_per_month": 69.84210526315789
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 28110,
+        "wins": 11762,
+        "win_rate": 41.84276058342227,
+        "profit_factor": 0.719476388549058,
+        "expectancy_r": -0.1631447883315546,
+        "trades_per_month": 260.27777777777777
+      },
+      "validation_2019_2022": {
+        "trades": 12490,
+        "wins": 4985,
+        "win_rate": 39.911929543634905,
+        "profit_factor": 0.6642238507661559,
+        "expectancy_r": -0.20176140912730184,
+        "trades_per_month": 260.2083333333333
+      },
+      "holdout_2023_2024": {
+        "trades": 6193,
+        "wins": 2570,
+        "win_rate": 41.498466010011306,
+        "profit_factor": 0.709356886558101,
+        "expectancy_r": -0.17003067979977393,
+        "trades_per_month": 258.0416666666667
+      },
+      "true_oos_2025_2026": {
+        "trades": 4701,
+        "wins": 1948,
+        "win_rate": 41.437991916613484,
+        "profit_factor": 0.7075917181256811,
+        "expectancy_r": -0.17124016166773026,
+        "trades_per_month": 247.42105263157896
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 11278,
+        "wins": 4890,
+        "win_rate": 43.358751551693565,
+        "profit_factor": 0.7654978083907327,
+        "expectancy_r": -0.13282496896612875,
+        "trades_per_month": 104.42592592592592
+      },
+      "validation_2019_2022": {
+        "trades": 5199,
+        "wins": 2073,
+        "win_rate": 39.87305251009809,
+        "profit_factor": 0.663147792706334,
+        "expectancy_r": -0.20253894979803808,
+        "trades_per_month": 108.3125
+      },
+      "holdout_2023_2024": {
+        "trades": 2306,
+        "wins": 943,
+        "win_rate": 40.893321769297486,
+        "profit_factor": 0.6918561995597946,
+        "expectancy_r": -0.1821335646140503,
+        "trades_per_month": 96.08333333333333
+      },
+      "true_oos_2025_2026": {
+        "trades": 1563,
+        "wins": 669,
+        "win_rate": 42.80230326295585,
+        "profit_factor": 0.7483221476510067,
+        "expectancy_r": -0.14395393474088292,
+        "trades_per_month": 82.26315789473684
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 4022,
+        "wins": 1645,
+        "win_rate": 40.90004972650423,
+        "profit_factor": 0.692048801009676,
+        "expectancy_r": -0.18199900546991546,
+        "trades_per_month": 37.24074074074074
+      },
+      "validation_2019_2022": {
+        "trades": 1753,
+        "wins": 698,
+        "win_rate": 39.817455790074156,
+        "profit_factor": 0.6616113744075829,
+        "expectancy_r": -0.20365088419851682,
+        "trades_per_month": 36.520833333333336
+      },
+      "holdout_2023_2024": {
+        "trades": 861,
+        "wins": 386,
+        "win_rate": 44.83159117305458,
+        "profit_factor": 0.8126315789473684,
+        "expectancy_r": -0.10336817653890824,
+        "trades_per_month": 35.875
+      },
+      "true_oos_2025_2026": {
+        "trades": 635,
+        "wins": 271,
+        "win_rate": 42.67716535433071,
+        "profit_factor": 0.7445054945054945,
+        "expectancy_r": -0.14645669291338584,
+        "trades_per_month": 33.421052631578945
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 19459,
+        "wins": 8250,
+        "win_rate": 42.3968343697004,
+        "profit_factor": 0.7360157016683022,
+        "expectancy_r": -0.1520633126059921,
+        "trades_per_month": 180.17592592592592
+      },
+      "validation_2019_2022": {
+        "trades": 8603,
+        "wins": 3423,
+        "win_rate": 39.78844589096827,
+        "profit_factor": 0.6608108108108108,
+        "expectancy_r": -0.20423108218063465,
+        "trades_per_month": 179.22916666666666
+      },
+      "holdout_2023_2024": {
+        "trades": 4183,
+        "wins": 1747,
+        "win_rate": 41.76428400669376,
+        "profit_factor": 0.7171592775041051,
+        "expectancy_r": -0.16471431986612478,
+        "trades_per_month": 174.29166666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 3069,
+        "wins": 1262,
+        "win_rate": 41.120886282176606,
+        "profit_factor": 0.6983951300498064,
+        "expectancy_r": -0.1775822743564679,
+        "trades_per_month": 161.52631578947367
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6664,
+        "wins": 2756,
+        "win_rate": 41.35654261704682,
+        "profit_factor": 0.7052200614124872,
+        "expectancy_r": -0.17286914765906364,
+        "trades_per_month": 61.7037037037037
+      },
+      "validation_2019_2022": {
+        "trades": 2946,
+        "wins": 1172,
+        "win_rate": 39.78275627970129,
+        "profit_factor": 0.6606538895152199,
+        "expectancy_r": -0.2043448744059742,
+        "trades_per_month": 61.375
+      },
+      "holdout_2023_2024": {
+        "trades": 1397,
+        "wins": 610,
+        "win_rate": 43.66499642090193,
+        "profit_factor": 0.7750952986022872,
+        "expectancy_r": -0.12670007158196134,
+        "trades_per_month": 58.208333333333336
+      },
+      "true_oos_2025_2026": {
+        "trades": 1081,
+        "wins": 455,
+        "win_rate": 42.090656799259946,
+        "profit_factor": 0.7268370607028753,
+        "expectancy_r": -0.15818686401480112,
+        "trades_per_month": 56.89473684210526
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6195,
+        "wins": 2553,
+        "win_rate": 41.210653753026634,
+        "profit_factor": 0.7009884678747941,
+        "expectancy_r": -0.17578692493946732,
+        "trades_per_month": 57.361111111111114
+      },
+      "validation_2019_2022": {
+        "trades": 2791,
+        "wins": 1110,
+        "win_rate": 39.77069150841992,
+        "profit_factor": 0.6603212373587151,
+        "expectancy_r": -0.20458616983160158,
+        "trades_per_month": 58.145833333333336
+      },
+      "holdout_2023_2024": {
+        "trades": 1338,
+        "wins": 573,
+        "win_rate": 42.82511210762332,
+        "profit_factor": 0.7490196078431373,
+        "expectancy_r": -0.14349775784753363,
+        "trades_per_month": 55.75
+      },
+      "true_oos_2025_2026": {
+        "trades": 1006,
+        "wins": 435,
+        "win_rate": 43.240556660039765,
+        "profit_factor": 0.7618213660245184,
+        "expectancy_r": -0.13518886679920478,
+        "trades_per_month": 52.94736842105263
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 4476,
+        "wins": 1840,
+        "win_rate": 41.10813226094727,
+        "profit_factor": 0.6980273141122914,
+        "expectancy_r": -0.1778373547810545,
+        "trades_per_month": 41.44444444444444
+      },
+      "validation_2019_2022": {
+        "trades": 1922,
+        "wins": 764,
+        "win_rate": 39.75026014568158,
+        "profit_factor": 0.6597582037996546,
+        "expectancy_r": -0.20499479708636836,
+        "trades_per_month": 40.041666666666664
+      },
+      "holdout_2023_2024": {
+        "trades": 941,
+        "wins": 421,
+        "win_rate": 44.739638682252924,
+        "profit_factor": 0.8096153846153846,
+        "expectancy_r": -0.10520722635494155,
+        "trades_per_month": 39.208333333333336
+      },
+      "true_oos_2025_2026": {
+        "trades": 699,
+        "wins": 295,
+        "win_rate": 42.20314735336195,
+        "profit_factor": 0.7301980198019802,
+        "expectancy_r": -0.15593705293276108,
+        "trades_per_month": 36.78947368421053
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 4035,
+        "wins": 1645,
+        "win_rate": 40.76827757125155,
+        "profit_factor": 0.6882845188284519,
+        "expectancy_r": -0.18463444857496902,
+        "trades_per_month": 37.361111111111114
+      },
+      "validation_2019_2022": {
+        "trades": 1756,
+        "wins": 694,
+        "win_rate": 39.521640091116176,
+        "profit_factor": 0.6534839924670434,
+        "expectancy_r": -0.20956719817767655,
+        "trades_per_month": 36.583333333333336
+      },
+      "holdout_2023_2024": {
+        "trades": 865,
+        "wins": 383,
+        "win_rate": 44.27745664739884,
+        "profit_factor": 0.7946058091286307,
+        "expectancy_r": -0.11445086705202312,
+        "trades_per_month": 36.041666666666664
+      },
+      "true_oos_2025_2026": {
+        "trades": 636,
+        "wins": 275,
+        "win_rate": 43.23899371069182,
+        "profit_factor": 0.7617728531855956,
+        "expectancy_r": -0.13522012578616352,
+        "trades_per_month": 33.473684210526315
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6681,
+        "wins": 2769,
+        "win_rate": 41.44589133363269,
+        "profit_factor": 0.7078220858895705,
+        "expectancy_r": -0.1710821733273462,
+        "trades_per_month": 61.861111111111114
+      },
+      "validation_2019_2022": {
+        "trades": 2952,
+        "wins": 1166,
+        "win_rate": 39.49864498644987,
+        "profit_factor": 0.6528555431131019,
+        "expectancy_r": -0.21002710027100271,
+        "trades_per_month": 61.5
+      },
+      "holdout_2023_2024": {
+        "trades": 1403,
+        "wins": 603,
+        "win_rate": 42.97933000712759,
+        "profit_factor": 0.75375,
+        "expectancy_r": -0.14041339985744833,
+        "trades_per_month": 58.458333333333336
+      },
+      "true_oos_2025_2026": {
+        "trades": 1081,
+        "wins": 457,
+        "win_rate": 42.275670675300645,
+        "profit_factor": 0.7323717948717948,
+        "expectancy_r": -0.15448658649398705,
+        "trades_per_month": 56.89473684210526
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 4489,
+        "wins": 1839,
+        "win_rate": 40.96680775228336,
+        "profit_factor": 0.6939622641509434,
+        "expectancy_r": -0.18066384495433283,
+        "trades_per_month": 41.56481481481482
+      },
+      "validation_2019_2022": {
+        "trades": 1928,
+        "wins": 760,
+        "win_rate": 39.41908713692946,
+        "profit_factor": 0.6506849315068494,
+        "expectancy_r": -0.21161825726141079,
+        "trades_per_month": 40.166666666666664
+      },
+      "holdout_2023_2024": {
+        "trades": 946,
+        "wins": 418,
+        "win_rate": 44.18604651162791,
+        "profit_factor": 0.7916666666666666,
+        "expectancy_r": -0.11627906976744186,
+        "trades_per_month": 39.416666666666664
+      },
+      "true_oos_2025_2026": {
+        "trades": 694,
+        "wins": 298,
+        "win_rate": 42.93948126801153,
+        "profit_factor": 0.7525252525252525,
+        "expectancy_r": -0.14121037463976946,
+        "trades_per_month": 36.526315789473685
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 20848,
+        "wins": 8686,
+        "win_rate": 41.663468917881815,
+        "profit_factor": 0.7141917447788193,
+        "expectancy_r": -0.16673062164236377,
+        "trades_per_month": 193.03703703703704
+      },
+      "validation_2019_2022": {
+        "trades": 9352,
+        "wins": 3683,
+        "win_rate": 39.381950384944396,
+        "profit_factor": 0.6496736637855001,
+        "expectancy_r": -0.21236099230111205,
+        "trades_per_month": 194.83333333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 4659,
+        "wins": 1890,
+        "win_rate": 40.56664520283322,
+        "profit_factor": 0.6825568797399784,
+        "expectancy_r": -0.18866709594333547,
+        "trades_per_month": 194.125
+      },
+      "true_oos_2025_2026": {
+        "trades": 3460,
+        "wins": 1422,
+        "win_rate": 41.09826589595376,
+        "profit_factor": 0.6977428851815506,
+        "expectancy_r": -0.17803468208092485,
+        "trades_per_month": 182.10526315789474
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 20847,
+        "wins": 8673,
+        "win_rate": 41.60310836091524,
+        "profit_factor": 0.712419911286348,
+        "expectancy_r": -0.16793783278169522,
+        "trades_per_month": 193.02777777777777
+      },
+      "validation_2019_2022": {
+        "trades": 9360,
+        "wins": 3673,
+        "win_rate": 39.24145299145299,
+        "profit_factor": 0.6458589766133287,
+        "expectancy_r": -0.21517094017094018,
+        "trades_per_month": 195.0
+      },
+      "holdout_2023_2024": {
+        "trades": 4312,
+        "wins": 1758,
+        "win_rate": 40.76994434137291,
+        "profit_factor": 0.6883320281910729,
+        "expectancy_r": -0.18460111317254174,
+        "trades_per_month": 179.66666666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 3040,
+        "wins": 1296,
+        "win_rate": 42.63157894736842,
+        "profit_factor": 0.7431192660550459,
+        "expectancy_r": -0.14736842105263157,
+        "trades_per_month": 160.0
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 16532,
+        "wins": 6824,
+        "win_rate": 41.27752238083716,
+        "profit_factor": 0.7029254223320972,
+        "expectancy_r": -0.1744495523832567,
+        "trades_per_month": 153.07407407407408
+      },
+      "validation_2019_2022": {
+        "trades": 7336,
+        "wins": 2842,
+        "win_rate": 38.74045801526718,
+        "profit_factor": 0.632398753894081,
+        "expectancy_r": -0.22519083969465647,
+        "trades_per_month": 152.83333333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 3443,
+        "wins": 1360,
+        "win_rate": 39.50043566656985,
+        "profit_factor": 0.6529044647143543,
+        "expectancy_r": -0.20999128666860295,
+        "trades_per_month": 143.45833333333334
+      },
+      "true_oos_2025_2026": {
+        "trades": 2548,
+        "wins": 1102,
+        "win_rate": 43.24960753532182,
+        "profit_factor": 0.7621023513139695,
+        "expectancy_r": -0.13500784929356358,
+        "trades_per_month": 134.10526315789474
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 9202,
+        "wins": 3725,
+        "win_rate": 40.48033036296457,
+        "profit_factor": 0.6801168522914004,
+        "expectancy_r": -0.19039339274070854,
+        "trades_per_month": 85.20370370370371
+      },
+      "validation_2019_2022": {
+        "trades": 3970,
+        "wins": 1519,
+        "win_rate": 38.26196473551637,
+        "profit_factor": 0.6197470420236638,
+        "expectancy_r": -0.23476070528967255,
+        "trades_per_month": 82.70833333333333
+      },
+      "holdout_2023_2024": {
+        "trades": 1839,
+        "wins": 797,
+        "win_rate": 43.33877107123437,
+        "profit_factor": 0.7648752399232246,
+        "expectancy_r": -0.13322457857531267,
+        "trades_per_month": 76.625
+      },
+      "true_oos_2025_2026": {
+        "trades": 1189,
+        "wins": 468,
+        "win_rate": 39.36080740117746,
+        "profit_factor": 0.6490984743411928,
+        "expectancy_r": -0.2127838519764508,
+        "trades_per_month": 62.578947368421055
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 14441,
+        "wins": 5514,
+        "win_rate": 38.18295131916072,
+        "profit_factor": 0.6176767111011539,
+        "expectancy_r": -0.23634097361678555,
+        "trades_per_month": 133.71296296296296
+      },
+      "validation_2019_2022": {
+        "trades": 6404,
+        "wins": 2476,
+        "win_rate": 38.663335415365395,
+        "profit_factor": 0.630346232179226,
+        "expectancy_r": -0.22673329169269207,
+        "trades_per_month": 133.41666666666666
+      },
+      "holdout_2023_2024": {
+        "trades": 3100,
+        "wins": 1310,
+        "win_rate": 42.25806451612903,
+        "profit_factor": 0.7318435754189944,
+        "expectancy_r": -0.15483870967741936,
+        "trades_per_month": 129.16666666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 2324,
+        "wins": 928,
+        "win_rate": 39.93115318416523,
+        "profit_factor": 0.664756446991404,
+        "expectancy_r": -0.20137693631669534,
+        "trades_per_month": 122.3157894736842
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6428,
+        "wins": 2425,
+        "win_rate": 37.7255756067206,
+        "profit_factor": 0.6057956532600549,
+        "expectancy_r": -0.24548848786558805,
+        "trades_per_month": 59.51851851851852
+      },
+      "validation_2019_2022": {
+        "trades": 2792,
+        "wins": 1064,
+        "win_rate": 38.108882521489974,
+        "profit_factor": 0.6157407407407407,
+        "expectancy_r": -0.23782234957020057,
+        "trades_per_month": 58.166666666666664
+      },
+      "holdout_2023_2024": {
+        "trades": 1362,
+        "wins": 561,
+        "win_rate": 41.18942731277533,
+        "profit_factor": 0.700374531835206,
+        "expectancy_r": -0.1762114537444934,
+        "trades_per_month": 56.75
+      },
+      "true_oos_2025_2026": {
+        "trades": 1093,
+        "wins": 431,
+        "win_rate": 39.4327538883806,
+        "profit_factor": 0.6510574018126888,
+        "expectancy_r": -0.21134492223238793,
+        "trades_per_month": 57.526315789473685
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 16606,
+        "wins": 6364,
+        "win_rate": 38.32349753101288,
+        "profit_factor": 0.6213630150361258,
+        "expectancy_r": -0.23353004937974225,
+        "trades_per_month": 153.75925925925927
+      },
+      "validation_2019_2022": {
+        "trades": 7375,
+        "wins": 2782,
+        "win_rate": 37.722033898305085,
+        "profit_factor": 0.6057043326801654,
+        "expectancy_r": -0.2455593220338983,
+        "trades_per_month": 153.64583333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 3455,
+        "wins": 1504,
+        "win_rate": 43.531114327062234,
+        "profit_factor": 0.7708867247565351,
+        "expectancy_r": -0.12937771345875543,
+        "trades_per_month": 143.95833333333334
+      },
+      "true_oos_2025_2026": {
+        "trades": 2560,
+        "wins": 994,
+        "win_rate": 38.828125,
+        "profit_factor": 0.6347381864623244,
+        "expectancy_r": -0.2234375,
+        "trades_per_month": 134.73684210526315
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6368,
+        "wins": 2397,
+        "win_rate": 37.641331658291456,
+        "profit_factor": 0.6036262906069,
+        "expectancy_r": -0.24717336683417085,
+        "trades_per_month": 58.96296296296296
+      },
+      "validation_2019_2022": {
+        "trades": 2763,
+        "wins": 1052,
+        "win_rate": 38.07455664133189,
+        "profit_factor": 0.6148451198129748,
+        "expectancy_r": -0.23850886717336228,
+        "trades_per_month": 57.5625
+      },
+      "holdout_2023_2024": {
+        "trades": 1353,
+        "wins": 553,
+        "win_rate": 40.87213599408721,
+        "profit_factor": 0.69125,
+        "expectancy_r": -0.18255728011825573,
+        "trades_per_month": 56.375
+      },
+      "true_oos_2025_2026": {
+        "trades": 1066,
+        "wins": 429,
+        "win_rate": 40.243902439024396,
+        "profit_factor": 0.673469387755102,
+        "expectancy_r": -0.1951219512195122,
+        "trades_per_month": 56.10526315789474
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 5950,
+        "wins": 2238,
+        "win_rate": 37.61344537815126,
+        "profit_factor": 0.6029094827586207,
+        "expectancy_r": -0.2477310924369748,
+        "trades_per_month": 55.092592592592595
+      },
+      "validation_2019_2022": {
+        "trades": 2635,
+        "wins": 1004,
+        "win_rate": 38.10246679316888,
+        "profit_factor": 0.615573267933783,
+        "expectancy_r": -0.2379506641366224,
+        "trades_per_month": 54.895833333333336
+      },
+      "holdout_2023_2024": {
+        "trades": 1292,
+        "wins": 539,
+        "win_rate": 41.71826625386997,
+        "profit_factor": 0.7158034528552457,
+        "expectancy_r": -0.16563467492260062,
+        "trades_per_month": 53.833333333333336
+      },
+      "true_oos_2025_2026": {
+        "trades": 1024,
+        "wins": 406,
+        "win_rate": 39.6484375,
+        "profit_factor": 0.656957928802589,
+        "expectancy_r": -0.20703125,
+        "trades_per_month": 53.89473684210526
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 5891,
+        "wins": 2213,
+        "win_rate": 37.56577830589034,
+        "profit_factor": 0.6016856987493203,
+        "expectancy_r": -0.2486844338821932,
+        "trades_per_month": 54.5462962962963
+      },
+      "validation_2019_2022": {
+        "trades": 2607,
+        "wins": 993,
+        "win_rate": 38.089758342922906,
+        "profit_factor": 0.6152416356877324,
+        "expectancy_r": -0.238204833141542,
+        "trades_per_month": 54.3125
+      },
+      "holdout_2023_2024": {
+        "trades": 1282,
+        "wins": 530,
+        "win_rate": 41.34165366614664,
+        "profit_factor": 0.7047872340425532,
+        "expectancy_r": -0.1731669266770671,
+        "trades_per_month": 53.416666666666664
+      },
+      "true_oos_2025_2026": {
+        "trades": 995,
+        "wins": 402,
+        "win_rate": 40.402010050251256,
+        "profit_factor": 0.6779089376053963,
+        "expectancy_r": -0.19195979899497487,
+        "trades_per_month": 52.36842105263158
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 19277,
+        "wins": 7234,
+        "win_rate": 37.52658608704674,
+        "profit_factor": 0.6006808934650835,
+        "expectancy_r": -0.2494682782590652,
+        "trades_per_month": 178.49074074074073
+      },
+      "validation_2019_2022": {
+        "trades": 8525,
+        "wins": 3169,
+        "win_rate": 37.17302052785924,
+        "profit_factor": 0.5916728902165795,
+        "expectancy_r": -0.25653958944281524,
+        "trades_per_month": 177.60416666666666
+      },
+      "holdout_2023_2024": {
+        "trades": 4147,
+        "wins": 1682,
+        "win_rate": 40.55944055944056,
+        "profit_factor": 0.6823529411764706,
+        "expectancy_r": -0.1888111888111888,
+        "trades_per_month": 172.79166666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 3013,
+        "wins": 1190,
+        "win_rate": 39.495519415864585,
+        "profit_factor": 0.6527701590784422,
+        "expectancy_r": -0.21008961168270826,
+        "trades_per_month": 158.57894736842104
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 21052,
+        "wins": 7773,
+        "win_rate": 36.92285768573057,
+        "profit_factor": 0.5853603433993524,
+        "expectancy_r": -0.26154284628538854,
+        "trades_per_month": 194.92592592592592
+      },
+      "validation_2019_2022": {
+        "trades": 9478,
+        "wins": 3581,
+        "win_rate": 37.782232538510236,
+        "profit_factor": 0.6072579277598779,
+        "expectancy_r": -0.24435534922979532,
+        "trades_per_month": 197.45833333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 4648,
+        "wins": 1949,
+        "win_rate": 41.93201376936317,
+        "profit_factor": 0.7221193034457206,
+        "expectancy_r": -0.16135972461273665,
+        "trades_per_month": 193.66666666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 3468,
+        "wins": 1390,
+        "win_rate": 40.08073817762399,
+        "profit_factor": 0.6689124157844081,
+        "expectancy_r": -0.19838523644752018,
+        "trades_per_month": 182.52631578947367
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 28164,
+        "wins": 10390,
+        "win_rate": 36.89106660985655,
+        "profit_factor": 0.5845617193653652,
+        "expectancy_r": -0.2621786678028689,
+        "trades_per_month": 260.77777777777777
+      },
+      "validation_2019_2022": {
+        "trades": 12559,
+        "wins": 4617,
+        "win_rate": 36.7624810892587,
+        "profit_factor": 0.5813397129186603,
+        "expectancy_r": -0.264750378214826,
+        "trades_per_month": 261.6458333333333
+      },
+      "holdout_2023_2024": {
+        "trades": 6202,
+        "wins": 2521,
+        "win_rate": 40.64817800709449,
+        "profit_factor": 0.6848682423254551,
+        "expectancy_r": -0.18703643985811028,
+        "trades_per_month": 258.4166666666667
+      },
+      "true_oos_2025_2026": {
+        "trades": 4708,
+        "wins": 1869,
+        "win_rate": 39.698385726423105,
+        "profit_factor": 0.6583303980274745,
+        "expectancy_r": -0.20603228547153782,
+        "trades_per_month": 247.78947368421052
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 11169,
+        "wins": 4386,
+        "win_rate": 39.26940639269406,
+        "profit_factor": 0.6466165413533834,
+        "expectancy_r": -0.2146118721461187,
+        "trades_per_month": 103.41666666666667
+      },
+      "validation_2019_2022": {
+        "trades": 4907,
+        "wins": 1802,
+        "win_rate": 36.7230487059303,
+        "profit_factor": 0.5803542673107891,
+        "expectancy_r": -0.26553902588139394,
+        "trades_per_month": 102.22916666666667
+      },
+      "holdout_2023_2024": {
+        "trades": 2282,
+        "wins": 930,
+        "win_rate": 40.753724802804555,
+        "profit_factor": 0.6878698224852071,
+        "expectancy_r": -0.18492550394390886,
+        "trades_per_month": 95.08333333333333
+      },
+      "true_oos_2025_2026": {
+        "trades": 1387,
+        "wins": 546,
+        "win_rate": 39.36553713049747,
+        "profit_factor": 0.6492271105826397,
+        "expectancy_r": -0.21268925739005046,
+        "trades_per_month": 73.0
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 9301,
+        "wins": 3709,
+        "win_rate": 39.87743253413611,
+        "profit_factor": 0.6632689556509299,
+        "expectancy_r": -0.2024513493172777,
+        "trades_per_month": 86.12037037037037
+      },
+      "validation_2019_2022": {
+        "trades": 4184,
+        "wins": 1530,
+        "win_rate": 36.5678776290631,
+        "profit_factor": 0.5764883195177091,
+        "expectancy_r": -0.26864244741873805,
+        "trades_per_month": 87.16666666666667
+      },
+      "holdout_2023_2024": {
+        "trades": 1877,
+        "wins": 701,
+        "win_rate": 37.346830047948856,
+        "profit_factor": 0.5960884353741497,
+        "expectancy_r": -0.25306339904102293,
+        "trades_per_month": 78.20833333333333
+      },
+      "true_oos_2025_2026": {
+        "trades": 1344,
+        "wins": 549,
+        "win_rate": 40.848214285714285,
+        "profit_factor": 0.690566037735849,
+        "expectancy_r": -0.18303571428571427,
+        "trades_per_month": 70.73684210526316
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 11431,
+        "wins": 4533,
+        "win_rate": 39.65532324381069,
+        "profit_factor": 0.6571469991301827,
+        "expectancy_r": -0.2068935351237862,
+        "trades_per_month": 105.8425925925926
+      },
+      "validation_2019_2022": {
+        "trades": 5269,
+        "wins": 1925,
+        "win_rate": 36.53444676409186,
+        "profit_factor": 0.5756578947368421,
+        "expectancy_r": -0.26931106471816285,
+        "trades_per_month": 109.77083333333333
+      },
+      "holdout_2023_2024": {
+        "trades": 2344,
+        "wins": 904,
+        "win_rate": 38.56655290102389,
+        "profit_factor": 0.6277777777777778,
+        "expectancy_r": -0.22866894197952217,
+        "trades_per_month": 97.66666666666667
+      },
+      "true_oos_2025_2026": {
+        "trades": 1586,
+        "wins": 636,
+        "win_rate": 40.10088272383354,
+        "profit_factor": 0.6694736842105263,
+        "expectancy_r": -0.19798234552332913,
+        "trades_per_month": 83.47368421052632
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 14863,
+        "wins": 5676,
+        "win_rate": 38.18879095741102,
+        "profit_factor": 0.6178295417437684,
+        "expectancy_r": -0.2362241808517796,
+        "trades_per_month": 137.62037037037038
+      },
+      "validation_2019_2022": {
+        "trades": 6598,
+        "wins": 2400,
+        "win_rate": 36.37465898757199,
+        "profit_factor": 0.5717008099094807,
+        "expectancy_r": -0.27250682024856016,
+        "trades_per_month": 137.45833333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 3258,
+        "wins": 1252,
+        "win_rate": 38.42848373235114,
+        "profit_factor": 0.6241276171485544,
+        "expectancy_r": -0.23143032535297728,
+        "trades_per_month": 135.75
+      },
+      "true_oos_2025_2026": {
+        "trades": 2434,
+        "wins": 935,
+        "win_rate": 38.41413311421528,
+        "profit_factor": 0.6237491661107405,
+        "expectancy_r": -0.23171733771569433,
+        "trades_per_month": 128.10526315789474
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 20963,
+        "wins": 7933,
+        "win_rate": 37.842866002003525,
+        "profit_factor": 0.6088257866462011,
+        "expectancy_r": -0.2431426799599294,
+        "trades_per_month": 194.10185185185185
+      },
+      "validation_2019_2022": {
+        "trades": 9404,
+        "wins": 3398,
+        "win_rate": 36.1335601871544,
+        "profit_factor": 0.5657675657675658,
+        "expectancy_r": -0.2773287962569119,
+        "trades_per_month": 195.91666666666666
+      },
+      "holdout_2023_2024": {
+        "trades": 4334,
+        "wins": 1788,
+        "win_rate": 41.25519150899862,
+        "profit_factor": 0.7022780832678712,
+        "expectancy_r": -0.17489616982002767,
+        "trades_per_month": 180.58333333333334
+      },
+      "true_oos_2025_2026": {
+        "trades": 3055,
+        "wins": 1194,
+        "win_rate": 39.08346972176759,
+        "profit_factor": 0.6415905427189683,
+        "expectancy_r": -0.21833060556464812,
+        "trades_per_month": 160.78947368421052
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 19908,
+        "wins": 7612,
+        "win_rate": 38.235885071328106,
+        "profit_factor": 0.6190631099544567,
+        "expectancy_r": -0.23528229857343783,
+        "trades_per_month": 184.33333333333334
+      },
+      "validation_2019_2022": {
+        "trades": 8795,
+        "wins": 3165,
+        "win_rate": 35.98635588402501,
+        "profit_factor": 0.5621669626998224,
+        "expectancy_r": -0.2802728823194997,
+        "trades_per_month": 183.22916666666666
+      },
+      "holdout_2023_2024": {
+        "trades": 4284,
+        "wins": 1664,
+        "win_rate": 38.842203548085905,
+        "profit_factor": 0.6351145038167939,
+        "expectancy_r": -0.223155929038282,
+        "trades_per_month": 178.5
+      },
+      "true_oos_2025_2026": {
+        "trades": 3153,
+        "wins": 1220,
+        "win_rate": 38.69330796067237,
+        "profit_factor": 0.6311433005690636,
+        "expectancy_r": -0.2261338407865525,
+        "trades_per_month": 165.94736842105263
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 1158,
+        "wins": 438,
+        "win_rate": 37.82383419689119,
+        "profit_factor": 0.6083333333333333,
+        "expectancy_r": -0.24352331606217617,
+        "trades_per_month": 10.722222222222221
+      },
+      "validation_2019_2022": {
+        "trades": 463,
+        "wins": 166,
+        "win_rate": 35.85313174946004,
+        "profit_factor": 0.5589225589225589,
+        "expectancy_r": -0.28293736501079914,
+        "trades_per_month": 9.645833333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 245,
+        "wins": 99,
+        "win_rate": 40.40816326530612,
+        "profit_factor": 0.678082191780822,
+        "expectancy_r": -0.19183673469387755,
+        "trades_per_month": 10.208333333333334
+      },
+      "true_oos_2025_2026": {
+        "trades": 172,
+        "wins": 64,
+        "win_rate": 37.2093023255814,
+        "profit_factor": 0.5925925925925926,
+        "expectancy_r": -0.2558139534883721,
+        "trades_per_month": 9.052631578947368
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 1129,
+        "wins": 426,
+        "win_rate": 37.73250664304694,
+        "profit_factor": 0.6059743954480796,
+        "expectancy_r": -0.24534986713906112,
+        "trades_per_month": 10.453703703703704
+      },
+      "validation_2019_2022": {
+        "trades": 447,
+        "wins": 160,
+        "win_rate": 35.79418344519016,
+        "profit_factor": 0.5574912891986062,
+        "expectancy_r": -0.2841163310961969,
+        "trades_per_month": 9.3125
+      },
+      "holdout_2023_2024": {
+        "trades": 235,
+        "wins": 94,
+        "win_rate": 40.0,
+        "profit_factor": 0.6666666666666666,
+        "expectancy_r": -0.2,
+        "trades_per_month": 9.791666666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 158,
+        "wins": 60,
+        "win_rate": 37.9746835443038,
+        "profit_factor": 0.6122448979591837,
+        "expectancy_r": -0.24050632911392406,
+        "trades_per_month": 8.31578947368421
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 21237,
+        "wins": 8032,
+        "win_rate": 37.82078447991712,
+        "profit_factor": 0.6082544490723211,
+        "expectancy_r": -0.24358431040165748,
+        "trades_per_month": 196.63888888888889
+      },
+      "validation_2019_2022": {
+        "trades": 9528,
+        "wins": 3390,
+        "win_rate": 35.579345088161205,
+        "profit_factor": 0.552297165200391,
+        "expectancy_r": -0.2884130982367758,
+        "trades_per_month": 198.5
+      },
+      "holdout_2023_2024": {
+        "trades": 4387,
+        "wins": 1638,
+        "win_rate": 37.33758832915432,
+        "profit_factor": 0.5958530374681702,
+        "expectancy_r": -0.2532482334169136,
+        "trades_per_month": 182.79166666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 3103,
+        "wins": 1215,
+        "win_rate": 39.15565581695134,
+        "profit_factor": 0.6435381355932204,
+        "expectancy_r": -0.21688688366097325,
+        "trades_per_month": 163.31578947368422
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 1316,
+        "wins": 494,
+        "win_rate": 37.537993920972646,
+        "profit_factor": 0.6009732360097324,
+        "expectancy_r": -0.24924012158054712,
+        "trades_per_month": 12.185185185185185
+      },
+      "validation_2019_2022": {
+        "trades": 501,
+        "wins": 177,
+        "win_rate": 35.32934131736527,
+        "profit_factor": 0.5462962962962963,
+        "expectancy_r": -0.2934131736526946,
+        "trades_per_month": 10.4375
+      },
+      "holdout_2023_2024": {
+        "trades": 261,
+        "wins": 109,
+        "win_rate": 41.7624521072797,
+        "profit_factor": 0.7171052631578947,
+        "expectancy_r": -0.16475095785440613,
+        "trades_per_month": 10.875
+      },
+      "true_oos_2025_2026": {
+        "trades": 193,
+        "wins": 71,
+        "win_rate": 36.787564766839374,
+        "profit_factor": 0.5819672131147541,
+        "expectancy_r": -0.26424870466321243,
+        "trades_per_month": 10.157894736842104
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 1.25,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 1281,
+        "wins": 479,
+        "win_rate": 37.39266198282592,
+        "profit_factor": 0.5972568578553616,
+        "expectancy_r": -0.25214676034348166,
+        "trades_per_month": 11.86111111111111
+      },
+      "validation_2019_2022": {
+        "trades": 485,
+        "wins": 171,
+        "win_rate": 35.25773195876289,
+        "profit_factor": 0.5445859872611465,
+        "expectancy_r": -0.2948453608247423,
+        "trades_per_month": 10.104166666666666
+      },
+      "holdout_2023_2024": {
+        "trades": 251,
+        "wins": 104,
+        "win_rate": 41.43426294820717,
+        "profit_factor": 0.7074829931972789,
+        "expectancy_r": -0.17131474103585656,
+        "trades_per_month": 10.458333333333334
+      },
+      "true_oos_2025_2026": {
+        "trades": 176,
+        "wins": 66,
+        "win_rate": 37.5,
+        "profit_factor": 0.6,
+        "expectancy_r": -0.25,
+        "trades_per_month": 9.263157894736842
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 16763,
+        "wins": 6293,
+        "win_rate": 37.541012945176874,
+        "profit_factor": 0.6010506208213945,
+        "expectancy_r": -0.24917974109646246,
+        "trades_per_month": 155.21296296296296
+      },
+      "validation_2019_2022": {
+        "trades": 7448,
+        "wins": 2619,
+        "win_rate": 35.163802363050486,
+        "profit_factor": 0.5423483122799752,
+        "expectancy_r": -0.2967239527389903,
+        "trades_per_month": 155.16666666666666
+      },
+      "holdout_2023_2024": {
+        "trades": 3493,
+        "wins": 1258,
+        "win_rate": 36.01488691669053,
+        "profit_factor": 0.5628635346756152,
+        "expectancy_r": -0.2797022616661895,
+        "trades_per_month": 145.54166666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 2587,
+        "wins": 1033,
+        "win_rate": 39.930421337456515,
+        "profit_factor": 0.6647361647361647,
+        "expectancy_r": -0.20139157325086973,
+        "trades_per_month": 136.1578947368421
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 1156,
+        "wins": 419,
+        "win_rate": 36.24567474048443,
+        "profit_factor": 0.5685210312075983,
+        "expectancy_r": -0.2750865051903114,
+        "trades_per_month": 10.703703703703704
+      },
+      "validation_2019_2022": {
+        "trades": 461,
+        "wins": 162,
+        "win_rate": 35.140997830802604,
+        "profit_factor": 0.5418060200668896,
+        "expectancy_r": -0.29718004338394793,
+        "trades_per_month": 9.604166666666666
+      },
+      "holdout_2023_2024": {
+        "trades": 244,
+        "wins": 86,
+        "win_rate": 35.24590163934426,
+        "profit_factor": 0.5443037974683544,
+        "expectancy_r": -0.29508196721311475,
+        "trades_per_month": 10.166666666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 172,
+        "wins": 58,
+        "win_rate": 33.72093023255814,
+        "profit_factor": 0.5087719298245614,
+        "expectancy_r": -0.32558139534883723,
+        "trades_per_month": 9.052631578947368
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 28938,
+        "wins": 10893,
+        "win_rate": 37.64254613311217,
+        "profit_factor": 0.6036575228595179,
+        "expectancy_r": -0.2471490773377566,
+        "trades_per_month": 267.94444444444446
+      },
+      "validation_2019_2022": {
+        "trades": 12907,
+        "wins": 4527,
+        "win_rate": 35.07399085767413,
+        "profit_factor": 0.5402147971360381,
+        "expectancy_r": -0.2985201828465174,
+        "trades_per_month": 268.8958333333333
+      },
+      "holdout_2023_2024": {
+        "trades": 6366,
+        "wins": 2398,
+        "win_rate": 37.668865849827206,
+        "profit_factor": 0.6043346774193549,
+        "expectancy_r": -0.24662268300345586,
+        "trades_per_month": 265.25
+      },
+      "true_oos_2025_2026": {
+        "trades": 4836,
+        "wins": 1883,
+        "win_rate": 38.93713813068651,
+        "profit_factor": 0.6376566203860481,
+        "expectancy_r": -0.22125723738626965,
+        "trades_per_month": 254.52631578947367
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 22221,
+        "wins": 8315,
+        "win_rate": 37.41955807569416,
+        "profit_factor": 0.5979433338127427,
+        "expectancy_r": -0.25160883848611676,
+        "trades_per_month": 205.75
+      },
+      "validation_2019_2022": {
+        "trades": 9960,
+        "wins": 3475,
+        "win_rate": 34.889558232931726,
+        "profit_factor": 0.535851966075559,
+        "expectancy_r": -0.30220883534136544,
+        "trades_per_month": 207.5
+      },
+      "holdout_2023_2024": {
+        "trades": 4917,
+        "wins": 1810,
+        "win_rate": 36.81106365670124,
+        "profit_factor": 0.5825555197940135,
+        "expectancy_r": -0.2637787268659752,
+        "trades_per_month": 204.875
+      },
+      "true_oos_2025_2026": {
+        "trades": 3677,
+        "wins": 1417,
+        "win_rate": 38.536850693500135,
+        "profit_factor": 0.6269911504424779,
+        "expectancy_r": -0.2292629861299973,
+        "trades_per_month": 193.52631578947367
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6167,
+        "wins": 2288,
+        "win_rate": 37.10069725960759,
+        "profit_factor": 0.5898427429749935,
+        "expectancy_r": -0.2579860548078482,
+        "trades_per_month": 57.101851851851855
+      },
+      "validation_2019_2022": {
+        "trades": 2781,
+        "wins": 967,
+        "win_rate": 34.771664868752254,
+        "profit_factor": 0.5330760749724366,
+        "expectancy_r": -0.30456670262495505,
+        "trades_per_month": 57.9375
+      },
+      "holdout_2023_2024": {
+        "trades": 1324,
+        "wins": 504,
+        "win_rate": 38.066465256797585,
+        "profit_factor": 0.6146341463414634,
+        "expectancy_r": -0.23867069486404835,
+        "trades_per_month": 55.166666666666664
+      },
+      "true_oos_2025_2026": {
+        "trades": 1006,
+        "wins": 393,
+        "win_rate": 39.065606361829026,
+        "profit_factor": 0.6411092985318108,
+        "expectancy_r": -0.21868787276341947,
+        "trades_per_month": 52.94736842105263
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6185,
+        "wins": 2292,
+        "win_rate": 37.05739692805174,
+        "profit_factor": 0.5887490367325969,
+        "expectancy_r": -0.2588520614389652,
+        "trades_per_month": 57.26851851851852
+      },
+      "validation_2019_2022": {
+        "trades": 2786,
+        "wins": 966,
+        "win_rate": 34.67336683417086,
+        "profit_factor": 0.5307692307692308,
+        "expectancy_r": -0.3065326633165829,
+        "trades_per_month": 58.041666666666664
+      },
+      "holdout_2023_2024": {
+        "trades": 1331,
+        "wins": 500,
+        "win_rate": 37.56574004507889,
+        "profit_factor": 0.601684717208183,
+        "expectancy_r": -0.24868519909842224,
+        "trades_per_month": 55.458333333333336
+      },
+      "true_oos_2025_2026": {
+        "trades": 1006,
+        "wins": 383,
+        "win_rate": 38.07157057654075,
+        "profit_factor": 0.6147672552166934,
+        "expectancy_r": -0.23856858846918488,
+        "trades_per_month": 52.94736842105263
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 1314,
+        "wins": 469,
+        "win_rate": 35.692541856925416,
+        "profit_factor": 0.5550295857988166,
+        "expectancy_r": -0.2861491628614916,
+        "trades_per_month": 12.166666666666666
+      },
+      "validation_2019_2022": {
+        "trades": 499,
+        "wins": 173,
+        "win_rate": 34.66933867735471,
+        "profit_factor": 0.5306748466257669,
+        "expectancy_r": -0.3066132264529058,
+        "trades_per_month": 10.395833333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 260,
+        "wins": 94,
+        "win_rate": 36.15384615384615,
+        "profit_factor": 0.5662650602409639,
+        "expectancy_r": -0.27692307692307694,
+        "trades_per_month": 10.833333333333334
+      },
+      "true_oos_2025_2026": {
+        "trades": 193,
+        "wins": 65,
+        "win_rate": 33.67875647668394,
+        "profit_factor": 0.5078125,
+        "expectancy_r": -0.32642487046632124,
+        "trades_per_month": 10.157894736842104
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 4017,
+        "wins": 1476,
+        "win_rate": 36.74383868558626,
+        "profit_factor": 0.5808736717827627,
+        "expectancy_r": -0.26512322628827484,
+        "trades_per_month": 37.19444444444444
+      },
+      "validation_2019_2022": {
+        "trades": 1749,
+        "wins": 606,
+        "win_rate": 34.6483704974271,
+        "profit_factor": 0.5301837270341208,
+        "expectancy_r": -0.307032590051458,
+        "trades_per_month": 36.4375
+      },
+      "holdout_2023_2024": {
+        "trades": 858,
+        "wins": 331,
+        "win_rate": 38.578088578088575,
+        "profit_factor": 0.6280834914611005,
+        "expectancy_r": -0.22843822843822845,
+        "trades_per_month": 35.75
+      },
+      "true_oos_2025_2026": {
+        "trades": 635,
+        "wins": 243,
+        "win_rate": 38.267716535433074,
+        "profit_factor": 0.6198979591836735,
+        "expectancy_r": -0.2346456692913386,
+        "trades_per_month": 33.421052631578945
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6654,
+        "wins": 2485,
+        "win_rate": 37.34595731890592,
+        "profit_factor": 0.5960662029263613,
+        "expectancy_r": -0.2530808536218816,
+        "trades_per_month": 61.611111111111114
+      },
+      "validation_2019_2022": {
+        "trades": 2941,
+        "wins": 1015,
+        "win_rate": 34.51207072424346,
+        "profit_factor": 0.5269989615784009,
+        "expectancy_r": -0.3097585855151309,
+        "trades_per_month": 61.270833333333336
+      },
+      "holdout_2023_2024": {
+        "trades": 1390,
+        "wins": 535,
+        "win_rate": 38.489208633093526,
+        "profit_factor": 0.6257309941520468,
+        "expectancy_r": -0.2302158273381295,
+        "trades_per_month": 57.916666666666664
+      },
+      "true_oos_2025_2026": {
+        "trades": 1081,
+        "wins": 416,
+        "win_rate": 38.482886216466234,
+        "profit_factor": 0.6255639097744361,
+        "expectancy_r": -0.2303422756706753,
+        "trades_per_month": 56.89473684210526
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6671,
+        "wins": 2485,
+        "win_rate": 37.2507869884575,
+        "profit_factor": 0.5936454849498328,
+        "expectancy_r": -0.25498426023084997,
+        "trades_per_month": 61.76851851851852
+      },
+      "validation_2019_2022": {
+        "trades": 2947,
+        "wins": 1015,
+        "win_rate": 34.441805225653205,
+        "profit_factor": 0.5253623188405797,
+        "expectancy_r": -0.31116389548693585,
+        "trades_per_month": 61.395833333333336
+      },
+      "holdout_2023_2024": {
+        "trades": 1396,
+        "wins": 530,
+        "win_rate": 37.96561604584527,
+        "profit_factor": 0.6120092378752887,
+        "expectancy_r": -0.24068767908309455,
+        "trades_per_month": 58.166666666666664
+      },
+      "true_oos_2025_2026": {
+        "trades": 1081,
+        "wins": 408,
+        "win_rate": 37.74283071230342,
+        "profit_factor": 0.6062407132243685,
+        "expectancy_r": -0.24514338575393155,
+        "trades_per_month": 56.89473684210526
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 1127,
+        "wins": 406,
+        "win_rate": 36.024844720496894,
+        "profit_factor": 0.5631067961165048,
+        "expectancy_r": -0.2795031055900621,
+        "trades_per_month": 10.435185185185185
+      },
+      "validation_2019_2022": {
+        "trades": 445,
+        "wins": 153,
+        "win_rate": 34.38202247191011,
+        "profit_factor": 0.523972602739726,
+        "expectancy_r": -0.31235955056179776,
+        "trades_per_month": 9.270833333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 234,
+        "wins": 85,
+        "win_rate": 36.324786324786324,
+        "profit_factor": 0.5704697986577181,
+        "expectancy_r": -0.27350427350427353,
+        "trades_per_month": 9.75
+      },
+      "true_oos_2025_2026": {
+        "trades": 158,
+        "wins": 52,
+        "win_rate": 32.91139240506329,
+        "profit_factor": 0.49056603773584906,
+        "expectancy_r": -0.34177215189873417,
+        "trades_per_month": 8.31578947368421
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 4470,
+        "wins": 1640,
+        "win_rate": 36.68903803131991,
+        "profit_factor": 0.5795053003533569,
+        "expectancy_r": -0.2662192393736018,
+        "trades_per_month": 41.388888888888886
+      },
+      "validation_2019_2022": {
+        "trades": 1917,
+        "wins": 659,
+        "win_rate": 34.376630151278036,
+        "profit_factor": 0.5238473767885533,
+        "expectancy_r": -0.3124673969744392,
+        "trades_per_month": 39.9375
+      },
+      "holdout_2023_2024": {
+        "trades": 938,
+        "wins": 364,
+        "win_rate": 38.80597014925373,
+        "profit_factor": 0.6341463414634146,
+        "expectancy_r": -0.22388059701492538,
+        "trades_per_month": 39.083333333333336
+      },
+      "true_oos_2025_2026": {
+        "trades": 699,
+        "wins": 266,
+        "win_rate": 38.054363376251786,
+        "profit_factor": 0.6143187066974596,
+        "expectancy_r": -0.23891273247496422,
+        "trades_per_month": 36.78947368421053
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 1279,
+        "wins": 454,
+        "win_rate": 35.49648162627052,
+        "profit_factor": 0.5503030303030303,
+        "expectancy_r": -0.29007036747458953,
+        "trades_per_month": 11.842592592592593
+      },
+      "validation_2019_2022": {
+        "trades": 483,
+        "wins": 166,
+        "win_rate": 34.368530020703936,
+        "profit_factor": 0.5236593059936908,
+        "expectancy_r": -0.31262939958592134,
+        "trades_per_month": 10.0625
+      },
+      "holdout_2023_2024": {
+        "trades": 250,
+        "wins": 92,
+        "win_rate": 36.8,
+        "profit_factor": 0.5822784810126582,
+        "expectancy_r": -0.264,
+        "trades_per_month": 10.416666666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 176,
+        "wins": 58,
+        "win_rate": 32.95454545454545,
+        "profit_factor": 0.4915254237288136,
+        "expectancy_r": -0.3409090909090909,
+        "trades_per_month": 9.263157894736842
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 4030,
+        "wins": 1472,
+        "win_rate": 36.52605459057072,
+        "profit_factor": 0.5754495699765442,
+        "expectancy_r": -0.2694789081885856,
+        "trades_per_month": 37.31481481481482
+      },
+      "validation_2019_2022": {
+        "trades": 1752,
+        "wins": 597,
+        "win_rate": 34.07534246575342,
+        "profit_factor": 0.5168831168831168,
+        "expectancy_r": -0.3184931506849315,
+        "trades_per_month": 36.5
+      },
+      "holdout_2023_2024": {
+        "trades": 862,
+        "wins": 321,
+        "win_rate": 37.23897911832947,
+        "profit_factor": 0.5933456561922366,
+        "expectancy_r": -0.2552204176334107,
+        "trades_per_month": 35.916666666666664
+      },
+      "true_oos_2025_2026": {
+        "trades": 636,
+        "wins": 244,
+        "win_rate": 38.36477987421384,
+        "profit_factor": 0.6224489795918368,
+        "expectancy_r": -0.23270440251572327,
+        "trades_per_month": 33.473684210526315
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_breakout",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 4483,
+        "wins": 1635,
+        "win_rate": 36.471113093910326,
+        "profit_factor": 0.5740870786516854,
+        "expectancy_r": -0.2705777381217934,
+        "trades_per_month": 41.50925925925926
+      },
+      "validation_2019_2022": {
+        "trades": 1923,
+        "wins": 650,
+        "win_rate": 33.80135205408216,
+        "profit_factor": 0.5106048703849175,
+        "expectancy_r": -0.32397295891835676,
+        "trades_per_month": 40.0625
+      },
+      "holdout_2023_2024": {
+        "trades": 943,
+        "wins": 355,
+        "win_rate": 37.6458112407211,
+        "profit_factor": 0.6037414965986394,
+        "expectancy_r": -0.24708377518557795,
+        "trades_per_month": 39.291666666666664
+      },
+      "true_oos_2025_2026": {
+        "trades": 694,
+        "wins": 267,
+        "win_rate": 38.472622478386164,
+        "profit_factor": 0.6252927400468384,
+        "expectancy_r": -0.23054755043227665,
+        "trades_per_month": 36.526315789473685
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 14822,
+        "wins": 4958,
+        "win_rate": 33.45027661584132,
+        "profit_factor": 0.5026358475263585,
+        "expectancy_r": -0.33099446768317364,
+        "trades_per_month": 137.24074074074073
+      },
+      "validation_2019_2022": {
+        "trades": 6565,
+        "wins": 2182,
+        "win_rate": 33.236862147753236,
+        "profit_factor": 0.4978325347935204,
+        "expectancy_r": -0.33526275704493524,
+        "trades_per_month": 136.77083333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 3173,
+        "wins": 1169,
+        "win_rate": 36.84210526315789,
+        "profit_factor": 0.5833333333333334,
+        "expectancy_r": -0.2631578947368421,
+        "trades_per_month": 132.20833333333334
+      },
+      "true_oos_2025_2026": {
+        "trades": 2375,
+        "wins": 840,
+        "win_rate": 35.368421052631575,
+        "profit_factor": 0.5472312703583062,
+        "expectancy_r": -0.2926315789473684,
+        "trades_per_month": 125.0
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 5930,
+        "wins": 2013,
+        "win_rate": 33.9460370994941,
+        "profit_factor": 0.5139137094715344,
+        "expectancy_r": -0.32107925801011805,
+        "trades_per_month": 54.907407407407405
+      },
+      "validation_2019_2022": {
+        "trades": 2632,
+        "wins": 871,
+        "win_rate": 33.09270516717325,
+        "profit_factor": 0.4946053378762067,
+        "expectancy_r": -0.33814589665653494,
+        "trades_per_month": 54.833333333333336
+      },
+      "holdout_2023_2024": {
+        "trades": 1285,
+        "wins": 480,
+        "win_rate": 37.35408560311284,
+        "profit_factor": 0.5962732919254659,
+        "expectancy_r": -0.2529182879377432,
+        "trades_per_month": 53.541666666666664
+      },
+      "true_oos_2025_2026": {
+        "trades": 1024,
+        "wins": 385,
+        "win_rate": 37.59765625,
+        "profit_factor": 0.6025039123630673,
+        "expectancy_r": -0.248046875,
+        "trades_per_month": 53.89473684210526
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6407,
+        "wins": 2173,
+        "win_rate": 33.91602934290619,
+        "profit_factor": 0.5132262635805385,
+        "expectancy_r": -0.3216794131418761,
+        "trades_per_month": 59.324074074074076
+      },
+      "validation_2019_2022": {
+        "trades": 2789,
+        "wins": 921,
+        "win_rate": 33.022588741484405,
+        "profit_factor": 0.4930406852248394,
+        "expectancy_r": -0.3395482251703119,
+        "trades_per_month": 58.104166666666664
+      },
+      "holdout_2023_2024": {
+        "trades": 1355,
+        "wins": 500,
+        "win_rate": 36.90036900369004,
+        "profit_factor": 0.5847953216374269,
+        "expectancy_r": -0.26199261992619927,
+        "trades_per_month": 56.458333333333336
+      },
+      "true_oos_2025_2026": {
+        "trades": 1093,
+        "wins": 416,
+        "win_rate": 38.06038426349497,
+        "profit_factor": 0.6144756277695717,
+        "expectancy_r": -0.23879231473010065,
+        "trades_per_month": 57.526315789473685
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 5871,
+        "wins": 1980,
+        "win_rate": 33.72508942258559,
+        "profit_factor": 0.5088666152659984,
+        "expectancy_r": -0.3254982115482882,
+        "trades_per_month": 54.361111111111114
+      },
+      "validation_2019_2022": {
+        "trades": 2604,
+        "wins": 857,
+        "win_rate": 32.91090629800307,
+        "profit_factor": 0.49055523755008584,
+        "expectancy_r": -0.34178187403993854,
+        "trades_per_month": 54.25
+      },
+      "holdout_2023_2024": {
+        "trades": 1275,
+        "wins": 470,
+        "win_rate": 36.86274509803922,
+        "profit_factor": 0.5838509316770186,
+        "expectancy_r": -0.2627450980392157,
+        "trades_per_month": 53.125
+      },
+      "true_oos_2025_2026": {
+        "trades": 995,
+        "wins": 374,
+        "win_rate": 37.58793969849246,
+        "profit_factor": 0.6022544283413849,
+        "expectancy_r": -0.24824120603015076,
+        "trades_per_month": 52.36842105263158
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "daily_level_fade",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 0.1,
+      "cooldown_bars": 0,
+      "one_signal_per_day": true,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 6347,
+        "wins": 2136,
+        "win_rate": 33.65369465889397,
+        "profit_factor": 0.5072429351697934,
+        "expectancy_r": -0.3269261068221207,
+        "trades_per_month": 58.76851851851852
+      },
+      "validation_2019_2022": {
+        "trades": 2760,
+        "wins": 903,
+        "win_rate": 32.71739130434783,
+        "profit_factor": 0.4862681744749596,
+        "expectancy_r": -0.3456521739130435,
+        "trades_per_month": 57.5
+      },
+      "holdout_2023_2024": {
+        "trades": 1346,
+        "wins": 491,
+        "win_rate": 36.47845468053492,
+        "profit_factor": 0.5742690058479533,
+        "expectancy_r": -0.2704309063893016,
+        "trades_per_month": 56.083333333333336
+      },
+      "true_oos_2025_2026": {
+        "trades": 1066,
+        "wins": 403,
+        "win_rate": 37.80487804878049,
+        "profit_factor": 0.6078431372549019,
+        "expectancy_r": -0.24390243902439024,
+        "trades_per_month": 56.10526315789474
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 22450,
+        "wins": 7266,
+        "win_rate": 32.365256124721604,
+        "profit_factor": 0.4785300316122234,
+        "expectancy_r": -0.35269487750556794,
+        "trades_per_month": 207.87037037037038
+      },
+      "validation_2019_2022": {
+        "trades": 10009,
+        "wins": 3224,
+        "win_rate": 32.21101009091817,
+        "profit_factor": 0.47516580692704496,
+        "expectancy_r": -0.3557797981816365,
+        "trades_per_month": 208.52083333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 4936,
+        "wins": 1807,
+        "win_rate": 36.60858995137764,
+        "profit_factor": 0.577500798977309,
+        "expectancy_r": -0.2678282009724473,
+        "trades_per_month": 205.66666666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 3679,
+        "wins": 1297,
+        "win_rate": 35.254145148138086,
+        "profit_factor": 0.5445004198152813,
+        "expectancy_r": -0.2949170970372384,
+        "trades_per_month": 193.6315789473684
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 9296,
+        "wins": 3231,
+        "win_rate": 34.75688468158348,
+        "profit_factor": 0.5327287716405605,
+        "expectancy_r": -0.30486230636833045,
+        "trades_per_month": 86.07407407407408
+      },
+      "validation_2019_2022": {
+        "trades": 4000,
+        "wins": 1282,
+        "win_rate": 32.05,
+        "profit_factor": 0.47167034584253126,
+        "expectancy_r": -0.359,
+        "trades_per_month": 83.33333333333333
+      },
+      "holdout_2023_2024": {
+        "trades": 1849,
+        "wins": 711,
+        "win_rate": 38.4532179556517,
+        "profit_factor": 0.624780316344464,
+        "expectancy_r": -0.23093564088696591,
+        "trades_per_month": 77.04166666666667
+      },
+      "true_oos_2025_2026": {
+        "trades": 1204,
+        "wins": 418,
+        "win_rate": 34.71760797342193,
+        "profit_factor": 0.5318066157760815,
+        "expectancy_r": -0.30564784053156147,
+        "trades_per_month": 63.36842105263158
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 19683,
+        "wins": 6447,
+        "win_rate": 32.75415333028502,
+        "profit_factor": 0.4870806890299184,
+        "expectancy_r": -0.34491693339429963,
+        "trades_per_month": 182.25
+      },
+      "validation_2019_2022": {
+        "trades": 8696,
+        "wins": 2776,
+        "win_rate": 31.922723091076357,
+        "profit_factor": 0.4689189189189189,
+        "expectancy_r": -0.36154553817847285,
+        "trades_per_month": 181.16666666666666
+      },
+      "holdout_2023_2024": {
+        "trades": 4236,
+        "wins": 1490,
+        "win_rate": 35.17469310670444,
+        "profit_factor": 0.5426074289876184,
+        "expectancy_r": -0.29650613786591123,
+        "trades_per_month": 176.5
+      },
+      "true_oos_2025_2026": {
+        "trades": 3078,
+        "wins": 1087,
+        "win_rate": 35.31513970110461,
+        "profit_factor": 0.5459568056253139,
+        "expectancy_r": -0.2936972059779077,
+        "trades_per_month": 162.0
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 16,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 16831,
+        "wins": 5577,
+        "win_rate": 33.13528607925851,
+        "profit_factor": 0.49555713524080325,
+        "expectancy_r": -0.3372942784148298,
+        "trades_per_month": 155.84259259259258
+      },
+      "validation_2019_2022": {
+        "trades": 7468,
+        "wins": 2374,
+        "win_rate": 31.78896625602571,
+        "profit_factor": 0.46603847663918335,
+        "expectancy_r": -0.3642206748794858,
+        "trades_per_month": 155.58333333333334
+      },
+      "holdout_2023_2024": {
+        "trades": 3506,
+        "wins": 1335,
+        "win_rate": 38.07758128921848,
+        "profit_factor": 0.6149239981575311,
+        "expectancy_r": -0.23844837421563034,
+        "trades_per_month": 146.08333333333334
+      },
+      "true_oos_2025_2026": {
+        "trades": 2592,
+        "wins": 879,
+        "win_rate": 33.91203703703704,
+        "profit_factor": 0.5131348511383538,
+        "expectancy_r": -0.32175925925925924,
+        "trades_per_month": 136.42105263157896
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.0,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 29090,
+        "wins": 9419,
+        "win_rate": 32.37882433826057,
+        "profit_factor": 0.47882669920187076,
+        "expectancy_r": -0.3524235132347886,
+        "trades_per_month": 269.35185185185185
+      },
+      "validation_2019_2022": {
+        "trades": 12996,
+        "wins": 4027,
+        "win_rate": 30.986457371498922,
+        "profit_factor": 0.44899096889285317,
+        "expectancy_r": -0.3802708525700215,
+        "trades_per_month": 270.75
+      },
+      "holdout_2023_2024": {
+        "trades": 6383,
+        "wins": 2270,
+        "win_rate": 35.56321478928404,
+        "profit_factor": 0.5519085825431559,
+        "expectancy_r": -0.28873570421431927,
+        "trades_per_month": 265.9583333333333
+      },
+      "true_oos_2025_2026": {
+        "trades": 4841,
+        "wins": 1710,
+        "win_rate": 35.32328031398471,
+        "profit_factor": 0.5461513893324816,
+        "expectancy_r": -0.2935343937203057,
+        "trades_per_month": 254.78947368421052
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": true,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 11306,
+        "wins": 3800,
+        "win_rate": 33.610472315584644,
+        "profit_factor": 0.506261657340794,
+        "expectancy_r": -0.3277905536883071,
+        "trades_per_month": 104.68518518518519
+      },
+      "validation_2019_2022": {
+        "trades": 4965,
+        "wins": 1524,
+        "win_rate": 30.694864048338367,
+        "profit_factor": 0.44289450741063646,
+        "expectancy_r": -0.3861027190332326,
+        "trades_per_month": 103.4375
+      },
+      "holdout_2023_2024": {
+        "trades": 2297,
+        "wins": 818,
+        "win_rate": 35.61166739225076,
+        "profit_factor": 0.5530764029749831,
+        "expectancy_r": -0.28776665215498476,
+        "trades_per_month": 95.70833333333333
+      },
+      "true_oos_2025_2026": {
+        "trades": 1412,
+        "wins": 491,
+        "win_rate": 34.773371104815865,
+        "profit_factor": 0.5331161780673181,
+        "expectancy_r": -0.3045325779036827,
+        "trades_per_month": 74.3157894736842
+      }
+    }
+  },
+  {
+    "config": {
+      "family": "impulse_continue",
+      "timeframe": "5m",
+      "lookback": 16,
+      "stop_atr": 0.75,
+      "session_start": 6,
+      "session_end": 20,
+      "range_end": 6,
+      "trend_fast": 480,
+      "trend_slow": 1200,
+      "require_trend": false,
+      "buffer_atr": 1.5,
+      "cooldown_bars": 48,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 20,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 8,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 14
+    },
+    "prequalified": false,
+    "passes_all": false,
+    "periods": {
+      "train_2010_2018": {
+        "trades": 21325,
+        "wins": 6963,
+        "win_rate": 32.65181711606096,
+        "profit_factor": 0.484821055563292,
+        "expectancy_r": -0.3469636576787808,
+        "trades_per_month": 197.4537037037037
+      },
+      "validation_2019_2022": {
+        "trades": 9555,
+        "wins": 2889,
+        "win_rate": 30.23547880690738,
+        "profit_factor": 0.43339333933393337,
+        "expectancy_r": -0.3952904238618524,
+        "trades_per_month": 199.0625
+      },
+      "holdout_2023_2024": {
+        "trades": 4390,
+        "wins": 1575,
+        "win_rate": 35.876993166287015,
+        "profit_factor": 0.5595026642984015,
+        "expectancy_r": -0.2824601366742597,
+        "trades_per_month": 182.91666666666666
+      },
+      "true_oos_2025_2026": {
+        "trades": 3108,
+        "wins": 1070,
+        "win_rate": 34.42728442728443,
+        "profit_factor": 0.5250245338567223,
+        "expectancy_r": -0.31145431145431146,
+        "trades_per_month": 163.57894736842104
+      }
+    }
+  }
+]

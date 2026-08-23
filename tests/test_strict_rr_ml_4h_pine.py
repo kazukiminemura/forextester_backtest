@@ -11,12 +11,14 @@ SOURCE = (
 
 def test_strict_rr_ml_pine_requires_confirmed_four_hour_alignment() -> None:
     assert SOURCE.startswith("//@version=6\n")
-    assert 'indicator("13通貨ML + 4銘柄構造分析 2026 [ANALYSIS PLAN]"' in SOURCE
+    assert 'indicator("11通貨ML + 7銘柄構造分析 2026 [SCENARIO NOWCAST]"' in SOURCE
     assert "strategy(" not in SOURCE
     assert "strategy." not in SOURCE
-    assert 'request.security(\n     syminfo.tickerid, "240", f_htfContext()' in SOURCE
+    assert 'syminfo.tickerid, "240", f_htfContext()' in SOURCE
     assert "lookahead=barmerge.lookahead_on" in SOURCE
-    assert "[lastHigh[1], previousHigh[1], lastLow[1], previousLow[1]]" in SOURCE
+    assert "[lastHigh[1], previousHigh[1], lastLow[1], previousLow[1]," in SOURCE
+    assert "channelHigh1[1], channelHigh2[1], channelLow1[1], channelLow2[1]," in SOURCE
+    assert "channelHighTime1[1], channelHighTime2[1]" in SOURCE
     assert "ready and hourlyBar" in SOURCE
     assert "longProbability >= 0.485 and htfTrend == 1" in SOURCE
     assert "shortProbability >= 0.485 and htfTrend == -1" in SOURCE
@@ -36,7 +38,8 @@ def test_strict_rr_ml_pine_shows_entry_rr_and_readable_win_rate() -> None:
     assert "style=line.style_solid" in SOURCE
     assert "style=line.style_dashed" in SOURCE
     assert "style=line.style_dotted" in SOURCE
-    assert '"ENTRY\\n"' in SOURCE
+    assert '"ENTRY BUY\\n"' in SOURCE
+    assert '"ENTRY SELL\\n"' in SOURCE
     assert '"TP 利確\\n"' in SOURCE
     assert '"SL 損切り\\n"' in SOURCE
     assert "box profitZone = box.new" in SOURCE
@@ -58,15 +61,34 @@ def test_strict_rr_ml_pine_shows_entry_rr_and_readable_win_rate() -> None:
     assert 'plot(visibleStop, "SL scale", color=color.new(color.red, 100)' in SOURCE
     assert "pendingClose - pendingAtr * 2.0" in SOURCE
     assert 'plot(visibleTarget, "TP scale", color=color.new(color.lime, 100)' in SOURCE
-    assert '"当チャート勝率"' in SOURCE
-    assert '"正時判定→次足 / RR1:1"' in SOURCE
-    assert "table.new(position.middle_right, 2, 13" in SOURCE
-    assert "\n    table.cell(stats" not in SOURCE
-    assert '"当チャート勝率"' in SOURCE
-    assert '"拡張後は再検証が必要"' in SOURCE
+    assert "table.new(position.middle_right" not in SOURCE
+    assert "table.cell(stats" not in SOURCE
+    assert '"勝率"' in SOURCE
+    assert '"現在-- / 検証55.6%"' in SOURCE
+    assert '" B" + str.tostring(lastLongProbability * 100.0' in SOURCE
+    assert '" / S" + str.tostring(lastShortProbability * 100.0' in SOURCE
     assert "float winRate = closedTrades > 0 ? wins * 100.0 / closedTrades : na" in SOURCE
     assert "if hitStop" in SOURCE
     assert "bar_index == pendingSignalBar + 1" in SOURCE
+
+
+def test_entry_guide_makes_wait_signal_and_live_trade_unambiguous() -> None:
+    assert 'text="BUY予告\\n次足ENTRY"' in SOURCE
+    assert 'text="SELL予告\\n次足ENTRY"' in SOURCE
+    assert '"エントリーなし・待機"' in SOURCE
+    assert '"次の15分足始値で買い"' in SOURCE
+    assert '"次の15分足始値で売り"' in SOURCE
+    assert '"買い保有中"' in SOURCE
+    assert '"売り保有中"' in SOURCE
+    assert "var table entryGuide = table.new(position.top_right, 2, 5" in SOURCE
+    assert '"4H / ML"' in SOURCE
+    assert '"ENTRY 黄"' in SOURCE
+    assert '"TP緑 / SL赤"' in SOURCE
+    assert "text_size=size.small" in SOURCE
+    assert 'guidePending ? "次の15分足始値" : "--"' in SOURCE
+    assert '"11通貨ML: BUY予告・次の15分足始値でENTRY"' in SOURCE
+    assert '"11通貨ML: SELL予告・次の15分足始値でENTRY"' in SOURCE
+    assert "固定11通貨 コンパクトML" not in SOURCE
 
 
 def test_strict_rr_ml_pine_avoids_known_static_failures() -> None:
@@ -90,12 +112,17 @@ def test_chart_analysis_layer_uses_confirmed_structure_and_scenarios() -> None:
     assert 'input.int(5, "スイング確定本数"' in SOURCE
     assert "ta.pivothigh(high, i_analysisPivotBars, i_analysisPivotBars)" in SOURCE
     assert "ta.pivotlow(low, i_analysisPivotBars, i_analysisPivotBars)" in SOURCE
+    assert "float channelPivotHigh = ta.pivothigh(high, i_analysisPivotBars" in SOURCE
+    assert "float channelPivotLow = ta.pivotlow(low, i_analysisPivotBars" in SOURCE
+    assert "time[i_analysisPivotBars]" in SOURCE
     assert '"確定スイング高値"' in SOURCE
     assert '"確定スイング安値"' in SOURCE
     assert "line resistance1 = line.new" in SOURCE
     assert "line support1 = line.new" in SOURCE
     assert "line upperChannel = line.new" in SOURCE
     assert "line lowerChannel = line.new" in SOURCE
+    assert '"4H 上限チャネル"' in SOURCE
+    assert '"4H 下限チャネル"' in SOURCE
     assert "line bullishScenario1 = line.new" in SOURCE
     assert "line bullishScenario2 = line.new" in SOURCE
     assert "line bullishScenario3 = line.new" in SOURCE
@@ -109,11 +136,14 @@ def test_chart_analysis_layer_uses_confirmed_structure_and_scenarios() -> None:
 
 
 def test_untrained_symbols_are_analysis_only_without_ml_entries() -> None:
-    for symbol in ("XAUUSD", "CADJPY", "EURAUD", "AUDNZD"):
+    for symbol in (
+        "XAUUSD", "EURJPY", "NZDJPY", "CADJPY", "EURAUD", "AUDNZD", "EURGBP"
+    ):
         assert f'pair == "{symbol}"' in SOURCE
         assert f'"{symbol}" =>' not in SOURCE
+    assert '"CHFJPY" => 0.017999999999999999' in SOURCE
     assert "bool chartSupported = supportedPair or analysisOnlyPair" in SOURCE
-    assert 'runtimeStatus := pair + " 構造分析のみ"' in SOURCE
+    assert 'analysisOnlyPair ? "構造分析のみ・MLエントリーなし"' in SOURCE
     assert "yearAllowed and supportedPair and not na(activeSpread)" in SOURCE
 
 
@@ -132,44 +162,47 @@ def test_entry_analysis_snapshot_retains_levels_and_channels() -> None:
 
 
 def test_upper_and_lower_channels_are_parallel_not_converging() -> None:
-    assert "float analysisChannelSlope" in SOURCE
-    assert "analysisDirection == 1 and not na(analysisLowerPivotSlope)" in SOURCE
-    assert "analysisDirection == -1 and not na(analysisUpperPivotSlope)" in SOURCE
-    assert "upperChannelEnd = analysisHigh1 + analysisChannelSlope" in SOURCE
-    assert "lowerChannelEnd = analysisLow1 + analysisChannelSlope" in SOURCE
-    assert "entryUpperEnd = analysisHigh1 + analysisChannelSlope" in SOURCE
-    assert "entryLowerEnd = analysisLow1 + analysisChannelSlope" in SOURCE
+    assert "float htfChannelSlope" in SOURCE
+    assert "htfChannelDirection == 1 and not na(htfLowerPivotSlope)" in SOURCE
+    assert "htfChannelDirection == -1 and not na(htfUpperPivotSlope)" in SOURCE
+    assert "upperChannelEnd = htfAnalysisHigh1 + htfChannelSlope" in SOURCE
+    assert "lowerChannelEnd = htfAnalysisLow1 + htfChannelSlope" in SOURCE
+    assert "entryUpperEnd = htfAnalysisHigh1 + htfChannelSlope" in SOURCE
+    assert "entryLowerEnd = htfAnalysisLow1 + htfChannelSlope" in SOURCE
+    assert "xloc=xloc.bar_time, color=color.rgb(6, 182, 212)" in SOURCE
+    assert "xloc=xloc.bar_time, color=color.new(color.rgb(6, 182, 212)" in SOURCE
+    assert "int htfChannelStartTime" in SOURCE
+    assert "int analysisChannelStartBar" not in SOURCE
     assert "float upperSlope =" not in SOURCE
     assert "float lowerSlope =" not in SOURCE
     assert "entryUpperSlope" not in SOURCE
     assert "entryLowerSlope" not in SOURCE
 
 
-def test_multi_pair_scanner_shows_complete_and_monitoring_states() -> None:
+def test_multi_pair_scanner_shows_only_complete_mobile_candidates() -> None:
     assert "dynamic_requests=true" in SOURCE
-    assert SOURCE.count("input.symbol(") == 17
-    assert SOURCE.count("request.security(i_scanSymbol") == 34
-    assert SOURCE.count("request.security(") == 35
-    assert "table.new(position.bottom_right, 6, 19" in SOURCE
+    assert SOURCE.count("input.symbol(") == 18
+    assert SOURCE.count("request.security(i_scanSymbol") == 36
+    assert SOURCE.count("request.security(") == 37
+    assert "table.new(position.bottom_right, 5, 7" in SOURCE
     for symbol in (
         "XAUUSD", "EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "EURJPY",
         "GBPJPY", "NZDJPY", "CADJPY", "NZDUSD", "AUDJPY", "USDCHF",
-        "EURAUD", "EURCHF", "GBPCHF", "AUDNZD", "EURGBP",
+        "CHFJPY", "EURAUD", "EURCHF", "GBPCHF", "AUDNZD", "EURGBP",
     ):
         assert f'input.symbol("OANDA:{symbol}"' in SOURCE
-    assert "OANDA:CHFJPY" not in SOURCE
-    assert 'not mlEligible ?' in SOURCE
-    assert 'trend == 1 ? "構造↑" : trend == -1 ? "構造↓" : "構造待ち"' in SOURCE
-    assert 'buyReady ? "BUY" : sellReady ? "SELL"' in SOURCE
-    assert 'trend == 1 ? "買い監視"' in SOURCE
-    assert 'trend == -1 ? "売り監視"' in SOURCE
-    assert '"方向待ち"' in SOURCE
+    assert "bool showReady = row <= 6 and (buyReady or sellReady)" in SOURCE
+    assert 'buyReady ? "BUY" : "SELL"' in SOURCE
+    assert '"買い監視"' not in SOURCE
+    assert '"売り監視"' not in SOURCE
+    assert '"構造待ち"' not in SOURCE
     assert "hourlyAge >= 0 and hourlyAge <= 1" in SOURCE
-    assert SOURCE.count("f_scanRow(scanner,") == 17
-    assert '"ML値"' in SOURCE
-    assert '"勝率ではない"' in SOURCE
+    assert SOURCE.count("f_scanCompactRow(scanner, compactRow,") == 18
+    assert '"現在候補なし"' in SOURCE
+    assert "table.clear(scanner, 0, 0, 4, 6)" in SOURCE
+    assert '"ML"' in SOURCE
     assert '"Entry"' in SOURCE
     assert 'na(entryPrice) ? "次足始値"' in SOURCE
-    assert 'table.cell(scanner, 5, 0, "SL"' in SOURCE
+    assert 'table.cell(scanner, 4, 0, "SL"' in SOURCE
     assert "signalClose - signalAtr * 2.0" in SOURCE
     assert "signalClose + signalAtr * 2.0 + requestedSpread" in SOURCE

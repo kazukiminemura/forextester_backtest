@@ -12,7 +12,7 @@ broker emulator with an explicit OHLC-path model and Forex Tester spread.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Iterable, Sequence
 
 from .engine import BacktestResult
@@ -21,12 +21,16 @@ from .models import Bar, InstrumentMetadata, Trade
 
 @dataclass(frozen=True, slots=True)
 class TamukaiConfig:
+    entry_minutes: int = 15
     higher_hours: int = 4
     htf_sma_length: int = 21
     htf_pivot_left: int = 2
     htf_pivot_right: int = 2
     htf_slope_bars: int = 2
     min_slope_atr: float = 0.03
+    htf_adx_length: int = 14
+    htf_adx_smoothing: int = 14
+    min_htf_adx: float = 0.0
     ltf_sma_length: int = 21
     range_bars: int = 3
     pullback_lookback: int = 12
@@ -52,11 +56,14 @@ class TamukaiConfig:
 
     def __post_init__(self) -> None:
         integer_fields = (
+            "entry_minutes",
             "higher_hours",
             "htf_sma_length",
             "htf_pivot_left",
             "htf_pivot_right",
             "htf_slope_bars",
+            "htf_adx_length",
+            "htf_adx_smoothing",
             "ltf_sma_length",
             "range_bars",
             "pullback_lookback",
@@ -67,6 +74,8 @@ class TamukaiConfig:
         for name in integer_fields:
             if getattr(self, name) <= 0:
                 raise ValueError(f"{name} は1以上にしてください")
+        if self.entry_minutes not in (15, 30, 60):
+            raise ValueError("entry_minutes は15、30、60のいずれかにしてください")
         if self.higher_hours > 24 or 24 % self.higher_hours:
             raise ValueError(
                 "higher_hours は24の約数（1, 2, 3, 4, 6, 8, 12, 24）にしてください"
@@ -75,6 +84,7 @@ class TamukaiConfig:
             raise ValueError("range_bars は2以上にしてください")
         non_negative = (
             "min_slope_atr",
+            "min_htf_adx",
             "min_pullback_atr",
             "zone_tolerance_atr",
             "entry_buffer_pips",
@@ -177,6 +187,78 @@ def _atr(bars: Sequence[Bar], length: int = 14) -> list[float | None]:
     return result
 
 
+def _rma(values: Sequence[float], length: int) -> list[float | None]:
+    """Wilder moving average used by TradingView's DMI/ADX implementation."""
+    result: list[float | None] = [None] * len(values)
+    if len(values) < length:
+        return result
+    current = sum(values[:length]) / length
+    result[length - 1] = current
+    for index in range(length, len(values)):
+        current = (current * (length - 1) + values[index]) / length
+        result[index] = current
+    return result
+
+
+def _dmi(
+    bars: Sequence[Bar], length: int = 14, smoothing: int = 14
+) -> tuple[list[float | None], list[float | None], list[float | None]]:
+    """Return confirmed +DI, -DI and ADX values without future bars."""
+    if not bars:
+        return [], [], []
+    true_ranges: list[float] = []
+    plus_dm: list[float] = []
+    minus_dm: list[float] = []
+    previous: Bar | None = None
+    for bar in bars:
+        if previous is None:
+            true_ranges.append(bar.high - bar.low)
+            plus_dm.append(0.0)
+            minus_dm.append(0.0)
+        else:
+            up = bar.high - previous.high
+            down = previous.low - bar.low
+            true_ranges.append(
+                max(
+                    bar.high - bar.low,
+                    abs(bar.high - previous.close),
+                    abs(bar.low - previous.close),
+                )
+            )
+            plus_dm.append(up if up > down and up > 0 else 0.0)
+            minus_dm.append(down if down > up and down > 0 else 0.0)
+        previous = bar
+
+    atr = _rma(true_ranges, length)
+    smoothed_plus = _rma(plus_dm, length)
+    smoothed_minus = _rma(minus_dm, length)
+    plus_di: list[float | None] = [None] * len(bars)
+    minus_di: list[float | None] = [None] * len(bars)
+    dx_values: list[float] = []
+    dx_indices: list[int] = []
+    for index in range(len(bars)):
+        if (
+            atr[index] is None
+            or smoothed_plus[index] is None
+            or smoothed_minus[index] is None
+            or atr[index] == 0
+        ):
+            continue
+        plus = 100.0 * smoothed_plus[index] / atr[index]
+        minus = 100.0 * smoothed_minus[index] / atr[index]
+        plus_di[index] = plus
+        minus_di[index] = minus
+        denominator = plus + minus
+        dx_values.append(100.0 * abs(plus - minus) / denominator if denominator else 0.0)
+        dx_indices.append(index)
+
+    smoothed_dx = _rma(dx_values, smoothing)
+    adx: list[float | None] = [None] * len(bars)
+    for dx_index, bar_index in enumerate(dx_indices):
+        adx[bar_index] = smoothed_dx[dx_index]
+    return plus_di, minus_di, adx
+
+
 def _pivot_states(bars: Sequence[Bar], left: int, right: int) -> list[_PivotState]:
     result: list[_PivotState] = []
     last_high: float | None = None
@@ -239,7 +321,7 @@ def _four_hour_bars(
 
 
 class TamukaiBacktester:
-    """4H Dow trend plus 1H pullback-range stop-order backtester."""
+    """4H Dow trend plus configurable entry-timeframe range backtester."""
 
     def __init__(
         self,
@@ -282,11 +364,22 @@ class TamukaiBacktester:
         hourly = list(bars)
         if not hourly:
             return self._result(None, None, 0, 0.0, 0.0)
+        expected = timedelta(minutes=self.config.entry_minutes)
         if any(
-            bar.time.minute != 0 or bar.time.second != 0 or bar.time.microsecond != 0
+            bar.time.minute % self.config.entry_minutes != 0
+            or bar.time.second != 0
+            or bar.time.microsecond != 0
             for bar in hourly
+        ) or (
+            len(hourly) > 1
+            and not any(
+                current.time - previous.time == expected
+                for previous, current in zip(hourly, hourly[1:])
+            )
         ):
-            raise ValueError("田向式戦略には1時間足を指定してください")
+            raise ValueError(
+                f"田向式戦略には{self.config.entry_minutes}分足を指定してください"
+            )
         if start and end and start > end:
             raise ValueError("start は end 以前にしてください")
 
@@ -294,6 +387,11 @@ class TamukaiBacktester:
         htf_closes = [bar.close for bar in higher]
         htf_sma = _sma(htf_closes, self.config.htf_sma_length)
         htf_atr = _atr(higher)
+        htf_plus_di, htf_minus_di, htf_adx = _dmi(
+            higher,
+            self.config.htf_adx_length,
+            self.config.htf_adx_smoothing,
+        )
         htf_pivots = _pivot_states(
             higher, self.config.htf_pivot_left, self.config.htf_pivot_right
         )
@@ -323,7 +421,16 @@ class TamukaiBacktester:
             active_count += 1
 
             htf_index = higher_map[index] - 1
-            bias = self._higher_bias(htf_index, higher, htf_sma, htf_atr, htf_pivots)
+            bias = self._higher_bias(
+                htf_index,
+                higher,
+                htf_sma,
+                htf_atr,
+                htf_plus_di,
+                htf_minus_di,
+                htf_adx,
+                htf_pivots,
+            )
             closed_this_bar = self._process_execution(bar, ltf_pivots[index])
             self._update_runner(bar.close, ltf_pivots[index])
 
@@ -370,6 +477,9 @@ class TamukaiBacktester:
         bars: Sequence[Bar],
         sma: Sequence[float | None],
         atr: Sequence[float | None],
+        plus_di: Sequence[float | None],
+        minus_di: Sequence[float | None],
+        adx: Sequence[float | None],
         pivots: Sequence[_PivotState],
     ) -> tuple[bool, bool, bool, bool, _PivotState] | None:
         past_index = index - self.config.htf_slope_bars
@@ -379,6 +489,9 @@ class TamukaiBacktester:
             or sma[index] is None
             or sma[past_index] is None
             or atr[index] is None
+            or plus_di[index] is None
+            or minus_di[index] is None
+            or adx[index] is None
         ):
             return None
         pivot = pivots[index]
@@ -395,6 +508,9 @@ class TamukaiBacktester:
             sma[index] is not None
             and sma[past_index] is not None
             and atr[index] is not None
+            and plus_di[index] is not None
+            and minus_di[index] is not None
+            and adx[index] is not None
         )
         uptrend = (
             pivot.last_high > pivot.previous_high
@@ -406,8 +522,27 @@ class TamukaiBacktester:
         )
         slope = sma[index] - sma[past_index]
         threshold = atr[index] * self.config.min_slope_atr
-        long_bias = uptrend and bars[index].close > sma[index] and slope > threshold
-        short_bias = downtrend and bars[index].close < sma[index] and slope < -threshold
+        strength_filter_enabled = self.config.min_htf_adx > 0
+        long_strength = not strength_filter_enabled or (
+            adx[index] >= self.config.min_htf_adx
+            and plus_di[index] > minus_di[index]
+        )
+        short_strength = not strength_filter_enabled or (
+            adx[index] >= self.config.min_htf_adx
+            and minus_di[index] > plus_di[index]
+        )
+        long_bias = (
+            uptrend
+            and bars[index].close > sma[index]
+            and slope > threshold
+            and long_strength
+        )
+        short_bias = (
+            downtrend
+            and bars[index].close < sma[index]
+            and slope < -threshold
+            and short_strength
+        )
         long_chase = (
             bars[index].close - sma[index] <= atr[index] * self.config.max_chase_atr
         )

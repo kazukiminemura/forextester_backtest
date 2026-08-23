@@ -80,7 +80,7 @@ def build_parser() -> argparse.ArgumentParser:
     ticks.add_argument("--output", type=Path, help="CSV保存先（省略時は標準出力）")
 
     backtest = commands.add_parser(
-        "backtest", help="田向式 4Hダウ＋1H押し目レンジをバックテスト"
+        "backtest", help="田向式 4Hダウ＋15分足押し目レンジをバックテスト"
     )
     backtest.add_argument("symbol")
     _add_range(backtest)
@@ -100,12 +100,26 @@ def build_parser() -> argparse.ArgumentParser:
     )
     backtest.add_argument("--lots", type=float, default=0.1)
     backtest.add_argument("--initial-capital", type=float, default=10_000.0)
+    backtest.add_argument(
+        "--entry-timeframe",
+        choices=("15m", "30m", "1h"),
+        default="15m",
+        help="エントリー時間足（既定: 15m）",
+    )
     backtest.add_argument("--higher-hours", type=int, default=4)
     backtest.add_argument("--htf-sma", type=int, default=21)
     backtest.add_argument("--htf-pivot-left", type=int, default=2)
     backtest.add_argument("--htf-pivot-right", type=int, default=2)
     backtest.add_argument("--slope-bars", type=int, default=2)
     backtest.add_argument("--min-slope-atr", type=float)
+    backtest.add_argument("--htf-adx-length", type=int, default=14)
+    backtest.add_argument("--htf-adx-smoothing", type=int, default=14)
+    backtest.add_argument(
+        "--min-htf-adx",
+        type=float,
+        default=0.0,
+        help="4H ADXの最低値（0で強度フィルター無効）",
+    )
     backtest.add_argument("--ltf-sma", type=int, default=21)
     backtest.add_argument("--range-bars", type=int, default=3)
     backtest.add_argument("--pullback-lookback", type=int, default=12)
@@ -297,6 +311,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                     file=sys.stderr,
                 )
             config = TamukaiConfig(
+                entry_minutes={"15m": 15, "30m": 30, "1h": 60}[
+                    args.entry_timeframe
+                ],
                 higher_hours=args.higher_hours,
                 htf_sma_length=args.htf_sma,
                 htf_pivot_left=args.htf_pivot_left,
@@ -307,6 +324,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                     if args.min_slope_atr is not None
                     else preset.min_slope_atr
                 ),
+                htf_adx_length=args.htf_adx_length,
+                htf_adx_smoothing=args.htf_adx_smoothing,
+                min_htf_adx=args.min_htf_adx,
                 ltf_sma_length=args.ltf_sma,
                 range_bars=args.range_bars,
                 pullback_lookback=args.pullback_lookback,
@@ -349,10 +369,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             engine = TamukaiBacktester(
                 metadata, config, args.lots, args.initial_capital
             )
-            # Read the earlier 1H history as indicator/pivot warm-up. The
+            # Read earlier entry-timeframe history as indicator/pivot warm-up. The
             # engine only permits orders inside the requested date range.
             result = engine.run(
-                repository.bars(args.symbol, None, args.end, "1h"),
+                repository.bars(args.symbol, None, args.end, args.entry_timeframe),
                 start=args.start,
                 end=args.end,
             )

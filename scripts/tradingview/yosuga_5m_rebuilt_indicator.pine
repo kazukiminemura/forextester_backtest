@@ -1,0 +1,267 @@
+//@version=6
+// よすが式を「4Hダウ環境 → 15分足の押し戻り場所 → 5分足PA発火」で再構築。
+// RRは1:1固定。確定済み上位足だけを使い、売買注文は出さない研究用インジケーター。
+indicator("よすが式 4H・15m・5m 再構築 RR1 v2", overlay=true,
+     max_labels_count=300, max_lines_count=100, dynamic_requests=true)
+plot(close, "Compile guard", display=display.none)
+
+string gLogic = "よすが式ロジック"
+string i_higherTf = input.timeframe("240", "環境認識", group=gLogic)
+string i_setupTf = input.timeframe("15", "押し戻り判断", group=gLogic)
+int i_htfPivot = input.int(2, "4Hピボット左右", minval=1, maxval=10, group=gLogic)
+int i_setupPivot = input.int(2, "15分足ピボット左右", minval=1, maxval=10, group=gLogic)
+int i_emaLength = input.int(150, "5分足EMA期間", minval=20, maxval=500, group=gLogic)
+int i_atrLength = input.int(42, "5分足ATR期間", minval=14, maxval=200, group=gLogic)
+float i_zoneAtr = input.float(0.50, "支持抵抗の許容幅（ATR倍）", minval=0.05, step=0.05, group=gLogic)
+float i_stopBufferAtr = input.float(0.20, "SLバッファ（ATR倍）", minval=0.0, step=0.05, group=gLogic)
+float i_maxRiskAtr = input.float(2.50, "最大SL幅（ATR倍）", minval=0.5, step=0.25, group=gLogic)
+int i_minPaScore = input.int(1, "最低PAスコア", minval=1, maxval=2, group=gLogic,
+     tooltip="長いヒゲ・包み足を各1点として判定します")
+bool i_requireTriggerBreak = input.bool(true, "反転足で前足高安を更新", group=gLogic)
+string i_session = input.session("0600-1600", "エントリー時間帯", group=gLogic)
+
+string gRisk = "表示・約定"
+float i_spread = input.float(0.0, "スプレッド価格差", minval=0.0, step=0.00001, group=gRisk,
+     tooltip="USDJPYで1.2pipsなら0.012、EURUSDなら0.00012のように価格差で入力します")
+int i_lineBars = input.int(24, "Entry・SL・TPラインの長さ", minval=3, maxval=200, group=gRisk)
+bool i_showEma = input.bool(true, "EMAを表示", group=gRisk)
+bool i_showStats = input.bool(true, "勝率テーブルを表示", group=gRisk)
+
+string gScanner = "通貨ペア・狙い目一覧"
+bool i_showScanner = input.bool(true, "12通貨を一覧表示", group=gScanner)
+string i_scanSymbol1 = input.symbol("OANDA:EURUSD", "1", group=gScanner)
+string i_scanSymbol2 = input.symbol("OANDA:GBPUSD", "2", group=gScanner)
+string i_scanSymbol3 = input.symbol("OANDA:USDJPY", "3", group=gScanner)
+string i_scanSymbol4 = input.symbol("OANDA:AUDUSD", "4", group=gScanner)
+string i_scanSymbol5 = input.symbol("OANDA:NZDUSD", "5", group=gScanner)
+string i_scanSymbol6 = input.symbol("OANDA:USDCAD", "6", group=gScanner)
+string i_scanSymbol7 = input.symbol("OANDA:USDCHF", "7", group=gScanner)
+string i_scanSymbol8 = input.symbol("OANDA:EURJPY", "8", group=gScanner)
+string i_scanSymbol9 = input.symbol("OANDA:GBPJPY", "9", group=gScanner)
+string i_scanSymbol10 = input.symbol("OANDA:AUDJPY", "10", group=gScanner)
+string i_scanSymbol11 = input.symbol("OANDA:CHFJPY", "11", group=gScanner)
+string i_scanSymbol12 = input.symbol("OANDA:EURGBP", "12", group=gScanner)
+
+f_contextPack(int pivotLength) =>
+    float pivotHigh = ta.pivothigh(high, pivotLength, pivotLength)
+    float pivotLow = ta.pivotlow(low, pivotLength, pivotLength)
+    float lastHigh = ta.valuewhen(not na(pivotHigh), pivotHigh, 0)
+    float previousHigh = ta.valuewhen(not na(pivotHigh), pivotHigh, 1)
+    float lastLow = ta.valuewhen(not na(pivotLow), pivotLow, 0)
+    float previousLow = ta.valuewhen(not na(pivotLow), pivotLow, 1)
+    [lastHigh[1], previousHigh[1], lastLow[1], previousLow[1]]
+
+f_scanFiveMinutePack() =>
+    float localEma = ta.ema(close, i_emaLength)
+    float localAtr = ta.atr(i_atrLength)
+    bool localSessionOk = not na(time(timeframe.period, i_session))
+    [open[1], high[1], low[1], close[1], open[2], high[2], low[2], close[2], localEma[1], localAtr[1], syminfo.mintick, localSessionOk[1]]
+
+f_scanPair(string symbol) =>
+    [scanHtfLastHigh, scanHtfPreviousHigh, scanHtfLastLow, scanHtfPreviousLow] = request.security(
+         symbol, i_higherTf, f_contextPack(i_htfPivot), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+    [scanSetupLastHigh, scanSetupPreviousHigh, scanSetupLastLow, scanSetupPreviousLow] = request.security(
+         symbol, i_setupTf, f_contextPack(i_setupPivot), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+    [scanOpen, scanHigh, scanLow, scanClose, scanPreviousOpen, scanPreviousHigh, scanPreviousLow, scanPreviousClose, scanEma, scanAtr, scanMinTick, scanSessionOk] = request.security(
+         symbol, "5", f_scanFiveMinutePack(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+
+    bool scanHasHtf = not na(scanHtfLastHigh) and not na(scanHtfPreviousHigh) and not na(scanHtfLastLow) and not na(scanHtfPreviousLow)
+    bool scanHtfUp = scanHasHtf and scanHtfLastHigh > scanHtfPreviousHigh and scanHtfLastLow > scanHtfPreviousLow
+    bool scanHtfDown = scanHasHtf and scanHtfLastHigh < scanHtfPreviousHigh and scanHtfLastLow < scanHtfPreviousLow
+    bool scanHigherLow = not na(scanSetupLastLow) and not na(scanSetupPreviousLow) and scanSetupLastLow > scanSetupPreviousLow
+    bool scanLowerHigh = not na(scanSetupLastHigh) and not na(scanSetupPreviousHigh) and scanSetupLastHigh < scanSetupPreviousHigh
+    float scanBody = math.max(math.abs(scanClose - scanOpen), scanMinTick)
+    float scanUpperWick = scanHigh - math.max(scanOpen, scanClose)
+    float scanLowerWick = math.min(scanOpen, scanClose) - scanLow
+    bool scanLongLowerWick = scanLowerWick >= scanBody * 1.5 and scanLowerWick >= scanAtr * 0.25
+    bool scanLongUpperWick = scanUpperWick >= scanBody * 1.5 and scanUpperWick >= scanAtr * 0.25
+    bool scanBullEngulf = scanClose > scanOpen and scanPreviousClose < scanPreviousOpen and scanClose >= scanPreviousOpen and scanOpen <= scanPreviousClose
+    bool scanBearEngulf = scanClose < scanOpen and scanPreviousClose > scanPreviousOpen and scanClose <= scanPreviousOpen and scanOpen >= scanPreviousClose
+    int scanBullScore = (scanLongLowerWick ? 1 : 0) + (scanBullEngulf ? 1 : 0)
+    int scanBearScore = (scanLongUpperWick ? 1 : 0) + (scanBearEngulf ? 1 : 0)
+    float scanZone = scanAtr * i_zoneAtr
+    bool scanAtSupport = math.abs(scanLow - scanSetupLastLow) <= scanZone or (scanLow <= scanEma + scanZone and scanClose >= scanEma)
+    bool scanAtResistance = math.abs(scanHigh - scanSetupLastHigh) <= scanZone or (scanHigh >= scanEma - scanZone and scanClose <= scanEma)
+    bool scanLongTrigger = not i_requireTriggerBreak or scanClose > scanPreviousHigh
+    bool scanShortTrigger = not i_requireTriggerBreak or scanClose < scanPreviousLow
+    float scanLongRisk = scanClose - (scanSetupLastLow - scanAtr * i_stopBufferAtr)
+    float scanShortRisk = scanSetupLastHigh + scanAtr * i_stopBufferAtr - scanClose
+    bool scanLongRiskOk = scanLongRisk > scanMinTick and scanLongRisk <= scanAtr * i_maxRiskAtr
+    bool scanShortRiskOk = scanShortRisk > scanMinTick and scanShortRisk <= scanAtr * i_maxRiskAtr
+    bool scanBuy = scanSessionOk and scanHtfUp and scanHigherLow and scanAtSupport and scanBullScore >= i_minPaScore and scanLongTrigger and scanLongRiskOk
+    bool scanSell = scanSessionOk and scanHtfDown and scanLowerHigh and scanAtResistance and scanBearScore >= i_minPaScore and scanShortTrigger and scanShortRiskOk
+    int scanState = scanBuy ? 3 : scanSell ? -3 : scanHtfUp and scanHigherLow ? 2 : scanHtfDown and scanLowerHigh ? -2 : scanHtfUp ? 1 : scanHtfDown ? -1 : 0
+    float scanEntry = scanBuy or scanSell ? scanClose : na
+    [scanState, scanEntry, scanClose]
+
+f_pairName(string symbol) =>
+    string value = str.replace_all(symbol, "OANDA:", "")
+    value := str.replace_all(value, "FX:", "")
+    value := str.replace_all(value, "FOREXCOM:", "")
+    value
+
+f_scanText(int state) =>
+    state == 3 ? "BUY候補" : state == -3 ? "SELL候補" : state == 2 ? "押し目待ち" : state == -2 ? "戻り待ち" : state == 1 ? "上昇監視" : state == -1 ? "下降監視" : "なし"
+
+f_scanColor(int state) =>
+    state == 3 ? color.new(color.lime, 0) : state == -3 ? color.new(color.red, 0) : state == 2 ? color.new(color.green, 55) : state == -2 ? color.new(color.maroon, 35) : state == 1 ? color.new(color.green, 80) : state == -1 ? color.new(color.red, 80) : color.new(color.gray, 70)
+
+f_scanRow(table target, int row, string symbol, int state, float entry, float lastClose) =>
+    table.cell(target, 0, row, f_pairName(symbol), text_color=color.white, bgcolor=color.new(color.black, 10))
+    table.cell(target, 1, row, f_scanText(state), text_color=color.white, bgcolor=f_scanColor(state))
+    table.cell(target, 2, row, na(entry) ? "-" : str.tostring(entry, "#.#####"), text_color=color.white, bgcolor=color.new(color.black, 10))
+    table.cell(target, 3, row, str.tostring(lastClose, "#.#####"), text_color=color.white, bgcolor=color.new(color.black, 10))
+
+[htfLastHigh, htfPreviousHigh, htfLastLow, htfPreviousLow] = request.security(
+     syminfo.tickerid, i_higherTf, f_contextPack(i_htfPivot),
+     gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+[setupLastHigh, setupPreviousHigh, setupLastLow, setupPreviousLow] = request.security(
+     syminfo.tickerid, i_setupTf, f_contextPack(i_setupPivot),
+     gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+
+bool hasHtf = not na(htfLastHigh) and not na(htfPreviousHigh) and not na(htfLastLow) and not na(htfPreviousLow)
+bool htfUp = hasHtf and htfLastHigh > htfPreviousHigh and htfLastLow > htfPreviousLow
+bool htfDown = hasHtf and htfLastHigh < htfPreviousHigh and htfLastLow < htfPreviousLow
+bool setupHigherLow = not na(setupLastLow) and not na(setupPreviousLow) and setupLastLow > setupPreviousLow
+bool setupLowerHigh = not na(setupLastHigh) and not na(setupPreviousHigh) and setupLastHigh < setupPreviousHigh
+
+float emaValue = ta.ema(close, i_emaLength)
+float atrValue = ta.atr(i_atrLength)
+float body = math.max(math.abs(close - open), syminfo.mintick)
+float upperWick = high - math.max(open, close)
+float lowerWick = math.min(open, close) - low
+bool longLowerWick = lowerWick >= body * 1.5 and lowerWick >= atrValue * 0.25
+bool longUpperWick = upperWick >= body * 1.5 and upperWick >= atrValue * 0.25
+bool bullEngulf = close > open and close[1] < open[1] and close >= open[1] and open <= close[1]
+bool bearEngulf = close < open and close[1] > open[1] and close <= open[1] and open >= close[1]
+int bullPaScore = (longLowerWick ? 1 : 0) + (bullEngulf ? 1 : 0)
+int bearPaScore = (longUpperWick ? 1 : 0) + (bearEngulf ? 1 : 0)
+
+float zoneWidth = atrValue * i_zoneAtr
+bool atSupport = math.abs(low - setupLastLow) <= zoneWidth or (low <= emaValue + zoneWidth and close >= emaValue)
+bool atResistance = math.abs(high - setupLastHigh) <= zoneWidth or (high >= emaValue - zoneWidth and close <= emaValue)
+bool longTrigger = not i_requireTriggerBreak or close > high[1]
+bool shortTrigger = not i_requireTriggerBreak or close < low[1]
+bool isFiveMinute = timeframe.isminutes and timeframe.multiplier == 5
+bool sessionOk = not na(time(timeframe.period, i_session))
+
+float proposedLongEntry = close + i_spread
+float proposedLongStop = setupLastLow - atrValue * i_stopBufferAtr
+float proposedLongRisk = proposedLongEntry - proposedLongStop
+float proposedShortEntry = close
+float proposedShortStop = setupLastHigh + atrValue * i_stopBufferAtr + i_spread
+float proposedShortRisk = proposedShortStop - proposedShortEntry
+bool longRiskOk = proposedLongRisk > syminfo.mintick and proposedLongRisk <= atrValue * i_maxRiskAtr
+bool shortRiskOk = proposedShortRisk > syminfo.mintick and proposedShortRisk <= atrValue * i_maxRiskAtr
+
+bool buySetup = barstate.isconfirmed and isFiveMinute and sessionOk and htfUp and setupHigherLow and atSupport and bullPaScore >= i_minPaScore and longTrigger and longRiskOk
+bool sellSetup = barstate.isconfirmed and isFiveMinute and sessionOk and htfDown and setupLowerHigh and atResistance and bearPaScore >= i_minPaScore and shortTrigger and shortRiskOk
+
+var int positionDirection = 0
+var int entryBar = na
+var float activeEntry = na
+var float activeStop = na
+var float activeTarget = na
+var int wins = 0
+var int losses = 0
+var line entryLine = na
+var line stopLine = na
+var line targetLine = na
+
+if barstate.isconfirmed and positionDirection != 0 and bar_index > entryBar
+    bool stopHit = positionDirection == 1 ? low <= activeStop : high + i_spread >= activeStop
+    bool targetHit = positionDirection == 1 ? high >= activeTarget : low + i_spread <= activeTarget
+    if stopHit or targetHit
+        if stopHit
+            losses += 1
+            label.new(bar_index, activeStop, "LOSS", style=label.style_label_down, color=color.red, textcolor=color.white, size=size.tiny)
+        else
+            wins += 1
+            label.new(bar_index, activeTarget, "WIN", style=label.style_label_up, color=color.green, textcolor=color.white, size=size.tiny)
+        positionDirection := 0
+        activeEntry := na
+        activeStop := na
+        activeTarget := na
+
+bool newBuy = positionDirection == 0 and buySetup
+bool newSell = positionDirection == 0 and not newBuy and sellSetup
+if newBuy or newSell
+    positionDirection := newBuy ? 1 : -1
+    entryBar := bar_index
+    activeEntry := newBuy ? proposedLongEntry : proposedShortEntry
+    activeStop := newBuy ? proposedLongStop : proposedShortStop
+    float risk = math.abs(activeEntry - activeStop)
+    activeTarget := activeEntry + risk * positionDirection
+    color signalColor = newBuy ? color.lime : color.red
+    string signalText = newBuy ? "BUY" : "SELL"
+    label.new(bar_index, activeEntry, signalText, style=newBuy ? label.style_label_up : label.style_label_down, color=signalColor, textcolor=color.white)
+    entryLine := line.new(bar_index, activeEntry, bar_index + i_lineBars, activeEntry, color=color.yellow, width=2)
+    stopLine := line.new(bar_index, activeStop, bar_index + i_lineBars, activeStop, color=color.red, width=2)
+    targetLine := line.new(bar_index, activeTarget, bar_index + i_lineBars, activeTarget, color=color.lime, width=2)
+
+plot(i_showEma ? emaValue : na, "5分足 EMA", color=color.orange, linewidth=2)
+plotshape(newBuy, "BUY entry", shape.triangleup, location.belowbar, color=color.lime, size=size.small, text="BUY")
+plotshape(newSell, "SELL entry", shape.triangledown, location.abovebar, color=color.red, size=size.small, text="SELL")
+
+[scanState1, scanEntry1, scanClose1] = f_scanPair(i_scanSymbol1)
+[scanState2, scanEntry2, scanClose2] = f_scanPair(i_scanSymbol2)
+[scanState3, scanEntry3, scanClose3] = f_scanPair(i_scanSymbol3)
+[scanState4, scanEntry4, scanClose4] = f_scanPair(i_scanSymbol4)
+[scanState5, scanEntry5, scanClose5] = f_scanPair(i_scanSymbol5)
+[scanState6, scanEntry6, scanClose6] = f_scanPair(i_scanSymbol6)
+[scanState7, scanEntry7, scanClose7] = f_scanPair(i_scanSymbol7)
+[scanState8, scanEntry8, scanClose8] = f_scanPair(i_scanSymbol8)
+[scanState9, scanEntry9, scanClose9] = f_scanPair(i_scanSymbol9)
+[scanState10, scanEntry10, scanClose10] = f_scanPair(i_scanSymbol10)
+[scanState11, scanEntry11, scanClose11] = f_scanPair(i_scanSymbol11)
+[scanState12, scanEntry12, scanClose12] = f_scanPair(i_scanSymbol12)
+
+var table scanner = table.new(position.bottom_right, 4, 13, border_width=1)
+if barstate.islast and i_showScanner
+    table.cell(scanner, 0, 0, "通貨", text_color=color.white, bgcolor=color.rgb(49, 27, 146))
+    table.cell(scanner, 1, 0, "狙い目", text_color=color.white, bgcolor=color.rgb(49, 27, 146))
+    table.cell(scanner, 2, 0, "Entry", text_color=color.white, bgcolor=color.rgb(49, 27, 146))
+    table.cell(scanner, 3, 0, "現在値", text_color=color.white, bgcolor=color.rgb(49, 27, 146))
+    f_scanRow(scanner, 1, i_scanSymbol1, scanState1, scanEntry1, scanClose1)
+    f_scanRow(scanner, 2, i_scanSymbol2, scanState2, scanEntry2, scanClose2)
+    f_scanRow(scanner, 3, i_scanSymbol3, scanState3, scanEntry3, scanClose3)
+    f_scanRow(scanner, 4, i_scanSymbol4, scanState4, scanEntry4, scanClose4)
+    f_scanRow(scanner, 5, i_scanSymbol5, scanState5, scanEntry5, scanClose5)
+    f_scanRow(scanner, 6, i_scanSymbol6, scanState6, scanEntry6, scanClose6)
+    f_scanRow(scanner, 7, i_scanSymbol7, scanState7, scanEntry7, scanClose7)
+    f_scanRow(scanner, 8, i_scanSymbol8, scanState8, scanEntry8, scanClose8)
+    f_scanRow(scanner, 9, i_scanSymbol9, scanState9, scanEntry9, scanClose9)
+    f_scanRow(scanner, 10, i_scanSymbol10, scanState10, scanEntry10, scanClose10)
+    f_scanRow(scanner, 11, i_scanSymbol11, scanState11, scanEntry11, scanClose11)
+    f_scanRow(scanner, 12, i_scanSymbol12, scanState12, scanEntry12, scanClose12)
+
+var table stats = table.new(position.top_right, 2, 9, border_width=1)
+if barstate.islast and (i_showStats or not isFiveMinute)
+    int closedTrades = wins + losses
+    float winRate = closedTrades > 0 ? wins * 100.0 / closedTrades : na
+    string trendText = htfUp ? "上昇" : htfDown ? "下降" : "レンジ"
+    string setupText = setupHigherLow ? "押し目候補" : setupLowerHigh ? "戻り候補" : "不一致"
+    string paText = "買" + str.tostring(bullPaScore) + " / 売" + str.tostring(bearPaScore)
+    table.cell(stats, 0, 0, "よすが式 5m", text_color=color.white, bgcolor=color.rgb(49, 27, 146))
+    table.cell(stats, 1, 0, "研究・未採用", text_color=color.white, bgcolor=color.orange)
+    table.cell(stats, 0, 1, "時間足")
+    table.cell(stats, 1, 1, isFiveMinute ? "5分足 OK" : "5分足に変更", text_color=isFiveMinute ? color.lime : color.red)
+    table.cell(stats, 0, 2, "4Hダウ")
+    table.cell(stats, 1, 2, trendText)
+    table.cell(stats, 0, 3, "15分構造")
+    table.cell(stats, 1, 3, setupText)
+    table.cell(stats, 0, 4, "5分PA")
+    table.cell(stats, 1, 4, paText)
+    table.cell(stats, 0, 5, "状態")
+    table.cell(stats, 1, 5, positionDirection == 1 ? "BUY保有判定" : positionDirection == -1 ? "SELL保有判定" : "待機")
+    table.cell(stats, 0, 6, "勝 / 負")
+    table.cell(stats, 1, 6, str.tostring(wins) + " / " + str.tostring(losses))
+    table.cell(stats, 0, 7, "勝率")
+    table.cell(stats, 1, 7, na(winRate) ? "-" : str.tostring(winRate, "#.0") + "%")
+    table.cell(stats, 0, 8, "RR")
+    table.cell(stats, 1, 8, "1:1固定")
+
+alertcondition(newBuy, "よすが式 BUY", "4H上昇・15分押し目・5分PAでBUY")
+alertcondition(newSell, "よすが式 SELL", "4H下降・15分戻り・5分PAでSELL")
+bool scannerNewChance = (math.abs(scanState1) == 3 and math.abs(scanState1[1]) != 3) or (math.abs(scanState2) == 3 and math.abs(scanState2[1]) != 3) or (math.abs(scanState3) == 3 and math.abs(scanState3[1]) != 3) or (math.abs(scanState4) == 3 and math.abs(scanState4[1]) != 3) or (math.abs(scanState5) == 3 and math.abs(scanState5[1]) != 3) or (math.abs(scanState6) == 3 and math.abs(scanState6[1]) != 3) or (math.abs(scanState7) == 3 and math.abs(scanState7[1]) != 3) or (math.abs(scanState8) == 3 and math.abs(scanState8[1]) != 3) or (math.abs(scanState9) == 3 and math.abs(scanState9[1]) != 3) or (math.abs(scanState10) == 3 and math.abs(scanState10[1]) != 3) or (math.abs(scanState11) == 3 and math.abs(scanState11[1]) != 3) or (math.abs(scanState12) == 3 and math.abs(scanState12[1]) != 3)
+alertcondition(scannerNewChance, "よすが式 通貨ペア狙い目", "通貨ペア一覧に新しいBUY/SELL候補が出ました")

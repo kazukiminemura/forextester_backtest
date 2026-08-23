@@ -1,0 +1,487 @@
+{
+  "strategy": {
+    "name": "4H wall + 15m structure + 15m Yosuga PA, strict RR1",
+    "symbols": [
+      "XAUUSD",
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "EURJPY",
+      "GBPJPY",
+      "NZDJPY",
+      "NZDUSD",
+      "AUDJPY",
+      "USDCHF",
+      "EURCHF",
+      "GBPCHF",
+      "EURGBP"
+    ],
+    "signal_generation": "24 hours for fair market-session comparison",
+    "source_time_assumption": "naive Forex Tester timestamps are UTC",
+    "candidate": {
+      "family": "yosuga_pa",
+      "timeframe": "15m",
+      "lookback": 16,
+      "stop_atr": 1.0,
+      "session_start": 0,
+      "session_end": 24,
+      "range_end": 6,
+      "trend_fast": 150,
+      "trend_slow": 150,
+      "require_trend": false,
+      "buffer_atr": 0.0,
+      "cooldown_bars": 0,
+      "one_signal_per_day": false,
+      "band_length": 20,
+      "band_deviation": 2.0,
+      "rsi_length": 14,
+      "rsi_threshold": 30.0,
+      "entry_ema": 150,
+      "atr_slow_length": 56,
+      "compression_ratio": 0.8,
+      "pullback_lookback": 10000000,
+      "strength_threshold": 2.0,
+      "invert_signal": false,
+      "signal_interval_minutes": 0,
+      "atr_length": 42,
+      "pivot_left": 3,
+      "pivot_right": 3,
+      "pa_min_score": 1,
+      "zone_atr": 0.5,
+      "swing_buffer_atr": 0.2,
+      "max_risk_atr": 2.5,
+      "trigger_break": true,
+      "ema_side_filter": true,
+      "max_trades_per_day": 0,
+      "loss_cooldown_bars": 0,
+      "allowed_weekdays": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "trade_direction": 0,
+      "only_initial_htf_leg": false,
+      "stop_after_loss_for_day": false
+    }
+  },
+  "market_definition": {
+    "tokyo": "09:00-17:00 Asia/Tokyo",
+    "london": "08:00-17:00 Europe/London (historical DST applied)",
+    "new_york": "08:00-17:00 America/New_York (historical DST applied)",
+    "exclusive_overlap_priority": [
+      "new_york",
+      "london",
+      "tokyo"
+    ],
+    "exclusive_use": "selection and filtered backtest",
+    "overlapping_use": "reference only; one trade may appear in multiple markets"
+  },
+  "selection_rule": {
+    "periods_used": [
+      "train_2010_2018",
+      "validation_2019_2022"
+    ],
+    "minimum_trades": {
+      "train": 100,
+      "validation": 40
+    },
+    "condition": "exclusive market win rate >= 50% and profit rate >= 0% in both train and validation",
+    "holdout_not_used_for_selection": true
+  },
+  "baseline": {
+    "periods": {
+      "train_2010_2018": {
+        "trades": 12776,
+        "wins": 5071,
+        "losses": 7705,
+        "win_rate": 39.69160926737633,
+        "profit_factor": 0.6581440622972096,
+        "net_r": -2634.0,
+        "profit_rate_pct": -20.61678146524734
+      },
+      "validation_2019_2022": {
+        "trades": 5511,
+        "wins": 2120,
+        "losses": 3391,
+        "win_rate": 38.46851751043368,
+        "profit_factor": 0.6251843114125627,
+        "net_r": -1271.0,
+        "profit_rate_pct": -23.062964979132644
+      },
+      "holdout_2023_2024": {
+        "trades": 2666,
+        "wins": 1084,
+        "losses": 1582,
+        "win_rate": 40.66016504126031,
+        "profit_factor": 0.6852085967130215,
+        "net_r": -498.0,
+        "profit_rate_pct": -18.67966991747937
+      },
+      "true_oos_2025_2026": {
+        "trades": 1880,
+        "wins": 697,
+        "losses": 1183,
+        "win_rate": 37.07446808510638,
+        "profit_factor": 0.5891800507185122,
+        "net_r": -486.0,
+        "profit_rate_pct": -25.851063829787236
+      }
+    },
+    "exclusive_by_market": {
+      "train_2010_2018": {
+        "tokyo": {
+          "trades": 4285,
+          "wins": 1751,
+          "losses": 2534,
+          "win_rate": 40.8634772462077,
+          "profit_factor": 0.6910023677979479,
+          "net_r": -783.0,
+          "profit_rate_pct": -18.273045507584598
+        },
+        "london": {
+          "trades": 2016,
+          "wins": 895,
+          "losses": 1121,
+          "win_rate": 44.394841269841265,
+          "profit_factor": 0.7983942908117752,
+          "net_r": -226.0,
+          "profit_rate_pct": -11.21031746031746
+        },
+        "new_york": {
+          "trades": 4851,
+          "wins": 1874,
+          "losses": 2977,
+          "win_rate": 38.63121005978149,
+          "profit_factor": 0.6294927779643937,
+          "net_r": -1103.0,
+          "profit_rate_pct": -22.73757988043702
+        },
+        "off_session": {
+          "trades": 1624,
+          "wins": 551,
+          "losses": 1073,
+          "win_rate": 33.92857142857143,
+          "profit_factor": 0.5135135135135135,
+          "net_r": -522.0,
+          "profit_rate_pct": -32.142857142857146
+        }
+      },
+      "validation_2019_2022": {
+        "tokyo": {
+          "trades": 1839,
+          "wins": 728,
+          "losses": 1111,
+          "win_rate": 39.586731919521476,
+          "profit_factor": 0.6552655265526552,
+          "net_r": -383.0,
+          "profit_rate_pct": -20.826536160957044
+        },
+        "london": {
+          "trades": 885,
+          "wins": 365,
+          "losses": 520,
+          "win_rate": 41.24293785310734,
+          "profit_factor": 0.7019230769230769,
+          "net_r": -155.0,
+          "profit_rate_pct": -17.51412429378531
+        },
+        "new_york": {
+          "trades": 2075,
+          "wins": 782,
+          "losses": 1293,
+          "win_rate": 37.68674698795181,
+          "profit_factor": 0.6047950502706884,
+          "net_r": -511.0,
+          "profit_rate_pct": -24.626506024096386
+        },
+        "off_session": {
+          "trades": 712,
+          "wins": 245,
+          "losses": 467,
+          "win_rate": 34.41011235955056,
+          "profit_factor": 0.5246252676659529,
+          "net_r": -222.0,
+          "profit_rate_pct": -31.179775280898873
+        }
+      },
+      "holdout_2023_2024": {
+        "tokyo": {
+          "trades": 857,
+          "wins": 348,
+          "losses": 509,
+          "win_rate": 40.60676779463244,
+          "profit_factor": 0.6836935166994106,
+          "net_r": -161.0,
+          "profit_rate_pct": -18.786464410735125
+        },
+        "london": {
+          "trades": 462,
+          "wins": 187,
+          "losses": 275,
+          "win_rate": 40.476190476190474,
+          "profit_factor": 0.68,
+          "net_r": -88.0,
+          "profit_rate_pct": -19.047619047619047
+        },
+        "new_york": {
+          "trades": 988,
+          "wins": 404,
+          "losses": 584,
+          "win_rate": 40.89068825910931,
+          "profit_factor": 0.6917808219178082,
+          "net_r": -180.0,
+          "profit_rate_pct": -18.218623481781375
+        },
+        "off_session": {
+          "trades": 359,
+          "wins": 145,
+          "losses": 214,
+          "win_rate": 40.389972144846794,
+          "profit_factor": 0.677570093457944,
+          "net_r": -69.0,
+          "profit_rate_pct": -19.220055710306408
+        }
+      },
+      "true_oos_2025_2026": {
+        "tokyo": {
+          "trades": 611,
+          "wins": 229,
+          "losses": 382,
+          "win_rate": 37.47954173486088,
+          "profit_factor": 0.599476439790576,
+          "net_r": -153.0,
+          "profit_rate_pct": -25.040916530278235
+        },
+        "london": {
+          "trades": 308,
+          "wins": 116,
+          "losses": 192,
+          "win_rate": 37.66233766233766,
+          "profit_factor": 0.6041666666666666,
+          "net_r": -76.0,
+          "profit_rate_pct": -24.675324675324674
+        },
+        "new_york": {
+          "trades": 742,
+          "wins": 278,
+          "losses": 464,
+          "win_rate": 37.46630727762803,
+          "profit_factor": 0.5991379310344828,
+          "net_r": -186.0,
+          "profit_rate_pct": -25.067385444743934
+        },
+        "off_session": {
+          "trades": 219,
+          "wins": 74,
+          "losses": 145,
+          "win_rate": 33.789954337899545,
+          "profit_factor": 0.5103448275862069,
+          "net_r": -71.0,
+          "profit_rate_pct": -32.42009132420091
+        }
+      }
+    },
+    "overlapping_actual_market_hours": {
+      "train_2010_2018": {
+        "tokyo": {
+          "trades": 4528,
+          "wins": 1856,
+          "losses": 2672,
+          "win_rate": 40.98939929328622,
+          "profit_factor": 0.6946107784431138,
+          "net_r": -816.0,
+          "profit_rate_pct": -18.021201413427562
+        },
+        "london": {
+          "trades": 3916,
+          "wins": 1658,
+          "losses": 2258,
+          "win_rate": 42.339121552604695,
+          "profit_factor": 0.7342781222320638,
+          "net_r": -600.0,
+          "profit_rate_pct": -15.321756894790603
+        },
+        "new_york": {
+          "trades": 4851,
+          "wins": 1874,
+          "losses": 2977,
+          "win_rate": 38.63121005978149,
+          "profit_factor": 0.6294927779643937,
+          "net_r": -1103.0,
+          "profit_rate_pct": -22.73757988043702
+        },
+        "off_session": {
+          "trades": 1624,
+          "wins": 551,
+          "losses": 1073,
+          "win_rate": 33.92857142857143,
+          "profit_factor": 0.5135135135135135,
+          "net_r": -522.0,
+          "profit_rate_pct": -32.142857142857146
+        }
+      },
+      "validation_2019_2022": {
+        "tokyo": {
+          "trades": 1938,
+          "wins": 770,
+          "losses": 1168,
+          "win_rate": 39.73168214654283,
+          "profit_factor": 0.6592465753424658,
+          "net_r": -398.0,
+          "profit_rate_pct": -20.536635706914343
+        },
+        "london": {
+          "trades": 1631,
+          "wins": 677,
+          "losses": 954,
+          "win_rate": 41.50827713059473,
+          "profit_factor": 0.709643605870021,
+          "net_r": -277.0,
+          "profit_rate_pct": -16.983445738810545
+        },
+        "new_york": {
+          "trades": 2075,
+          "wins": 782,
+          "losses": 1293,
+          "win_rate": 37.68674698795181,
+          "profit_factor": 0.6047950502706884,
+          "net_r": -511.0,
+          "profit_rate_pct": -24.626506024096386
+        },
+        "off_session": {
+          "trades": 712,
+          "wins": 245,
+          "losses": 467,
+          "win_rate": 34.41011235955056,
+          "profit_factor": 0.5246252676659529,
+          "net_r": -222.0,
+          "profit_rate_pct": -31.179775280898873
+        }
+      },
+      "holdout_2023_2024": {
+        "tokyo": {
+          "trades": 902,
+          "wins": 367,
+          "losses": 535,
+          "win_rate": 40.687361419068736,
+          "profit_factor": 0.685981308411215,
+          "net_r": -168.0,
+          "profit_rate_pct": -18.625277161862527
+        },
+        "london": {
+          "trades": 821,
+          "wins": 344,
+          "losses": 477,
+          "win_rate": 41.90012180267966,
+          "profit_factor": 0.7211740041928721,
+          "net_r": -133.0,
+          "profit_rate_pct": -16.199756394640684
+        },
+        "new_york": {
+          "trades": 988,
+          "wins": 404,
+          "losses": 584,
+          "win_rate": 40.89068825910931,
+          "profit_factor": 0.6917808219178082,
+          "net_r": -180.0,
+          "profit_rate_pct": -18.218623481781375
+        },
+        "off_session": {
+          "trades": 359,
+          "wins": 145,
+          "losses": 214,
+          "win_rate": 40.389972144846794,
+          "profit_factor": 0.677570093457944,
+          "net_r": -69.0,
+          "profit_rate_pct": -19.220055710306408
+        }
+      },
+      "true_oos_2025_2026": {
+        "tokyo": {
+          "trades": 649,
+          "wins": 247,
+          "losses": 402,
+          "win_rate": 38.058551617873654,
+          "profit_factor": 0.6144278606965174,
+          "net_r": -155.0,
+          "profit_rate_pct": -23.882896764252695
+        },
+        "london": {
+          "trades": 582,
+          "wins": 216,
+          "losses": 366,
+          "win_rate": 37.11340206185567,
+          "profit_factor": 0.5901639344262295,
+          "net_r": -150.0,
+          "profit_rate_pct": -25.773195876288657
+        },
+        "new_york": {
+          "trades": 742,
+          "wins": 278,
+          "losses": 464,
+          "win_rate": 37.46630727762803,
+          "profit_factor": 0.5991379310344828,
+          "net_r": -186.0,
+          "profit_rate_pct": -25.067385444743934
+        },
+        "off_session": {
+          "trades": 219,
+          "wins": 74,
+          "losses": 145,
+          "win_rate": 33.789954337899545,
+          "profit_factor": 0.5103448275862069,
+          "net_r": -71.0,
+          "profit_rate_pct": -32.42009132420091
+        }
+      }
+    }
+  },
+  "selected_filter": {
+    "markets": [],
+    "market_names_ja": []
+  },
+  "filtered": {
+    "periods": {
+      "train_2010_2018": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "net_r": 0,
+        "profit_rate_pct": 0.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "net_r": 0,
+        "profit_rate_pct": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "net_r": 0,
+        "profit_rate_pct": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "net_r": 0,
+        "profit_rate_pct": 0.0
+      }
+    },
+    "trades": 0
+  }
+}

@@ -1,0 +1,306 @@
+//@version=6
+// 4Hの相場の壁を15分足へ表示する。検証合格した形だけ取引候補を示す。
+indicator("4H 相場の壁・チャネル + よすが式15分足 RR1", overlay=true,
+     max_lines_count=500, max_labels_count=500)
+
+string gWall = "4H 壁・チャネル"
+int i_pivotBars = input.int(5, "4Hスイング確定本数", minval=2, maxval=20, group=gWall)
+int i_projectionBars = input.int(96, "15分足での右側延長本数", minval=16, maxval=384, group=gWall)
+bool i_showPrevious = input.bool(true, "1つ前の高値・安値を破線表示", group=gWall)
+
+string gTrade = "よすが式 15分足エントリー"
+bool i_showTrades = input.bool(true, "Entry・TP・SLを表示", group=gTrade)
+int i_setupPivot = input.int(2, "15分足スイング確定本数", minval=1, maxval=10, group=gTrade)
+int i_emaLength = input.int(150, "15分足EMA期間", minval=20, maxval=500, group=gTrade)
+int i_atrLength = input.int(42, "15分足ATR期間", minval=14, maxval=200, group=gTrade)
+float i_zoneAtr = input.float(0.50, "支持抵抗の許容幅（ATR倍）", minval=0.05, step=0.05, group=gTrade)
+float i_stopBufferAtr = input.float(0.20, "SLバッファ（ATR倍）", minval=0.0, step=0.05, group=gTrade)
+float i_maxRiskAtr = input.float(2.50, "最大SL幅（ATR倍）", minval=0.5, step=0.25, group=gTrade)
+int i_minPaScore = input.int(1, "最低PAスコア", minval=1, maxval=2, group=gTrade,
+     tooltip="長いヒゲ・包み足を各1点として判定します")
+bool i_requireTriggerBreak = input.bool(true, "反転足で前足高安を更新", group=gTrade)
+string i_session = input.session("0600-1600", "エントリー時間帯", group=gTrade)
+float i_spread = input.float(0.0, "スプレッド価格差", minval=0.0, step=0.00001, group=gTrade)
+int i_tradeLineBars = input.int(16, "取引ラインの最短表示本数", minval=4, maxval=96, group=gTrade)
+int i_keepTrades = input.int(60, "残す過去トレード数", minval=1, maxval=80, group=gTrade)
+
+string gFilter = "検証フィルター（初期状態は全エントリー停止）"
+bool i_allowWick = input.bool(false, "ヒゲ反転を許可（検証勝率36.73%）", group=gFilter,
+     tooltip="学習・検証とも勝率50%未満です。研究目的で確認する場合だけ有効にしてください")
+bool i_allowEngulf = input.bool(false, "包み足を許可（検証勝率39.12%）", group=gFilter,
+     tooltip="3形の中では最良ですが、学習・検証とも勝率50%未満です")
+bool i_allowBoth = input.bool(false, "ヒゲ＋包み足を許可（検証勝率27.59%）", group=gFilter)
+bool i_excludeHtfDeceleration = input.bool(true, "4時間足減速中を除外", group=gFilter,
+     tooltip="減速中の検証勝率は37.13%。ただし未使用期間で改善は安定していません")
+bool anyShapeEnabled = i_allowWick or i_allowEngulf or i_allowBoth
+
+f_confirmed4hSwings() =>
+    float pivotHigh = ta.pivothigh(high, i_pivotBars, i_pivotBars)
+    float pivotLow = ta.pivotlow(low, i_pivotBars, i_pivotBars)
+    float high1 = ta.valuewhen(not na(pivotHigh), pivotHigh, 0)
+    float high2 = ta.valuewhen(not na(pivotHigh), pivotHigh, 1)
+    float low1 = ta.valuewhen(not na(pivotLow), pivotLow, 0)
+    float low2 = ta.valuewhen(not na(pivotLow), pivotLow, 1)
+    int highTime1 = int(ta.valuewhen(not na(pivotHigh), time[i_pivotBars], 0))
+    int highTime2 = int(ta.valuewhen(not na(pivotHigh), time[i_pivotBars], 1))
+    int lowTime1 = int(ta.valuewhen(not na(pivotLow), time[i_pivotBars], 0))
+    int lowTime2 = int(ta.valuewhen(not na(pivotLow), time[i_pivotBars], 1))
+    // 進行中の4H足を使わず、確定済み4H足の状態だけを15分足へ渡す。
+    [high1[1], high2[1], low1[1], low2[1],
+     highTime1[1], highTime2[1], lowTime1[1], lowTime2[1]]
+
+f_confirmed15mSwings() =>
+    float pivotHigh = ta.pivothigh(high, i_setupPivot, i_setupPivot)
+    float pivotLow = ta.pivotlow(low, i_setupPivot, i_setupPivot)
+    float high1 = ta.valuewhen(not na(pivotHigh), pivotHigh, 0)
+    float high2 = ta.valuewhen(not na(pivotHigh), pivotHigh, 1)
+    float low1 = ta.valuewhen(not na(pivotLow), pivotLow, 0)
+    float low2 = ta.valuewhen(not na(pivotLow), pivotLow, 1)
+    [high1[1], high2[1], low1[1], low2[1]]
+
+f_confirmed4hCloses() =>
+    // 最新の確定4H終値と、その前2本だけを使う。
+    [close[1], close[2], close[3]]
+
+[swingHigh1, swingHigh2, swingLow1, swingLow2,
+ swingHighTime1, swingHighTime2, swingLowTime1, swingLowTime2] = request.security(
+     syminfo.tickerid, "240", f_confirmed4hSwings(),
+     gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+[setupHigh1, setupHigh2, setupLow1, setupLow2] = request.security(
+     syminfo.tickerid, "15", f_confirmed15mSwings(),
+     gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+[htfClose1, htfClose2, htfClose3] = request.security(
+     syminfo.tickerid, "240", f_confirmed4hCloses(),
+     gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+
+bool upStructure = swingHigh1 > swingHigh2 and swingLow1 > swingLow2
+bool downStructure = swingHigh1 < swingHigh2 and swingLow1 < swingLow2
+int structureDirection = upStructure ? 1 : downStructure ? -1 : 0
+float upperPivotSlope = swingHighTime1 > swingHighTime2 ?
+     (swingHigh1 - swingHigh2) / (swingHighTime1 - swingHighTime2) : na
+float lowerPivotSlope = swingLowTime1 > swingLowTime2 ?
+     (swingLow1 - swingLow2) / (swingLowTime1 - swingLowTime2) : na
+// 上昇時は安値側、下降時は高値側を基準にして上下線を必ず平行にする。
+float channelSlope = structureDirection == 1 and not na(lowerPivotSlope) ? lowerPivotSlope :
+     structureDirection == -1 and not na(upperPivotSlope) ? upperPivotSlope :
+     not na(upperPivotSlope) and not na(lowerPivotSlope) ?
+     (upperPivotSlope + lowerPivotSlope) / 2.0 :
+     not na(upperPivotSlope) ? upperPivotSlope : lowerPivotSlope
+int channelStartTime = not na(swingHighTime2) and not na(swingLowTime2) ?
+     math.min(swingHighTime2, swingLowTime2) : int(na)
+
+bool isFifteenMinute = timeframe.isminutes and timeframe.multiplier == 15
+bool setupHigherLow = not na(setupLow1) and not na(setupLow2) and setupLow1 > setupLow2
+bool setupLowerHigh = not na(setupHigh1) and not na(setupHigh2) and setupHigh1 < setupHigh2
+float emaValue = ta.ema(close, i_emaLength)
+float atrValue = ta.atr(i_atrLength)
+float body = math.max(math.abs(close - open), syminfo.mintick)
+float upperWick = high - math.max(open, close)
+float lowerWick = math.min(open, close) - low
+bool longLowerWick = lowerWick >= body * 1.5 and lowerWick >= atrValue * 0.25
+bool longUpperWick = upperWick >= body * 1.5 and upperWick >= atrValue * 0.25
+bool bullEngulf = close > open and close[1] < open[1] and close >= open[1] and open <= close[1]
+bool bearEngulf = close < open and close[1] > open[1] and close <= open[1] and open >= close[1]
+int bullPaScore = (longLowerWick ? 1 : 0) + (bullEngulf ? 1 : 0)
+int bearPaScore = (longUpperWick ? 1 : 0) + (bearEngulf ? 1 : 0)
+bool bullBoth = longLowerWick and bullEngulf
+bool bearBoth = longUpperWick and bearEngulf
+bool bullShapeAllowed = bullBoth ? i_allowBoth :
+     longLowerWick ? i_allowWick : bullEngulf ? i_allowEngulf : false
+bool bearShapeAllowed = bearBoth ? i_allowBoth :
+     longUpperWick ? i_allowWick : bearEngulf ? i_allowEngulf : false
+bool htfDecelerating = structureDirection != 0 and
+     structureDirection * (htfClose1 - htfClose2) <
+     structureDirection * (htfClose2 - htfClose3)
+bool htfSpeedAllowed = not i_excludeHtfDeceleration or not htfDecelerating
+float zoneWidth = atrValue * i_zoneAtr
+bool atSupport = math.abs(low - setupLow1) <= zoneWidth or
+     (low <= emaValue + zoneWidth and close >= emaValue)
+bool atResistance = math.abs(high - setupHigh1) <= zoneWidth or
+     (high >= emaValue - zoneWidth and close <= emaValue)
+bool longTrigger = not i_requireTriggerBreak or close > high[1]
+bool shortTrigger = not i_requireTriggerBreak or close < low[1]
+bool sessionOk = not na(time(timeframe.period, i_session))
+
+float proposedLongEntry = close + i_spread
+float proposedLongStop = setupLow1 - atrValue * i_stopBufferAtr
+float proposedLongRisk = proposedLongEntry - proposedLongStop
+float proposedShortEntry = close
+float proposedShortStop = setupHigh1 + atrValue * i_stopBufferAtr + i_spread
+float proposedShortRisk = proposedShortStop - proposedShortEntry
+bool longRiskOk = proposedLongRisk > syminfo.mintick and proposedLongRisk <= atrValue * i_maxRiskAtr
+bool shortRiskOk = proposedShortRisk > syminfo.mintick and proposedShortRisk <= atrValue * i_maxRiskAtr
+bool buySetup = barstate.isconfirmed and isFifteenMinute and sessionOk and upStructure and
+     setupHigherLow and atSupport and bullPaScore >= i_minPaScore and bullShapeAllowed and
+     htfSpeedAllowed and longTrigger and longRiskOk
+bool sellSetup = barstate.isconfirmed and isFifteenMinute and sessionOk and downStructure and
+     setupLowerHigh and atResistance and bearPaScore >= i_minPaScore and bearShapeAllowed and
+     htfSpeedAllowed and shortTrigger and shortRiskOk
+
+var int positionDirection = 0
+var int entryBar = na
+var float activeEntry = na
+var float activeStop = na
+var float activeTarget = na
+var line activeEntryLine = na
+var line activeStopLine = na
+var line activeTargetLine = na
+var array<line> tradeLines = array.new_line()
+var array<label> tradeLabels = array.new_label()
+
+if barstate.isconfirmed and positionDirection != 0 and bar_index > entryBar
+    bool stopHit = positionDirection == 1 ? low <= activeStop : high + i_spread >= activeStop
+    bool targetHit = positionDirection == 1 ? high >= activeTarget : low + i_spread <= activeTarget
+    if stopHit or targetHit
+        int tradeEndBar = math.max(bar_index, entryBar + i_tradeLineBars)
+        line.set_x2(activeEntryLine, tradeEndBar)
+        line.set_x2(activeStopLine, tradeEndBar)
+        line.set_x2(activeTargetLine, tradeEndBar)
+        float resultPrice = stopHit ? activeStop : activeTarget
+        string resultText = stopHit ? "LOSS" : "WIN"
+        color resultColor = stopHit ? color.red : color.green
+        label resultLabel = label.new(bar_index, resultPrice, resultText,
+             style=stopHit ? label.style_label_down : label.style_label_up,
+             color=resultColor, textcolor=color.white, size=size.tiny)
+        array.push(tradeLabels, resultLabel)
+        positionDirection := 0
+        activeEntry := na
+        activeStop := na
+        activeTarget := na
+
+bool newBuy = i_showTrades and positionDirection == 0 and buySetup
+bool newSell = i_showTrades and positionDirection == 0 and not newBuy and sellSetup
+if newBuy or newSell
+    positionDirection := newBuy ? 1 : -1
+    entryBar := bar_index
+    activeEntry := newBuy ? proposedLongEntry : proposedShortEntry
+    activeStop := newBuy ? proposedLongStop : proposedShortStop
+    float risk = math.abs(activeEntry - activeStop)
+    activeTarget := activeEntry + risk * positionDirection
+    int lineEndBar = bar_index + i_tradeLineBars
+    activeEntryLine := line.new(bar_index, activeEntry, lineEndBar, activeEntry,
+         color=color.yellow, width=2)
+    activeStopLine := line.new(bar_index, activeStop, lineEndBar, activeStop,
+         color=color.red, width=2)
+    activeTargetLine := line.new(bar_index, activeTarget, lineEndBar, activeTarget,
+         color=color.lime, width=2)
+    array.push(tradeLines, activeEntryLine)
+    array.push(tradeLines, activeStopLine)
+    array.push(tradeLines, activeTargetLine)
+    string sideText = newBuy ? "BUY" : "SELL"
+    color sideColor = newBuy ? color.lime : color.red
+    label entryLabel = label.new(bar_index, activeEntry,
+         sideText + " ENTRY  " + str.tostring(activeEntry, format.mintick),
+         style=newBuy ? label.style_label_up : label.style_label_down,
+         color=sideColor, textcolor=color.white)
+    label stopLabel = label.new(lineEndBar, activeStop,
+         "SL 損切り  " + str.tostring(activeStop, format.mintick),
+         style=label.style_label_left, color=color.red, textcolor=color.white, size=size.tiny)
+    label targetLabel = label.new(lineEndBar, activeTarget,
+         "TP 利確  " + str.tostring(activeTarget, format.mintick),
+         style=label.style_label_left, color=color.green, textcolor=color.white, size=size.tiny)
+    array.push(tradeLabels, entryLabel)
+    array.push(tradeLabels, stopLabel)
+    array.push(tradeLabels, targetLabel)
+
+while array.size(tradeLines) > i_keepTrades * 3
+    line.delete(array.shift(tradeLines))
+while array.size(tradeLabels) > i_keepTrades * 4
+    label.delete(array.shift(tradeLabels))
+
+plot(i_showTrades ? emaValue : na, "15分足 EMA", color=color.new(color.orange, 35), linewidth=1)
+plotshape(newBuy, "BUY entry", shape.triangleup, location.belowbar,
+     color=color.lime, size=size.small, text="BUY")
+plotshape(newSell, "SELL entry", shape.triangledown, location.abovebar,
+     color=color.red, size=size.small, text="SELL")
+alertcondition(newBuy, "相場の壁 よすが式 BUY", "4H上昇・15分押し目・検証許可PAでBUY")
+alertcondition(newSell, "相場の壁 よすが式 SELL", "4H下降・15分戻り・検証許可PAでSELL")
+
+var array<line> wallLines = array.new_line()
+var array<label> wallLabels = array.new_label()
+var label timeframeWarning = na
+var label filterWarning = na
+
+if barstate.islast
+    while array.size(wallLines) > 0
+        line.delete(array.pop(wallLines))
+    while array.size(wallLabels) > 0
+        label.delete(array.pop(wallLabels))
+    if not na(timeframeWarning)
+        label.delete(timeframeWarning)
+        timeframeWarning := na
+    if not na(filterWarning)
+        label.delete(filterWarning)
+        filterWarning := na
+
+    bool correctTimeframe = timeframe.in_seconds() == 15 * 60
+    if not correctTimeframe
+        timeframeWarning := label.new(bar_index, high, "15分足で使用してください",
+             xloc=xloc.bar_index, style=label.style_label_down,
+             color=color.rgb(234, 88, 12), textcolor=color.white)
+    else
+        if not anyShapeEnabled
+            filterWarning := label.new(bar_index, high,
+                 "エントリー停止：勝率50%以上の形なし\n壁・高値安値・チャネルのみ表示",
+                 xloc=xloc.bar_index, style=label.style_label_down,
+                 color=color.rgb(185, 28, 28), textcolor=color.white)
+        int endTime = time + i_projectionBars * 15 * 60 * 1000
+
+        if not na(swingHigh1) and not na(swingHighTime1)
+            line highWall1 = line.new(swingHighTime1, swingHigh1, endTime, swingHigh1,
+                 xloc=xloc.bar_time, color=color.rgb(245, 158, 11), width=2)
+            label highLabel1 = label.new(swingHighTime1, swingHigh1,
+                 "4H H1  " + str.tostring(swingHigh1, format.mintick),
+                 xloc=xloc.bar_time, style=label.style_label_down,
+                 color=color.rgb(180, 83, 9), textcolor=color.white, size=size.tiny)
+            array.push(wallLines, highWall1)
+            array.push(wallLabels, highLabel1)
+        if i_showPrevious and not na(swingHigh2) and not na(swingHighTime2)
+            line highWall2 = line.new(swingHighTime2, swingHigh2, endTime, swingHigh2,
+                 xloc=xloc.bar_time, color=color.new(color.rgb(245, 158, 11), 45),
+                 width=1, style=line.style_dashed)
+            label highLabel2 = label.new(swingHighTime2, swingHigh2, "4H H2",
+                 xloc=xloc.bar_time, style=label.style_label_down,
+                 color=color.new(color.rgb(180, 83, 9), 35), textcolor=color.white, size=size.tiny)
+            array.push(wallLines, highWall2)
+            array.push(wallLabels, highLabel2)
+
+        if not na(swingLow1) and not na(swingLowTime1)
+            line lowWall1 = line.new(swingLowTime1, swingLow1, endTime, swingLow1,
+                 xloc=xloc.bar_time, color=color.rgb(37, 99, 235), width=2)
+            label lowLabel1 = label.new(swingLowTime1, swingLow1,
+                 "4H L1  " + str.tostring(swingLow1, format.mintick),
+                 xloc=xloc.bar_time, style=label.style_label_up,
+                 color=color.rgb(29, 78, 216), textcolor=color.white, size=size.tiny)
+            array.push(wallLines, lowWall1)
+            array.push(wallLabels, lowLabel1)
+        if i_showPrevious and not na(swingLow2) and not na(swingLowTime2)
+            line lowWall2 = line.new(swingLowTime2, swingLow2, endTime, swingLow2,
+                 xloc=xloc.bar_time, color=color.new(color.rgb(37, 99, 235), 45),
+                 width=1, style=line.style_dashed)
+            label lowLabel2 = label.new(swingLowTime2, swingLow2, "4H L2",
+                 xloc=xloc.bar_time, style=label.style_label_up,
+                 color=color.new(color.rgb(29, 78, 216), 35), textcolor=color.white, size=size.tiny)
+            array.push(wallLines, lowWall2)
+            array.push(wallLabels, lowLabel2)
+
+        if not na(channelSlope) and not na(channelStartTime) and
+             not na(swingHigh1) and not na(swingLow1)
+            float upperStart = swingHigh1 + channelSlope * (channelStartTime - swingHighTime1)
+            float upperEnd = swingHigh1 + channelSlope * (endTime - swingHighTime1)
+            float lowerStart = swingLow1 + channelSlope * (channelStartTime - swingLowTime1)
+            float lowerEnd = swingLow1 + channelSlope * (endTime - swingLowTime1)
+            line upperChannel = line.new(channelStartTime, upperStart, endTime, upperEnd,
+                 xloc=xloc.bar_time, color=color.rgb(6, 182, 212), width=2)
+            line lowerChannel = line.new(channelStartTime, lowerStart, endTime, lowerEnd,
+                 xloc=xloc.bar_time, color=color.rgb(6, 182, 212), width=2)
+            label upperLabel = label.new(endTime, upperEnd, "4H 上限チャネル",
+                 xloc=xloc.bar_time, style=label.style_label_left,
+                 color=color.rgb(8, 145, 178), textcolor=color.white, size=size.tiny)
+            label lowerLabel = label.new(endTime, lowerEnd, "4H 下限チャネル",
+                 xloc=xloc.bar_time, style=label.style_label_left,
+                 color=color.rgb(8, 145, 178), textcolor=color.white, size=size.tiny)
+            array.push(wallLines, upperChannel)
+            array.push(wallLines, lowerChannel)
+            array.push(wallLabels, upperLabel)
+            array.push(wallLabels, lowerLabel)

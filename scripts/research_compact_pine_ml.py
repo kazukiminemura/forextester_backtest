@@ -144,12 +144,16 @@ def main() -> int:
                 24,
                 args.require_htf_alignment,
             )
+            trades_by_symbol = {
+                symbol: _simulate(
+                    symbol, prepared[symbol], simulation_candidate, signals[symbol]
+                )
+                for symbol in SYMBOLS
+            }
             trades = [
                 trade
                 for symbol in SYMBOLS
-                for trade in _simulate(
-                    symbol, prepared[symbol], simulation_candidate, signals[symbol]
-                )
+                for trade in trades_by_symbol[symbol]
             ]
             periods = {
                 name: _stats(trades, start, finish, months)
@@ -158,6 +162,13 @@ def main() -> int:
             annual_periods = {
                 str(year): _stats(trades, year, year, 12)
                 for year in range(2010, 2027)
+            }
+            symbol_periods = {
+                symbol: {
+                    name: _stats(symbol_trades, start, finish, months)
+                    for name, (start, finish, months) in PERIODS.items()
+                }
+                for symbol, symbol_trades in trades_by_symbol.items()
             }
             prequalified = _passes(periods["train_2010_2018"]) and _passes(
                 periods["validation_2019_2022"]
@@ -168,12 +179,14 @@ def main() -> int:
             results.append(
                 {
                     "model": asdict(config),
+                    "symbols": list(SYMBOLS),
                     "threshold": threshold,
                     "require_htf_alignment": args.require_htf_alignment,
                     "prequalified": prequalified,
                     "passes_all": passes_all,
                     "periods": periods,
                     "annual_periods": annual_periods,
+                    "symbol_periods": symbol_periods,
                 }
             )
     selectable = [row for row in results if row["prequalified"]]

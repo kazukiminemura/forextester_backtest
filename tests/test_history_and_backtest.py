@@ -6,16 +6,18 @@ import unittest
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from forextester_backtest.cli import _write_trades
+from forextester_backtest.alternative import AlternativeBacktester, AlternativeConfig
+from forextester_backtest.cli import _write_trades, build_parser
 from forextester_backtest.data import OLE_EPOCH, HistoryRepository
 from forextester_backtest.engine import BacktestEngine
-from forextester_backtest.models import InstrumentMetadata, Trade
+from forextester_backtest.models import Bar, InstrumentMetadata, Trade
 from forextester_backtest.presets import automatic_preset_name, resolve_preset
 from forextester_backtest.strategies import SmaCrossoverStrategy
 from forextester_backtest.tamukai import (
     TamukaiBacktester,
     TamukaiConfig,
     _ArmedOrder,
+    _dmi,
     _four_hour_bars,
     _pivot_states,
 )
@@ -23,6 +25,54 @@ from forextester_backtest.tamukai import (
 
 def ole(value: datetime) -> float:
     return (value - OLE_EPOCH).total_seconds() / 86_400
+
+
+class AlternativeBacktesterTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.metadata = InstrumentMetadata(
+            "USDJPY", {"decimals": "3", "spread": "0", "lot": "1"}
+        )
+
+    def test_donchian_enters_next_hour_and_resolves_same_bar_as_stop(self) -> None:
+        start = datetime(2024, 1, 1)
+        bars = [
+            Bar(start, 10.0, 11.0, 9.0, 10.0, 1.0),
+            Bar(start + timedelta(hours=1), 10.0, 11.0, 9.0, 10.0, 1.0),
+            Bar(start + timedelta(hours=2), 10.0, 12.0, 10.0, 11.5, 1.0),
+            Bar(start + timedelta(hours=3), 11.5, 14.0, 8.0, 12.0, 1.0),
+        ]
+        config = AlternativeConfig(
+            logic="donchian",
+            direction="long",
+            atr_length=2,
+            channel_length=2,
+            slow_ema=2,
+            stop_atr=1.0,
+        )
+
+        result = AlternativeBacktester(self.metadata, config, lots=1.0).run(bars)
+
+        self.assertEqual(1, result.trade_count)
+        trade = result.trades[0]
+        self.assertEqual(start + timedelta(hours=3), trade.entry_time)
+        self.assertLess(trade.net_pnl, 0)
+        self.assertEqual(trade.initial_stop, trade.exit_price)
+        self.assertAlmostEqual(
+            trade.entry_price - trade.initial_stop,
+            trade.first_target - trade.entry_price,
+        )
+
+    def test_rejects_non_hourly_input(self) -> None:
+        config = AlternativeConfig(logic="donchian")
+        bars = [Bar(datetime(2024, 1, 1, 0, 30), 1, 2, 0, 1, 1)]
+        with self.assertRaisesRegex(ValueError, "1時間足"):
+            AlternativeBacktester(self.metadata, config).run(bars)
+
+        four_hour_bars = [
+            Bar(datetime(2024, 1, 1, hour), 1, 2, 0, 1, 1) for hour in (0, 4, 8)
+        ]
+        with self.assertRaisesRegex(ValueError, "1時間足"):
+            AlternativeBacktester(self.metadata, config).run(four_hour_bars)
 
 
 class HistoryRepositoryTest(unittest.TestCase):
@@ -104,6 +154,10 @@ class BacktestEngineTest(unittest.TestCase):
 
 
 class PresetSelectionTest(unittest.TestCase):
+    def test_backtest_defaults_to_fifteen_minute_entries(self) -> None:
+        args = build_parser().parse_args(["backtest", "USDJPY"])
+        self.assertEqual("15m", args.entry_timeframe)
+
     def test_jpy_cross_takes_precedence_for_usdjpy(self) -> None:
         self.assertEqual("jpy-cross", automatic_preset_name("USDJPY"))
         self.assertEqual("jpy-cross", automatic_preset_name("EURJPY"))
@@ -175,12 +229,12 @@ class PresetSelectionTest(unittest.TestCase):
         )
         source = path.read_text(encoding="utf-8")
         self.assertTrue(source.startswith("//@version=6\n"))
-        self.assertIn('indicator("田向式 ペア別押し目レンジ・シグナル RR1 v2"', source)
+        self.assertIn('indicator("田向式 ペア別押し目レンジ・シグナル RR1 15m v4"', source)
         self.assertIn('plot(close, "Compile guard", display=display.none)', source)
         self.assertNotIn("strategy(", source)
         self.assertIn('activePreset == "JPYクロス" or isJpyFrequency ? 1.0', source)
         self.assertIn('activePreset == "JPY頻度優先"', source)
-        self.assertIn('"研究: USDJPY OOS 15件 / 80%"', source)
+        self.assertIn('"15m再検証前"', source)
         self.assertIn('activePreset == "EURUSD研究" ? 0.75', source)
         self.assertIn('isXauUsd ? "XAUUSD研究"', source)
         self.assertIn("isXauResearch ? 1.0", source)
@@ -190,19 +244,26 @@ class PresetSelectionTest(unittest.TestCase):
         self.assertIn("isXauResearch ? 0.40", source)
         self.assertIn("isXauResearch ? 2.0", source)
         self.assertIn("isXauResearch ? 0.0", source)
-        self.assertIn('"研究: OOS PF 1.22 / 13件"', source)
+        self.assertIn('input.float(0.0, "トレンド判定の最低4H ADX（0=無効）"', source)
         self.assertNotIn("i_customTargetR", source)
         self.assertNotIn("i_customTargetFraction", source)
         self.assertNotIn("firstTargetReached", source)
         self.assertIn("float fixedTargetR = 1.0", source)
         self.assertIn('"Pending TP 1:1"', source)
         self.assertIn('"RR 1:1 / 100%"', source)
-        self.assertIn('"田向式 RR1 v2"', source)
+        self.assertIn('"田向式 RR1 15m v4"', source)
         self.assertIn("table.new(position.top_right, 2, 12", source)
         self.assertIn("barstate.isconfirmed", source)
         self.assertIn("lookahead=barmerge.lookahead_on", source)
-        self.assertIn('"このインジケーターは1時間足専用です', source)
-        self.assertIn("i_showTable or not isOneHourChart", source)
+        self.assertIn('"このインジケーターは15分足専用です', source)
+        self.assertIn("i_showTable or not isFifteenMinuteChart", source)
+        self.assertIn('symbol, "15", f_scanLtfPack', source)
+        self.assertNotIn("isOneHourChart", source)
+        self.assertNotIn("isThirtyMinuteChart", source)
+        self.assertIn("ta.dmi(i_htfAdxLen, i_htfAdxSmoothing)", source)
+        self.assertIn("htfAdx >= i_minHtfAdx", source)
+        self.assertIn("scanHtfAdx >= i_minHtfAdx", source)
+        self.assertIn("4H RANGE / ADX", source)
 
     def test_tradingview_indicator_includes_opportunity_scanner(self) -> None:
         path = (
@@ -221,6 +282,37 @@ class PresetSelectionTest(unittest.TestCase):
         scanner_path = path.with_name("tamukai_opportunity_scanner.pine")
         self.assertFalse(scanner_path.exists())
 
+    def test_rebuilt_yosuga_indicator_is_strict_rr1_and_five_minute(self) -> None:
+        path = (
+            Path(__file__).parents[1]
+            / "scripts"
+            / "tradingview"
+            / "yosuga_5m_rebuilt_indicator.pine"
+        )
+        source = path.read_text(encoding="utf-8")
+        self.assertTrue(source.startswith("//@version=6\n"))
+        self.assertIn('indicator("よすが式 4H・15m・5m 再構築 RR1 v2"', source)
+        self.assertIn("dynamic_requests=true", source)
+        self.assertNotIn("strategy(", source)
+        self.assertIn("timeframe.multiplier == 5", source)
+        self.assertIn('input.timeframe("240", "環境認識"', source)
+        self.assertIn('input.timeframe("15", "押し戻り判断"', source)
+        self.assertEqual(5, source.count("request.security("))
+        self.assertIn("lookahead=barmerge.lookahead_on", source)
+        self.assertIn("lastHigh[1]", source)
+        self.assertIn("activeTarget := activeEntry + risk * positionDirection", source)
+        self.assertIn('table.cell(stats, 1, 8, "1:1固定")', source)
+        self.assertIn('plotshape(newBuy, "BUY entry"', source)
+        self.assertIn('plotshape(newSell, "SELL entry"', source)
+        self.assertIn('"勝率"', source)
+        self.assertEqual(12, source.count("input.symbol("))
+        self.assertEqual(12, source.count("= f_scanPair(i_scanSymbol"))
+        self.assertIn('state == 3 ? "BUY候補"', source)
+        self.assertIn('state == -3 ? "SELL候補"', source)
+        self.assertIn('state == 2 ? "押し目待ち"', source)
+        self.assertIn('state == -2 ? "戻り待ち"', source)
+        self.assertIn("table.new(position.bottom_right, 4, 13", source)
+        self.assertIn("alertcondition(scannerNewChance", source)
 
 class TamukaiBacktesterTest(unittest.TestCase):
     def setUp(self) -> None:
@@ -230,6 +322,7 @@ class TamukaiBacktesterTest(unittest.TestCase):
 
     def test_defaults_match_attached_pine_inputs(self) -> None:
         config = TamukaiConfig()
+        self.assertEqual(15, config.entry_minutes)
         self.assertEqual(
             (4, 21, 2, 2, 2),
             (
@@ -252,6 +345,11 @@ class TamukaiBacktesterTest(unittest.TestCase):
                 config.zone_tolerance_atr,
             ),
         )
+        self.assertEqual((14, 14, 0.0), (
+            config.htf_adx_length,
+            config.htf_adx_smoothing,
+            config.min_htf_adx,
+        ))
         self.assertEqual(
             (4.0, 4.0, 1.5, 80.0, 2.5, 2.0, 8),
             (
@@ -264,6 +362,39 @@ class TamukaiBacktesterTest(unittest.TestCase):
                 config.order_expiry_bars,
             ),
         )
+
+    def test_fifteen_minute_config_accepts_only_fifteen_minute_bars(self) -> None:
+        start = datetime(2024, 1, 1)
+        bars = [
+            Bar(start, 100, 101, 99, 100, 1),
+            Bar(start + timedelta(minutes=15), 100, 101, 99, 100, 1),
+        ]
+        result = TamukaiBacktester(self.metadata, TamukaiConfig()).run(bars)
+        self.assertEqual(2, result.bars)
+        with self.assertRaisesRegex(ValueError, "30分足"):
+            TamukaiBacktester(
+                self.metadata, TamukaiConfig(entry_minutes=30)
+            ).run(bars)
+
+    def test_dmi_identifies_a_strong_directional_move(self) -> None:
+        start = datetime(2024, 1, 1)
+        bars = [
+            Bar(
+                start + timedelta(hours=4 * index),
+                100 + index,
+                102 + index,
+                99 + index,
+                101 + index,
+                1,
+            )
+            for index in range(40)
+        ]
+
+        plus_di, minus_di, adx = _dmi(bars)
+
+        self.assertIsNotNone(adx[-1])
+        self.assertGreater(adx[-1] or 0.0, 20.0)
+        self.assertGreater(plus_di[-1] or 0.0, minus_di[-1] or 0.0)
 
     def test_four_hour_state_uses_aligned_buckets(self) -> None:
         from forextester_backtest.models import Bar
