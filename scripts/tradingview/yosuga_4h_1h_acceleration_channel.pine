@@ -1,0 +1,270 @@
+//@version=6
+// 確定済み4H・1H足だけから、ダウ方向、加速・減速、平行チャネルを可視化する。
+// 売買注文やエントリー判定は行わない環境認識専用インジケーター。
+indicator("よすが式 4H・1H 加速減速 + 平行チャネル v1", overlay=true,
+     max_lines_count=50, max_labels_count=300)
+
+string gStructure = "ダウ構造・加速減速"
+int i_4hPivot = input.int(5, "4Hピボット左右", minval=2, maxval=20, group=gStructure)
+int i_1hPivot = input.int(5, "1Hピボット左右", minval=2, maxval=20, group=gStructure)
+float i_phaseThresholdAtr = input.float(0.05, "加減速の最小差（ATR）", minval=0.0,
+     maxval=1.0, step=0.01, group=gStructure,
+     tooltip="直近と1本前のトレンド方向進行幅の差が、このATR値を超えた時だけ加速・減速とします")
+
+string gChannel = "平行チャネル"
+bool i_show4hChannel = input.bool(true, "4Hチャネル", group=gChannel)
+bool i_show1hChannel = input.bool(true, "1Hチャネル", group=gChannel)
+bool i_showCenter = input.bool(true, "中央線", group=gChannel)
+bool i_showPivotLabels = input.bool(true, "基準ピボット価格", group=gChannel)
+int i_projectionHours = input.int(48, "右側への延長時間", minval=4, maxval=240, group=gChannel)
+int i_4hWidth = input.int(3, "4H線の太さ", minval=1, maxval=5, group=gChannel)
+int i_1hWidth = input.int(1, "1H線の太さ", minval=1, maxval=4, group=gChannel)
+
+string gDisplay = "表示"
+bool i_showStateLabels = input.bool(true, "状態変化ラベル", group=gDisplay)
+bool i_showBackground = input.bool(true, "4H・1H一致背景", group=gDisplay)
+bool i_showTable = input.bool(true, "状態テーブル", group=gDisplay)
+int i_keepStateLabels = input.int(120, "残す状態ラベル数", minval=10, maxval=250, group=gDisplay)
+
+f_confirmedContext(int pivotBars) =>
+    float pivotHigh = ta.pivothigh(high, pivotBars, pivotBars)
+    float pivotLow = ta.pivotlow(low, pivotBars, pivotBars)
+    float high1 = ta.valuewhen(not na(pivotHigh), pivotHigh, 0)
+    float high2 = ta.valuewhen(not na(pivotHigh), pivotHigh, 1)
+    float low1 = ta.valuewhen(not na(pivotLow), pivotLow, 0)
+    float low2 = ta.valuewhen(not na(pivotLow), pivotLow, 1)
+    int highTime1 = int(ta.valuewhen(not na(pivotHigh), time[pivotBars], 0))
+    int highTime2 = int(ta.valuewhen(not na(pivotHigh), time[pivotBars], 1))
+    int lowTime1 = int(ta.valuewhen(not na(pivotLow), time[pivotBars], 0))
+    int lowTime2 = int(ta.valuewhen(not na(pivotLow), time[pivotBars], 1))
+    float atrValue = ta.atr(14)
+    // ピボットは1本前の確定状態、速度は直近3本の確定終値だけを返す。
+    [high1[1], high2[1], low1[1], low2[1],
+     highTime1[1], highTime2[1], lowTime1[1], lowTime2[1],
+     close[1], close[2], close[3], atrValue[1]]
+
+[h4High1, h4High2, h4Low1, h4Low2,
+ h4HighTime1, h4HighTime2, h4LowTime1, h4LowTime2,
+ h4Close1, h4Close2, h4Close3, h4Atr] = request.security(
+     syminfo.tickerid, "240", f_confirmedContext(i_4hPivot),
+     gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+
+[h1High1, h1High2, h1Low1, h1Low2,
+ h1HighTime1, h1HighTime2, h1LowTime1, h1LowTime2,
+ h1Close1, h1Close2, h1Close3, h1Atr] = request.security(
+     syminfo.tickerid, "60", f_confirmedContext(i_1hPivot),
+     gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+
+f_direction(float high1, float high2, float low1, float low2) =>
+    bool up = not na(high1) and not na(high2) and not na(low1) and not na(low2) and
+         high1 > high2 and low1 > low2
+    bool down = not na(high1) and not na(high2) and not na(low1) and not na(low2) and
+         high1 < high2 and low1 < low2
+    up ? 1 : down ? -1 : 0
+
+// phase: 2=加速, 1=巡航, -1=減速, -2=押し・戻り, 0=レンジ/未確定
+f_phase(int direction, float close1, float close2, float close3, float atrValue) =>
+    float latest = direction != 0 and atrValue > 0 ? direction * (close1 - close2) / atrValue : na
+    float previous = direction != 0 and atrValue > 0 ? direction * (close2 - close3) / atrValue : na
+    float change = latest - previous
+    int phase = direction == 0 or na(latest) or na(previous) ? 0 :
+         latest <= 0 ? -2 :
+         change > i_phaseThresholdAtr ? 2 :
+         change < -i_phaseThresholdAtr ? -1 : 1
+    [phase, latest, change]
+
+f_structureText(int direction) =>
+    direction == 1 ? "上昇" : direction == -1 ? "下降" : "レンジ"
+
+f_phaseText(int phase) =>
+    phase == 2 ? "加速" : phase == 1 ? "巡航" : phase == -1 ? "減速" :
+         phase == -2 ? "押し・戻り" : "判定待ち"
+
+f_phaseColor(int direction, int phase) =>
+    phase == 2 ? (direction == 1 ? color.rgb(22, 163, 74) : color.rgb(220, 38, 38)) :
+     phase == 1 ? (direction == 1 ? color.rgb(21, 128, 61) : color.rgb(185, 28, 28)) :
+     phase == -1 ? color.rgb(245, 158, 11) :
+     phase == -2 ? color.rgb(124, 58, 237) : color.rgb(75, 85, 99)
+
+int h4Direction = f_direction(h4High1, h4High2, h4Low1, h4Low2)
+int h1Direction = f_direction(h1High1, h1High2, h1Low1, h1Low2)
+[h4Phase, h4Speed, h4SpeedChange] = f_phase(h4Direction, h4Close1, h4Close2, h4Close3, h4Atr)
+[h1Phase, h1Speed, h1SpeedChange] = f_phase(h1Direction, h1Close1, h1Close2, h1Close3, h1Atr)
+
+bool h4Changed = ta.change(h4Phase) != 0 or ta.change(h4Direction) != 0
+bool h1Changed = ta.change(h1Phase) != 0 or ta.change(h1Direction) != 0
+bool sameDirection = h4Direction != 0 and h4Direction == h1Direction
+bool bothAccelerating = sameDirection and h4Phase == 2 and h1Phase == 2
+bool eitherDecelerating = h4Phase == -1 or h1Phase == -1
+bool directionConflict = h4Direction != 0 and h1Direction != 0 and h4Direction != h1Direction
+
+color contextBackground = bothAccelerating ?
+     (h4Direction == 1 ? color.new(color.green, 88) : color.new(color.red, 88)) :
+     directionConflict ? color.new(color.purple, 91) :
+     eitherDecelerating ? color.new(color.orange, 91) : na
+bgcolor(i_showBackground ? contextBackground : na, title="4H・1H 加減速背景")
+
+var array<label> stateLabels = array.new_label()
+if barstate.isconfirmed and i_showStateLabels and (h4Changed or h1Changed)
+    if h4Changed
+        string h4Text = "4H " + f_structureText(h4Direction) + "・" + f_phaseText(h4Phase)
+        label h4Label = label.new(bar_index, h4Direction == -1 ? high : low, h4Text,
+             style=h4Direction == -1 ? label.style_label_down : label.style_label_up,
+             color=f_phaseColor(h4Direction, h4Phase), textcolor=color.white, size=size.small)
+        array.push(stateLabels, h4Label)
+    if h1Changed
+        string h1Text = "1H " + f_structureText(h1Direction) + "・" + f_phaseText(h1Phase)
+        label h1Label = label.new(bar_index, h1Direction == -1 ? high : low, h1Text,
+             style=h1Direction == -1 ? label.style_label_down : label.style_label_up,
+             color=f_phaseColor(h1Direction, h1Phase), textcolor=color.white, size=size.tiny)
+        array.push(stateLabels, h1Label)
+
+while array.size(stateLabels) > i_keepStateLabels
+    label.delete(array.shift(stateLabels))
+
+f_pivotSlope(float value1, float value2, int time1, int time2) =>
+    not na(value1) and not na(value2) and not na(time1) and not na(time2) and time1 > time2 ?
+         (value1 - value2) / (time1 - time2) : na
+
+f_channelSlope(int direction, float highSlope, float lowSlope) =>
+    direction == 1 and not na(lowSlope) ? lowSlope :
+     direction == -1 and not na(highSlope) ? highSlope :
+     not na(highSlope) and not na(lowSlope) ? (highSlope + lowSlope) / 2.0 :
+     not na(highSlope) ? highSlope : lowSlope
+
+float h4HighSlope = f_pivotSlope(h4High1, h4High2, h4HighTime1, h4HighTime2)
+float h4LowSlope = f_pivotSlope(h4Low1, h4Low2, h4LowTime1, h4LowTime2)
+float h4ChannelSlope = f_channelSlope(h4Direction, h4HighSlope, h4LowSlope)
+int h4StartTime = not na(h4HighTime2) and not na(h4LowTime2) ? math.min(h4HighTime2, h4LowTime2) : int(na)
+
+float h1HighSlope = f_pivotSlope(h1High1, h1High2, h1HighTime1, h1HighTime2)
+float h1LowSlope = f_pivotSlope(h1Low1, h1Low2, h1LowTime1, h1LowTime2)
+float h1ChannelSlope = f_channelSlope(h1Direction, h1HighSlope, h1LowSlope)
+int h1StartTime = not na(h1HighTime2) and not na(h1LowTime2) ? math.min(h1HighTime2, h1LowTime2) : int(na)
+
+var array<line> channelLines = array.new_line()
+var array<label> channelLabels = array.new_label()
+var label timeframeWarning = na
+
+if barstate.islast
+    while array.size(channelLines) > 0
+        line.delete(array.pop(channelLines))
+    while array.size(channelLabels) > 0
+        label.delete(array.pop(channelLabels))
+    if not na(timeframeWarning)
+        label.delete(timeframeWarning)
+        timeframeWarning := na
+
+    bool supportedChart = timeframe.in_seconds() <= 60 * 60
+    if not supportedChart
+        timeframeWarning := label.new(bar_index, high,
+             "1時間足以下で使用してください\n4H・1Hは確定足だけで更新します",
+             style=label.style_label_down, color=color.rgb(234, 88, 12), textcolor=color.white)
+    else
+        int endTime = time + i_projectionHours * 60 * 60 * 1000
+
+        if i_show4hChannel and not na(h4ChannelSlope) and not na(h4StartTime) and
+             not na(h4High1) and not na(h4Low1)
+            float h4UpperStart = h4High1 + h4ChannelSlope * (h4StartTime - h4HighTime1)
+            float h4UpperEnd = h4High1 + h4ChannelSlope * (endTime - h4HighTime1)
+            float h4LowerStart = h4Low1 + h4ChannelSlope * (h4StartTime - h4LowTime1)
+            float h4LowerEnd = h4Low1 + h4ChannelSlope * (endTime - h4LowTime1)
+            line h4Upper = line.new(h4StartTime, h4UpperStart, endTime, h4UpperEnd,
+                 xloc=xloc.bar_time, color=color.rgb(6, 182, 212), width=i_4hWidth)
+            line h4Lower = line.new(h4StartTime, h4LowerStart, endTime, h4LowerEnd,
+                 xloc=xloc.bar_time, color=color.rgb(6, 182, 212), width=i_4hWidth)
+            array.push(channelLines, h4Upper)
+            array.push(channelLines, h4Lower)
+            if i_showCenter
+                line h4Center = line.new(h4StartTime, (h4UpperStart + h4LowerStart) / 2.0,
+                     endTime, (h4UpperEnd + h4LowerEnd) / 2.0, xloc=xloc.bar_time,
+                     color=color.new(color.rgb(6, 182, 212), 35), width=1, style=line.style_dashed)
+                array.push(channelLines, h4Center)
+            label h4Name = label.new(endTime, h4UpperEnd, "4Hチャネル",
+                 xloc=xloc.bar_time, style=label.style_label_left,
+                 color=color.rgb(8, 145, 178), textcolor=color.white, size=size.small)
+            array.push(channelLabels, h4Name)
+            if i_showPivotLabels
+                label h4HighLabel = label.new(h4HighTime1, h4High1,
+                     "4H H " + str.tostring(h4High1, format.mintick), xloc=xloc.bar_time,
+                     style=label.style_label_down, color=color.rgb(8, 145, 178), textcolor=color.white, size=size.tiny)
+                label h4LowLabel = label.new(h4LowTime1, h4Low1,
+                     "4H L " + str.tostring(h4Low1, format.mintick), xloc=xloc.bar_time,
+                     style=label.style_label_up, color=color.rgb(8, 145, 178), textcolor=color.white, size=size.tiny)
+                array.push(channelLabels, h4HighLabel)
+                array.push(channelLabels, h4LowLabel)
+
+        if i_show1hChannel and not na(h1ChannelSlope) and not na(h1StartTime) and
+             not na(h1High1) and not na(h1Low1)
+            float h1UpperStart = h1High1 + h1ChannelSlope * (h1StartTime - h1HighTime1)
+            float h1UpperEnd = h1High1 + h1ChannelSlope * (endTime - h1HighTime1)
+            float h1LowerStart = h1Low1 + h1ChannelSlope * (h1StartTime - h1LowTime1)
+            float h1LowerEnd = h1Low1 + h1ChannelSlope * (endTime - h1LowTime1)
+            line h1Upper = line.new(h1StartTime, h1UpperStart, endTime, h1UpperEnd,
+                 xloc=xloc.bar_time, color=color.rgb(217, 70, 239), width=i_1hWidth)
+            line h1Lower = line.new(h1StartTime, h1LowerStart, endTime, h1LowerEnd,
+                 xloc=xloc.bar_time, color=color.rgb(217, 70, 239), width=i_1hWidth)
+            array.push(channelLines, h1Upper)
+            array.push(channelLines, h1Lower)
+            if i_showCenter
+                line h1Center = line.new(h1StartTime, (h1UpperStart + h1LowerStart) / 2.0,
+                     endTime, (h1UpperEnd + h1LowerEnd) / 2.0, xloc=xloc.bar_time,
+                     color=color.new(color.rgb(217, 70, 239), 40), width=1, style=line.style_dotted)
+                array.push(channelLines, h1Center)
+            label h1Name = label.new(endTime, h1UpperEnd, "1Hチャネル",
+                 xloc=xloc.bar_time, style=label.style_label_left,
+                 color=color.rgb(162, 28, 175), textcolor=color.white, size=size.tiny)
+            array.push(channelLabels, h1Name)
+            if i_showPivotLabels
+                label h1HighLabel = label.new(h1HighTime1, h1High1,
+                     "1H H " + str.tostring(h1High1, format.mintick), xloc=xloc.bar_time,
+                     style=label.style_label_down, color=color.rgb(162, 28, 175), textcolor=color.white, size=size.tiny)
+                label h1LowLabel = label.new(h1LowTime1, h1Low1,
+                     "1H L " + str.tostring(h1Low1, format.mintick), xloc=xloc.bar_time,
+                     style=label.style_label_up, color=color.rgb(162, 28, 175), textcolor=color.white, size=size.tiny)
+                array.push(channelLabels, h1HighLabel)
+                array.push(channelLabels, h1LowLabel)
+
+var table stateTable = table.new(position.top_right, 5, 4,
+     bgcolor=color.new(color.black, 10), frame_color=color.gray, frame_width=1)
+if barstate.isfirst
+    table.merge_cells(stateTable, 1, 3, 4, 3)
+if barstate.islast and i_showTable
+    color header = color.rgb(30, 41, 59)
+    table.cell(stateTable, 0, 0, "時間足", text_color=color.white, bgcolor=header)
+    table.cell(stateTable, 1, 0, "ダウ", text_color=color.white, bgcolor=header)
+    table.cell(stateTable, 2, 0, "速度", text_color=color.white, bgcolor=header)
+    table.cell(stateTable, 3, 0, "進行ATR", text_color=color.white, bgcolor=header)
+    table.cell(stateTable, 4, 0, "速度差", text_color=color.white, bgcolor=header)
+    table.cell(stateTable, 0, 1, "4H", text_color=color.white, bgcolor=color.rgb(8, 145, 178))
+    table.cell(stateTable, 1, 1, f_structureText(h4Direction), text_color=color.white)
+    table.cell(stateTable, 2, 1, f_phaseText(h4Phase), text_color=color.white,
+         bgcolor=f_phaseColor(h4Direction, h4Phase))
+    table.cell(stateTable, 3, 1, str.tostring(h4Speed, "#.##"), text_color=color.white)
+    table.cell(stateTable, 4, 1, str.tostring(h4SpeedChange, "+#.##;-#.##"), text_color=color.white)
+    table.cell(stateTable, 0, 2, "1H", text_color=color.white, bgcolor=color.rgb(162, 28, 175))
+    table.cell(stateTable, 1, 2, f_structureText(h1Direction), text_color=color.white)
+    table.cell(stateTable, 2, 2, f_phaseText(h1Phase), text_color=color.white,
+         bgcolor=f_phaseColor(h1Direction, h1Phase))
+    table.cell(stateTable, 3, 2, str.tostring(h1Speed, "#.##"), text_color=color.white)
+    table.cell(stateTable, 4, 2, str.tostring(h1SpeedChange, "+#.##;-#.##"), text_color=color.white)
+    string combined = bothAccelerating ? "同方向・両方加速" :
+         directionConflict ? "方向不一致" : eitherDecelerating ? "減速あり" :
+         sameDirection ? "同方向" : "待機"
+    color combinedColor = bothAccelerating ? f_phaseColor(h4Direction, 2) :
+         directionConflict ? color.rgb(124, 58, 237) :
+         eitherDecelerating ? color.rgb(245, 158, 11) : color.rgb(75, 85, 99)
+    table.cell(stateTable, 0, 3, "総合", text_color=color.white, bgcolor=header)
+    table.cell(stateTable, 1, 3, combined, text_color=color.white, bgcolor=combinedColor)
+
+bool new4hAcceleration = barstate.isconfirmed and h4Changed and h4Phase == 2
+bool new4hDeceleration = barstate.isconfirmed and h4Changed and h4Phase == -1
+bool new1hAcceleration = barstate.isconfirmed and h1Changed and h1Phase == 2
+bool new1hDeceleration = barstate.isconfirmed and h1Changed and h1Phase == -1
+bool newBothAcceleration = barstate.isconfirmed and bothAccelerating and not bothAccelerating[1]
+
+alertcondition(new4hAcceleration, "よすが式 4H加速", "4Hの確定足がトレンド方向へ加速しました")
+alertcondition(new4hDeceleration, "よすが式 4H減速", "4Hの確定足がトレンド方向へ減速しました")
+alertcondition(new1hAcceleration, "よすが式 1H加速", "1Hの確定足がトレンド方向へ加速しました")
+alertcondition(new1hDeceleration, "よすが式 1H減速", "1Hの確定足がトレンド方向へ減速しました")
+alertcondition(newBothAcceleration, "よすが式 4H・1H同方向加速", "4Hと1Hが同方向で加速しています")

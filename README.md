@@ -61,6 +61,18 @@ JPYクロスは「買いのみ・小レンジ1.0 ATR以下・1R全決済」、EU
 [`docs/usdjpy_optimization.md`](docs/usdjpy_optimization.md) を参照してください。
 JPYクロスをRR 1:1で再検証した結果は
 [`docs/jpy_cross_rr1_optimization.md`](docs/jpy_cross_rr1_optimization.md) を参照してください。
+終値ブレイクによるだまし回避の比較結果は
+[`docs/false_breakout_filter.md`](docs/false_breakout_filter.md) を参照してください。
+4H壁ブレイク後のセオリー形状（ピンバー・包み足）の期待値検証は
+[`docs/textbook_retest_shape_expectancy.md`](docs/textbook_retest_shape_expectancy.md) を参照してください。
+既知のダブルトップ／ボトム、ヘッドアンドショルダーをネックライン確定で
+再計算した結果は[`docs/classic_chart_pattern_expectancy.md`](docs/classic_chart_pattern_expectancy.md)を参照してください。
+三角持ち合い、長方形、ウェッジ、フラッグ、トリプルトップ／ボトムの追加検証は
+[`docs/additional_chart_pattern_expectancy.md`](docs/additional_chart_pattern_expectancy.md)を参照してください。
+これらの形状へ通貨強弱と金・USDトレンドを追加したフィルター検証は
+[`docs/intermarket_trend_filter_expectancy.md`](docs/intermarket_trend_filter_expectancy.md)を参照してください。
+同じ形状群を5分足へ変更し、市場環境別に再計算した結果は
+[`docs/pattern_market_environment_5m.md`](docs/pattern_market_environment_5m.md)を参照してください。
 EURUSDの独立探索結果は
 [`docs/eurusd_optimization.md`](docs/eurusd_optimization.md) を参照してください。
 XAUUSD（金）の探索結果と不採用理由は
@@ -75,6 +87,8 @@ XAUUSD（金）の探索結果と不採用理由は
 TradingViewへ追加できるシグナル表示用Pine Scriptは
 [`scripts/tradingview/tamukai_pair_signal_indicator.pine`](scripts/tradingview/tamukai_pair_signal_indicator.pine)、
 追加手順は[`scripts/tradingview/README.md`](scripts/tradingview/README.md)にあります。
+4H・1Hの加速減速と平行チャネルだけを可視化する場合は
+[`scripts/tradingview/yosuga_4h_1h_acceleration_channel.pine`](scripts/tradingview/yosuga_4h_1h_acceleration_channel.pine)を使用します。
 
 `--end` を日付だけで指定した場合は、その日の23:59:59までを含みます。
 
@@ -95,6 +109,7 @@ forextester-backtest --history-dir D:\History symbols
 - 4時間足ADX/DIは比較用に残していますが、15分足復元版では既定0（無効）です。4時間足のダウ構造とSMA方向は常に必要です。
 - 直前3本の15分足から小レンジを作り、押し・戻り、SMA・旧高安値、SL幅、上位足の壁までの余地を検査します。
 - 条件成立後にレンジ外へ逆指値を置き、既定8本で失効します。条件成立バー内では約定しません。
+- だまし回避のため、既定ではヒゲの突破だけでは約定せず、終値がEntry価格を抜けたことを確認して次足始値で入ります。比較用の旧動作は `--no-false-breakout-filter` で再現できます。
 - JPYクロス既定値は構造SLと同距離の1Rで全決済します。
 - 開始日より前の履歴も4H構造と指標のウォームアップに使いますが、注文は指定期間内だけです。
 - 重要指標カレンダーは取得しません。Pine版の手動停止は `--disable-entries` で全期間に適用できます。
