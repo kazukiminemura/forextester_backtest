@@ -157,6 +157,7 @@ class PresetSelectionTest(unittest.TestCase):
     def test_backtest_defaults_to_fifteen_minute_entries(self) -> None:
         args = build_parser().parse_args(["backtest", "USDJPY"])
         self.assertEqual("15m", args.entry_timeframe)
+        self.assertTrue(args.false_breakout_filter)
 
     def test_jpy_cross_takes_precedence_for_usdjpy(self) -> None:
         self.assertEqual("jpy-cross", automatic_preset_name("USDJPY"))
@@ -229,7 +230,7 @@ class PresetSelectionTest(unittest.TestCase):
         )
         source = path.read_text(encoding="utf-8")
         self.assertTrue(source.startswith("//@version=6\n"))
-        self.assertIn('indicator("田向式 ペア別押し目レンジ・シグナル RR1 15m v4"', source)
+        self.assertIn('indicator("田向式 ペア別押し目レンジ・シグナル RR1 15m v5"', source)
         self.assertIn('plot(close, "Compile guard", display=display.none)', source)
         self.assertNotIn("strategy(", source)
         self.assertIn('activePreset == "JPYクロス" or isJpyFrequency ? 1.0', source)
@@ -251,9 +252,26 @@ class PresetSelectionTest(unittest.TestCase):
         self.assertIn("float fixedTargetR = 1.0", source)
         self.assertIn('"Pending TP 1:1"', source)
         self.assertIn('"RR 1:1 / 100%"', source)
-        self.assertIn('"田向式 RR1 15m v4"', source)
+        self.assertIn('"田向式 RR1 15m v5"', source)
         self.assertIn("table.new(position.top_right, 2, 12", source)
         self.assertIn("barstate.isconfirmed", source)
+        self.assertIn('input.bool(true, "だまし回避（終値抜け後、次足始値でEntry）"', source)
+        self.assertIn("close >= armedEntry", source)
+        self.assertIn("close <= armedEntry", source)
+        self.assertIn("virtualEntry := open", source)
+        self.assertIn('text="終値確認\\n次足ENTRY"', source)
+        self.assertIn('"ENTRY BUY"', source)
+        self.assertIn('"ENTRY SELL"', source)
+        self.assertIn("str.tostring(signalEntryPrice, format.mintick)", source)
+        self.assertIn("line entryLevelLine = line.new", source)
+        self.assertIn("line targetLevelLine = line.new", source)
+        self.assertIn("line stopLevelLine = line.new", source)
+        self.assertIn("color=color.yellow, width=4", source)
+        self.assertIn('"黄色 ENTRY BUY/SELL = ここで入る"', source)
+        self.assertIn('"Entry候補（まだ待つ）"', source)
+        self.assertIn('"ENTRY実行価格"', source)
+        self.assertIn('"Pending entry (not executed)"', source)
+        self.assertIn("while array.size(tradeEntryLabels) > i_historyTradeCount", source)
         self.assertIn("lookahead=barmerge.lookahead_on", source)
         self.assertIn('"このインジケーターは15分足専用です', source)
         self.assertIn("i_showTable or not isFifteenMinuteChart", source)
@@ -440,7 +458,12 @@ class TamukaiBacktesterTest(unittest.TestCase):
     def test_stop_entry_takes_half_at_one_r_then_stops_runner(self) -> None:
         from forextester_backtest.models import Bar
 
-        engine = TamukaiBacktester(self.metadata, lots=1, initial_capital=100)
+        engine = TamukaiBacktester(
+            self.metadata,
+            TamukaiConfig(require_breakout_close=False),
+            lots=1,
+            initial_capital=100,
+        )
         engine._armed = _ArmedOrder(1, 0, 100, 90, 100, 90)
         first = Bar(datetime(2024, 1, 1), 95, 111, 89, 105, 1)
         second = Bar(datetime(2024, 1, 1, 1), 100, 101, 89, 90, 1)
@@ -456,7 +479,11 @@ class TamukaiBacktesterTest(unittest.TestCase):
     def test_full_target_closes_entire_position(self) -> None:
         from forextester_backtest.models import Bar
 
-        config = TamukaiConfig(first_target_r=0.5, first_target_fraction=1.0)
+        config = TamukaiConfig(
+            first_target_r=0.5,
+            first_target_fraction=1.0,
+            require_breakout_close=False,
+        )
         engine = TamukaiBacktester(
             self.metadata, config=config, lots=1, initial_capital=100
         )
@@ -470,7 +497,7 @@ class TamukaiBacktesterTest(unittest.TestCase):
     def test_pending_order_waits_for_allowed_entry_hour(self) -> None:
         from forextester_backtest.models import Bar
 
-        config = TamukaiConfig(entry_hours=(1,))
+        config = TamukaiConfig(entry_hours=(1,), require_breakout_close=False)
         engine = TamukaiBacktester(
             self.metadata, config=config, lots=1, initial_capital=100
         )
@@ -482,6 +509,52 @@ class TamukaiBacktesterTest(unittest.TestCase):
         allowed = Bar(datetime(2024, 1, 1, 1), 95, 101, 94, 100, 1)
         engine._process_execution(allowed)
         self.assertIsNotNone(engine._position)
+
+    def test_false_breakout_filter_rejects_wick_only_break(self) -> None:
+        from forextester_backtest.models import Bar
+
+        engine = TamukaiBacktester(self.metadata, lots=1, initial_capital=100)
+        engine._armed = _ArmedOrder(1, 0, 100, 90, 100, 90)
+        wick_only = Bar(datetime(2024, 1, 1), 95, 105, 94, 99, 1)
+
+        engine._process_execution(wick_only)
+
+        self.assertIsNone(engine._position)
+        self.assertIsNotNone(engine._armed)
+        assert engine._armed is not None
+        self.assertFalse(engine._armed.breakout_confirmed)
+
+    def test_false_breakout_filter_enters_next_bar_after_close_confirmation(self) -> None:
+        from forextester_backtest.models import Bar
+
+        engine = TamukaiBacktester(self.metadata, lots=1, initial_capital=100)
+        engine._armed = _ArmedOrder(1, 0, 100, 90, 100, 90)
+        confirmation = Bar(datetime(2024, 1, 1), 95, 105, 94, 101, 1)
+        next_bar = Bar(datetime(2024, 1, 1, 0, 15), 102, 103, 101, 102, 1)
+
+        engine._process_execution(confirmation)
+        self.assertIsNone(engine._position)
+        assert engine._armed is not None
+        self.assertTrue(engine._armed.breakout_confirmed)
+
+        engine._process_execution(next_bar)
+
+        self.assertIsNotNone(engine._position)
+        assert engine._position is not None
+        self.assertEqual(next_bar.time, engine._position.entry_time)
+        self.assertEqual(102, engine._position.entry_chart_price)
+
+    def test_false_breakout_filter_cancels_entry_if_next_open_crosses_stop(self) -> None:
+        from forextester_backtest.models import Bar
+
+        engine = TamukaiBacktester(self.metadata, lots=1, initial_capital=100)
+        engine._armed = _ArmedOrder(1, 0, 100, 90, 100, 90, True)
+        gap_below_stop = Bar(datetime(2024, 1, 1), 89, 95, 88, 94, 1)
+
+        engine._process_execution(gap_below_stop)
+
+        self.assertIsNone(engine._position)
+        self.assertIsNone(engine._armed)
 
 
 if __name__ == "__main__":

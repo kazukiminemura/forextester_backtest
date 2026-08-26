@@ -135,6 +135,12 @@ def build_parser() -> argparse.ArgumentParser:
     backtest.add_argument("--max-risk-atr", type=float, default=2.5)
     backtest.add_argument("--max-chase-atr", type=float, default=2.0)
     backtest.add_argument("--order-expiry-bars", type=int, default=8)
+    backtest.add_argument(
+        "--false-breakout-filter",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="終値でレンジ抜けを確認し、次足始値で入る（既定: 有効）",
+    )
     backtest.add_argument("--min-range-atr", type=float, default=0.0)
     backtest.add_argument("--target-r", type=float)
     backtest.add_argument("--target-fraction", type=float)
@@ -351,6 +357,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 max_chase_atr=args.max_chase_atr,
                 order_expiry_bars=args.order_expiry_bars,
                 allow_entries=not args.disable_entries,
+                require_breakout_close=args.false_breakout_filter,
                 min_range_atr=args.min_range_atr,
                 first_target_r=(
                     args.target_r

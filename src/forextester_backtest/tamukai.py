@@ -47,6 +47,7 @@ class TamukaiConfig:
     max_chase_atr: float = 2.0
     order_expiry_bars: int = 8
     allow_entries: bool = True
+    require_breakout_close: bool = True
     min_range_atr: float = 0.0
     first_target_r: float = 1.0
     first_target_fraction: float = 0.5
@@ -129,6 +130,7 @@ class _ArmedOrder:
     range_low: float
     entry: float
     stop: float
+    breakout_confirmed: bool = False
 
 
 @dataclass(slots=True)
@@ -738,7 +740,18 @@ class TamukaiBacktester:
             and self._armed is not None
             and allow_entry
         ):
-            if self._armed.direction == 1 and bar.open >= self._armed.entry:
+            if self.config.require_breakout_close:
+                if self._armed.breakout_confirmed:
+                    entry_is_above_stop = (
+                        self._armed.direction == 1 and bar.open > self._armed.stop
+                    ) or (
+                        self._armed.direction == -1 and bar.open < self._armed.stop
+                    )
+                    if entry_is_above_stop:
+                        self._enter(bar.open, bar.time)
+                    else:
+                        self._armed = None
+            elif self._armed.direction == 1 and bar.open >= self._armed.entry:
                 self._enter(max(bar.open, self._armed.entry), bar.time)
             elif self._armed.direction == -1 and bar.open <= self._armed.entry:
                 self._enter(min(bar.open, self._armed.entry), bar.time)
@@ -752,6 +765,19 @@ class TamukaiBacktester:
                 start, end, bar.time, bar.close, pivot, allow_entry
             ):
                 closed = True
+        if (
+            self.config.require_breakout_close
+            and self._position is None
+            and self._armed is not None
+            and not self._armed.breakout_confirmed
+        ):
+            confirmed = (
+                self._armed.direction == 1 and bar.close >= self._armed.entry
+            ) or (
+                self._armed.direction == -1 and bar.close <= self._armed.entry
+            )
+            if confirmed:
+                self._armed.breakout_confirmed = True
         return closed
 
     def _process_position_gap(self, price: float, time: datetime) -> bool:
@@ -796,6 +822,8 @@ class TamukaiBacktester:
         for _ in range(4):
             if self._position is None:
                 if self._armed is None or not allow_entry:
+                    return False
+                if self.config.require_breakout_close:
                     return False
                 if self._armed.direction == 1 and end >= self._armed.entry > cursor:
                     cursor = self._armed.entry

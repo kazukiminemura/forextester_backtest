@@ -2,7 +2,7 @@
 // This source code is subject to the terms of the Mozilla Public License 2.0
 // 田向式 4Hダウ + 15分足押し目レンジを、売買注文を出さないインジケーターとして表示する。
 // 確定済み4Hバー・確定済みピボット・確定15分足バーだけを使う。
-indicator("田向式 ペア別押し目レンジ・シグナル RR1 15m v4", overlay=true,
+indicator("田向式 ペア別押し目レンジ・シグナル RR1 15m v5", overlay=true,
      max_labels_count=300, max_lines_count=100, dynamic_requests=true)
 // TradingViewの必須出力判定を宣言直後に満たす非表示プロット。
 plot(close, "Compile guard", display=display.none)
@@ -54,6 +54,8 @@ float i_maxRiskPips = input.float(80.0, "最大損切り幅（pips、0=無効）
 float i_maxRiskAtr = input.float(2.5, "最大損切り幅（15分足 ATR倍）", minval=0.1, step=0.1, group=gRisk)
 float i_maxChaseAtr = input.float(2.0, "21SMAからの最大乖離（4H ATR倍）", minval=0.1, step=0.1, group=gRisk)
 int i_orderExpiryBars = input.int(8, "待機シグナルの有効本数", minval=1, maxval=48, group=gRisk)
+bool i_requireBreakoutClose = input.bool(true, "だまし回避（終値抜け後、次足始値でEntry）", group=gRisk,
+     tooltip="ヒゲだけの一時的な突破では入らず、15分足終値がEntry価格を抜けた場合だけ次の足で入ります")
 bool i_allowSignals = input.bool(true, "新規シグナル許可（重要指標前はOFF）", group=gRisk)
 
 // XAUUSD研究はRR 1:1再探索で選んだ全条件を固定し、それ以外は画面入力を使う。
@@ -71,6 +73,8 @@ bool i_showRange = input.bool(true, "待機レンジ・Entry・SL", group=gShow)
 bool i_showStructure = input.bool(true, "4Hダウ高値・安値", group=gShow)
 bool i_showTable = input.bool(true, "状態テーブル", group=gShow)
 bool i_showGuide = input.bool(true, "使い方ガイド", group=gShow)
+int i_entryLineBars = input.int(24, "Entry・TP・SLラインの長さ", minval=3, maxval=200, group=gShow)
+int i_historyTradeCount = input.int(20, "過去のEntry表示数", minval=1, maxval=25, group=gShow)
 
 string gTriangle = "三角持ち合い"
 bool i_showTriangle = input.bool(true, "三角持ち合いを表示", group=gTriangle,
@@ -430,6 +434,7 @@ var float armedRangeHigh = na
 var float armedRangeLow = na
 var float armedEntry = na
 var float armedStop = na
+var int armedConfirmedAtBar = na
 var int virtualDirection = 0
 var float virtualEntry = na
 var float virtualStop = na
@@ -441,9 +446,32 @@ bool targetSignal = false
 bool stopSignal = false
 bool armedLongSignal = false
 bool armedShortSignal = false
+bool breakoutConfirmedSignal = false
+int signalDirection = 0
+float signalEntryPrice = na
+float signalStopPrice = na
+float signalTargetPrice = na
 
 if barstate.isconfirmed
     bool closedThisBar = false
+    bool confirmedLongReady = i_requireBreakoutClose and armedDirection == 1 and not na(armedConfirmedAtBar) and bar_index > armedConfirmedAtBar
+    bool confirmedShortReady = i_requireBreakoutClose and armedDirection == -1 and not na(armedConfirmedAtBar) and bar_index > armedConfirmedAtBar
+    if virtualDirection == 0 and (confirmedLongReady or confirmedShortReady)
+        bool confirmedEntryValid = confirmedLongReady ? open > armedStop : open < armedStop
+        if confirmedEntryValid
+            virtualDirection := armedDirection
+            virtualEntry := open
+            virtualStop := armedStop
+            virtualTarget := virtualEntry + (virtualEntry - virtualStop) * fixedTargetR
+            longSignal := virtualDirection == 1
+            shortSignal := virtualDirection == -1
+            signalDirection := virtualDirection
+            signalEntryPrice := virtualEntry
+            signalStopPrice := virtualStop
+            signalTargetPrice := virtualTarget
+        armedDirection := 0
+        armedConfirmedAtBar := na
+
     if virtualDirection == 1
         bool hitStop = low <= virtualStop
         bool hitTarget = high >= virtualTarget
@@ -473,9 +501,10 @@ if barstate.isconfirmed
         bool shortOrderInvalid = armedDirection == -1 and (not htfShortBias or not shortChaseOk or high > armedRangeHigh or orderExpired or not i_allowSignals)
         if longOrderInvalid or shortOrderInvalid
             armedDirection := 0
+            armedConfirmedAtBar := na
 
-        bool pendingLongHit = armedDirection == 1 and bar_index > armedAtBar and high >= armedEntry
-        bool pendingShortHit = armedDirection == -1 and bar_index > armedAtBar and low <= armedEntry
+        bool pendingLongHit = not i_requireBreakoutClose and armedDirection == 1 and bar_index > armedAtBar and high >= armedEntry
+        bool pendingShortHit = not i_requireBreakoutClose and armedDirection == -1 and bar_index > armedAtBar and low <= armedEntry
         if pendingLongHit
             virtualDirection := 1
             virtualEntry := armedEntry
@@ -483,6 +512,10 @@ if barstate.isconfirmed
             virtualTarget := virtualEntry + (virtualEntry - virtualStop) * fixedTargetR
             armedDirection := 0
             longSignal := true
+            signalDirection := virtualDirection
+            signalEntryPrice := virtualEntry
+            signalStopPrice := virtualStop
+            signalTargetPrice := virtualTarget
         else if pendingShortHit
             virtualDirection := -1
             virtualEntry := armedEntry
@@ -490,6 +523,16 @@ if barstate.isconfirmed
             virtualTarget := virtualEntry - (virtualStop - virtualEntry) * fixedTargetR
             armedDirection := 0
             shortSignal := true
+            signalDirection := virtualDirection
+            signalEntryPrice := virtualEntry
+            signalStopPrice := virtualStop
+            signalTargetPrice := virtualTarget
+
+        bool pendingLongConfirmed = i_requireBreakoutClose and armedDirection == 1 and na(armedConfirmedAtBar) and bar_index > armedAtBar and close >= armedEntry
+        bool pendingShortConfirmed = i_requireBreakoutClose and armedDirection == -1 and na(armedConfirmedAtBar) and bar_index > armedAtBar and close <= armedEntry
+        if pendingLongConfirmed or pendingShortConfirmed
+            armedConfirmedAtBar := bar_index
+            breakoutConfirmedSignal := true
 
         if virtualDirection == 0 and armedDirection == 0
             if longSetup
@@ -499,6 +542,7 @@ if barstate.isconfirmed
                 armedRangeLow := rangeLowCandidate
                 armedEntry := longEntryCandidate
                 armedStop := longStopCandidate
+                armedConfirmedAtBar := na
                 armedLongSignal := true
             else if shortSetup
                 armedDirection := -1
@@ -507,6 +551,7 @@ if barstate.isconfirmed
                 armedRangeLow := rangeLowCandidate
                 armedEntry := shortEntryCandidate
                 armedStop := shortStopCandidate
+                armedConfirmedAtBar := na
                 armedShortSignal := true
 
     if virtualDirection == 0 and closedThisBar
@@ -527,12 +572,41 @@ bool showPending = i_showRange and virtualDirection == 0 and armedDirection != 0
 float pendingTarget = armedDirection == 1 ? armedEntry + (armedEntry - armedStop) : armedDirection == -1 ? armedEntry - (armedStop - armedEntry) : na
 plot(showPending ? armedRangeHigh : na, "Range high", color=cRange, linewidth=3, style=plot.style_linebr)
 plot(showPending ? armedRangeLow : na, "Range low", color=cRange, linewidth=3, style=plot.style_linebr)
-plot(showPending ? armedEntry : na, "Pending entry", color=armedDirection == 1 ? cBull : cBear, linewidth=2, style=plot.style_linebr)
+plot(showPending ? armedEntry : na, "Pending entry (not executed)", color=cWarn, linewidth=1, style=plot.style_linebr)
 plot(showPending ? armedStop : na, "Pending SL", color=cBear, linewidth=2, style=plot.style_linebr)
 plot(showPending ? pendingTarget : na, "Pending TP 1:1", color=cBull, linewidth=2, style=plot.style_linebr)
 plot(virtualDirection != 0 ? virtualEntry : na, "Virtual entry", color=color.white, linewidth=1, style=plot.style_linebr)
 plot(virtualDirection != 0 ? virtualTarget : na, "Target 1:1", color=cBull, linewidth=2, style=plot.style_linebr)
 plot(virtualDirection != 0 ? virtualStop : na, "Structural SL", color=cBear, linewidth=2, style=plot.style_linebr)
+
+// Entryが発生した足へ実価格と固定RR 1:1の3本線を残す。
+// 待機中の候補価格とは区別し、黄色いENTRYラベルが出た時だけ実際のEntryとする。
+var array<line> tradeLevelLines = array.new_line()
+var array<label> tradeEntryLabels = array.new_label()
+if (longSignal or shortSignal) and not na(signalEntryPrice) and not na(signalStopPrice) and not na(signalTargetPrice)
+    int levelEndBar = bar_index + i_entryLineBars
+    line entryLevelLine = line.new(bar_index, signalEntryPrice, levelEndBar, signalEntryPrice,
+         xloc=xloc.bar_index, extend=extend.none, color=color.yellow, width=4)
+    line targetLevelLine = line.new(bar_index, signalTargetPrice, levelEndBar, signalTargetPrice,
+         xloc=xloc.bar_index, extend=extend.none, color=cBull, width=3)
+    line stopLevelLine = line.new(bar_index, signalStopPrice, levelEndBar, signalStopPrice,
+         xloc=xloc.bar_index, extend=extend.none, color=cBear, width=3)
+    string entrySideText = signalDirection == 1 ? "ENTRY BUY" : "ENTRY SELL"
+    string entryLabelText = entrySideText + "\n" + str.tostring(signalEntryPrice, format.mintick) +
+         "\nTP  " + str.tostring(signalTargetPrice, format.mintick) +
+         "\nSL  " + str.tostring(signalStopPrice, format.mintick)
+    label entryPriceLabel = label.new(bar_index, signalEntryPrice, entryLabelText,
+         xloc=xloc.bar_index, yloc=yloc.price,
+         style=signalDirection == 1 ? label.style_label_up : label.style_label_down,
+         color=color.yellow, textcolor=color.black, size=size.normal)
+    array.push(tradeLevelLines, entryLevelLine)
+    array.push(tradeLevelLines, targetLevelLine)
+    array.push(tradeLevelLines, stopLevelLine)
+    array.push(tradeEntryLabels, entryPriceLabel)
+    while array.size(tradeEntryLabels) > i_historyTradeCount
+        label.delete(array.shift(tradeEntryLabels))
+        for i = 0 to 2
+            line.delete(array.shift(tradeLevelLines))
 
 var line triangleUpperLine = na
 var line triangleLowerLine = na
@@ -574,6 +648,7 @@ if barstate.islast
 
 plotshape(armedLongSignal, title="BUY setup", text="SET\nBUY", style=shape.labelup, location=location.belowbar, color=color.new(cBull, 45), textcolor=color.white, size=size.tiny)
 plotshape(armedShortSignal, title="SELL setup", text="SET\nSELL", style=shape.labeldown, location=location.abovebar, color=color.new(cBear, 45), textcolor=color.white, size=size.tiny)
+plotshape(breakoutConfirmedSignal, title="Breakout close confirmed", text="終値確認\n次足ENTRY", style=shape.labelup, location=location.belowbar, color=cWarn, textcolor=color.white, size=size.tiny)
 plotshape(longSignal, title="BUY breakout", text="BUY", style=shape.labelup, location=location.belowbar, color=cBull, textcolor=color.white, size=size.small)
 plotshape(shortSignal, title="SELL breakout", text="SELL", style=shape.labeldown, location=location.abovebar, color=cBear, textcolor=color.white, size=size.small)
 plotshape(targetSignal, title="Target reached", text="TP", style=shape.circle, location=location.abovebar, color=cBull, textcolor=color.white, size=size.tiny)
@@ -590,18 +665,19 @@ if barstate.islast
              style=label.style_label_down, color=cWarn, textcolor=color.white, size=size.large)
 
 string trendText = htfLongBias ? "4H UP / ADX " + str.tostring(htfAdx, "#.#") : htfShortBias ? "4H DOWN / ADX " + str.tostring(htfAdx, "#.#") : "4H RANGE / ADX " + str.tostring(htfAdx, "#.#")
-string setupText = not isFifteenMinuteChart ? "15mへ変更" : not i_allowSignals ? "新規停止" : virtualDirection == 1 ? "LONG監視" : virtualDirection == -1 ? "SHORT監視" : armedDirection == 1 ? "BUY STOP待機" : armedDirection == -1 ? "SELL STOP待機" : "条件待ち"
+string setupText = not isFifteenMinuteChart ? "15mへ変更" : not i_allowSignals ? "新規停止" : virtualDirection == 1 ? "LONG監視" : virtualDirection == -1 ? "SHORT監視" : armedDirection == 1 and not na(armedConfirmedAtBar) ? "BUY終値確認済・次足ENTRY" : armedDirection == -1 and not na(armedConfirmedAtBar) ? "SELL終値確認済・次足ENTRY" : armedDirection == 1 ? "BUY 終値抜け待機" : armedDirection == -1 ? "SELL 終値抜け待機" : "条件待ち"
 string validationText = activePreset == "Custom" ? "RR 1:1固定・未検証" : "15m再検証前"
 color validationColor = activePreset == "Custom" ? cNeutral : cWarn
 float displayedEntry = virtualDirection != 0 ? virtualEntry : armedDirection != 0 ? armedEntry : na
 float displayedStop = virtualDirection != 0 ? virtualStop : armedDirection != 0 ? armedStop : na
 float displayedTarget = virtualDirection != 0 ? virtualTarget : armedDirection != 0 ? pendingTarget : na
+string displayedEntryTitle = virtualDirection != 0 ? "ENTRY実行価格" : armedDirection != 0 and not na(armedConfirmedAtBar) ? "次足ENTRY予定" : armedDirection != 0 ? "Entry候補（まだ待つ）" : "Entry"
 
 var table status = table.new(position.top_right, 2, 12, border_width=1)
 if (i_showTable or not isFifteenMinuteChart) and barstate.islast
     color header = color.new(color.black, 0)
     color cell = color.new(color.black, 20)
-    table.cell(status, 0, 0, "田向式 RR1 15m v4", text_color=color.white, bgcolor=header)
+    table.cell(status, 0, 0, "田向式 RR1 15m v5", text_color=color.white, bgcolor=header)
     table.cell(status, 1, 0, setupText, text_color=color.white, bgcolor=htfLongBias ? cBull : htfShortBias ? cBear : cNeutral)
     table.cell(status, 0, 1, "Preset", text_color=color.white, bgcolor=header)
     table.cell(status, 1, 1, activePreset, text_color=color.white, bgcolor=cell)
@@ -621,21 +697,22 @@ if (i_showTable or not isFifteenMinuteChart) and barstate.islast
     table.cell(status, 1, 7, "RR 1:1 / 100%", text_color=color.white, bgcolor=cell)
     table.cell(status, 0, 8, "Chart", text_color=color.white, bgcolor=header)
     table.cell(status, 1, 8, isFifteenMinuteChart ? "15m OK" : "15m専用", text_color=color.white, bgcolor=isFifteenMinuteChart ? cBull : cWarn)
-    table.cell(status, 0, 9, "Entry", text_color=color.white, bgcolor=header)
+    table.cell(status, 0, 9, displayedEntryTitle, text_color=color.white, bgcolor=header)
     table.cell(status, 1, 9, na(displayedEntry) ? "-" : str.tostring(displayedEntry, format.mintick), text_color=color.white, bgcolor=cell)
     table.cell(status, 0, 10, "SL", text_color=color.white, bgcolor=header)
     table.cell(status, 1, 10, na(displayedStop) ? "-" : str.tostring(displayedStop, format.mintick), text_color=color.white, bgcolor=cell)
     table.cell(status, 0, 11, "TP (1:1)", text_color=color.white, bgcolor=header)
     table.cell(status, 1, 11, na(displayedTarget) ? "-" : str.tostring(displayedTarget, format.mintick), text_color=color.white, bgcolor=cell)
 
-var table guide = table.new(position.bottom_right, 1, 6, border_width=1)
+var table guide = table.new(position.bottom_right, 1, 7, border_width=1)
 if i_showGuide and barstate.islast
-    table.cell(guide, 0, 0, "SET = 条件成立、逆指値待機", text_color=color.white, bgcolor=color.new(color.black, 10))
-    table.cell(guide, 0, 1, "BUY / SELL = レンジ突破", text_color=color.white, bgcolor=color.new(color.black, 10))
-    table.cell(guide, 0, 2, "TP / SL = 仮想到達表示", text_color=color.white, bgcolor=color.new(color.black, 10))
-    table.cell(guide, 0, 3, "水色線 = 主要な三角持ち合い", text_color=cTriangle, bgcolor=color.new(color.black, 10))
-    table.cell(guide, 0, 4, "確定足のみ・15分足・4Hダウ＋SMA", text_color=color.white, bgcolor=color.new(color.black, 10))
-    table.cell(guide, 0, 5, "注文は発注しません", text_color=cWarn, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 0, "SET = まだ入らない（終値抜け待ち）", text_color=color.white, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 1, "終値確認 = まだ入らない（次足待ち）", text_color=cWarn, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 2, "黄色 ENTRY BUY/SELL = ここで入る", text_color=color.yellow, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 3, "緑 TP / 赤 SL = RR 1:1", text_color=color.white, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 4, "水色線 = 主要な三角持ち合い", text_color=cTriangle, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 5, "確定足のみ・15分足・4Hダウ＋SMA", text_color=color.white, bgcolor=color.new(color.black, 10))
+    table.cell(guide, 0, 6, "注文は発注しません", text_color=cWarn, bgcolor=color.new(color.black, 10))
 
 // 設定した10銘柄を確定済み15分足・4Hで走査し、左上へチャンスを一覧表示する。
 [scanState1, scanEntry1, scanClose1] = f_scanPair(i_scanSymbol1)
@@ -677,6 +754,7 @@ else if barstate.islast
 
 alertcondition(armedLongSignal, title="田向式 BUY setup", message="4H上昇トレンド + 15分足押し目レンジ: BUY STOP待機")
 alertcondition(armedShortSignal, title="田向式 SELL setup", message="4H下降トレンド + 15分足戻りレンジ: SELL STOP待機")
+alertcondition(breakoutConfirmedSignal, title="田向式 終値ブレイク確認", message="だまし回避条件を通過: 次の15分足始値でENTRY")
 alertcondition(longSignal, title="田向式 BUY breakout", message="15分足押し目レンジ上抜け BUY")
 alertcondition(shortSignal, title="田向式 SELL breakout", message="15分足戻りレンジ下抜け SELL")
 alertcondition(targetSignal, title="田向式 Target reached", message="仮想ポジションが利確候補へ到達")
