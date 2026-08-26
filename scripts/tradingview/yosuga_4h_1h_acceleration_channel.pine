@@ -1,8 +1,8 @@
 //@version=6
 // 確定済み4H・1H足だけから、ダウ方向、加速・減速、平行チャネルを可視化する。
 // 売買注文やエントリー判定は行わない環境認識専用インジケーター。
-indicator("よすが式 4H・1H 加速減速 + 平行チャネル v1", overlay=true,
-     max_lines_count=50, max_labels_count=300)
+indicator("よすが式 4H・1H 加速減速 + 通貨優先順位 v2", overlay=true,
+     max_lines_count=50, max_labels_count=300, dynamic_requests=true)
 
 string gStructure = "ダウ構造・加速減速"
 int i_4hPivot = input.int(5, "4Hピボット左右", minval=2, maxval=20, group=gStructure)
@@ -26,6 +26,21 @@ bool i_showBackground = input.bool(true, "4H・1H一致背景", group=gDisplay)
 bool i_showTable = input.bool(true, "状態テーブル", group=gDisplay)
 int i_keepStateLabels = input.int(120, "残す状態ラベル数", minval=10, maxval=250, group=gDisplay)
 
+string gScanner = "通貨ペア優先順位"
+bool i_showScanner = input.bool(true, "優先順位を表示", group=gScanner)
+int i_scannerRows = input.int(6, "表示する上位数", minval=3, maxval=10, group=gScanner)
+bool i_scannerAlert = input.bool(true, "最優先・優先の変化を通知", group=gScanner)
+string i_scanSymbol1 = input.symbol("OANDA:EURUSD", "1", group=gScanner)
+string i_scanSymbol2 = input.symbol("OANDA:GBPUSD", "2", group=gScanner)
+string i_scanSymbol3 = input.symbol("OANDA:USDJPY", "3", group=gScanner)
+string i_scanSymbol4 = input.symbol("OANDA:AUDUSD", "4", group=gScanner)
+string i_scanSymbol5 = input.symbol("OANDA:NZDUSD", "5", group=gScanner)
+string i_scanSymbol6 = input.symbol("OANDA:USDCHF", "6", group=gScanner)
+string i_scanSymbol7 = input.symbol("OANDA:EURJPY", "7", group=gScanner)
+string i_scanSymbol8 = input.symbol("OANDA:GBPJPY", "8", group=gScanner)
+string i_scanSymbol9 = input.symbol("OANDA:AUDJPY", "9", group=gScanner)
+string i_scanSymbol10 = input.symbol("OANDA:XAUUSD", "10（金）", group=gScanner)
+
 f_confirmedContext(int pivotBars) =>
     float pivotHigh = ta.pivothigh(high, pivotBars, pivotBars)
     float pivotLow = ta.pivotlow(low, pivotBars, pivotBars)
@@ -41,17 +56,17 @@ f_confirmedContext(int pivotBars) =>
     // ピボットは1本前の確定状態、速度は直近3本の確定終値だけを返す。
     [high1[1], high2[1], low1[1], low2[1],
      highTime1[1], highTime2[1], lowTime1[1], lowTime2[1],
-     close[1], close[2], close[3], atrValue[1]]
+     close[1], close[2], close[3], atrValue[1], time[1]]
 
 [h4High1, h4High2, h4Low1, h4Low2,
  h4HighTime1, h4HighTime2, h4LowTime1, h4LowTime2,
- h4Close1, h4Close2, h4Close3, h4Atr] = request.security(
+ h4Close1, h4Close2, h4Close3, h4Atr, h4CloseTime] = request.security(
      syminfo.tickerid, "240", f_confirmedContext(i_4hPivot),
      gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
 
 [h1High1, h1High2, h1Low1, h1Low2,
  h1HighTime1, h1HighTime2, h1LowTime1, h1LowTime2,
- h1Close1, h1Close2, h1Close3, h1Atr] = request.security(
+ h1Close1, h1Close2, h1Close3, h1Atr, h1CloseTime] = request.security(
      syminfo.tickerid, "60", f_confirmedContext(i_1hPivot),
      gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
 
@@ -131,6 +146,95 @@ f_channelSlope(int direction, float highSlope, float lowSlope) =>
      direction == -1 and not na(highSlope) ? highSlope :
      not na(highSlope) and not na(lowSlope) ? (highSlope + lowSlope) / 2.0 :
      not na(highSlope) ? highSlope : lowSlope
+
+f_phaseScore(int phase) =>
+    phase == 2 ? 2 : phase == 1 ? 1 : phase == -1 ? 0 : -1
+
+f_scanPair(string symbol) =>
+    [scan4High1, scan4High2, scan4Low1, scan4Low2,
+     scan4HighTime1, scan4HighTime2, scan4LowTime1, scan4LowTime2,
+     scan4Close1, scan4Close2, scan4Close3, scan4Atr, scan4CloseTime] = request.security(
+         symbol, "240", f_confirmedContext(i_4hPivot),
+         gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+    [scan1High1, scan1High2, scan1Low1, scan1Low2,
+     scan1HighTime1, scan1HighTime2, scan1LowTime1, scan1LowTime2,
+     scan1Close1, scan1Close2, scan1Close3, scan1Atr, scan1CloseTime] = request.security(
+         symbol, "60", f_confirmedContext(i_1hPivot),
+         gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+    int direction4 = f_direction(scan4High1, scan4High2, scan4Low1, scan4Low2)
+    int direction1 = f_direction(scan1High1, scan1High2, scan1Low1, scan1Low2)
+    [phase4, speed4, change4] = f_phase(
+         direction4, scan4Close1, scan4Close2, scan4Close3, scan4Atr)
+    [phase1, speed1, change1] = f_phase(
+         direction1, scan1Close1, scan1Close2, scan1Close3, scan1Atr)
+    float highSlope1 = f_pivotSlope(
+         scan1High1, scan1High2, scan1HighTime1, scan1HighTime2)
+    float lowSlope1 = f_pivotSlope(
+         scan1Low1, scan1Low2, scan1LowTime1, scan1LowTime2)
+    float channelSlope1 = f_channelSlope(direction1, highSlope1, lowSlope1)
+    float upperNow = not na(channelSlope1) and not na(scan1HighTime1) ?
+         scan1High1 + channelSlope1 * (scan1CloseTime - scan1HighTime1) : na
+    float lowerNow = not na(channelSlope1) and not na(scan1LowTime1) ?
+         scan1Low1 + channelSlope1 * (scan1CloseTime - scan1LowTime1) : na
+    float channelWidth = upperNow - lowerNow
+    float channelPosition = not na(channelWidth) and channelWidth > 0 ?
+         (scan1Close1 - lowerNow) / channelWidth : na
+    int location = na(channelPosition) ? 0 : channelPosition <= 0.35 ? -1 :
+         channelPosition >= 0.65 ? 1 : 0
+    bool aligned = direction4 != 0 and direction4 == direction1
+    bool conflict = direction4 != 0 and direction1 != 0 and direction4 != direction1
+    bool favorableLocation = aligned and
+         ((direction1 == 1 and location == -1) or (direction1 == -1 and location == 1))
+    int score = (aligned ? 3 : 0) + f_phaseScore(phase4) + f_phaseScore(phase1) +
+         (favorableLocation ? 2 : aligned and location == 0 ? 1 : 0) - (conflict ? 3 : 0)
+    bool slowing = phase4 < 1 or phase1 < 1
+    score := slowing ? math.min(score, 5) : score
+    string side = direction4 == 1 ? "買" : direction4 == -1 ? "売" : "-"
+    string status = aligned and score >= 8 ? "最優先 " + side :
+         aligned and score >= 6 ? "優先 " + side :
+         aligned and score >= 4 ? "監視 " + side : "待機"
+    [direction4, phase4, direction1, phase1, location, score, status]
+
+f_pairName(string symbol) =>
+    array<string> parts = str.split(symbol, ":")
+    array.size(parts) > 1 ? array.get(parts, array.size(parts) - 1) : symbol
+
+f_compactPhase(int direction, int phase) =>
+    string arrow = direction == 1 ? "↑" : direction == -1 ? "↓" : "→"
+    string phaseText = phase == 2 ? "加速" : phase == 1 ? "巡航" :
+         phase == -1 ? "減速" : phase == -2 ? "押戻" : "待ち"
+    arrow + phaseText
+
+f_locationText(int direction, int location) =>
+    direction == 1 and location == -1 ? "押し位置" :
+     direction == -1 and location == 1 ? "戻り位置" :
+     location == -1 ? "下限" : location == 1 ? "上限" : "中央"
+
+f_statusColor(string status) =>
+    str.startswith(status, "最優先") ? color.rgb(22, 163, 74) :
+     str.startswith(status, "優先") ? color.rgb(2, 132, 199) :
+     str.startswith(status, "監視") ? color.rgb(217, 119, 6) : color.rgb(75, 85, 99)
+
+f_swapStrings(array<string> values, int first, int second) =>
+    string temporary = array.get(values, first)
+    array.set(values, first, array.get(values, second))
+    array.set(values, second, temporary)
+
+f_swapInts(array<int> values, int first, int second) =>
+    int temporary = array.get(values, first)
+    array.set(values, first, array.get(values, second))
+    array.set(values, second, temporary)
+
+[scan4Direction1, scan4Phase1, scan1Direction1, scan1Phase1, scanLocation1, scanScore1, scanStatus1] = f_scanPair(i_scanSymbol1)
+[scan4Direction2, scan4Phase2, scan1Direction2, scan1Phase2, scanLocation2, scanScore2, scanStatus2] = f_scanPair(i_scanSymbol2)
+[scan4Direction3, scan4Phase3, scan1Direction3, scan1Phase3, scanLocation3, scanScore3, scanStatus3] = f_scanPair(i_scanSymbol3)
+[scan4Direction4, scan4Phase4, scan1Direction4, scan1Phase4, scanLocation4, scanScore4, scanStatus4] = f_scanPair(i_scanSymbol4)
+[scan4Direction5, scan4Phase5, scan1Direction5, scan1Phase5, scanLocation5, scanScore5, scanStatus5] = f_scanPair(i_scanSymbol5)
+[scan4Direction6, scan4Phase6, scan1Direction6, scan1Phase6, scanLocation6, scanScore6, scanStatus6] = f_scanPair(i_scanSymbol6)
+[scan4Direction7, scan4Phase7, scan1Direction7, scan1Phase7, scanLocation7, scanScore7, scanStatus7] = f_scanPair(i_scanSymbol7)
+[scan4Direction8, scan4Phase8, scan1Direction8, scan1Phase8, scanLocation8, scanScore8, scanStatus8] = f_scanPair(i_scanSymbol8)
+[scan4Direction9, scan4Phase9, scan1Direction9, scan1Phase9, scanLocation9, scanScore9, scanStatus9] = f_scanPair(i_scanSymbol9)
+[scan4Direction10, scan4Phase10, scan1Direction10, scan1Phase10, scanLocation10, scanScore10, scanStatus10] = f_scanPair(i_scanSymbol10)
 
 float h4HighSlope = f_pivotSlope(h4High1, h4High2, h4HighTime1, h4HighTime2)
 float h4LowSlope = f_pivotSlope(h4Low1, h4Low2, h4LowTime1, h4LowTime2)
@@ -257,14 +361,111 @@ if barstate.islast and i_showTable
     table.cell(stateTable, 0, 3, "総合", text_color=color.white, bgcolor=header)
     table.cell(stateTable, 1, 3, combined, text_color=color.white, bgcolor=combinedColor)
 
+var array<string> scannerNames = array.new_string()
+var array<int> scannerScores = array.new_int()
+var array<string> scannerStatuses = array.new_string()
+var array<string> scanner4hTexts = array.new_string()
+var array<string> scanner1hTexts = array.new_string()
+var array<string> scannerLocations = array.new_string()
+var table scanner = table.new(position.bottom_right, 6, 11,
+     bgcolor=color.new(color.black, 5), frame_color=color.gray, frame_width=1)
+var string lastPriorityKey = ""
+
+f_addScannerRow(string symbol, int score, string status,
+     int direction4, int phase4, int direction1, int phase1, int location) =>
+    array.push(scannerNames, f_pairName(symbol))
+    array.push(scannerScores, score)
+    array.push(scannerStatuses, status)
+    array.push(scanner4hTexts, f_compactPhase(direction4, phase4))
+    array.push(scanner1hTexts, f_compactPhase(direction1, phase1))
+    array.push(scannerLocations, f_locationText(direction1, location))
+
+if barstate.islast
+    array.clear(scannerNames)
+    array.clear(scannerScores)
+    array.clear(scannerStatuses)
+    array.clear(scanner4hTexts)
+    array.clear(scanner1hTexts)
+    array.clear(scannerLocations)
+    f_addScannerRow(i_scanSymbol1, scanScore1, scanStatus1, scan4Direction1, scan4Phase1, scan1Direction1, scan1Phase1, scanLocation1)
+    f_addScannerRow(i_scanSymbol2, scanScore2, scanStatus2, scan4Direction2, scan4Phase2, scan1Direction2, scan1Phase2, scanLocation2)
+    f_addScannerRow(i_scanSymbol3, scanScore3, scanStatus3, scan4Direction3, scan4Phase3, scan1Direction3, scan1Phase3, scanLocation3)
+    f_addScannerRow(i_scanSymbol4, scanScore4, scanStatus4, scan4Direction4, scan4Phase4, scan1Direction4, scan1Phase4, scanLocation4)
+    f_addScannerRow(i_scanSymbol5, scanScore5, scanStatus5, scan4Direction5, scan4Phase5, scan1Direction5, scan1Phase5, scanLocation5)
+    f_addScannerRow(i_scanSymbol6, scanScore6, scanStatus6, scan4Direction6, scan4Phase6, scan1Direction6, scan1Phase6, scanLocation6)
+    f_addScannerRow(i_scanSymbol7, scanScore7, scanStatus7, scan4Direction7, scan4Phase7, scan1Direction7, scan1Phase7, scanLocation7)
+    f_addScannerRow(i_scanSymbol8, scanScore8, scanStatus8, scan4Direction8, scan4Phase8, scan1Direction8, scan1Phase8, scanLocation8)
+    f_addScannerRow(i_scanSymbol9, scanScore9, scanStatus9, scan4Direction9, scan4Phase9, scan1Direction9, scan1Phase9, scanLocation9)
+    f_addScannerRow(i_scanSymbol10, scanScore10, scanStatus10, scan4Direction10, scan4Phase10, scan1Direction10, scan1Phase10, scanLocation10)
+
+    int scannerSize = array.size(scannerScores)
+    if scannerSize > 1
+        for left = 0 to scannerSize - 2
+            for right = 0 to scannerSize - left - 2
+                if array.get(scannerScores, right) < array.get(scannerScores, right + 1)
+                    f_swapStrings(scannerNames, right, right + 1)
+                    f_swapInts(scannerScores, right, right + 1)
+                    f_swapStrings(scannerStatuses, right, right + 1)
+                    f_swapStrings(scanner4hTexts, right, right + 1)
+                    f_swapStrings(scanner1hTexts, right, right + 1)
+                    f_swapStrings(scannerLocations, right, right + 1)
+
+    table.clear(scanner, 0, 0, 5, 10)
+    if i_showScanner
+        color scannerHeader = color.rgb(30, 41, 59)
+        table.cell(scanner, 0, 0, "順位", text_color=color.white, bgcolor=scannerHeader)
+        table.cell(scanner, 1, 0, "通貨", text_color=color.white, bgcolor=scannerHeader)
+        table.cell(scanner, 2, 0, "見る優先度", text_color=color.white, bgcolor=scannerHeader)
+        table.cell(scanner, 3, 0, "4H", text_color=color.white, bgcolor=scannerHeader)
+        table.cell(scanner, 4, 0, "1H", text_color=color.white, bgcolor=scannerHeader)
+        table.cell(scanner, 5, 0, "1H位置", text_color=color.white, bgcolor=scannerHeader)
+        int visibleRows = math.min(i_scannerRows, scannerSize)
+        if visibleRows > 0
+            for row = 0 to visibleRows - 1
+                int tableRow = row + 1
+                int score = array.get(scannerScores, row)
+                string status = array.get(scannerStatuses, row)
+                color rowColor = f_statusColor(status)
+                table.cell(scanner, 0, tableRow, str.tostring(tableRow) + " (" + str.tostring(score) + ")",
+                     text_color=color.white, bgcolor=color.new(rowColor, 25))
+                table.cell(scanner, 1, tableRow, array.get(scannerNames, row),
+                     text_color=color.white, bgcolor=color.new(rowColor, 25))
+                table.cell(scanner, 2, tableRow, status,
+                     text_color=color.white, bgcolor=rowColor)
+                table.cell(scanner, 3, tableRow, array.get(scanner4hTexts, row), text_color=color.white)
+                table.cell(scanner, 4, tableRow, array.get(scanner1hTexts, row), text_color=color.white)
+                table.cell(scanner, 5, tableRow, array.get(scannerLocations, row), text_color=color.white)
+
+    string topName = array.get(scannerNames, 0)
+    string topStatus = array.get(scannerStatuses, 0)
+    bool topIsPriority = str.startswith(topStatus, "最優先") or str.startswith(topStatus, "優先")
+    string priorityKey = topIsPriority ? topName + " " + topStatus : ""
+    if i_scannerAlert and barstate.isconfirmed and priorityKey != lastPriorityKey
+        if topIsPriority
+            alert("よすが式 監視優先: " + topName + " / " + topStatus,
+                 alert.freq_once_per_bar_close)
+        lastPriorityKey := priorityKey
+
 bool new4hAcceleration = barstate.isconfirmed and h4Changed and h4Phase == 2
 bool new4hDeceleration = barstate.isconfirmed and h4Changed and h4Phase == -1
 bool new1hAcceleration = barstate.isconfirmed and h1Changed and h1Phase == 2
 bool new1hDeceleration = barstate.isconfirmed and h1Changed and h1Phase == -1
 bool newBothAcceleration = barstate.isconfirmed and bothAccelerating and not bothAccelerating[1]
+bool scannerHasPriority = str.startswith(scanStatus1, "最優先") or str.startswith(scanStatus1, "優先") or
+     str.startswith(scanStatus2, "最優先") or str.startswith(scanStatus2, "優先") or
+     str.startswith(scanStatus3, "最優先") or str.startswith(scanStatus3, "優先") or
+     str.startswith(scanStatus4, "最優先") or str.startswith(scanStatus4, "優先") or
+     str.startswith(scanStatus5, "最優先") or str.startswith(scanStatus5, "優先") or
+     str.startswith(scanStatus6, "最優先") or str.startswith(scanStatus6, "優先") or
+     str.startswith(scanStatus7, "最優先") or str.startswith(scanStatus7, "優先") or
+     str.startswith(scanStatus8, "最優先") or str.startswith(scanStatus8, "優先") or
+     str.startswith(scanStatus9, "最優先") or str.startswith(scanStatus9, "優先") or
+     str.startswith(scanStatus10, "最優先") or str.startswith(scanStatus10, "優先")
+bool scannerNewPriority = barstate.isconfirmed and scannerHasPriority and not scannerHasPriority[1]
 
 alertcondition(new4hAcceleration, "よすが式 4H加速", "4Hの確定足がトレンド方向へ加速しました")
 alertcondition(new4hDeceleration, "よすが式 4H減速", "4Hの確定足がトレンド方向へ減速しました")
 alertcondition(new1hAcceleration, "よすが式 1H加速", "1Hの確定足がトレンド方向へ加速しました")
 alertcondition(new1hDeceleration, "よすが式 1H減速", "1Hの確定足がトレンド方向へ減速しました")
 alertcondition(newBothAcceleration, "よすが式 4H・1H同方向加速", "4Hと1Hが同方向で加速しています")
+alertcondition(scannerNewPriority, "よすが式 通貨ペア優先候補", "通貨ペア一覧に最優先または優先候補が出ました")
