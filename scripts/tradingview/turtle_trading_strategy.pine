@@ -1,0 +1,277 @@
+//@version=6
+// 古典的なタートル・トレーディングを日足で検証する戦略。
+// System 1: 20日ブレイク / 10日退出、System 2: 55日ブレイク / 20日退出。
+strategy("タートル・トレーディング 日足 v3", overlay=true, pyramiding=4,
+     initial_capital=100000, currency=currency.USD,
+     default_qty_type=strategy.fixed, default_qty_value=1,
+     commission_type=strategy.commission.percent, commission_value=0,
+     calc_on_order_fills=true, calc_on_every_tick=false,
+     process_orders_on_close=false, margin_long=100, margin_short=100)
+
+string gRules = "タートル・ルール"
+string i_system = input.string("System 1 (20/10)", "システム",
+     options=["System 1 (20/10)", "System 2 (55/20)"], group=gRules)
+bool i_skipWinner = input.bool(true, "System 1: 前回勝ち後は55日ブレイクを使用", group=gRules)
+int i_nLength = input.int(20, "N（True Range平滑期間）", minval=2, maxval=100, group=gRules)
+float i_addN = input.float(0.5, "増し玉間隔（N）", minval=0.1, maxval=2.0, step=0.1, group=gRules)
+float i_stopN = input.float(2.0, "損切り幅（N）", minval=0.5, maxval=5.0, step=0.1, group=gRules)
+int i_maxUnits = input.int(4, "最大ユニット数", minval=1, maxval=4, group=gRules)
+
+string gSizing = "数量・リスク"
+string i_sizingMode = input.string("口座リスク率", "数量計算",
+     options=["口座リスク率", "固定数量"], group=gSizing)
+float i_riskPercent = input.float(1.0, "1ユニットの口座リスク（%）",
+     minval=0.05, maxval=5.0, step=0.05, group=gSizing)
+float i_fixedQty = input.float(1000, "固定数量", minval=0.0001, group=gSizing)
+float i_qtyStep = input.float(1000, "数量刻み", minval=0.0001, group=gSizing)
+
+string gTrade = "売買範囲"
+string i_direction = input.string("両方向", "売買方向",
+     options=["両方向", "買いのみ", "売りのみ"], group=gTrade)
+int i_startTime = input.time(timestamp("01 Jan 2000 00:00 +0000"), "開始日時", group=gTrade)
+int i_endTime = input.time(timestamp("31 Dec 2099 23:59 +0000"), "終了日時", group=gTrade)
+
+bool isDaily = timeframe.isdaily and timeframe.multiplier == 1
+bool inDateRange = time >= i_startTime and time <= i_endTime
+bool allowLong = i_direction != "売りのみ"
+bool allowShort = i_direction != "買いのみ"
+bool useSystem1 = i_system == "System 1 (20/10)"
+int entryLength = useSystem1 ? 20 : 55
+int exitLength = useSystem1 ? 10 : 20
+
+float trueRange = ta.tr(true)
+// オリジナルの N 更新式 ((19 × 前回N) + TR) / 20 と同等のRMAを使用。
+float nValue = ta.rma(trueRange, i_nLength)
+float entryUpper = ta.highest(high, entryLength)[1]
+float entryLower = ta.lowest(low, entryLength)[1]
+float failSafeUpper = ta.highest(high, 55)[1]
+float failSafeLower = ta.lowest(low, 55)[1]
+float exitUpper = ta.highest(high, exitLength)[1]
+float exitLower = ta.lowest(low, exitLength)[1]
+
+var bool lastTradeWinner = false
+var int observedClosedTrades = 0
+var int lastExitBar = na
+if strategy.closedtrades > observedClosedTrades
+    // 同じ退出で決済されたL1～L4またはS1～S4を一つの取引として合算する。
+    float closedCampaignProfit = 0.0
+    for tradeIndex = observedClosedTrades to strategy.closedtrades - 1
+        closedCampaignProfit += strategy.closedtrades.profit(tradeIndex)
+    lastTradeWinner := closedCampaignProfit > 0
+    observedClosedTrades := strategy.closedtrades
+    lastExitBar := bar_index
+
+bool useFailSafe = useSystem1 and i_skipWinner and lastTradeWinner
+float activeEntryUpper = useFailSafe ? failSafeUpper : entryUpper
+float activeEntryLower = useFailSafe ? failSafeLower : entryLower
+
+f_roundQuantity(float quantity) =>
+    math.max(i_qtyStep, math.floor(quantity / i_qtyStep) * i_qtyStep)
+
+f_calculateUnit(float n) =>
+    float fixedQuantity = f_roundQuantity(i_fixedQty)
+    float riskCash = strategy.equity * i_riskPercent / 100.0
+    float cashRiskPerContract = n * syminfo.pointvalue
+    float riskQuantity = cashRiskPerContract > 0 ? riskCash / cashRiskPerContract : fixedQuantity
+    i_sizingMode == "固定数量" ? fixedQuantity : f_roundQuantity(riskQuantity)
+
+f_money(float value) =>
+    na(value) ? "-" : str.tostring(value, "#.##") + " USD"
+
+f_campaignStats() =>
+    int campaigns = 0
+    int wins = 0
+    int losses = 0
+    float totalProfit = 0.0
+    float totalWinningProfit = 0.0
+    float totalLosingProfit = 0.0
+    int firstTrade = strategy.closedtrades.first_index
+    int lastTrade = strategy.closedtrades - 1
+    if strategy.closedtrades > 0 and not na(firstTrade) and firstTrade <= lastTrade
+        int groupedExitBar = na
+        float groupedProfit = 0.0
+        for tradeIndex = firstTrade to lastTrade
+            int tradeExitBar = strategy.closedtrades.exit_bar_index(tradeIndex)
+            float tradeProfit = strategy.closedtrades.profit(tradeIndex)
+            if na(groupedExitBar)
+                groupedExitBar := tradeExitBar
+                groupedProfit := tradeProfit
+            else if tradeExitBar == groupedExitBar
+                groupedProfit += tradeProfit
+            else
+                campaigns += 1
+                totalProfit += groupedProfit
+                if groupedProfit > 0
+                    wins += 1
+                    totalWinningProfit += groupedProfit
+                else if groupedProfit < 0
+                    losses += 1
+                    totalLosingProfit += math.abs(groupedProfit)
+                groupedExitBar := tradeExitBar
+                groupedProfit := tradeProfit
+        campaigns += 1
+        totalProfit += groupedProfit
+        if groupedProfit > 0
+            wins += 1
+            totalWinningProfit += groupedProfit
+        else if groupedProfit < 0
+            losses += 1
+            totalLosingProfit += math.abs(groupedProfit)
+    [campaigns, wins, losses, totalProfit, totalWinningProfit, totalLosingProfit]
+
+bool ready = isDaily and inDateRange and not na(nValue) and
+     not na(activeEntryUpper) and not na(activeEntryLower)
+bool isFlat = strategy.position_size == 0
+bool isLong = strategy.position_size > 0
+bool isShort = strategy.position_size < 0
+int openUnits = strategy.opentrades
+float currentUnitQuantity = f_calculateUnit(nValue)
+bool canPlaceInitialOrder = ready and isFlat and
+     (na(lastExitBar) or bar_index > lastExitBar)
+
+var float tradeN = na
+var float tradeUnitQuantity = na
+if isFlat
+    tradeN := na
+    tradeUnitQuantity := na
+else if na(tradeN)
+    tradeN := nValue
+    tradeUnitQuantity := currentUnitQuantity
+
+if canPlaceInitialOrder
+    // 退出後に残り得る増し玉注文を消してから、当日のブレイク注文を更新する。
+    strategy.cancel_all()
+    if allowLong
+        strategy.entry("L1", strategy.long, qty=currentUnitQuantity,
+             stop=activeEntryUpper, alert_message="Turtle LONG breakout")
+    else
+        strategy.cancel("L1")
+    if allowShort
+        strategy.entry("S1", strategy.short, qty=currentUnitQuantity,
+             stop=activeEntryLower, alert_message="Turtle SHORT breakout")
+    else
+        strategy.cancel("S1")
+else if not isFlat
+    if ready
+        strategy.cancel("L1")
+        strategy.cancel("S1")
+    else
+        strategy.cancel_all()
+else
+    strategy.cancel_all()
+
+float latestUnitPrice = openUnits > 0 ? strategy.opentrades.entry_price(openUnits - 1) : na
+float nextLongAdd = isLong and not na(tradeN) ? latestUnitPrice + i_addN * tradeN : na
+float nextShortAdd = isShort and not na(tradeN) ? latestUnitPrice - i_addN * tradeN : na
+
+if ready and isLong and openUnits < i_maxUnits and not na(nextLongAdd)
+    switch openUnits
+        1 => strategy.entry("L2", strategy.long, qty=tradeUnitQuantity, stop=nextLongAdd,
+             alert_message="Turtle LONG unit 2")
+        2 => strategy.entry("L3", strategy.long, qty=tradeUnitQuantity, stop=nextLongAdd,
+             alert_message="Turtle LONG unit 3")
+        3 => strategy.entry("L4", strategy.long, qty=tradeUnitQuantity, stop=nextLongAdd,
+             alert_message="Turtle LONG unit 4")
+
+if ready and isShort and openUnits < i_maxUnits and not na(nextShortAdd)
+    switch openUnits
+        1 => strategy.entry("S2", strategy.short, qty=tradeUnitQuantity, stop=nextShortAdd,
+             alert_message="Turtle SHORT unit 2")
+        2 => strategy.entry("S3", strategy.short, qty=tradeUnitQuantity, stop=nextShortAdd,
+             alert_message="Turtle SHORT unit 3")
+        3 => strategy.entry("S4", strategy.short, qty=tradeUnitQuantity, stop=nextShortAdd,
+             alert_message="Turtle SHORT unit 4")
+
+float longProtectiveStop = isLong and not na(tradeN) ? latestUnitPrice - i_stopN * tradeN : na
+float shortProtectiveStop = isShort and not na(tradeN) ? latestUnitPrice + i_stopN * tradeN : na
+float longExitStop = isLong ? math.max(longProtectiveStop, exitLower) : na
+float shortExitStop = isShort ? math.min(shortProtectiveStop, exitUpper) : na
+
+if isLong and not na(longExitStop)
+    strategy.exit("Long Exit", stop=longExitStop,
+         alert_message="Turtle LONG exit")
+if isShort and not na(shortExitStop)
+    strategy.exit("Short Exit", stop=shortExitStop,
+         alert_message="Turtle SHORT exit")
+
+if time > i_endTime and not isFlat
+    strategy.close_all(comment="検証終了", alert_message="Turtle date range exit")
+
+color entryColor = color.rgb(37, 99, 235)
+color exitColor = color.rgb(234, 88, 12)
+plot(activeEntryUpper, "買いブレイク", color=entryColor, linewidth=2,
+     style=plot.style_stepline)
+plot(activeEntryLower, "売りブレイク", color=entryColor, linewidth=2,
+     style=plot.style_stepline)
+plot(exitUpper, "売り退出チャネル", color=color.new(exitColor, 25),
+     style=plot.style_stepline)
+plot(exitLower, "買い退出チャネル", color=color.new(exitColor, 25),
+     style=plot.style_stepline)
+plot(isLong ? longExitStop : isShort ? shortExitStop : na, "有効ストップ",
+     color=color.red, linewidth=2, style=plot.style_stepline)
+plot(isLong ? nextLongAdd : isShort ? nextShortAdd : na, "次の増し玉",
+     color=color.aqua, linewidth=2, style=plot.style_circles)
+
+bool longBreakoutNow = ready and allowLong and isFlat and high >= activeEntryUpper
+bool shortBreakoutNow = ready and allowShort and isFlat and low <= activeEntryLower
+plotshape(longBreakoutNow, "LONG候補", shape.triangleup, location.belowbar,
+     color=color.lime, size=size.tiny, text="L")
+plotshape(shortBreakoutNow, "SHORT候補", shape.triangledown, location.abovebar,
+     color=color.red, size=size.tiny, text="S")
+
+var table stateTable = table.new(position.top_right, 2, 8,
+     bgcolor=color.new(color.black, 5), frame_color=color.gray, frame_width=1)
+var table statsTable = table.new(position.bottom_right, 2, 7,
+     bgcolor=color.new(color.black, 5), frame_color=color.gray, frame_width=1)
+// calc_on_every_tick=false のStrategyでも、未確定の日足がある間に表を表示する。
+bool updateDashboard = barstate.islastconfirmedhistory or barstate.isrealtime
+if updateDashboard
+    [campaignCount, winningCampaigns, losingCampaigns, campaignProfitSum,
+     winningProfitSum, losingProfitSum] = f_campaignStats()
+    int breakevenCampaigns = campaignCount - winningCampaigns - losingCampaigns
+    float winRatePercent = campaignCount > 0 ? winningCampaigns * 100.0 / campaignCount : na
+    float averageWin = winningCampaigns > 0 ? winningProfitSum / winningCampaigns : na
+    float averageLoss = losingCampaigns > 0 ? losingProfitSum / losingCampaigns : na
+    float expectancyPerCampaign = campaignCount > 0 ? campaignProfitSum / campaignCount : na
+    float profitFactor = losingProfitSum > 0 ? winningProfitSum / losingProfitSum : na
+    color header = color.rgb(30, 41, 59)
+    string positionText = isLong ? "LONG" : isShort ? "SHORT" : "待機"
+    string sizingText = i_sizingMode == "固定数量" ? "固定" : str.tostring(i_riskPercent) + "%リスク"
+    table.cell(stateTable, 0, 0, "タートル日足", text_color=color.white, bgcolor=header)
+    table.cell(stateTable, 1, 0, useSystem1 ? "System 1" : "System 2", text_color=color.white, bgcolor=header)
+    table.cell(stateTable, 0, 1, "状態", text_color=color.white)
+    table.cell(stateTable, 1, 1, isDaily ? positionText : "日足へ変更", text_color=isDaily ? color.white : color.yellow)
+    table.cell(stateTable, 0, 2, "N", text_color=color.white)
+    table.cell(stateTable, 1, 2, str.tostring(nValue, format.mintick), text_color=color.white)
+    table.cell(stateTable, 0, 3, "ユニット", text_color=color.white)
+    table.cell(stateTable, 1, 3, str.tostring(openUnits) + " / " + str.tostring(i_maxUnits), text_color=color.white)
+    table.cell(stateTable, 0, 4, "数量方式", text_color=color.white)
+    table.cell(stateTable, 1, 4, sizingText, text_color=color.white)
+    table.cell(stateTable, 0, 5, "1ユニット", text_color=color.white)
+    table.cell(stateTable, 1, 5, str.tostring(isFlat ? currentUnitQuantity : tradeUnitQuantity), text_color=color.white)
+    table.cell(stateTable, 0, 6, "次の追加", text_color=color.white)
+    table.cell(stateTable, 1, 6, str.tostring(isLong ? nextLongAdd : isShort ? nextShortAdd : na, format.mintick), text_color=color.white)
+    table.cell(stateTable, 0, 7, "有効Stop", text_color=color.white)
+    table.cell(stateTable, 1, 7, str.tostring(isLong ? longExitStop : isShort ? shortExitStop : na, format.mintick), text_color=color.white)
+    table.cell(statsTable, 0, 0, "決済成績", text_color=color.white, bgcolor=header, text_size=size.small)
+    table.cell(statsTable, 1, 0, str.tostring(campaignCount) + "取引", text_color=color.white, bgcolor=header, text_size=size.small)
+    table.cell(statsTable, 0, 1, "勝率", text_color=color.white, text_size=size.small)
+    table.cell(statsTable, 1, 1, na(winRatePercent) ? "未決済" : str.tostring(winRatePercent, "#.##") + "%",
+         text_color=na(winRatePercent) ? color.gray : winRatePercent >= 50 ? color.lime : color.orange, text_size=size.small)
+    table.cell(statsTable, 0, 2, "期待値 / 取引", text_color=color.white, text_size=size.small)
+    table.cell(statsTable, 1, 2, f_money(expectancyPerCampaign),
+         text_color=na(expectancyPerCampaign) ? color.gray : expectancyPerCampaign > 0 ? color.lime : color.red, text_size=size.small)
+    table.cell(statsTable, 0, 3, "勝 / 負 / 分", text_color=color.white, text_size=size.small)
+    table.cell(statsTable, 1, 3, str.tostring(winningCampaigns) + " / " +
+         str.tostring(losingCampaigns) + " / " + str.tostring(breakevenCampaigns), text_color=color.white, text_size=size.small)
+    table.cell(statsTable, 0, 4, "平均利益", text_color=color.white, text_size=size.small)
+    table.cell(statsTable, 1, 4, f_money(averageWin), text_color=color.lime, text_size=size.small)
+    table.cell(statsTable, 0, 5, "平均損失", text_color=color.white, text_size=size.small)
+    table.cell(statsTable, 1, 5, f_money(averageLoss), text_color=color.red, text_size=size.small)
+    table.cell(statsTable, 0, 6, "PF", text_color=color.white, text_size=size.small)
+    table.cell(statsTable, 1, 6, na(profitFactor) ? "-" : str.tostring(profitFactor, "#.###"),
+         text_color=na(profitFactor) ? color.gray : profitFactor >= 1 ? color.lime : color.red, text_size=size.small)
+
+bgcolor(not isDaily ? color.new(color.orange, 82) : na, title="日足以外の警告")
+alertcondition(longBreakoutNow, "Turtle LONG breakout", "日足の買いブレイク水準へ到達しました")
+alertcondition(shortBreakoutNow, "Turtle SHORT breakout", "日足の売りブレイク水準へ到達しました")
