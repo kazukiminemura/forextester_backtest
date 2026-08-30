@@ -1,0 +1,3994 @@
+{
+  "strategy": {
+    "symbol": "EURUSD",
+    "timeframe": "15m",
+    "pivot_left": 5,
+    "pivot_right": 5,
+    "exit": "opposite raw Dow signal close",
+    "round_trip_cost_pct": 0.01
+  },
+  "periods": {
+    "train_2004_2018": [
+      2004,
+      2018
+    ],
+    "validation_2019_2022": [
+      2019,
+      2022
+    ],
+    "holdout_2023_2024": [
+      2023,
+      2024
+    ],
+    "true_oos_2025_2026": [
+      2025,
+      2026
+    ]
+  },
+  "selection_rule": {
+    "used_for_selection": [
+      "train_2004_2018",
+      "validation_2019_2022"
+    ],
+    "not_used_for_selection": [
+      "holdout_2023_2024",
+      "true_oos_2025_2026"
+    ],
+    "minimum_train_trades": 100,
+    "minimum_validation_trades": 30,
+    "require_positive_total_and_expectancy_in_train_and_validation": true
+  },
+  "baseline": {
+    "train_2004_2018": {
+      "trades": 9355,
+      "wins": 3011,
+      "win_rate": 32.185996793158736,
+      "total_return_pct": -200.1201367923379,
+      "expectancy_pct": -0.021391783729806296,
+      "profit_factor": 0.8510828973235586
+    },
+    "validation_2019_2022": {
+      "trades": 2594,
+      "wins": 795,
+      "win_rate": 30.64764841942945,
+      "total_return_pct": -77.95996538543102,
+      "expectancy_pct": -0.030053957357529307,
+      "profit_factor": 0.7359136295680064
+    },
+    "holdout_2023_2024": {
+      "trades": 1303,
+      "wins": 413,
+      "win_rate": 31.696085955487334,
+      "total_return_pct": -16.079219121547993,
+      "expectancy_pct": -0.012340152817765153,
+      "profit_factor": 0.8699295072230364
+    },
+    "true_oos_2025_2026": {
+      "trades": 1017,
+      "wins": 327,
+      "win_rate": 32.15339233038348,
+      "total_return_pct": -27.605201898302283,
+      "expectancy_pct": -0.02714375801209664,
+      "profit_factor": 0.7574496340197694
+    }
+  },
+  "candidates": [
+    {
+      "candidate": {
+        "length": 10,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma10_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 9351,
+          "wins": 3009,
+          "win_rate": 32.17837664420918,
+          "total_return_pct": -200.60639958951015,
+          "expectancy_pct": -0.02145293547102023,
+          "profit_factor": 0.8507285290435889
+        },
+        "validation_2019_2022": {
+          "trades": 2590,
+          "wins": 794,
+          "win_rate": 30.656370656370658,
+          "total_return_pct": -77.71013470101215,
+          "expectancy_pct": -0.030003913011973804,
+          "profit_factor": 0.7364306705127748
+        },
+        "holdout_2023_2024": {
+          "trades": 1301,
+          "wins": 412,
+          "win_rate": 31.66794773251345,
+          "total_return_pct": -16.180358205980713,
+          "expectancy_pct": -0.01243686257185297,
+          "profit_factor": 0.8691401907043811
+        },
+        "true_oos_2025_2026": {
+          "trades": 1017,
+          "wins": 327,
+          "win_rate": 32.15339233038348,
+          "total_return_pct": -27.605201898302283,
+          "expectancy_pct": -0.02714375801209664,
+          "profit_factor": 0.7574496340197694
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 10,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma10_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 9349,
+          "wins": 3008,
+          "win_rate": 32.174564124505295,
+          "total_return_pct": -200.24423637487124,
+          "expectancy_pct": -0.021418786648290857,
+          "profit_factor": 0.8509632415167626
+        },
+        "validation_2019_2022": {
+          "trades": 2586,
+          "wins": 793,
+          "win_rate": 30.665119876256767,
+          "total_return_pct": -77.70332752729365,
+          "expectancy_pct": -0.03004769045912361,
+          "profit_factor": 0.7364135423855271
+        },
+        "holdout_2023_2024": {
+          "trades": 1301,
+          "wins": 413,
+          "win_rate": 31.744811683320524,
+          "total_return_pct": -16.184190124033876,
+          "expectancy_pct": -0.01243980793546032,
+          "profit_factor": 0.8690564669081731
+        },
+        "true_oos_2025_2026": {
+          "trades": 1017,
+          "wins": 327,
+          "win_rate": 32.15339233038348,
+          "total_return_pct": -27.605201898302283,
+          "expectancy_pct": -0.02714375801209664,
+          "profit_factor": 0.7574496340197694
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 10,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma10_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 9349,
+          "wins": 3008,
+          "win_rate": 32.174564124505295,
+          "total_return_pct": -200.56123938700975,
+          "expectancy_pct": -0.021452694340251335,
+          "profit_factor": 0.85074494513658
+        },
+        "validation_2019_2022": {
+          "trades": 2586,
+          "wins": 793,
+          "win_rate": 30.665119876256767,
+          "total_return_pct": -77.70332752729365,
+          "expectancy_pct": -0.03004769045912361,
+          "profit_factor": 0.7364135423855271
+        },
+        "holdout_2023_2024": {
+          "trades": 1301,
+          "wins": 412,
+          "win_rate": 31.66794773251345,
+          "total_return_pct": -16.43496812658285,
+          "expectancy_pct": -0.012632565815974519,
+          "profit_factor": 0.8672174871890085
+        },
+        "true_oos_2025_2026": {
+          "trades": 1017,
+          "wins": 327,
+          "win_rate": 32.15339233038348,
+          "total_return_pct": -27.605201898302283,
+          "expectancy_pct": -0.02714375801209664,
+          "profit_factor": 0.7574496340197694
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 20,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma20_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 9345,
+          "wins": 3005,
+          "win_rate": 32.15623327982878,
+          "total_return_pct": -201.5448368884916,
+          "expectancy_pct": -0.02156713075318262,
+          "profit_factor": 0.8500629914093989
+        },
+        "validation_2019_2022": {
+          "trades": 2588,
+          "wins": 794,
+          "win_rate": 30.680061823802163,
+          "total_return_pct": -77.72203126633104,
+          "expectancy_pct": -0.03003169677988062,
+          "profit_factor": 0.7363598343104679
+        },
+        "holdout_2023_2024": {
+          "trades": 1301,
+          "wins": 413,
+          "win_rate": 31.744811683320524,
+          "total_return_pct": -15.92958020343174,
+          "expectancy_pct": -0.01224410469133877,
+          "profit_factor": 0.8709838175917972
+        },
+        "true_oos_2025_2026": {
+          "trades": 1017,
+          "wins": 327,
+          "win_rate": 32.15339233038348,
+          "total_return_pct": -27.642366198622078,
+          "expectancy_pct": -0.027180301080257697,
+          "profit_factor": 0.7571230935844857
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 20,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma20_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 8637,
+          "wins": 2843,
+          "win_rate": 32.91652194048859,
+          "total_return_pct": -173.20991616235574,
+          "expectancy_pct": -0.020054407336153265,
+          "profit_factor": 0.8650177030731794
+        },
+        "validation_2019_2022": {
+          "trades": 2394,
+          "wins": 747,
+          "win_rate": 31.203007518796994,
+          "total_return_pct": -66.3063864967339,
+          "expectancy_pct": -0.027696903298552168,
+          "profit_factor": 0.7611734011183441
+        },
+        "holdout_2023_2024": {
+          "trades": 1195,
+          "wins": 384,
+          "win_rate": 32.13389121338912,
+          "total_return_pct": -20.701634128017048,
+          "expectancy_pct": -0.017323543203361547,
+          "profit_factor": 0.8274084741422209
+        },
+        "true_oos_2025_2026": {
+          "trades": 913,
+          "wins": 313,
+          "win_rate": 34.28258488499452,
+          "total_return_pct": -18.066961699443596,
+          "expectancy_pct": -0.019788567031153993,
+          "profit_factor": 0.8242972496698164
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 20,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma20_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 8633,
+          "wins": 2841,
+          "win_rate": 32.90860650990386,
+          "total_return_pct": -173.4612091633966,
+          "expectancy_pct": -0.02009280773351055,
+          "profit_factor": 0.8648071034488138
+        },
+        "validation_2019_2022": {
+          "trades": 2394,
+          "wins": 747,
+          "win_rate": 31.203007518796994,
+          "total_return_pct": -66.3063864967339,
+          "expectancy_pct": -0.027696903298552168,
+          "profit_factor": 0.7611734011183441
+        },
+        "holdout_2023_2024": {
+          "trades": 1195,
+          "wins": 383,
+          "win_rate": 32.05020920502092,
+          "total_return_pct": -21.022771759204275,
+          "expectancy_pct": -0.017592277622765082,
+          "profit_factor": 0.8250814579638943
+        },
+        "true_oos_2025_2026": {
+          "trades": 913,
+          "wins": 313,
+          "win_rate": 34.28258488499452,
+          "total_return_pct": -18.066961699443596,
+          "expectancy_pct": -0.019788567031153993,
+          "profit_factor": 0.8242972496698164
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 50,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma50_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 7835,
+          "wins": 2513,
+          "win_rate": 32.074026802807914,
+          "total_return_pct": -154.97994541829286,
+          "expectancy_pct": -0.019780465273553652,
+          "profit_factor": 0.871090547659432
+        },
+        "validation_2019_2022": {
+          "trades": 2138,
+          "wins": 651,
+          "win_rate": 30.449017773620206,
+          "total_return_pct": -61.93627795580146,
+          "expectancy_pct": -0.028969260035454376,
+          "profit_factor": 0.7635735910307067
+        },
+        "holdout_2023_2024": {
+          "trades": 1077,
+          "wins": 340,
+          "win_rate": 31.569173630454966,
+          "total_return_pct": -14.89067793079442,
+          "expectancy_pct": -0.01382607050213038,
+          "profit_factor": 0.8651878373257385
+        },
+        "true_oos_2025_2026": {
+          "trades": 847,
+          "wins": 277,
+          "win_rate": 32.70365997638725,
+          "total_return_pct": -20.701044770116823,
+          "expectancy_pct": -0.024440430661294952,
+          "profit_factor": 0.7885363102489399
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 50,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma50_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 5536,
+          "wins": 1779,
+          "win_rate": 32.13511560693642,
+          "total_return_pct": -158.40057939127948,
+          "expectancy_pct": -0.028612821421835168,
+          "profit_factor": 0.8469776636071068
+        },
+        "validation_2019_2022": {
+          "trades": 1488,
+          "wins": 448,
+          "win_rate": 30.107526881720432,
+          "total_return_pct": -49.6906782161114,
+          "expectancy_pct": -0.03339427299469852,
+          "profit_factor": 0.7758076357898739
+        },
+        "holdout_2023_2024": {
+          "trades": 743,
+          "wins": 256,
+          "win_rate": 34.45491251682369,
+          "total_return_pct": -2.3673395399292785,
+          "expectancy_pct": -0.0031861904978859735,
+          "profit_factor": 0.9734445930118422
+        },
+        "true_oos_2025_2026": {
+          "trades": 559,
+          "wins": 199,
+          "win_rate": 35.59928443649374,
+          "total_return_pct": -8.259577008485223,
+          "expectancy_pct": -0.014775629711064801,
+          "profit_factor": 0.8896803351948689
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 50,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma50_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 5454,
+          "wins": 1768,
+          "win_rate": 32.416574990832416,
+          "total_return_pct": -149.4170949888756,
+          "expectancy_pct": -0.027395873668660725,
+          "profit_factor": 0.8541822518328128
+        },
+        "validation_2019_2022": {
+          "trades": 1466,
+          "wins": 443,
+          "win_rate": 30.218281036834927,
+          "total_return_pct": -48.48078570781144,
+          "expectancy_pct": -0.03307011303397779,
+          "profit_factor": 0.7800340960645469
+        },
+        "holdout_2023_2024": {
+          "trades": 735,
+          "wins": 252,
+          "win_rate": 34.285714285714285,
+          "total_return_pct": -3.9964874106496175,
+          "expectancy_pct": -0.0054373978376185276,
+          "profit_factor": 0.9552913929532219
+        },
+        "true_oos_2025_2026": {
+          "trades": 553,
+          "wins": 196,
+          "win_rate": 35.44303797468354,
+          "total_return_pct": -11.110908959759286,
+          "expectancy_pct": -0.020092059601734692,
+          "profit_factor": 0.8546854957768278
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 100,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma100_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 5198,
+          "wins": 1574,
+          "win_rate": 30.2808772604848,
+          "total_return_pct": -71.45777948471537,
+          "expectancy_pct": -0.013747168042461596,
+          "profit_factor": 0.9226995272742741
+        },
+        "validation_2019_2022": {
+          "trades": 1398,
+          "wins": 415,
+          "win_rate": 29.685264663805437,
+          "total_return_pct": -30.414722861050166,
+          "expectancy_pct": -0.021755881874857056,
+          "profit_factor": 0.8461163192400393
+        },
+        "holdout_2023_2024": {
+          "trades": 723,
+          "wins": 222,
+          "win_rate": 30.70539419087137,
+          "total_return_pct": -4.711373723660831,
+          "expectancy_pct": -0.00651642285430267,
+          "profit_factor": 0.944132732801579
+        },
+        "true_oos_2025_2026": {
+          "trades": 561,
+          "wins": 174,
+          "win_rate": 31.016042780748666,
+          "total_return_pct": -13.150557349950127,
+          "expectancy_pct": -0.023441278698663328,
+          "profit_factor": 0.8277158090904891
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 100,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma100_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 3370,
+          "wins": 1026,
+          "win_rate": 30.445103857566764,
+          "total_return_pct": -73.91004363608525,
+          "expectancy_pct": -0.021931763690233013,
+          "profit_factor": 0.9002248497331525
+        },
+        "validation_2019_2022": {
+          "trades": 914,
+          "wins": 259,
+          "win_rate": 28.336980306345733,
+          "total_return_pct": -24.221117738477368,
+          "expectancy_pct": -0.026500128816714843,
+          "profit_factor": 0.8482089837101117
+        },
+        "holdout_2023_2024": {
+          "trades": 437,
+          "wins": 146,
+          "win_rate": 33.40961098398169,
+          "total_return_pct": -9.446458521062201,
+          "expectancy_pct": -0.021616609888014192,
+          "profit_factor": 0.862606100688881
+        },
+        "true_oos_2025_2026": {
+          "trades": 359,
+          "wins": 111,
+          "win_rate": 30.919220055710305,
+          "total_return_pct": -5.929342299836015,
+          "expectancy_pct": -0.016516273815699204,
+          "profit_factor": 0.8985675274051551
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 100,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma100_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 3102,
+          "wins": 958,
+          "win_rate": 30.883301096067058,
+          "total_return_pct": -65.83308210232123,
+          "expectancy_pct": -0.02122278597753747,
+          "profit_factor": 0.9086303530449741
+        },
+        "validation_2019_2022": {
+          "trades": 830,
+          "wins": 241,
+          "win_rate": 29.036144578313255,
+          "total_return_pct": -21.244804511154097,
+          "expectancy_pct": -0.025596150013438672,
+          "profit_factor": 0.8603337208909172
+        },
+        "holdout_2023_2024": {
+          "trades": 423,
+          "wins": 139,
+          "win_rate": 32.860520094562645,
+          "total_return_pct": -11.977430948247575,
+          "expectancy_pct": -0.0283154395939659,
+          "profit_factor": 0.8275692734405249
+        },
+        "true_oos_2025_2026": {
+          "trades": 323,
+          "wins": 105,
+          "win_rate": 32.50773993808049,
+          "total_return_pct": -2.2649036084735226,
+          "expectancy_pct": -0.007012085475150225,
+          "profit_factor": 0.9579665127175767
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 200,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma200_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 3426,
+          "wins": 903,
+          "win_rate": 26.35726795096322,
+          "total_return_pct": -54.209380856942325,
+          "expectancy_pct": -0.015822936619072483,
+          "profit_factor": 0.923103619357594
+        },
+        "validation_2019_2022": {
+          "trades": 932,
+          "wins": 240,
+          "win_rate": 25.75107296137339,
+          "total_return_pct": -19.139454074351153,
+          "expectancy_pct": -0.020535894929561323,
+          "profit_factor": 0.8745069343162988
+        },
+        "holdout_2023_2024": {
+          "trades": 483,
+          "wins": 125,
+          "win_rate": 25.87991718426501,
+          "total_return_pct": -17.325915487289716,
+          "expectancy_pct": -0.03587146063621059,
+          "profit_factor": 0.7628121286808571
+        },
+        "true_oos_2025_2026": {
+          "trades": 355,
+          "wins": 93,
+          "win_rate": 26.197183098591548,
+          "total_return_pct": -8.886598454341058,
+          "expectancy_pct": -0.02503267170236918,
+          "profit_factor": 0.841928249541568
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 200,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma200_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 2314,
+          "wins": 677,
+          "win_rate": 29.256698357821953,
+          "total_return_pct": -38.293878030129875,
+          "expectancy_pct": -0.016548780479744975,
+          "profit_factor": 0.9336597178815085
+        },
+        "validation_2019_2022": {
+          "trades": 658,
+          "wins": 202,
+          "win_rate": 30.69908814589666,
+          "total_return_pct": -4.415938244435417,
+          "expectancy_pct": -0.006711152347166288,
+          "profit_factor": 0.9618244947043292
+        },
+        "holdout_2023_2024": {
+          "trades": 309,
+          "wins": 83,
+          "win_rate": 26.860841423948216,
+          "total_return_pct": -17.97707930349858,
+          "expectancy_pct": -0.05817825017313456,
+          "profit_factor": 0.7114468246532616
+        },
+        "true_oos_2025_2026": {
+          "trades": 252,
+          "wins": 67,
+          "win_rate": 26.58730158730159,
+          "total_return_pct": -6.877781402458997,
+          "expectancy_pct": -0.027292783343091258,
+          "profit_factor": 0.8415994557723716
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 200,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma200_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1832,
+          "wins": 544,
+          "win_rate": 29.694323144104807,
+          "total_return_pct": -17.284481749586032,
+          "expectancy_pct": -0.00943476078034172,
+          "profit_factor": 0.9671885796884291
+        },
+        "validation_2019_2022": {
+          "trades": 524,
+          "wins": 155,
+          "win_rate": 29.580152671755727,
+          "total_return_pct": -3.0561220366429076,
+          "expectancy_pct": -0.005832293963058984,
+          "profit_factor": 0.9715866991880499
+        },
+        "holdout_2023_2024": {
+          "trades": 259,
+          "wins": 67,
+          "win_rate": 25.868725868725868,
+          "total_return_pct": -17.99383192403628,
+          "expectancy_pct": -0.06947425453295861,
+          "profit_factor": 0.6948905060933653
+        },
+        "true_oos_2025_2026": {
+          "trades": 188,
+          "wins": 57,
+          "win_rate": 30.319148936170215,
+          "total_return_pct": 1.781778940166789,
+          "expectancy_pct": 0.009477547554078664,
+          "profit_factor": 1.051815197020073
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 400,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma400_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 2326,
+          "wins": 537,
+          "win_rate": 23.086844368013757,
+          "total_return_pct": -49.00493956452796,
+          "expectancy_pct": -0.021068331713038676,
+          "profit_factor": 0.9107227502406015
+        },
+        "validation_2019_2022": {
+          "trades": 564,
+          "wins": 139,
+          "win_rate": 24.645390070921984,
+          "total_return_pct": -2.1915498706712313,
+          "expectancy_pct": -0.0038857267210482827,
+          "profit_factor": 0.9794844046019682
+        },
+        "holdout_2023_2024": {
+          "trades": 341,
+          "wins": 69,
+          "win_rate": 20.234604105571847,
+          "total_return_pct": -22.506505845069302,
+          "expectancy_pct": -0.06600148341662553,
+          "profit_factor": 0.6471378766218264
+        },
+        "true_oos_2025_2026": {
+          "trades": 260,
+          "wins": 55,
+          "win_rate": 21.153846153846153,
+          "total_return_pct": -15.445165005199655,
+          "expectancy_pct": -0.05940448078922944,
+          "profit_factor": 0.6901866736288929
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 400,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma400_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1604,
+          "wins": 463,
+          "win_rate": 28.865336658354114,
+          "total_return_pct": -15.618913470140175,
+          "expectancy_pct": -0.009737477225773176,
+          "profit_factor": 0.9655294546250233
+        },
+        "validation_2019_2022": {
+          "trades": 420,
+          "wins": 121,
+          "win_rate": 28.809523809523807,
+          "total_return_pct": -9.576492820169534,
+          "expectancy_pct": -0.022801173381356035,
+          "profit_factor": 0.8896252899100671
+        },
+        "holdout_2023_2024": {
+          "trades": 227,
+          "wins": 63,
+          "win_rate": 27.75330396475771,
+          "total_return_pct": -9.49963778724995,
+          "expectancy_pct": -0.04184862461343591,
+          "profit_factor": 0.7955591843197468
+        },
+        "true_oos_2025_2026": {
+          "trades": 182,
+          "wins": 50,
+          "win_rate": 27.472527472527474,
+          "total_return_pct": -6.778998294939473,
+          "expectancy_pct": -0.03724724337878831,
+          "profit_factor": 0.8151877208608713
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 400,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma400_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1130,
+          "wins": 315,
+          "win_rate": 27.876106194690266,
+          "total_return_pct": -21.37579021851919,
+          "expectancy_pct": -0.018916628511963882,
+          "profit_factor": 0.948599876527488
+        },
+        "validation_2019_2022": {
+          "trades": 282,
+          "wins": 86,
+          "win_rate": 30.49645390070922,
+          "total_return_pct": -2.2008021091291465,
+          "expectancy_pct": -0.0078042627983303066,
+          "profit_factor": 0.9707569247723729
+        },
+        "holdout_2023_2024": {
+          "trades": 151,
+          "wins": 38,
+          "win_rate": 25.165562913907287,
+          "total_return_pct": -11.921354845396287,
+          "expectancy_pct": -0.07894936983706151,
+          "profit_factor": 0.7241842810343971
+        },
+        "true_oos_2025_2026": {
+          "trades": 116,
+          "wins": 33,
+          "win_rate": 28.448275862068968,
+          "total_return_pct": -6.970562543372765,
+          "expectancy_pct": -0.060091056408385905,
+          "profit_factor": 0.779916210955438
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 800,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma800_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1492,
+          "wins": 292,
+          "win_rate": 19.571045576407506,
+          "total_return_pct": -46.43685949720762,
+          "expectancy_pct": -0.031123900467297332,
+          "profit_factor": 0.8890201533849768
+        },
+        "validation_2019_2022": {
+          "trades": 380,
+          "wins": 83,
+          "win_rate": 21.842105263157897,
+          "total_return_pct": -11.08390300087735,
+          "expectancy_pct": -0.029168165791782497,
+          "profit_factor": 0.8575922546119094
+        },
+        "holdout_2023_2024": {
+          "trades": 179,
+          "wins": 41,
+          "win_rate": 22.905027932960895,
+          "total_return_pct": -1.5786559865491685,
+          "expectancy_pct": -0.008819307187425523,
+          "profit_factor": 0.9557348554138401
+        },
+        "true_oos_2025_2026": {
+          "trades": 182,
+          "wins": 39,
+          "win_rate": 21.428571428571427,
+          "total_return_pct": -9.332193364089235,
+          "expectancy_pct": -0.05127578771477602,
+          "profit_factor": 0.7449181952455969
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 800,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma800_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1170,
+          "wins": 341,
+          "win_rate": 29.14529914529915,
+          "total_return_pct": -10.126504829099837,
+          "expectancy_pct": -0.008655132332563964,
+          "profit_factor": 0.9697662574810332
+        },
+        "validation_2019_2022": {
+          "trades": 340,
+          "wins": 78,
+          "win_rate": 22.941176470588236,
+          "total_return_pct": -25.329292359559687,
+          "expectancy_pct": -0.07449791870458732,
+          "profit_factor": 0.7024844800219017
+        },
+        "holdout_2023_2024": {
+          "trades": 133,
+          "wins": 38,
+          "win_rate": 28.57142857142857,
+          "total_return_pct": 0.34697281560964277,
+          "expectancy_pct": 0.002608818162478517,
+          "profit_factor": 1.0119991793775864
+        },
+        "true_oos_2025_2026": {
+          "trades": 129,
+          "wins": 36,
+          "win_rate": 27.906976744186046,
+          "total_return_pct": -6.311193037280719,
+          "expectancy_pct": -0.04892397703318387,
+          "profit_factor": 0.7735902697349782
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 800,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma800_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 690,
+          "wins": 184,
+          "win_rate": 26.666666666666668,
+          "total_return_pct": -16.909089830407748,
+          "expectancy_pct": -0.02450592729044601,
+          "profit_factor": 0.9431824190809633
+        },
+        "validation_2019_2022": {
+          "trades": 170,
+          "wins": 47,
+          "win_rate": 27.647058823529413,
+          "total_return_pct": -10.005553430580903,
+          "expectancy_pct": -0.0588561966504759,
+          "profit_factor": 0.8394019352083678
+        },
+        "holdout_2023_2024": {
+          "trades": 69,
+          "wins": 27,
+          "win_rate": 39.130434782608695,
+          "total_return_pct": 8.500330504897534,
+          "expectancy_pct": 0.12319319572315265,
+          "profit_factor": 1.4266261653071601
+        },
+        "true_oos_2025_2026": {
+          "trades": 76,
+          "wins": 17,
+          "win_rate": 22.36842105263158,
+          "total_return_pct": -8.334139114696061,
+          "expectancy_pct": -0.10965972519336922,
+          "profit_factor": 0.6877473417688081
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1200,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma1200_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1244,
+          "wins": 230,
+          "win_rate": 18.488745980707396,
+          "total_return_pct": -31.02364516337207,
+          "expectancy_pct": -0.024938621513964688,
+          "profit_factor": 0.9116877554402119
+        },
+        "validation_2019_2022": {
+          "trades": 382,
+          "wins": 55,
+          "win_rate": 14.397905759162304,
+          "total_return_pct": -31.90483109591885,
+          "expectancy_pct": -0.08352050025109647,
+          "profit_factor": 0.6364582713459226
+        },
+        "holdout_2023_2024": {
+          "trades": 119,
+          "wins": 29,
+          "win_rate": 24.369747899159663,
+          "total_return_pct": 5.906089566822981,
+          "expectancy_pct": 0.04963100476321833,
+          "profit_factor": 1.2304312907903623
+        },
+        "true_oos_2025_2026": {
+          "trades": 138,
+          "wins": 25,
+          "win_rate": 18.115942028985508,
+          "total_return_pct": -8.025896202813186,
+          "expectancy_pct": -0.05815866813632744,
+          "profit_factor": 0.7281258869936286
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1200,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma1200_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 972,
+          "wins": 253,
+          "win_rate": 26.02880658436214,
+          "total_return_pct": -33.360224029053015,
+          "expectancy_pct": -0.034321218136885816,
+          "profit_factor": 0.8942587865655105
+        },
+        "validation_2019_2022": {
+          "trades": 280,
+          "wins": 80,
+          "win_rate": 28.57142857142857,
+          "total_return_pct": -1.4885101095036521,
+          "expectancy_pct": -0.0053161075339416145,
+          "profit_factor": 0.9752962900348805
+        },
+        "holdout_2023_2024": {
+          "trades": 109,
+          "wins": 32,
+          "win_rate": 29.357798165137616,
+          "total_return_pct": -1.7467426509688502,
+          "expectancy_pct": -0.01602516193549404,
+          "profit_factor": 0.9368176581676302
+        },
+        "true_oos_2025_2026": {
+          "trades": 116,
+          "wins": 31,
+          "win_rate": 26.72413793103448,
+          "total_return_pct": -7.833276123282332,
+          "expectancy_pct": -0.06752824244208906,
+          "profit_factor": 0.7228531497313571
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1200,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma1200_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 540,
+          "wins": 125,
+          "win_rate": 23.14814814814815,
+          "total_return_pct": -32.29696079914701,
+          "expectancy_pct": -0.059809186665087055,
+          "profit_factor": 0.8798697248844101
+        },
+        "validation_2019_2022": {
+          "trades": 132,
+          "wins": 35,
+          "win_rate": 26.515151515151516,
+          "total_return_pct": -1.6654063596538107,
+          "expectancy_pct": -0.012616714845862203,
+          "profit_factor": 0.9655612003563063
+        },
+        "holdout_2023_2024": {
+          "trades": 57,
+          "wins": 20,
+          "win_rate": 35.08771929824561,
+          "total_return_pct": -0.30204499568172416,
+          "expectancy_pct": -0.005299035011960073,
+          "profit_factor": 0.9865374256373344
+        },
+        "true_oos_2025_2026": {
+          "trades": 50,
+          "wins": 11,
+          "win_rate": 22.0,
+          "total_return_pct": 1.491407540738104,
+          "expectancy_pct": 0.02982815081476208,
+          "profit_factor": 1.0818262716947318
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma1600_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1072,
+          "wins": 181,
+          "win_rate": 16.884328358208954,
+          "total_return_pct": -10.55010709157117,
+          "expectancy_pct": -0.009841517809301465,
+          "profit_factor": 0.9641095722661075
+        },
+        "validation_2019_2022": {
+          "trades": 318,
+          "wins": 51,
+          "win_rate": 16.037735849056602,
+          "total_return_pct": -20.157971178192106,
+          "expectancy_pct": -0.06338984647230222,
+          "profit_factor": 0.7175385608518314
+        },
+        "holdout_2023_2024": {
+          "trades": 117,
+          "wins": 25,
+          "win_rate": 21.367521367521366,
+          "total_return_pct": -0.06878108814865158,
+          "expectancy_pct": -0.0005878725482790733,
+          "profit_factor": 0.9973383980291907
+        },
+        "true_oos_2025_2026": {
+          "trades": 126,
+          "wins": 18,
+          "win_rate": 14.285714285714285,
+          "total_return_pct": -7.26785295829915,
+          "expectancy_pct": -0.057681372684913884,
+          "profit_factor": 0.7242241644527181
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma1600_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 780,
+          "wins": 225,
+          "win_rate": 28.846153846153843,
+          "total_return_pct": -0.8392584704782706,
+          "expectancy_pct": -0.001075972398049065,
+          "profit_factor": 0.9968370471009653
+        },
+        "validation_2019_2022": {
+          "trades": 232,
+          "wins": 65,
+          "win_rate": 28.01724137931034,
+          "total_return_pct": -2.4587356202282002,
+          "expectancy_pct": -0.010597998363052587,
+          "profit_factor": 0.9523548957826931
+        },
+        "holdout_2023_2024": {
+          "trades": 73,
+          "wins": 27,
+          "win_rate": 36.986301369863014,
+          "total_return_pct": 7.399691332360344,
+          "expectancy_pct": 0.10136563468986773,
+          "profit_factor": 1.426596095592381
+        },
+        "true_oos_2025_2026": {
+          "trades": 94,
+          "wins": 33,
+          "win_rate": 35.1063829787234,
+          "total_return_pct": 2.1856373961699074,
+          "expectancy_pct": 0.023251461661381992,
+          "profit_factor": 1.1086979302972346
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma1600_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 426,
+          "wins": 101,
+          "win_rate": 23.708920187793428,
+          "total_return_pct": -15.631000825917962,
+          "expectancy_pct": -0.03669249020168536,
+          "profit_factor": 0.9339170395504868
+        },
+        "validation_2019_2022": {
+          "trades": 124,
+          "wins": 26,
+          "win_rate": 20.967741935483872,
+          "total_return_pct": -5.8638644030688765,
+          "expectancy_pct": -0.04728922905700707,
+          "profit_factor": 0.8632618950388694
+        },
+        "holdout_2023_2024": {
+          "trades": 35,
+          "wins": 19,
+          "win_rate": 54.285714285714285,
+          "total_return_pct": 8.504010463731777,
+          "expectancy_pct": 0.24297172753519364,
+          "profit_factor": 1.6346710792414407
+        },
+        "true_oos_2025_2026": {
+          "trades": 46,
+          "wins": 10,
+          "win_rate": 21.73913043478261,
+          "total_return_pct": -1.8633562352371937,
+          "expectancy_pct": -0.04050774424428682,
+          "profit_factor": 0.9029599148019293
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2000,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma2000_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 956,
+          "wins": 148,
+          "win_rate": 15.481171548117153,
+          "total_return_pct": -5.075545708464158,
+          "expectancy_pct": -0.005309148230611045,
+          "profit_factor": 0.9809331876853677
+        },
+        "validation_2019_2022": {
+          "trades": 288,
+          "wins": 39,
+          "win_rate": 13.541666666666666,
+          "total_return_pct": -11.164033074607799,
+          "expectancy_pct": -0.03876400373127708,
+          "profit_factor": 0.8092061216010309
+        },
+        "holdout_2023_2024": {
+          "trades": 107,
+          "wins": 22,
+          "win_rate": 20.5607476635514,
+          "total_return_pct": -0.8700202300842375,
+          "expectancy_pct": -0.008131030187703154,
+          "profit_factor": 0.9641195200857934
+        },
+        "true_oos_2025_2026": {
+          "trades": 116,
+          "wins": 19,
+          "win_rate": 16.379310344827587,
+          "total_return_pct": -7.550166566596927,
+          "expectancy_pct": -0.06508764281549075,
+          "profit_factor": 0.7028086959230245
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2000,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma2000_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 704,
+          "wins": 177,
+          "win_rate": 25.142045454545453,
+          "total_return_pct": 13.10083281374596,
+          "expectancy_pct": 0.01860913751952551,
+          "profit_factor": 1.0545535885424
+        },
+        "validation_2019_2022": {
+          "trades": 202,
+          "wins": 56,
+          "win_rate": 27.722772277227726,
+          "total_return_pct": -17.354694354424765,
+          "expectancy_pct": -0.0859143284872513,
+          "profit_factor": 0.7037964503317117
+        },
+        "holdout_2023_2024": {
+          "trades": 59,
+          "wins": 24,
+          "win_rate": 40.67796610169492,
+          "total_return_pct": 7.982341716280621,
+          "expectancy_pct": 0.13529392739458682,
+          "profit_factor": 1.6660918096903918
+        },
+        "true_oos_2025_2026": {
+          "trades": 69,
+          "wins": 17,
+          "win_rate": 24.637681159420293,
+          "total_return_pct": -3.2976361396753777,
+          "expectancy_pct": -0.04779182811123736,
+          "profit_factor": 0.8328923922601055
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2000,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma2000_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 352,
+          "wins": 76,
+          "win_rate": 21.59090909090909,
+          "total_return_pct": -8.939895136137942,
+          "expectancy_pct": -0.025397429364028244,
+          "profit_factor": 0.9587504127827482
+        },
+        "validation_2019_2022": {
+          "trades": 104,
+          "wins": 27,
+          "win_rate": 25.961538461538463,
+          "total_return_pct": -12.975766515967258,
+          "expectancy_pct": -0.1247669857304544,
+          "profit_factor": 0.7289242314152296
+        },
+        "holdout_2023_2024": {
+          "trades": 31,
+          "wins": 12,
+          "win_rate": 38.70967741935484,
+          "total_return_pct": 4.77142580102041,
+          "expectancy_pct": 0.15391696132323904,
+          "profit_factor": 1.384443275440157
+        },
+        "true_oos_2025_2026": {
+          "trades": 33,
+          "wins": 7,
+          "win_rate": 21.21212121212121,
+          "total_return_pct": -3.203380594697192,
+          "expectancy_pct": -0.09707213923324824,
+          "profit_factor": 0.8133056265789124
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2400,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma2400_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 930,
+          "wins": 132,
+          "win_rate": 14.193548387096774,
+          "total_return_pct": -32.27590167055243,
+          "expectancy_pct": -0.034705270613497236,
+          "profit_factor": 0.880308178231916
+        },
+        "validation_2019_2022": {
+          "trades": 260,
+          "wins": 42,
+          "win_rate": 16.153846153846153,
+          "total_return_pct": -5.24707112851296,
+          "expectancy_pct": -0.020181042801972925,
+          "profit_factor": 0.8956254630636539
+        },
+        "holdout_2023_2024": {
+          "trades": 85,
+          "wins": 23,
+          "win_rate": 27.058823529411764,
+          "total_return_pct": 7.165118422816744,
+          "expectancy_pct": 0.08429551085666757,
+          "profit_factor": 1.4326773236404118
+        },
+        "true_oos_2025_2026": {
+          "trades": 95,
+          "wins": 15,
+          "win_rate": 15.789473684210526,
+          "total_return_pct": 0.013196782739758911,
+          "expectancy_pct": 0.00013891350252377802,
+          "profit_factor": 1.000706058032885
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2400,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma2400_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 598,
+          "wins": 162,
+          "win_rate": 27.09030100334448,
+          "total_return_pct": 15.253830611998367,
+          "expectancy_pct": 0.025508077946485564,
+          "profit_factor": 1.0715206844005578
+        },
+        "validation_2019_2022": {
+          "trades": 200,
+          "wins": 64,
+          "win_rate": 32.0,
+          "total_return_pct": 4.879690234880469,
+          "expectancy_pct": 0.024398451174402345,
+          "profit_factor": 1.1212610009706132
+        },
+        "holdout_2023_2024": {
+          "trades": 73,
+          "wins": 16,
+          "win_rate": 21.91780821917808,
+          "total_return_pct": 3.206114067073798,
+          "expectancy_pct": 0.04391937078183285,
+          "profit_factor": 1.190492918024649
+        },
+        "true_oos_2025_2026": {
+          "trades": 61,
+          "wins": 11,
+          "win_rate": 18.0327868852459,
+          "total_return_pct": -5.203658461109881,
+          "expectancy_pct": -0.0853058764116374,
+          "profit_factor": 0.688425350329346
+        }
+      },
+      "eligible": true
+    },
+    {
+      "candidate": {
+        "length": 2400,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma2400_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 284,
+          "wins": 66,
+          "win_rate": 23.239436619718308,
+          "total_return_pct": 26.640008523115256,
+          "expectancy_pct": 0.09380284691237765,
+          "profit_factor": 1.1596775619835178
+        },
+        "validation_2019_2022": {
+          "trades": 98,
+          "wins": 24,
+          "win_rate": 24.489795918367346,
+          "total_return_pct": -5.188504354870413,
+          "expectancy_pct": -0.0529439219884736,
+          "profit_factor": 0.8633517520607615
+        },
+        "holdout_2023_2024": {
+          "trades": 31,
+          "wins": 8,
+          "win_rate": 25.806451612903224,
+          "total_return_pct": 3.9036572165355383,
+          "expectancy_pct": 0.12592442633985607,
+          "profit_factor": 1.3212158864297732
+        },
+        "true_oos_2025_2026": {
+          "trades": 25,
+          "wins": 8,
+          "win_rate": 32.0,
+          "total_return_pct": -0.7343616621039774,
+          "expectancy_pct": -0.029374466484159093,
+          "profit_factor": 0.9437937412762332
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 3200,
+        "mode": "price",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma3200_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 752,
+          "wins": 109,
+          "win_rate": 14.49468085106383,
+          "total_return_pct": 2.889388034560371,
+          "expectancy_pct": 0.0038422713225536847,
+          "profit_factor": 1.0134271252208646
+        },
+        "validation_2019_2022": {
+          "trades": 200,
+          "wins": 28,
+          "win_rate": 14.000000000000002,
+          "total_return_pct": -0.005268612190870492,
+          "expectancy_pct": -2.634306095435246e-05,
+          "profit_factor": 0.9998683052865726
+        },
+        "holdout_2023_2024": {
+          "trades": 73,
+          "wins": 15,
+          "win_rate": 20.54794520547945,
+          "total_return_pct": 6.295976124816599,
+          "expectancy_pct": 0.0862462482851589,
+          "profit_factor": 1.424487739051239
+        },
+        "true_oos_2025_2026": {
+          "trades": 85,
+          "wins": 11,
+          "win_rate": 12.941176470588237,
+          "total_return_pct": -6.171852760041939,
+          "expectancy_pct": -0.07261003247108164,
+          "profit_factor": 0.6693569776168657
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 3200,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma3200_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 568,
+          "wins": 141,
+          "win_rate": 24.823943661971832,
+          "total_return_pct": 5.159584402442761,
+          "expectancy_pct": 0.00908377535641331,
+          "profit_factor": 1.0259781305210682
+        },
+        "validation_2019_2022": {
+          "trades": 144,
+          "wins": 33,
+          "win_rate": 22.916666666666664,
+          "total_return_pct": 9.076431049800757,
+          "expectancy_pct": 0.06303077117917193,
+          "profit_factor": 1.2518234968453243
+        },
+        "holdout_2023_2024": {
+          "trades": 67,
+          "wins": 22,
+          "win_rate": 32.83582089552239,
+          "total_return_pct": -5.405652334367744,
+          "expectancy_pct": -0.0806813781248917,
+          "profit_factor": 0.7339159747988474
+        },
+        "true_oos_2025_2026": {
+          "trades": 59,
+          "wins": 16,
+          "win_rate": 27.11864406779661,
+          "total_return_pct": -3.5261794589280733,
+          "expectancy_pct": -0.059765753541153786,
+          "profit_factor": 0.7678331845060736
+        }
+      },
+      "eligible": true
+    },
+    {
+      "candidate": {
+        "length": 3200,
+        "mode": "price_and_slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "sma3200_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 228,
+          "wins": 46,
+          "win_rate": 20.175438596491226,
+          "total_return_pct": 21.004402911480916,
+          "expectancy_pct": 0.09212457417316192,
+          "profit_factor": 1.1441981275886888
+        },
+        "validation_2019_2022": {
+          "trades": 62,
+          "wins": 11,
+          "win_rate": 17.741935483870968,
+          "total_return_pct": 6.733080382259064,
+          "expectancy_pct": 0.1085980706815978,
+          "profit_factor": 1.2367696298313666
+        },
+        "holdout_2023_2024": {
+          "trades": 21,
+          "wins": 5,
+          "win_rate": 23.809523809523807,
+          "total_return_pct": -1.2090313986544121,
+          "expectancy_pct": -0.057572923745448194,
+          "profit_factor": 0.906166809493643
+        },
+        "true_oos_2025_2026": {
+          "trades": 23,
+          "wins": 3,
+          "win_rate": 13.043478260869565,
+          "total_return_pct": -2.75590286455597,
+          "expectancy_pct": -0.11982186367634654,
+          "profit_factor": 0.7959812422810572
+        }
+      },
+      "eligible": true
+    },
+    {
+      "candidate": {
+        "length": 10,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema10_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 9351,
+          "wins": 3010,
+          "win_rate": 32.189070687626995,
+          "total_return_pct": -200.09834579610938,
+          "expectancy_pct": -0.021398603977768087,
+          "profit_factor": 0.8510733999715809
+        },
+        "validation_2019_2022": {
+          "trades": 2590,
+          "wins": 794,
+          "win_rate": 30.656370656370658,
+          "total_return_pct": -77.71013470101215,
+          "expectancy_pct": -0.030003913011973804,
+          "profit_factor": 0.7364306705127748
+        },
+        "holdout_2023_2024": {
+          "trades": 1301,
+          "wins": 412,
+          "win_rate": 31.66794773251345,
+          "total_return_pct": -16.180358205980713,
+          "expectancy_pct": -0.01243686257185297,
+          "profit_factor": 0.8691401907043811
+        },
+        "true_oos_2025_2026": {
+          "trades": 1017,
+          "wins": 327,
+          "win_rate": 32.15339233038348,
+          "total_return_pct": -27.605201898302283,
+          "expectancy_pct": -0.02714375801209664,
+          "profit_factor": 0.7574496340197694
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 10,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema10_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 9351,
+          "wins": 3010,
+          "win_rate": 32.189070687626995,
+          "total_return_pct": -200.09834579610938,
+          "expectancy_pct": -0.021398603977768087,
+          "profit_factor": 0.8510733999715809
+        },
+        "validation_2019_2022": {
+          "trades": 2590,
+          "wins": 794,
+          "win_rate": 30.656370656370658,
+          "total_return_pct": -77.71013470101215,
+          "expectancy_pct": -0.030003913011973804,
+          "profit_factor": 0.7364306705127748
+        },
+        "holdout_2023_2024": {
+          "trades": 1301,
+          "wins": 412,
+          "win_rate": 31.66794773251345,
+          "total_return_pct": -16.180358205980713,
+          "expectancy_pct": -0.01243686257185297,
+          "profit_factor": 0.8691401907043811
+        },
+        "true_oos_2025_2026": {
+          "trades": 1017,
+          "wins": 327,
+          "win_rate": 32.15339233038348,
+          "total_return_pct": -27.605201898302283,
+          "expectancy_pct": -0.02714375801209664,
+          "profit_factor": 0.7574496340197694
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 10,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema10_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 9351,
+          "wins": 3010,
+          "win_rate": 32.189070687626995,
+          "total_return_pct": -200.09834579610938,
+          "expectancy_pct": -0.021398603977768087,
+          "profit_factor": 0.8510733999715809
+        },
+        "validation_2019_2022": {
+          "trades": 2590,
+          "wins": 794,
+          "win_rate": 30.656370656370658,
+          "total_return_pct": -77.71013470101215,
+          "expectancy_pct": -0.030003913011973804,
+          "profit_factor": 0.7364306705127748
+        },
+        "holdout_2023_2024": {
+          "trades": 1301,
+          "wins": 412,
+          "win_rate": 31.66794773251345,
+          "total_return_pct": -16.180358205980713,
+          "expectancy_pct": -0.01243686257185297,
+          "profit_factor": 0.8691401907043811
+        },
+        "true_oos_2025_2026": {
+          "trades": 1017,
+          "wins": 327,
+          "win_rate": 32.15339233038348,
+          "total_return_pct": -27.605201898302283,
+          "expectancy_pct": -0.02714375801209664,
+          "profit_factor": 0.7574496340197694
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 20,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema20_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 9305,
+          "wins": 3002,
+          "win_rate": 32.262224610424504,
+          "total_return_pct": -195.88277893777726,
+          "expectancy_pct": -0.021051346473699866,
+          "profit_factor": 0.8534541514589362
+        },
+        "validation_2019_2022": {
+          "trades": 2580,
+          "wins": 792,
+          "win_rate": 30.697674418604652,
+          "total_return_pct": -77.89141935246191,
+          "expectancy_pct": -0.0301904726172333,
+          "profit_factor": 0.7355726914987899
+        },
+        "holdout_2023_2024": {
+          "trades": 1293,
+          "wins": 413,
+          "win_rate": 31.94122196442382,
+          "total_return_pct": -15.246726929544113,
+          "expectancy_pct": -0.011791745498487327,
+          "profit_factor": 0.8760429565498157
+        },
+        "true_oos_2025_2026": {
+          "trades": 1015,
+          "wins": 327,
+          "win_rate": 32.21674876847291,
+          "total_return_pct": -27.56209033690866,
+          "expectancy_pct": -0.027154768804836117,
+          "profit_factor": 0.7574838894232843
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 20,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema20_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 9305,
+          "wins": 3002,
+          "win_rate": 32.262224610424504,
+          "total_return_pct": -195.88277893777726,
+          "expectancy_pct": -0.021051346473699866,
+          "profit_factor": 0.8534541514589362
+        },
+        "validation_2019_2022": {
+          "trades": 2580,
+          "wins": 792,
+          "win_rate": 30.697674418604652,
+          "total_return_pct": -77.89141935246191,
+          "expectancy_pct": -0.0301904726172333,
+          "profit_factor": 0.7355726914987899
+        },
+        "holdout_2023_2024": {
+          "trades": 1293,
+          "wins": 413,
+          "win_rate": 31.94122196442382,
+          "total_return_pct": -15.246726929544113,
+          "expectancy_pct": -0.011791745498487327,
+          "profit_factor": 0.8760429565498157
+        },
+        "true_oos_2025_2026": {
+          "trades": 1015,
+          "wins": 327,
+          "win_rate": 32.21674876847291,
+          "total_return_pct": -27.56209033690866,
+          "expectancy_pct": -0.027154768804836117,
+          "profit_factor": 0.7574838894232843
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 20,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema20_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 9305,
+          "wins": 3002,
+          "win_rate": 32.262224610424504,
+          "total_return_pct": -195.88277893777726,
+          "expectancy_pct": -0.021051346473699866,
+          "profit_factor": 0.8534541514589362
+        },
+        "validation_2019_2022": {
+          "trades": 2580,
+          "wins": 792,
+          "win_rate": 30.697674418604652,
+          "total_return_pct": -77.89141935246191,
+          "expectancy_pct": -0.0301904726172333,
+          "profit_factor": 0.7355726914987899
+        },
+        "holdout_2023_2024": {
+          "trades": 1293,
+          "wins": 413,
+          "win_rate": 31.94122196442382,
+          "total_return_pct": -15.246726929544113,
+          "expectancy_pct": -0.011791745498487327,
+          "profit_factor": 0.8760429565498157
+        },
+        "true_oos_2025_2026": {
+          "trades": 1015,
+          "wins": 327,
+          "win_rate": 32.21674876847291,
+          "total_return_pct": -27.56209033690866,
+          "expectancy_pct": -0.027154768804836117,
+          "profit_factor": 0.7574838894232843
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 50,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema50_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 7768,
+          "wins": 2521,
+          "win_rate": 32.453656024716786,
+          "total_return_pct": -136.2295639865988,
+          "expectancy_pct": -0.017537276517327345,
+          "profit_factor": 0.8834843890702611
+        },
+        "validation_2019_2022": {
+          "trades": 2190,
+          "wins": 659,
+          "win_rate": 30.091324200913245,
+          "total_return_pct": -68.88009138401381,
+          "expectancy_pct": -0.031452096522380735,
+          "profit_factor": 0.7374853460897736
+        },
+        "holdout_2023_2024": {
+          "trades": 1057,
+          "wins": 345,
+          "win_rate": 32.63954588457899,
+          "total_return_pct": -9.978898136617374,
+          "expectancy_pct": -0.00944077401761341,
+          "profit_factor": 0.9046268990889987
+        },
+        "true_oos_2025_2026": {
+          "trades": 847,
+          "wins": 277,
+          "win_rate": 32.70365997638725,
+          "total_return_pct": -18.22449654824735,
+          "expectancy_pct": -0.021516524850351066,
+          "profit_factor": 0.8113338300656164
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 50,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema50_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 7768,
+          "wins": 2521,
+          "win_rate": 32.453656024716786,
+          "total_return_pct": -136.2295639865988,
+          "expectancy_pct": -0.017537276517327345,
+          "profit_factor": 0.8834843890702611
+        },
+        "validation_2019_2022": {
+          "trades": 2190,
+          "wins": 659,
+          "win_rate": 30.091324200913245,
+          "total_return_pct": -68.88009138401381,
+          "expectancy_pct": -0.031452096522380735,
+          "profit_factor": 0.7374853460897736
+        },
+        "holdout_2023_2024": {
+          "trades": 1057,
+          "wins": 345,
+          "win_rate": 32.63954588457899,
+          "total_return_pct": -9.978898136617374,
+          "expectancy_pct": -0.00944077401761341,
+          "profit_factor": 0.9046268990889987
+        },
+        "true_oos_2025_2026": {
+          "trades": 847,
+          "wins": 277,
+          "win_rate": 32.70365997638725,
+          "total_return_pct": -18.22449654824735,
+          "expectancy_pct": -0.021516524850351066,
+          "profit_factor": 0.8113338300656164
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 50,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema50_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 7768,
+          "wins": 2521,
+          "win_rate": 32.453656024716786,
+          "total_return_pct": -136.2295639865988,
+          "expectancy_pct": -0.017537276517327345,
+          "profit_factor": 0.8834843890702611
+        },
+        "validation_2019_2022": {
+          "trades": 2190,
+          "wins": 659,
+          "win_rate": 30.091324200913245,
+          "total_return_pct": -68.88009138401381,
+          "expectancy_pct": -0.031452096522380735,
+          "profit_factor": 0.7374853460897736
+        },
+        "holdout_2023_2024": {
+          "trades": 1057,
+          "wins": 345,
+          "win_rate": 32.63954588457899,
+          "total_return_pct": -9.978898136617374,
+          "expectancy_pct": -0.00944077401761341,
+          "profit_factor": 0.9046268990889987
+        },
+        "true_oos_2025_2026": {
+          "trades": 847,
+          "wins": 277,
+          "win_rate": 32.70365997638725,
+          "total_return_pct": -18.22449654824735,
+          "expectancy_pct": -0.021516524850351066,
+          "profit_factor": 0.8113338300656164
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 100,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema100_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 5582,
+          "wins": 1702,
+          "win_rate": 30.490863489788605,
+          "total_return_pct": -65.08093555121897,
+          "expectancy_pct": -0.011659071220211209,
+          "profit_factor": 0.9293501287522398
+        },
+        "validation_2019_2022": {
+          "trades": 1514,
+          "wins": 433,
+          "win_rate": 28.599735799207398,
+          "total_return_pct": -33.824109430172506,
+          "expectancy_pct": -0.022340891301302845,
+          "profit_factor": 0.8314049930297062
+        },
+        "holdout_2023_2024": {
+          "trades": 793,
+          "wins": 240,
+          "win_rate": 30.26481715006305,
+          "total_return_pct": -12.731574535352335,
+          "expectancy_pct": -0.016054948972701558,
+          "profit_factor": 0.8575291874418924
+        },
+        "true_oos_2025_2026": {
+          "trades": 611,
+          "wins": 186,
+          "win_rate": 30.441898527004913,
+          "total_return_pct": -12.673925384144322,
+          "expectancy_pct": -0.020742922068975978,
+          "profit_factor": 0.8301132331836956
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 100,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema100_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 5582,
+          "wins": 1702,
+          "win_rate": 30.490863489788605,
+          "total_return_pct": -65.08093555121897,
+          "expectancy_pct": -0.011659071220211209,
+          "profit_factor": 0.9293501287522398
+        },
+        "validation_2019_2022": {
+          "trades": 1514,
+          "wins": 433,
+          "win_rate": 28.599735799207398,
+          "total_return_pct": -33.824109430172506,
+          "expectancy_pct": -0.022340891301302845,
+          "profit_factor": 0.8314049930297062
+        },
+        "holdout_2023_2024": {
+          "trades": 793,
+          "wins": 240,
+          "win_rate": 30.26481715006305,
+          "total_return_pct": -12.731574535352335,
+          "expectancy_pct": -0.016054948972701558,
+          "profit_factor": 0.8575291874418924
+        },
+        "true_oos_2025_2026": {
+          "trades": 611,
+          "wins": 186,
+          "win_rate": 30.441898527004913,
+          "total_return_pct": -12.673925384144322,
+          "expectancy_pct": -0.020742922068975978,
+          "profit_factor": 0.8301132331836956
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 100,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema100_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 5582,
+          "wins": 1702,
+          "win_rate": 30.490863489788605,
+          "total_return_pct": -65.08093555121897,
+          "expectancy_pct": -0.011659071220211209,
+          "profit_factor": 0.9293501287522398
+        },
+        "validation_2019_2022": {
+          "trades": 1514,
+          "wins": 433,
+          "win_rate": 28.599735799207398,
+          "total_return_pct": -33.824109430172506,
+          "expectancy_pct": -0.022340891301302845,
+          "profit_factor": 0.8314049930297062
+        },
+        "holdout_2023_2024": {
+          "trades": 793,
+          "wins": 240,
+          "win_rate": 30.26481715006305,
+          "total_return_pct": -12.731574535352335,
+          "expectancy_pct": -0.016054948972701558,
+          "profit_factor": 0.8575291874418924
+        },
+        "true_oos_2025_2026": {
+          "trades": 611,
+          "wins": 186,
+          "win_rate": 30.441898527004913,
+          "total_return_pct": -12.673925384144322,
+          "expectancy_pct": -0.020742922068975978,
+          "profit_factor": 0.8301132331836956
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 200,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema200_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 3696,
+          "wins": 1005,
+          "win_rate": 27.19155844155844,
+          "total_return_pct": -38.28261792190414,
+          "expectancy_pct": -0.010357851169346358,
+          "profit_factor": 0.9451142483742315
+        },
+        "validation_2019_2022": {
+          "trades": 1028,
+          "wins": 263,
+          "win_rate": 25.583657587548636,
+          "total_return_pct": -25.89450931156694,
+          "expectancy_pct": -0.025189211392574844,
+          "profit_factor": 0.8398086507414212
+        },
+        "holdout_2023_2024": {
+          "trades": 577,
+          "wins": 142,
+          "win_rate": 24.610051993067593,
+          "total_return_pct": -25.68481810279608,
+          "expectancy_pct": -0.04451441612269685,
+          "profit_factor": 0.6866423313375336
+        },
+        "true_oos_2025_2026": {
+          "trades": 437,
+          "wins": 111,
+          "win_rate": 25.400457665903893,
+          "total_return_pct": -17.418591582855452,
+          "expectancy_pct": -0.03985947730630538,
+          "profit_factor": 0.7281631604667583
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 200,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema200_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 3696,
+          "wins": 1005,
+          "win_rate": 27.19155844155844,
+          "total_return_pct": -38.28261792190414,
+          "expectancy_pct": -0.010357851169346358,
+          "profit_factor": 0.9451142483742315
+        },
+        "validation_2019_2022": {
+          "trades": 1028,
+          "wins": 263,
+          "win_rate": 25.583657587548636,
+          "total_return_pct": -25.89450931156694,
+          "expectancy_pct": -0.025189211392574844,
+          "profit_factor": 0.8398086507414212
+        },
+        "holdout_2023_2024": {
+          "trades": 577,
+          "wins": 142,
+          "win_rate": 24.610051993067593,
+          "total_return_pct": -25.68481810279608,
+          "expectancy_pct": -0.04451441612269685,
+          "profit_factor": 0.6866423313375336
+        },
+        "true_oos_2025_2026": {
+          "trades": 437,
+          "wins": 111,
+          "win_rate": 25.400457665903893,
+          "total_return_pct": -17.418591582855452,
+          "expectancy_pct": -0.03985947730630538,
+          "profit_factor": 0.7281631604667583
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 200,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema200_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 3696,
+          "wins": 1005,
+          "win_rate": 27.19155844155844,
+          "total_return_pct": -38.28261792190414,
+          "expectancy_pct": -0.010357851169346358,
+          "profit_factor": 0.9451142483742315
+        },
+        "validation_2019_2022": {
+          "trades": 1028,
+          "wins": 263,
+          "win_rate": 25.583657587548636,
+          "total_return_pct": -25.89450931156694,
+          "expectancy_pct": -0.025189211392574844,
+          "profit_factor": 0.8398086507414212
+        },
+        "holdout_2023_2024": {
+          "trades": 577,
+          "wins": 142,
+          "win_rate": 24.610051993067593,
+          "total_return_pct": -25.68481810279608,
+          "expectancy_pct": -0.04451441612269685,
+          "profit_factor": 0.6866423313375336
+        },
+        "true_oos_2025_2026": {
+          "trades": 437,
+          "wins": 111,
+          "win_rate": 25.400457665903893,
+          "total_return_pct": -17.418591582855452,
+          "expectancy_pct": -0.03985947730630538,
+          "profit_factor": 0.7281631604667583
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 400,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema400_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 2574,
+          "wins": 612,
+          "win_rate": 23.776223776223777,
+          "total_return_pct": -51.44269667452703,
+          "expectancy_pct": -0.019985507643561395,
+          "profit_factor": 0.9082044979123078
+        },
+        "validation_2019_2022": {
+          "trades": 684,
+          "wins": 170,
+          "win_rate": 24.853801169590643,
+          "total_return_pct": -13.332352164646112,
+          "expectancy_pct": -0.01949174293076917,
+          "profit_factor": 0.8879426228762528
+        },
+        "holdout_2023_2024": {
+          "trades": 367,
+          "wins": 73,
+          "win_rate": 19.891008174386922,
+          "total_return_pct": -13.531154514307968,
+          "expectancy_pct": -0.036869630829177026,
+          "profit_factor": 0.7671858393189592
+        },
+        "true_oos_2025_2026": {
+          "trades": 287,
+          "wins": 66,
+          "win_rate": 22.99651567944251,
+          "total_return_pct": -12.476302979519378,
+          "expectancy_pct": -0.04347143895302919,
+          "profit_factor": 0.7402713235715128
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 400,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema400_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 2574,
+          "wins": 612,
+          "win_rate": 23.776223776223777,
+          "total_return_pct": -51.44269667452703,
+          "expectancy_pct": -0.019985507643561395,
+          "profit_factor": 0.9082044979123078
+        },
+        "validation_2019_2022": {
+          "trades": 684,
+          "wins": 170,
+          "win_rate": 24.853801169590643,
+          "total_return_pct": -13.332352164646112,
+          "expectancy_pct": -0.01949174293076917,
+          "profit_factor": 0.8879426228762528
+        },
+        "holdout_2023_2024": {
+          "trades": 367,
+          "wins": 73,
+          "win_rate": 19.891008174386922,
+          "total_return_pct": -13.531154514307968,
+          "expectancy_pct": -0.036869630829177026,
+          "profit_factor": 0.7671858393189592
+        },
+        "true_oos_2025_2026": {
+          "trades": 287,
+          "wins": 66,
+          "win_rate": 22.99651567944251,
+          "total_return_pct": -12.476302979519378,
+          "expectancy_pct": -0.04347143895302919,
+          "profit_factor": 0.7402713235715128
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 400,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema400_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 2574,
+          "wins": 612,
+          "win_rate": 23.776223776223777,
+          "total_return_pct": -51.44269667452703,
+          "expectancy_pct": -0.019985507643561395,
+          "profit_factor": 0.9082044979123078
+        },
+        "validation_2019_2022": {
+          "trades": 684,
+          "wins": 170,
+          "win_rate": 24.853801169590643,
+          "total_return_pct": -13.332352164646112,
+          "expectancy_pct": -0.01949174293076917,
+          "profit_factor": 0.8879426228762528
+        },
+        "holdout_2023_2024": {
+          "trades": 367,
+          "wins": 73,
+          "win_rate": 19.891008174386922,
+          "total_return_pct": -13.531154514307968,
+          "expectancy_pct": -0.036869630829177026,
+          "profit_factor": 0.7671858393189592
+        },
+        "true_oos_2025_2026": {
+          "trades": 287,
+          "wins": 66,
+          "win_rate": 22.99651567944251,
+          "total_return_pct": -12.476302979519378,
+          "expectancy_pct": -0.04347143895302919,
+          "profit_factor": 0.7402713235715128
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 800,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema800_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1700,
+          "wins": 362,
+          "win_rate": 21.294117647058826,
+          "total_return_pct": -37.58445053906656,
+          "expectancy_pct": -0.022108500317097976,
+          "profit_factor": 0.9113141713714469
+        },
+        "validation_2019_2022": {
+          "trades": 502,
+          "wins": 101,
+          "win_rate": 20.119521912350596,
+          "total_return_pct": -20.807021622591133,
+          "expectancy_pct": -0.041448250244205447,
+          "profit_factor": 0.7769066014279917
+        },
+        "holdout_2023_2024": {
+          "trades": 183,
+          "wins": 46,
+          "win_rate": 25.136612021857925,
+          "total_return_pct": -3.048821635159354,
+          "expectancy_pct": -0.01666022751453199,
+          "profit_factor": 0.9145002295516038
+        },
+        "true_oos_2025_2026": {
+          "trades": 226,
+          "wins": 41,
+          "win_rate": 18.141592920353983,
+          "total_return_pct": -18.039773370044863,
+          "expectancy_pct": -0.07982200606214541,
+          "profit_factor": 0.5696130397312825
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 800,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema800_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1700,
+          "wins": 362,
+          "win_rate": 21.294117647058826,
+          "total_return_pct": -37.58445053906656,
+          "expectancy_pct": -0.022108500317097976,
+          "profit_factor": 0.9113141713714469
+        },
+        "validation_2019_2022": {
+          "trades": 502,
+          "wins": 101,
+          "win_rate": 20.119521912350596,
+          "total_return_pct": -20.807021622591133,
+          "expectancy_pct": -0.041448250244205447,
+          "profit_factor": 0.7769066014279917
+        },
+        "holdout_2023_2024": {
+          "trades": 183,
+          "wins": 46,
+          "win_rate": 25.136612021857925,
+          "total_return_pct": -3.048821635159354,
+          "expectancy_pct": -0.01666022751453199,
+          "profit_factor": 0.9145002295516038
+        },
+        "true_oos_2025_2026": {
+          "trades": 226,
+          "wins": 41,
+          "win_rate": 18.141592920353983,
+          "total_return_pct": -18.039773370044863,
+          "expectancy_pct": -0.07982200606214541,
+          "profit_factor": 0.5696130397312825
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 800,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema800_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1700,
+          "wins": 362,
+          "win_rate": 21.294117647058826,
+          "total_return_pct": -37.58445053906656,
+          "expectancy_pct": -0.022108500317097976,
+          "profit_factor": 0.9113141713714469
+        },
+        "validation_2019_2022": {
+          "trades": 502,
+          "wins": 101,
+          "win_rate": 20.119521912350596,
+          "total_return_pct": -20.807021622591133,
+          "expectancy_pct": -0.041448250244205447,
+          "profit_factor": 0.7769066014279917
+        },
+        "holdout_2023_2024": {
+          "trades": 183,
+          "wins": 46,
+          "win_rate": 25.136612021857925,
+          "total_return_pct": -3.048821635159354,
+          "expectancy_pct": -0.01666022751453199,
+          "profit_factor": 0.9145002295516038
+        },
+        "true_oos_2025_2026": {
+          "trades": 226,
+          "wins": 41,
+          "win_rate": 18.141592920353983,
+          "total_return_pct": -18.039773370044863,
+          "expectancy_pct": -0.07982200606214541,
+          "profit_factor": 0.5696130397312825
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1200,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema1200_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1356,
+          "wins": 264,
+          "win_rate": 19.469026548672566,
+          "total_return_pct": -16.71567507573193,
+          "expectancy_pct": -0.012327194008651865,
+          "profit_factor": 0.951754221566718
+        },
+        "validation_2019_2022": {
+          "trades": 418,
+          "wins": 73,
+          "win_rate": 17.464114832535884,
+          "total_return_pct": -21.96839641497863,
+          "expectancy_pct": -0.052555972284637875,
+          "profit_factor": 0.7420743697185341
+        },
+        "holdout_2023_2024": {
+          "trades": 163,
+          "wins": 31,
+          "win_rate": 19.018404907975462,
+          "total_return_pct": -4.847027606182041,
+          "expectancy_pct": -0.029736365682098413,
+          "profit_factor": 0.8574615042062039
+        },
+        "true_oos_2025_2026": {
+          "trades": 188,
+          "wins": 29,
+          "win_rate": 15.425531914893616,
+          "total_return_pct": -12.565900831897807,
+          "expectancy_pct": -0.06683989804200961,
+          "profit_factor": 0.6385415129585922
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1200,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema1200_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1356,
+          "wins": 264,
+          "win_rate": 19.469026548672566,
+          "total_return_pct": -16.71567507573193,
+          "expectancy_pct": -0.012327194008651865,
+          "profit_factor": 0.951754221566718
+        },
+        "validation_2019_2022": {
+          "trades": 418,
+          "wins": 73,
+          "win_rate": 17.464114832535884,
+          "total_return_pct": -21.96839641497863,
+          "expectancy_pct": -0.052555972284637875,
+          "profit_factor": 0.7420743697185341
+        },
+        "holdout_2023_2024": {
+          "trades": 163,
+          "wins": 31,
+          "win_rate": 19.018404907975462,
+          "total_return_pct": -4.847027606182041,
+          "expectancy_pct": -0.029736365682098413,
+          "profit_factor": 0.8574615042062039
+        },
+        "true_oos_2025_2026": {
+          "trades": 188,
+          "wins": 29,
+          "win_rate": 15.425531914893616,
+          "total_return_pct": -12.565900831897807,
+          "expectancy_pct": -0.06683989804200961,
+          "profit_factor": 0.6385415129585922
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1200,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema1200_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1356,
+          "wins": 264,
+          "win_rate": 19.469026548672566,
+          "total_return_pct": -16.71567507573193,
+          "expectancy_pct": -0.012327194008651865,
+          "profit_factor": 0.951754221566718
+        },
+        "validation_2019_2022": {
+          "trades": 418,
+          "wins": 73,
+          "win_rate": 17.464114832535884,
+          "total_return_pct": -21.96839641497863,
+          "expectancy_pct": -0.052555972284637875,
+          "profit_factor": 0.7420743697185341
+        },
+        "holdout_2023_2024": {
+          "trades": 163,
+          "wins": 31,
+          "win_rate": 19.018404907975462,
+          "total_return_pct": -4.847027606182041,
+          "expectancy_pct": -0.029736365682098413,
+          "profit_factor": 0.8574615042062039
+        },
+        "true_oos_2025_2026": {
+          "trades": 188,
+          "wins": 29,
+          "win_rate": 15.425531914893616,
+          "total_return_pct": -12.565900831897807,
+          "expectancy_pct": -0.06683989804200961,
+          "profit_factor": 0.6385415129585922
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema1600_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1200,
+          "wins": 215,
+          "win_rate": 17.916666666666668,
+          "total_return_pct": -0.22688137685734233,
+          "expectancy_pct": -0.00018906781404778527,
+          "profit_factor": 0.9992392005827524
+        },
+        "validation_2019_2022": {
+          "trades": 352,
+          "wins": 55,
+          "win_rate": 15.625,
+          "total_return_pct": -18.816746657240913,
+          "expectancy_pct": -0.053456666639888954,
+          "profit_factor": 0.7384842422796898
+        },
+        "holdout_2023_2024": {
+          "trades": 137,
+          "wins": 29,
+          "win_rate": 21.16788321167883,
+          "total_return_pct": -2.165749177682024,
+          "expectancy_pct": -0.01580838815826295,
+          "profit_factor": 0.9231093274585306
+        },
+        "true_oos_2025_2026": {
+          "trades": 175,
+          "wins": 27,
+          "win_rate": 15.428571428571427,
+          "total_return_pct": -10.03969111809326,
+          "expectancy_pct": -0.05736966353196149,
+          "profit_factor": 0.6667707538277323
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema1600_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1200,
+          "wins": 215,
+          "win_rate": 17.916666666666668,
+          "total_return_pct": -0.22688137685734233,
+          "expectancy_pct": -0.00018906781404778527,
+          "profit_factor": 0.9992392005827524
+        },
+        "validation_2019_2022": {
+          "trades": 352,
+          "wins": 55,
+          "win_rate": 15.625,
+          "total_return_pct": -18.816746657240913,
+          "expectancy_pct": -0.053456666639888954,
+          "profit_factor": 0.7384842422796898
+        },
+        "holdout_2023_2024": {
+          "trades": 137,
+          "wins": 29,
+          "win_rate": 21.16788321167883,
+          "total_return_pct": -2.165749177682024,
+          "expectancy_pct": -0.01580838815826295,
+          "profit_factor": 0.9231093274585306
+        },
+        "true_oos_2025_2026": {
+          "trades": 175,
+          "wins": 27,
+          "win_rate": 15.428571428571427,
+          "total_return_pct": -10.03969111809326,
+          "expectancy_pct": -0.05736966353196149,
+          "profit_factor": 0.6667707538277323
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema1600_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1200,
+          "wins": 215,
+          "win_rate": 17.916666666666668,
+          "total_return_pct": -0.22688137685734233,
+          "expectancy_pct": -0.00018906781404778527,
+          "profit_factor": 0.9992392005827524
+        },
+        "validation_2019_2022": {
+          "trades": 352,
+          "wins": 55,
+          "win_rate": 15.625,
+          "total_return_pct": -18.816746657240913,
+          "expectancy_pct": -0.053456666639888954,
+          "profit_factor": 0.7384842422796898
+        },
+        "holdout_2023_2024": {
+          "trades": 137,
+          "wins": 29,
+          "win_rate": 21.16788321167883,
+          "total_return_pct": -2.165749177682024,
+          "expectancy_pct": -0.01580838815826295,
+          "profit_factor": 0.9231093274585306
+        },
+        "true_oos_2025_2026": {
+          "trades": 175,
+          "wins": 27,
+          "win_rate": 15.428571428571427,
+          "total_return_pct": -10.03969111809326,
+          "expectancy_pct": -0.05736966353196149,
+          "profit_factor": 0.6667707538277323
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2000,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema2000_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1100,
+          "wins": 188,
+          "win_rate": 17.09090909090909,
+          "total_return_pct": -9.570243746172352,
+          "expectancy_pct": -0.008700221587429412,
+          "profit_factor": 0.9663800232992296
+        },
+        "validation_2019_2022": {
+          "trades": 306,
+          "wins": 48,
+          "win_rate": 15.686274509803921,
+          "total_return_pct": -14.696977445521625,
+          "expectancy_pct": -0.048029338057260215,
+          "profit_factor": 0.7590315016067313
+        },
+        "holdout_2023_2024": {
+          "trades": 123,
+          "wins": 24,
+          "win_rate": 19.51219512195122,
+          "total_return_pct": 0.5136895270469,
+          "expectancy_pct": 0.004176337618267479,
+          "profit_factor": 1.0217315260542068
+        },
+        "true_oos_2025_2026": {
+          "trades": 137,
+          "wins": 24,
+          "win_rate": 17.51824817518248,
+          "total_return_pct": -3.2346764902804024,
+          "expectancy_pct": -0.023610777301316804,
+          "profit_factor": 0.8505034256013158
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2000,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema2000_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1100,
+          "wins": 188,
+          "win_rate": 17.09090909090909,
+          "total_return_pct": -9.570243746172352,
+          "expectancy_pct": -0.008700221587429412,
+          "profit_factor": 0.9663800232992296
+        },
+        "validation_2019_2022": {
+          "trades": 306,
+          "wins": 48,
+          "win_rate": 15.686274509803921,
+          "total_return_pct": -14.696977445521625,
+          "expectancy_pct": -0.048029338057260215,
+          "profit_factor": 0.7590315016067313
+        },
+        "holdout_2023_2024": {
+          "trades": 123,
+          "wins": 24,
+          "win_rate": 19.51219512195122,
+          "total_return_pct": 0.5136895270469,
+          "expectancy_pct": 0.004176337618267479,
+          "profit_factor": 1.0217315260542068
+        },
+        "true_oos_2025_2026": {
+          "trades": 137,
+          "wins": 24,
+          "win_rate": 17.51824817518248,
+          "total_return_pct": -3.2346764902804024,
+          "expectancy_pct": -0.023610777301316804,
+          "profit_factor": 0.8505034256013158
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2000,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema2000_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1100,
+          "wins": 188,
+          "win_rate": 17.09090909090909,
+          "total_return_pct": -9.570243746172352,
+          "expectancy_pct": -0.008700221587429412,
+          "profit_factor": 0.9663800232992296
+        },
+        "validation_2019_2022": {
+          "trades": 306,
+          "wins": 48,
+          "win_rate": 15.686274509803921,
+          "total_return_pct": -14.696977445521625,
+          "expectancy_pct": -0.048029338057260215,
+          "profit_factor": 0.7590315016067313
+        },
+        "holdout_2023_2024": {
+          "trades": 123,
+          "wins": 24,
+          "win_rate": 19.51219512195122,
+          "total_return_pct": 0.5136895270469,
+          "expectancy_pct": 0.004176337618267479,
+          "profit_factor": 1.0217315260542068
+        },
+        "true_oos_2025_2026": {
+          "trades": 137,
+          "wins": 24,
+          "win_rate": 17.51824817518248,
+          "total_return_pct": -3.2346764902804024,
+          "expectancy_pct": -0.023610777301316804,
+          "profit_factor": 0.8505034256013158
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2400,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema2400_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1008,
+          "wins": 161,
+          "win_rate": 15.972222222222221,
+          "total_return_pct": -3.697178975804679,
+          "expectancy_pct": -0.0036678362855205146,
+          "profit_factor": 0.9859339930785808
+        },
+        "validation_2019_2022": {
+          "trades": 282,
+          "wins": 43,
+          "win_rate": 15.24822695035461,
+          "total_return_pct": -16.145490474152023,
+          "expectancy_pct": -0.057253512319688026,
+          "profit_factor": 0.7349166180573002
+        },
+        "holdout_2023_2024": {
+          "trades": 105,
+          "wins": 24,
+          "win_rate": 22.857142857142858,
+          "total_return_pct": 1.9073780782941854,
+          "expectancy_pct": 0.01816550550756367,
+          "profit_factor": 1.088811770559526
+        },
+        "true_oos_2025_2026": {
+          "trades": 121,
+          "wins": 19,
+          "win_rate": 15.702479338842975,
+          "total_return_pct": -1.5932814241617752,
+          "expectancy_pct": -0.01316761507571715,
+          "profit_factor": 0.91655328059763
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2400,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema2400_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1008,
+          "wins": 161,
+          "win_rate": 15.972222222222221,
+          "total_return_pct": -3.697178975804679,
+          "expectancy_pct": -0.0036678362855205146,
+          "profit_factor": 0.9859339930785808
+        },
+        "validation_2019_2022": {
+          "trades": 282,
+          "wins": 43,
+          "win_rate": 15.24822695035461,
+          "total_return_pct": -16.145490474152023,
+          "expectancy_pct": -0.057253512319688026,
+          "profit_factor": 0.7349166180573002
+        },
+        "holdout_2023_2024": {
+          "trades": 105,
+          "wins": 24,
+          "win_rate": 22.857142857142858,
+          "total_return_pct": 1.9073780782941854,
+          "expectancy_pct": 0.01816550550756367,
+          "profit_factor": 1.088811770559526
+        },
+        "true_oos_2025_2026": {
+          "trades": 121,
+          "wins": 19,
+          "win_rate": 15.702479338842975,
+          "total_return_pct": -1.5932814241617752,
+          "expectancy_pct": -0.01316761507571715,
+          "profit_factor": 0.91655328059763
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 2400,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema2400_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1008,
+          "wins": 161,
+          "win_rate": 15.972222222222221,
+          "total_return_pct": -3.697178975804679,
+          "expectancy_pct": -0.0036678362855205146,
+          "profit_factor": 0.9859339930785808
+        },
+        "validation_2019_2022": {
+          "trades": 282,
+          "wins": 43,
+          "win_rate": 15.24822695035461,
+          "total_return_pct": -16.145490474152023,
+          "expectancy_pct": -0.057253512319688026,
+          "profit_factor": 0.7349166180573002
+        },
+        "holdout_2023_2024": {
+          "trades": 105,
+          "wins": 24,
+          "win_rate": 22.857142857142858,
+          "total_return_pct": 1.9073780782941854,
+          "expectancy_pct": 0.01816550550756367,
+          "profit_factor": 1.088811770559526
+        },
+        "true_oos_2025_2026": {
+          "trades": 121,
+          "wins": 19,
+          "win_rate": 15.702479338842975,
+          "total_return_pct": -1.5932814241617752,
+          "expectancy_pct": -0.01316761507571715,
+          "profit_factor": 0.91655328059763
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 3200,
+        "mode": "price",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema3200_price_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 874,
+          "wins": 135,
+          "win_rate": 15.446224256292906,
+          "total_return_pct": -11.125887355012832,
+          "expectancy_pct": -0.012729848232280128,
+          "profit_factor": 0.9535628886124835
+        },
+        "validation_2019_2022": {
+          "trades": 250,
+          "wins": 39,
+          "win_rate": 15.6,
+          "total_return_pct": -10.485698504013445,
+          "expectancy_pct": -0.04194279401605378,
+          "profit_factor": 0.7996029762403446
+        },
+        "holdout_2023_2024": {
+          "trades": 107,
+          "wins": 22,
+          "win_rate": 20.5607476635514,
+          "total_return_pct": 3.8278692881311565,
+          "expectancy_pct": 0.035774479328328564,
+          "profit_factor": 1.2162013005816512
+        },
+        "true_oos_2025_2026": {
+          "trades": 99,
+          "wins": 15,
+          "win_rate": 15.151515151515152,
+          "total_return_pct": -3.054907495462561,
+          "expectancy_pct": -0.030857651469318795,
+          "profit_factor": 0.8262351068567841
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 3200,
+        "mode": "slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema3200_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 874,
+          "wins": 135,
+          "win_rate": 15.446224256292906,
+          "total_return_pct": -11.125887355012832,
+          "expectancy_pct": -0.012729848232280128,
+          "profit_factor": 0.9535628886124835
+        },
+        "validation_2019_2022": {
+          "trades": 250,
+          "wins": 39,
+          "win_rate": 15.6,
+          "total_return_pct": -10.485698504013445,
+          "expectancy_pct": -0.04194279401605378,
+          "profit_factor": 0.7996029762403446
+        },
+        "holdout_2023_2024": {
+          "trades": 107,
+          "wins": 22,
+          "win_rate": 20.5607476635514,
+          "total_return_pct": 3.8278692881311565,
+          "expectancy_pct": 0.035774479328328564,
+          "profit_factor": 1.2162013005816512
+        },
+        "true_oos_2025_2026": {
+          "trades": 99,
+          "wins": 15,
+          "win_rate": 15.151515151515152,
+          "total_return_pct": -3.054907495462561,
+          "expectancy_pct": -0.030857651469318795,
+          "profit_factor": 0.8262351068567841
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 3200,
+        "mode": "price_and_slope",
+        "average_kind": "ema",
+        "session_start": 0,
+        "session_end": 24
+      },
+      "name": "ema3200_price_and_slope_h00_24",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 874,
+          "wins": 135,
+          "win_rate": 15.446224256292906,
+          "total_return_pct": -11.125887355012832,
+          "expectancy_pct": -0.012729848232280128,
+          "profit_factor": 0.9535628886124835
+        },
+        "validation_2019_2022": {
+          "trades": 250,
+          "wins": 39,
+          "win_rate": 15.6,
+          "total_return_pct": -10.485698504013445,
+          "expectancy_pct": -0.04194279401605378,
+          "profit_factor": 0.7996029762403446
+        },
+        "holdout_2023_2024": {
+          "trades": 107,
+          "wins": 22,
+          "win_rate": 20.5607476635514,
+          "total_return_pct": 3.8278692881311565,
+          "expectancy_pct": 0.035774479328328564,
+          "profit_factor": 1.2162013005816512
+        },
+        "true_oos_2025_2026": {
+          "trades": 99,
+          "wins": 15,
+          "win_rate": 15.151515151515152,
+          "total_return_pct": -3.054907495462561,
+          "expectancy_pct": -0.030857651469318795,
+          "profit_factor": 0.8262351068567841
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 0,
+        "mode": "session",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 8
+      },
+      "name": "no_ma_h00_08",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 3972,
+          "wins": 1455,
+          "win_rate": 36.631419939577036,
+          "total_return_pct": -107.99080610124572,
+          "expectancy_pct": -0.027188017648853403,
+          "profit_factor": 0.8748018355023441
+        },
+        "validation_2019_2022": {
+          "trades": 1083,
+          "wins": 393,
+          "win_rate": 36.288088642659275,
+          "total_return_pct": -9.579440377935322,
+          "expectancy_pct": -0.00884528197408617,
+          "profit_factor": 0.9430643774764667
+        },
+        "holdout_2023_2024": {
+          "trades": 607,
+          "wins": 227,
+          "win_rate": 37.39703459637562,
+          "total_return_pct": -14.024445570739163,
+          "expectancy_pct": -0.023104523180789396,
+          "profit_factor": 0.8368593198321869
+        },
+        "true_oos_2025_2026": {
+          "trades": 399,
+          "wins": 151,
+          "win_rate": 37.84461152882205,
+          "total_return_pct": -9.858422107346284,
+          "expectancy_pct": -0.024707824830441816,
+          "profit_factor": 0.8513551082439658
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 0,
+        "mode": "session",
+        "average_kind": "sma",
+        "session_start": 6,
+        "session_end": 15
+      },
+      "name": "no_ma_h06_15",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 4793,
+          "wins": 1793,
+          "win_rate": 37.40872105153349,
+          "total_return_pct": -76.23866328146488,
+          "expectancy_pct": -0.015906251467027933,
+          "profit_factor": 0.9194075290080065
+        },
+        "validation_2019_2022": {
+          "trades": 1338,
+          "wins": 445,
+          "win_rate": 33.25859491778774,
+          "total_return_pct": -39.72966078787419,
+          "expectancy_pct": -0.029693318974494908,
+          "profit_factor": 0.8082194385257498
+        },
+        "holdout_2023_2024": {
+          "trades": 676,
+          "wins": 253,
+          "win_rate": 37.426035502958584,
+          "total_return_pct": -2.930817564175096,
+          "expectancy_pct": -0.004335528941087421,
+          "profit_factor": 0.9654843056223744
+        },
+        "true_oos_2025_2026": {
+          "trades": 457,
+          "wins": 174,
+          "win_rate": 38.074398249452955,
+          "total_return_pct": -5.921229676773754,
+          "expectancy_pct": -0.012956738898848477,
+          "profit_factor": 0.9110974250097872
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 0,
+        "mode": "session",
+        "average_kind": "sma",
+        "session_start": 7,
+        "session_end": 16
+      },
+      "name": "no_ma_h07_16",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 4407,
+          "wins": 1675,
+          "win_rate": 38.007714998865445,
+          "total_return_pct": -53.96546759836272,
+          "expectancy_pct": -0.012245397685128823,
+          "profit_factor": 0.9398809364050333
+        },
+        "validation_2019_2022": {
+          "trades": 1248,
+          "wins": 432,
+          "win_rate": 34.61538461538461,
+          "total_return_pct": -32.04830997993353,
+          "expectancy_pct": -0.025679735560844172,
+          "profit_factor": 0.8366753265510369
+        },
+        "holdout_2023_2024": {
+          "trades": 590,
+          "wins": 233,
+          "win_rate": 39.49152542372881,
+          "total_return_pct": 3.713027602683292,
+          "expectancy_pct": 0.006293267123192021,
+          "profit_factor": 1.048606648154637
+        },
+        "true_oos_2025_2026": {
+          "trades": 441,
+          "wins": 167,
+          "win_rate": 37.868480725623584,
+          "total_return_pct": -7.401361479642558,
+          "expectancy_pct": -0.016783132606899225,
+          "profit_factor": 0.8852275052181009
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 0,
+        "mode": "session",
+        "average_kind": "sma",
+        "session_start": 8,
+        "session_end": 17
+      },
+      "name": "no_ma_h08_17",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 3860,
+          "wins": 1474,
+          "win_rate": 38.18652849740933,
+          "total_return_pct": -39.74564543371376,
+          "expectancy_pct": -0.010296799335159005,
+          "profit_factor": 0.9516494969704414
+        },
+        "validation_2019_2022": {
+          "trades": 1062,
+          "wins": 380,
+          "win_rate": 35.781544256120526,
+          "total_return_pct": -31.272903882588096,
+          "expectancy_pct": -0.029447178797163933,
+          "profit_factor": 0.8291615685559565
+        },
+        "holdout_2023_2024": {
+          "trades": 504,
+          "wins": 209,
+          "win_rate": 41.46825396825397,
+          "total_return_pct": 0.865237387434644,
+          "expectancy_pct": 0.001716740848084611,
+          "profit_factor": 1.0120317598873667
+        },
+        "true_oos_2025_2026": {
+          "trades": 399,
+          "wins": 148,
+          "win_rate": 37.092731829573935,
+          "total_return_pct": -15.033922499889933,
+          "expectancy_pct": -0.037679003759122635,
+          "profit_factor": 0.7725083840667128
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 0,
+        "mode": "session",
+        "average_kind": "sma",
+        "session_start": 12,
+        "session_end": 21
+      },
+      "name": "no_ma_h12_21",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 3178,
+          "wins": 1204,
+          "win_rate": 37.88546255506608,
+          "total_return_pct": -54.27156770521939,
+          "expectancy_pct": -0.0170772711470168,
+          "profit_factor": 0.9281556176540127
+        },
+        "validation_2019_2022": {
+          "trades": 851,
+          "wins": 299,
+          "win_rate": 35.13513513513514,
+          "total_return_pct": -41.49041080922165,
+          "expectancy_pct": -0.04875488931753425,
+          "profit_factor": 0.7577337821260068
+        },
+        "holdout_2023_2024": {
+          "trades": 439,
+          "wins": 167,
+          "win_rate": 38.041002277904326,
+          "total_return_pct": -12.23200593814719,
+          "expectancy_pct": -0.027863339266850088,
+          "profit_factor": 0.8416848708657226
+        },
+        "true_oos_2025_2026": {
+          "trades": 365,
+          "wins": 140,
+          "win_rate": 38.35616438356164,
+          "total_return_pct": -17.967230535033472,
+          "expectancy_pct": -0.04922528913707801,
+          "profit_factor": 0.7307974156151773
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 0,
+        "mode": "session",
+        "average_kind": "sma",
+        "session_start": 13,
+        "session_end": 22
+      },
+      "name": "no_ma_h13_22",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 2859,
+          "wins": 1111,
+          "win_rate": 38.85974116824064,
+          "total_return_pct": -71.22141785561844,
+          "expectancy_pct": -0.0249113039019302,
+          "profit_factor": 0.9004834394202712
+        },
+        "validation_2019_2022": {
+          "trades": 730,
+          "wins": 263,
+          "win_rate": 36.02739726027397,
+          "total_return_pct": -28.81175387105538,
+          "expectancy_pct": -0.0394681559877471,
+          "profit_factor": 0.8146250462121595
+        },
+        "holdout_2023_2024": {
+          "trades": 359,
+          "wins": 132,
+          "win_rate": 36.768802228412255,
+          "total_return_pct": -10.49817355366283,
+          "expectancy_pct": -0.029242823269255796,
+          "profit_factor": 0.8479196020117588
+        },
+        "true_oos_2025_2026": {
+          "trades": 325,
+          "wins": 119,
+          "win_rate": 36.61538461538461,
+          "total_return_pct": -21.936580548501937,
+          "expectancy_pct": -0.06749717091846749,
+          "profit_factor": 0.6642148708037539
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 0,
+        "mode": "session",
+        "average_kind": "sma",
+        "session_start": 6,
+        "session_end": 21
+      },
+      "name": "no_ma_h06_21",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 6428,
+          "wins": 2264,
+          "win_rate": 35.22090852520224,
+          "total_return_pct": -121.02166147470876,
+          "expectancy_pct": -0.018827265319649778,
+          "profit_factor": 0.8903614753535419
+        },
+        "validation_2019_2022": {
+          "trades": 1749,
+          "wins": 555,
+          "win_rate": 31.732418524871353,
+          "total_return_pct": -70.66803801562989,
+          "expectancy_pct": -0.04040482448006283,
+          "profit_factor": 0.7171892173630441
+        },
+        "holdout_2023_2024": {
+          "trades": 849,
+          "wins": 313,
+          "win_rate": 36.86690223792697,
+          "total_return_pct": -3.849357242673877,
+          "expectancy_pct": -0.004533989685128241,
+          "profit_factor": 0.9601301039026889
+        },
+        "true_oos_2025_2026": {
+          "trades": 667,
+          "wins": 238,
+          "win_rate": 35.68215892053973,
+          "total_return_pct": -21.232793483232236,
+          "expectancy_pct": -0.03183327358805433,
+          "profit_factor": 0.7595258606704012
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 0,
+        "session_end": 8
+      },
+      "name": "sma1600_slope_h00_08",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 418,
+          "wins": 131,
+          "win_rate": 31.33971291866029,
+          "total_return_pct": -19.555821393195576,
+          "expectancy_pct": -0.04678426170620951,
+          "profit_factor": 0.9190066062269624
+        },
+        "validation_2019_2022": {
+          "trades": 122,
+          "wins": 43,
+          "win_rate": 35.24590163934426,
+          "total_return_pct": 1.2639010474086243,
+          "expectancy_pct": 0.010359844650890362,
+          "profit_factor": 1.0310020770230415
+        },
+        "holdout_2023_2024": {
+          "trades": 39,
+          "wins": 18,
+          "win_rate": 46.15384615384615,
+          "total_return_pct": 8.918483212867722,
+          "expectancy_pct": 0.228679056740198,
+          "profit_factor": 1.7542436029168047
+        },
+        "true_oos_2025_2026": {
+          "trades": 46,
+          "wins": 19,
+          "win_rate": 41.30434782608695,
+          "total_return_pct": 1.6768048965302467,
+          "expectancy_pct": 0.03645228035935319,
+          "profit_factor": 1.0943379521640577
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 6,
+        "session_end": 15
+      },
+      "name": "sma1600_slope_h06_15",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 526,
+          "wins": 161,
+          "win_rate": 30.60836501901141,
+          "total_return_pct": 0.7450674945026279,
+          "expectancy_pct": 0.0014164781264308516,
+          "profit_factor": 1.0031373248174882
+        },
+        "validation_2019_2022": {
+          "trades": 168,
+          "wins": 48,
+          "win_rate": 28.57142857142857,
+          "total_return_pct": -9.7044534863475,
+          "expectancy_pct": -0.05776460408540179,
+          "profit_factor": 0.8202840972306635
+        },
+        "holdout_2023_2024": {
+          "trades": 45,
+          "wins": 21,
+          "win_rate": 46.666666666666664,
+          "total_return_pct": 9.783185760150701,
+          "expectancy_pct": 0.2174041280033489,
+          "profit_factor": 1.714824449711375
+        },
+        "true_oos_2025_2026": {
+          "trades": 48,
+          "wins": 18,
+          "win_rate": 37.5,
+          "total_return_pct": 4.7465463559125425,
+          "expectancy_pct": 0.09888638241484464,
+          "profit_factor": 1.3484954058552046
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 7,
+        "session_end": 16
+      },
+      "name": "sma1600_slope_h07_16",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 514,
+          "wins": 160,
+          "win_rate": 31.1284046692607,
+          "total_return_pct": 8.752947454870245,
+          "expectancy_pct": 0.01702908065149853,
+          "profit_factor": 1.0378304483931224
+        },
+        "validation_2019_2022": {
+          "trades": 166,
+          "wins": 49,
+          "win_rate": 29.518072289156628,
+          "total_return_pct": -7.767565749385126,
+          "expectancy_pct": -0.04679256475533208,
+          "profit_factor": 0.855205895371391
+        },
+        "holdout_2023_2024": {
+          "trades": 51,
+          "wins": 22,
+          "win_rate": 43.13725490196079,
+          "total_return_pct": 8.989474382277134,
+          "expectancy_pct": 0.17626420357406145,
+          "profit_factor": 1.6292737822998888
+        },
+        "true_oos_2025_2026": {
+          "trades": 52,
+          "wins": 20,
+          "win_rate": 38.46153846153847,
+          "total_return_pct": 0.195378231348744,
+          "expectancy_pct": 0.0037572736797835383,
+          "profit_factor": 1.0121634465411726
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 8,
+        "session_end": 17
+      },
+      "name": "sma1600_slope_h08_17",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 492,
+          "wins": 155,
+          "win_rate": 31.50406504065041,
+          "total_return_pct": 2.464988181144733,
+          "expectancy_pct": 0.005010138579562466,
+          "profit_factor": 1.010506916417134
+        },
+        "validation_2019_2022": {
+          "trades": 156,
+          "wins": 44,
+          "win_rate": 28.205128205128204,
+          "total_return_pct": -10.161856545851702,
+          "expectancy_pct": -0.06514010606315193,
+          "profit_factor": 0.8116505205697176
+        },
+        "holdout_2023_2024": {
+          "trades": 51,
+          "wins": 20,
+          "win_rate": 39.21568627450981,
+          "total_return_pct": 6.4718436644461335,
+          "expectancy_pct": 0.12689889538129673,
+          "profit_factor": 1.4040255653705351
+        },
+        "true_oos_2025_2026": {
+          "trades": 54,
+          "wins": 17,
+          "win_rate": 31.48148148148148,
+          "total_return_pct": -0.387356711302262,
+          "expectancy_pct": -0.0071732724315233705,
+          "profit_factor": 0.9749920686327435
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 12,
+        "session_end": 21
+      },
+      "name": "sma1600_slope_h12_21",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 460,
+          "wins": 141,
+          "win_rate": 30.65217391304348,
+          "total_return_pct": -9.932317405386176,
+          "expectancy_pct": -0.021591994359535165,
+          "profit_factor": 0.9591680481292417
+        },
+        "validation_2019_2022": {
+          "trades": 140,
+          "wins": 37,
+          "win_rate": 26.42857142857143,
+          "total_return_pct": -16.57554529719704,
+          "expectancy_pct": -0.11839675212283599,
+          "profit_factor": 0.7105895124173056
+        },
+        "holdout_2023_2024": {
+          "trades": 41,
+          "wins": 18,
+          "win_rate": 43.90243902439025,
+          "total_return_pct": 2.2617182528395823,
+          "expectancy_pct": 0.05516385982535567,
+          "profit_factor": 1.1333669566819111
+        },
+        "true_oos_2025_2026": {
+          "trades": 48,
+          "wins": 20,
+          "win_rate": 41.66666666666667,
+          "total_return_pct": 1.2352164762047326,
+          "expectancy_pct": 0.025733676587598595,
+          "profit_factor": 1.0849624731505116
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 13,
+        "session_end": 22
+      },
+      "name": "sma1600_slope_h13_22",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 412,
+          "wins": 123,
+          "win_rate": 29.85436893203883,
+          "total_return_pct": -9.617674441158393,
+          "expectancy_pct": -0.023343870002811632,
+          "profit_factor": 0.9595386281867159
+        },
+        "validation_2019_2022": {
+          "trades": 122,
+          "wins": 38,
+          "win_rate": 31.147540983606557,
+          "total_return_pct": -15.920015104399702,
+          "expectancy_pct": -0.13049192708524346,
+          "profit_factor": 0.7142335204454591
+        },
+        "holdout_2023_2024": {
+          "trades": 35,
+          "wins": 15,
+          "win_rate": 42.857142857142854,
+          "total_return_pct": 4.038268630001079,
+          "expectancy_pct": 0.11537910371431655,
+          "profit_factor": 1.3173079227155344
+        },
+        "true_oos_2025_2026": {
+          "trades": 48,
+          "wins": 17,
+          "win_rate": 35.41666666666667,
+          "total_return_pct": -2.196438880774643,
+          "expectancy_pct": -0.04575914334947173,
+          "profit_factor": 0.8757758734156083
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "length": 1600,
+        "mode": "slope",
+        "average_kind": "sma",
+        "session_start": 6,
+        "session_end": 21
+      },
+      "name": "sma1600_slope_h06_21",
+      "periods": {
+        "train_2004_2018": {
+          "trades": 626,
+          "wins": 189,
+          "win_rate": 30.191693290734822,
+          "total_return_pct": -2.080688117467801,
+          "expectancy_pct": -0.0033237829352520784,
+          "profit_factor": 0.9917632470191501
+        },
+        "validation_2019_2022": {
+          "trades": 204,
+          "wins": 61,
+          "win_rate": 29.901960784313726,
+          "total_return_pct": -7.025666058499312,
+          "expectancy_pct": -0.03443953950244761,
+          "profit_factor": 0.8710105142599087
+        },
+        "holdout_2023_2024": {
+          "trades": 53,
+          "wins": 23,
+          "win_rate": 43.39622641509434,
+          "total_return_pct": 8.839871659552886,
+          "expectancy_pct": 0.1667900313123186,
+          "profit_factor": 1.59355818031267
+        },
+        "true_oos_2025_2026": {
+          "trades": 68,
+          "wins": 27,
+          "win_rate": 39.705882352941174,
+          "total_return_pct": 4.7850778164443835,
+          "expectancy_pct": 0.07036879141829976,
+          "profit_factor": 1.3074705818442265
+        }
+      },
+      "eligible": false
+    }
+  ],
+  "selected_by_train_validation": {
+    "candidate": {
+      "length": 3200,
+      "mode": "price_and_slope",
+      "average_kind": "sma",
+      "session_start": 0,
+      "session_end": 24
+    },
+    "name": "sma3200_price_and_slope_h00_24",
+    "periods": {
+      "train_2004_2018": {
+        "trades": 228,
+        "wins": 46,
+        "win_rate": 20.175438596491226,
+        "total_return_pct": 21.004402911480916,
+        "expectancy_pct": 0.09212457417316192,
+        "profit_factor": 1.1441981275886888
+      },
+      "validation_2019_2022": {
+        "trades": 62,
+        "wins": 11,
+        "win_rate": 17.741935483870968,
+        "total_return_pct": 6.733080382259064,
+        "expectancy_pct": 0.1085980706815978,
+        "profit_factor": 1.2367696298313666
+      },
+      "holdout_2023_2024": {
+        "trades": 21,
+        "wins": 5,
+        "win_rate": 23.809523809523807,
+        "total_return_pct": -1.2090313986544121,
+        "expectancy_pct": -0.057572923745448194,
+        "profit_factor": 0.906166809493643
+      },
+      "true_oos_2025_2026": {
+        "trades": 23,
+        "wins": 3,
+        "win_rate": 13.043478260869565,
+        "total_return_pct": -2.75590286455597,
+        "expectancy_pct": -0.11982186367634654,
+        "profit_factor": 0.7959812422810572
+      }
+    },
+    "eligible": true
+  },
+  "adopted": null,
+  "adoption_reason": "no train/validation-selected candidate stayed positive in both unseen periods"
+}
