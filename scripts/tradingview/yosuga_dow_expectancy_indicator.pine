@@ -1,0 +1,149 @@
+//@version=5
+indicator("Yosuga-style Dow Theory Indicator + Performance v2", overlay=true, shorttitle="Yosuga_Dow_Stats_v2")
+
+// ==========================================
+// 入力パラメータ設定
+// ==========================================
+gpDow = "【よすが式ダウ理論設定】"
+leftBars = input.int(5, title="高値・安値 検出期間 (左側)", minval=1, group=gpDow, tooltip="直近の高値・安値を判定するための左側のローソク足数")
+rightBars = input.int(5, title="高値・安値 検出期間 (右側)", minval=1, group=gpDow, tooltip="直近の高値・安値を判定するための右側のローソク足数")
+
+gpMa = "【田向式 移動平均線設定】"
+showMa = input.bool(true, title="移動平均線を表示", group=gpMa)
+maLength = input.int(20, title="移動平均線 期間", minval=1, group=gpMa)
+
+gpStats = "【成績表示設定】"
+roundTripCostPct = input.float(0.0, title="1取引の往復コスト (%)", minval=0.0, step=0.01, group=gpStats, tooltip="スプレッド・手数料・スリッページの合計を、1取引あたりの割合で入力します")
+
+// ==========================================
+// 直近高値（スイングハイ）と直近安値（スイングロー）の算出
+// ==========================================
+pH = ta.pivothigh(high, leftBars, rightBars)
+pL = ta.pivotlow(low, leftBars, rightBars)
+
+var float lastHigh = na
+var float lastLow = na
+
+if not na(pH)
+    lastHigh := pH
+if not na(pL)
+    lastLow := pL
+
+plot(lastHigh, color=color.new(color.red, 30), style=plot.style_linebr, linewidth=2, title="直近高値 (レジスタンス)")
+plot(lastLow, color=color.new(color.green, 30), style=plot.style_linebr, linewidth=2, title="直近安値 (サポート)")
+
+// ==========================================
+// トレンド判定と売買サイン
+// ==========================================
+var int trend = 0 // 1 = 上昇トレンド, -1 = 下降トレンド
+bool buySignal = false
+bool sellSignal = false
+bool crossedAboveLastHigh = ta.crossover(close, lastHigh)
+bool crossedBelowLastLow = ta.crossunder(close, lastLow)
+
+if not na(lastHigh) and crossedAboveLastHigh and trend <= 0
+    trend := 1
+    buySignal := true
+
+if not na(lastLow) and crossedBelowLastLow and trend >= 0
+    trend := -1
+    sellSignal := true
+
+plotshape(buySignal, title="BUYサイン", style=shape.triangleup, location=location.belowbar, color=color.blue, size=size.normal, text="BUY", textcolor=color.blue)
+plotshape(sellSignal, title="SELLサイン", style=shape.triangledown, location=location.abovebar, color=color.orange, size=size.normal, text="SELL", textcolor=color.orange)
+
+// ==========================================
+// 移動平均線の描画（傾きで色分け）
+// ==========================================
+maVal = ta.sma(close, maLength)
+maColor = ta.rising(maVal, 1) ? color.blue : color.red
+plot(showMa ? maVal : na, color=maColor, linewidth=2, title="移動平均線 (傾き色分け)")
+
+// ==========================================
+// 仮想取引の集計
+// BUY/SELLサインの終値で反転し、反対サインまでを1取引とします。
+// ==========================================
+var int tradeSide = 0 // 1 = ロング, -1 = ショート, 0 = 未保有
+var float entryPrice = na
+var int closedTrades = 0
+var int wins = 0
+var int losses = 0
+var int breakevens = 0
+var float totalReturnPct = 0.0
+var float grossProfitPct = 0.0
+var float grossLossPct = 0.0
+
+if buySignal
+    if tradeSide == -1 and not na(entryPrice)
+        tradeReturnPct = (entryPrice - close) / entryPrice * 100.0 - roundTripCostPct
+        closedTrades := closedTrades + 1
+        totalReturnPct := totalReturnPct + tradeReturnPct
+        if tradeReturnPct > 0
+            wins := wins + 1
+            grossProfitPct := grossProfitPct + tradeReturnPct
+        else if tradeReturnPct < 0
+            losses := losses + 1
+            grossLossPct := grossLossPct + math.abs(tradeReturnPct)
+        else
+            breakevens := breakevens + 1
+    tradeSide := 1
+    entryPrice := close
+
+if sellSignal
+    if tradeSide == 1 and not na(entryPrice)
+        tradeReturnPct = (close - entryPrice) / entryPrice * 100.0 - roundTripCostPct
+        closedTrades := closedTrades + 1
+        totalReturnPct := totalReturnPct + tradeReturnPct
+        if tradeReturnPct > 0
+            wins := wins + 1
+            grossProfitPct := grossProfitPct + tradeReturnPct
+        else if tradeReturnPct < 0
+            losses := losses + 1
+            grossLossPct := grossLossPct + math.abs(tradeReturnPct)
+        else
+            breakevens := breakevens + 1
+    tradeSide := -1
+    entryPrice := close
+
+winRate = closedTrades > 0 ? wins * 100.0 / closedTrades : na
+expectancyPct = closedTrades > 0 ? totalReturnPct / closedTrades : na
+averageWinPct = wins > 0 ? grossProfitPct / wins : na
+averageLossPct = losses > 0 ? grossLossPct / losses : na
+profitFactor = grossLossPct > 0 ? grossProfitPct / grossLossPct : na
+unrealizedPct = tradeSide == 1 and not na(entryPrice) ? (close - entryPrice) / entryPrice * 100.0 : tradeSide == -1 and not na(entryPrice) ? (entryPrice - close) / entryPrice * 100.0 : na
+
+fPercent(float value) =>
+    na(value) ? "--" : str.tostring(value, "#.##") + "%"
+
+fNumber(float value) =>
+    na(value) ? "--" : str.tostring(value, "#.##")
+
+fValueColor(float value) =>
+    na(value) ? color.silver : value > 0 ? color.lime : value < 0 ? color.red : color.white
+
+var table statsTable = table.new(position.bottom_right, 2, 10, bgcolor=color.new(color.black, 5), border_width=2, frame_width=2, frame_color=color.orange, border_color=color.new(color.gray, 25))
+
+if barstate.islast
+    headerColor = color.rgb(25, 95, 165)
+    labelColor = color.rgb(45, 50, 60)
+    valueColor = color.rgb(15, 18, 24)
+    table.cell(statsTable, 0, 0, "Yosuga Dow 成績 v2", bgcolor=headerColor, text_color=color.white, text_size=size.normal)
+    table.cell(statsTable, 1, 0, "反対サイン決済", bgcolor=headerColor, text_color=color.white, text_size=size.normal)
+    table.cell(statsTable, 0, 1, "決済済み取引", bgcolor=labelColor, text_color=color.white)
+    table.cell(statsTable, 1, 1, str.tostring(closedTrades), bgcolor=valueColor, text_color=color.white)
+    table.cell(statsTable, 0, 2, "勝 / 負 / 引分", bgcolor=labelColor, text_color=color.white)
+    table.cell(statsTable, 1, 2, str.tostring(wins) + " / " + str.tostring(losses) + " / " + str.tostring(breakevens), bgcolor=valueColor, text_color=color.white)
+    table.cell(statsTable, 0, 3, "勝率", bgcolor=labelColor, text_color=color.white)
+    table.cell(statsTable, 1, 3, fPercent(winRate), bgcolor=valueColor, text_color=fValueColor(winRate - 50.0))
+    table.cell(statsTable, 0, 4, "期待値 / 取引", bgcolor=labelColor, text_color=color.white)
+    table.cell(statsTable, 1, 4, fPercent(expectancyPct), bgcolor=valueColor, text_color=fValueColor(expectancyPct))
+    table.cell(statsTable, 0, 5, "平均利益", bgcolor=labelColor, text_color=color.white)
+    table.cell(statsTable, 1, 5, fPercent(averageWinPct), bgcolor=valueColor, text_color=color.lime)
+    table.cell(statsTable, 0, 6, "平均損失", bgcolor=labelColor, text_color=color.white)
+    table.cell(statsTable, 1, 6, fPercent(averageLossPct), bgcolor=valueColor, text_color=color.red)
+    table.cell(statsTable, 0, 7, "PF", bgcolor=labelColor, text_color=color.white)
+    table.cell(statsTable, 1, 7, fNumber(profitFactor), bgcolor=valueColor, text_color=fValueColor(profitFactor - 1.0))
+    table.cell(statsTable, 0, 8, "累計損益 (単純合計)", bgcolor=labelColor, text_color=color.white)
+    table.cell(statsTable, 1, 8, fPercent(totalReturnPct), bgcolor=valueColor, text_color=fValueColor(totalReturnPct))
+    table.cell(statsTable, 0, 9, "保有中の含み損益", bgcolor=labelColor, text_color=color.white)
+    table.cell(statsTable, 1, 9, fPercent(unrealizedPct), bgcolor=valueColor, text_color=fValueColor(unrealizedPct))
