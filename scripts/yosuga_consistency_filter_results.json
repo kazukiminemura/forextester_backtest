@@ -1,0 +1,1476 @@
+{
+  "strategy": {
+    "symbol": "EURUSD",
+    "history_end": "2026-07-17T20:45:00",
+    "signal": {
+      "htf": {
+        "average_kind": "sma",
+        "length": 20,
+        "mode": "slope"
+      },
+      "pullback_lookback_bars": 4,
+      "require_ma_slope": true,
+      "breakeven_trigger_r": 0.5,
+      "require_local_dow": true
+    },
+    "exit": "strict RR1 with 0.5R next-bar breakeven",
+    "round_trip_cost_pct": 0.01
+  },
+  "selection_rule": {
+    "minimum_train_trades": 100,
+    "minimum_validation_trades": 30,
+    "selection_periods": [
+      "train_2004_2018",
+      "validation_2019_2022"
+    ],
+    "unseen_periods": [
+      "holdout_2023_2024",
+      "true_oos_2025_2026"
+    ]
+  },
+  "candidates": [
+    {
+      "candidate": {
+        "name": "baseline",
+        "filter_kind": "none",
+        "threshold": 0.0,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1698,
+          "targets": 521,
+          "stops": 575,
+          "breakevens": 602,
+          "win_rate": 30.683156654888105,
+          "total_return_pct": -21.586584653014516,
+          "expectancy_pct": -0.012712947381045062,
+          "profit_factor": 0.7707675876069198,
+          "win_rate_including_breakeven": 66.13663133097762,
+          "max_negative_streak": 18,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -21.84380458932006,
+          "positive_month_rate": 39.44444444444444
+        },
+        "validation_2019_2022": {
+          "trades": 498,
+          "targets": 166,
+          "stops": 175,
+          "breakevens": 157,
+          "win_rate": 33.33333333333333,
+          "total_return_pct": -4.9737581903980965,
+          "expectancy_pct": -0.00998746624577931,
+          "profit_factor": 0.7794051238781625,
+          "win_rate_including_breakeven": 64.85943775100401,
+          "max_negative_streak": 15,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -7.6173553786754065,
+          "positive_month_rate": 41.666666666666664
+        },
+        "holdout_2023_2024": {
+          "trades": 240,
+          "targets": 83,
+          "stops": 86,
+          "breakevens": 71,
+          "win_rate": 34.583333333333336,
+          "total_return_pct": -1.494280899790246,
+          "expectancy_pct": -0.0062261704157926916,
+          "profit_factor": 0.8425552886814504,
+          "win_rate_including_breakeven": 64.16666666666667,
+          "max_negative_streak": 8,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -3.31541014428102,
+          "positive_month_rate": 41.666666666666664
+        },
+        "true_oos_2025_2026": {
+          "trades": 172,
+          "targets": 54,
+          "stops": 68,
+          "breakevens": 50,
+          "win_rate": 31.3953488372093,
+          "total_return_pct": -5.086813638971369,
+          "expectancy_pct": -0.029574497900996335,
+          "profit_factor": 0.5284006146339905,
+          "win_rate_including_breakeven": 60.46511627906977,
+          "max_negative_streak": 10,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -6.024441259678311,
+          "positive_month_rate": 31.57894736842105
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "loss_cooldown_4",
+        "filter_kind": "none",
+        "threshold": 0.0,
+        "loss_cooldown_bars": 4,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1661,
+          "targets": 512,
+          "stops": 559,
+          "breakevens": 590,
+          "win_rate": 30.82480433473811,
+          "total_return_pct": -20.329571301581947,
+          "expectancy_pct": -0.012239356593366614,
+          "profit_factor": 0.7785709949395806,
+          "win_rate_including_breakeven": 66.34557495484648,
+          "max_negative_streak": 17,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -20.586791237887425,
+          "positive_month_rate": 40.55555555555556
+        },
+        "validation_2019_2022": {
+          "trades": 488,
+          "targets": 162,
+          "stops": 171,
+          "breakevens": 155,
+          "win_rate": 33.19672131147541,
+          "total_return_pct": -4.939688611610375,
+          "expectancy_pct": -0.010122312728709785,
+          "profit_factor": 0.7774016092322918,
+          "win_rate_including_breakeven": 64.95901639344262,
+          "max_negative_streak": 15,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -7.461896815722144,
+          "positive_month_rate": 41.666666666666664
+        },
+        "holdout_2023_2024": {
+          "trades": 236,
+          "targets": 81,
+          "stops": 86,
+          "breakevens": 69,
+          "win_rate": 34.32203389830508,
+          "total_return_pct": -1.5909155849765195,
+          "expectancy_pct": -0.006741167732951354,
+          "profit_factor": 0.8320194026590627,
+          "win_rate_including_breakeven": 63.559322033898304,
+          "max_negative_streak": 8,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -3.3351976690971927,
+          "positive_month_rate": 41.666666666666664
+        },
+        "true_oos_2025_2026": {
+          "trades": 167,
+          "targets": 50,
+          "stops": 67,
+          "breakevens": 50,
+          "win_rate": 29.94011976047904,
+          "total_return_pct": -5.506169433702283,
+          "expectancy_pct": -0.03297107445330708,
+          "profit_factor": 0.4845504999808631,
+          "win_rate_including_breakeven": 59.880239520958085,
+          "max_negative_streak": 12,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -6.322293717387654,
+          "positive_month_rate": 31.57894736842105
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "loss_cooldown_8",
+        "filter_kind": "none",
+        "threshold": 0.0,
+        "loss_cooldown_bars": 8,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1647,
+          "targets": 506,
+          "stops": 556,
+          "breakevens": 585,
+          "win_rate": 30.722525804493017,
+          "total_return_pct": -20.248795728831077,
+          "expectancy_pct": -0.012294350776460884,
+          "profit_factor": 0.7777892040308593,
+          "win_rate_including_breakeven": 66.24165148755313,
+          "max_negative_streak": 17,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -20.506015665136555,
+          "positive_month_rate": 40.55555555555556
+        },
+        "validation_2019_2022": {
+          "trades": 478,
+          "targets": 155,
+          "stops": 170,
+          "breakevens": 153,
+          "win_rate": 32.42677824267782,
+          "total_return_pct": -5.302716409074978,
+          "expectancy_pct": -0.011093548972960204,
+          "profit_factor": 0.7595328814514362,
+          "win_rate_including_breakeven": 64.43514644351464,
+          "max_negative_streak": 14,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -7.824924613186748,
+          "positive_month_rate": 39.583333333333336
+        },
+        "holdout_2023_2024": {
+          "trades": 232,
+          "targets": 80,
+          "stops": 85,
+          "breakevens": 67,
+          "win_rate": 34.48275862068966,
+          "total_return_pct": -1.5261568668134897,
+          "expectancy_pct": -0.006578262356954697,
+          "profit_factor": 0.836664954499123,
+          "win_rate_including_breakeven": 63.36206896551724,
+          "max_negative_streak": 8,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -3.2804389509341636,
+          "positive_month_rate": 41.666666666666664
+        },
+        "true_oos_2025_2026": {
+          "trades": 167,
+          "targets": 50,
+          "stops": 67,
+          "breakevens": 50,
+          "win_rate": 29.94011976047904,
+          "total_return_pct": -5.506169433702283,
+          "expectancy_pct": -0.03297107445330708,
+          "profit_factor": 0.4845504999808631,
+          "win_rate_including_breakeven": 59.880239520958085,
+          "max_negative_streak": 12,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -6.322293717387654,
+          "positive_month_rate": 31.57894736842105
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "loss_cooldown_16",
+        "filter_kind": "none",
+        "threshold": 0.0,
+        "loss_cooldown_bars": 16,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1606,
+          "targets": 493,
+          "stops": 544,
+          "breakevens": 569,
+          "win_rate": 30.697384806973847,
+          "total_return_pct": -19.53796774156878,
+          "expectancy_pct": -0.012165608805460014,
+          "profit_factor": 0.7799179869966842,
+          "win_rate_including_breakeven": 66.12702366127024,
+          "max_negative_streak": 18,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -19.795187677874193,
+          "positive_month_rate": 39.44444444444444
+        },
+        "validation_2019_2022": {
+          "trades": 467,
+          "targets": 152,
+          "stops": 169,
+          "breakevens": 146,
+          "win_rate": 32.54817987152035,
+          "total_return_pct": -5.316826056005035,
+          "expectancy_pct": -0.011385066501081446,
+          "profit_factor": 0.7574427246204114,
+          "win_rate_including_breakeven": 63.811563169164884,
+          "max_negative_streak": 14,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -7.839034260116806,
+          "positive_month_rate": 39.583333333333336
+        },
+        "holdout_2023_2024": {
+          "trades": 226,
+          "targets": 78,
+          "stops": 82,
+          "breakevens": 66,
+          "win_rate": 34.51327433628318,
+          "total_return_pct": -1.3545267259221723,
+          "expectancy_pct": -0.005993481088151204,
+          "profit_factor": 0.8477637018515654,
+          "win_rate_including_breakeven": 63.716814159292035,
+          "max_negative_streak": 8,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -3.2817464153212574,
+          "positive_month_rate": 41.666666666666664
+        },
+        "true_oos_2025_2026": {
+          "trades": 162,
+          "targets": 49,
+          "stops": 65,
+          "breakevens": 48,
+          "win_rate": 30.246913580246915,
+          "total_return_pct": -5.268714431137369,
+          "expectancy_pct": -0.032522928587267706,
+          "profit_factor": 0.4918478093682146,
+          "win_rate_including_breakeven": 59.876543209876544,
+          "max_negative_streak": 11,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -6.08483871482274,
+          "positive_month_rate": 31.57894736842105
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "loss_cooldown_32",
+        "filter_kind": "none",
+        "threshold": 0.0,
+        "loss_cooldown_bars": 32,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1537,
+          "targets": 472,
+          "stops": 521,
+          "breakevens": 544,
+          "win_rate": 30.709173715029277,
+          "total_return_pct": -19.90066431850307,
+          "expectancy_pct": -0.012947732152571938,
+          "profit_factor": 0.7682442200090094,
+          "win_rate_including_breakeven": 66.10279765777489,
+          "max_negative_streak": 22,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -20.15788425480848,
+          "positive_month_rate": 38.888888888888886
+        },
+        "validation_2019_2022": {
+          "trades": 443,
+          "targets": 142,
+          "stops": 163,
+          "breakevens": 138,
+          "win_rate": 32.05417607223476,
+          "total_return_pct": -5.790690026802364,
+          "expectancy_pct": -0.01307153504921527,
+          "profit_factor": 0.7266318944640681,
+          "win_rate_including_breakeven": 63.205417607223474,
+          "max_negative_streak": 14,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -8.322898230914136,
+          "positive_month_rate": 37.5
+        },
+        "holdout_2023_2024": {
+          "trades": 220,
+          "targets": 75,
+          "stops": 82,
+          "breakevens": 63,
+          "win_rate": 34.090909090909086,
+          "total_return_pct": -1.5426373414264432,
+          "expectancy_pct": -0.007011987915574742,
+          "profit_factor": 0.8260352444536232,
+          "win_rate_including_breakeven": 62.72727272727273,
+          "max_negative_streak": 8,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -3.479857030825529,
+          "positive_month_rate": 41.666666666666664
+        },
+        "true_oos_2025_2026": {
+          "trades": 160,
+          "targets": 48,
+          "stops": 63,
+          "breakevens": 49,
+          "win_rate": 30.0,
+          "total_return_pct": -3.967702289946587,
+          "expectancy_pct": -0.024798139312166168,
+          "profit_factor": 0.5618628774401891,
+          "win_rate_including_breakeven": 60.625,
+          "max_negative_streak": 16,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -4.877124125409332,
+          "positive_month_rate": 36.8421052631579
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "stop_after_loss_for_day",
+        "filter_kind": "none",
+        "threshold": 0.0,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": true
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1450,
+          "targets": 451,
+          "stops": 491,
+          "breakevens": 508,
+          "win_rate": 31.103448275862068,
+          "total_return_pct": -16.62279517519857,
+          "expectancy_pct": -0.011463996672550736,
+          "profit_factor": 0.7922067962654374,
+          "win_rate_including_breakeven": 66.13793103448276,
+          "max_negative_streak": 21,
+          "max_stop_streak": 8,
+          "max_drawdown_pct": -16.880015111503816,
+          "positive_month_rate": 41.666666666666664
+        },
+        "validation_2019_2022": {
+          "trades": 419,
+          "targets": 145,
+          "stops": 156,
+          "breakevens": 118,
+          "win_rate": 34.60620525059666,
+          "total_return_pct": -3.477312361914601,
+          "expectancy_pct": -0.008299074849438188,
+          "profit_factor": 0.8170556784660796,
+          "win_rate_including_breakeven": 62.76849642004773,
+          "max_negative_streak": 14,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -5.793484746244012,
+          "positive_month_rate": 39.583333333333336
+        },
+        "holdout_2023_2024": {
+          "trades": 211,
+          "targets": 71,
+          "stops": 78,
+          "breakevens": 62,
+          "win_rate": 33.649289099526065,
+          "total_return_pct": -1.5422784091369506,
+          "expectancy_pct": -0.007309376346620619,
+          "profit_factor": 0.8189495025863054,
+          "win_rate_including_breakeven": 63.03317535545024,
+          "max_negative_streak": 8,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -3.278499843411023,
+          "positive_month_rate": 37.5
+        },
+        "true_oos_2025_2026": {
+          "trades": 145,
+          "targets": 44,
+          "stops": 59,
+          "breakevens": 42,
+          "win_rate": 30.344827586206897,
+          "total_return_pct": -3.7372079018295548,
+          "expectancy_pct": -0.025773847598824517,
+          "profit_factor": 0.5655596394338862,
+          "win_rate_including_breakeven": 59.310344827586206,
+          "max_negative_streak": 9,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -4.646943105115073,
+          "positive_month_rate": 31.57894736842105
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_risk_1.25atr",
+        "filter_kind": "max_risk_atr",
+        "threshold": 1.25,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 526,
+          "targets": 154,
+          "stops": 184,
+          "breakevens": 188,
+          "win_rate": 29.277566539923956,
+          "total_return_pct": -7.615024717304631,
+          "expectancy_pct": -0.014477233302860515,
+          "profit_factor": 0.583692842120777,
+          "win_rate_including_breakeven": 65.0190114068441,
+          "max_negative_streak": 16,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -7.615024717304601,
+          "positive_month_rate": 30.45977011494253
+        },
+        "validation_2019_2022": {
+          "trades": 149,
+          "targets": 46,
+          "stops": 57,
+          "breakevens": 46,
+          "win_rate": 30.87248322147651,
+          "total_return_pct": -1.6638014860684776,
+          "expectancy_pct": -0.011166452926634077,
+          "profit_factor": 0.5663624682596092,
+          "win_rate_including_breakeven": 61.74496644295302,
+          "max_negative_streak": 8,
+          "max_stop_streak": 7,
+          "max_drawdown_pct": -1.9627625197896421,
+          "positive_month_rate": 26.19047619047619
+        },
+        "holdout_2023_2024": {
+          "trades": 65,
+          "targets": 24,
+          "stops": 24,
+          "breakevens": 17,
+          "win_rate": 36.92307692307693,
+          "total_return_pct": -0.5032851244416442,
+          "expectancy_pct": -0.007742848068332988,
+          "profit_factor": 0.6781044105022856,
+          "win_rate_including_breakeven": 63.07692307692308,
+          "max_negative_streak": 6,
+          "max_stop_streak": 2,
+          "max_drawdown_pct": -0.6086414631965521,
+          "positive_month_rate": 28.571428571428573
+        },
+        "true_oos_2025_2026": {
+          "trades": 44,
+          "targets": 16,
+          "stops": 17,
+          "breakevens": 11,
+          "win_rate": 36.36363636363637,
+          "total_return_pct": -0.8243080335147462,
+          "expectancy_pct": -0.018734273488971505,
+          "profit_factor": 0.5419276091323914,
+          "win_rate_including_breakeven": 61.36363636363637,
+          "max_negative_streak": 12,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -1.1305356591661868,
+          "positive_month_rate": 31.25
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_risk_1.5atr",
+        "filter_kind": "max_risk_atr",
+        "threshold": 1.5,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 848,
+          "targets": 239,
+          "stops": 310,
+          "breakevens": 299,
+          "win_rate": 28.183962264150942,
+          "total_return_pct": -14.264679852570469,
+          "expectancy_pct": -0.016821556429918005,
+          "profit_factor": 0.5830011652207313,
+          "win_rate_including_breakeven": 63.443396226415096,
+          "max_negative_streak": 15,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -14.388722376021018,
+          "positive_month_rate": 31.46067415730337
+        },
+        "validation_2019_2022": {
+          "trades": 233,
+          "targets": 70,
+          "stops": 87,
+          "breakevens": 76,
+          "win_rate": 30.042918454935624,
+          "total_return_pct": -2.8867389154134395,
+          "expectancy_pct": -0.012389437405207895,
+          "profit_factor": 0.5920093379549719,
+          "win_rate_including_breakeven": 62.66094420600859,
+          "max_negative_streak": 8,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -3.2090709453956734,
+          "positive_month_rate": 21.27659574468085
+        },
+        "holdout_2023_2024": {
+          "trades": 101,
+          "targets": 37,
+          "stops": 33,
+          "breakevens": 31,
+          "win_rate": 36.633663366336634,
+          "total_return_pct": -0.6793054866856454,
+          "expectancy_pct": -0.006725796897877677,
+          "profit_factor": 0.7389168826242347,
+          "win_rate_including_breakeven": 67.32673267326733,
+          "max_negative_streak": 6,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -0.7577564994250336,
+          "positive_month_rate": 25.0
+        },
+        "true_oos_2025_2026": {
+          "trades": 75,
+          "targets": 27,
+          "stops": 26,
+          "breakevens": 22,
+          "win_rate": 36.0,
+          "total_return_pct": -1.0233350777512666,
+          "expectancy_pct": -0.013644467703350222,
+          "profit_factor": 0.6214296527643333,
+          "win_rate_including_breakeven": 65.33333333333333,
+          "max_negative_streak": 8,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -1.4010725026388282,
+          "positive_month_rate": 31.57894736842105
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_risk_2atr",
+        "filter_kind": "max_risk_atr",
+        "threshold": 2.0,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1292,
+          "targets": 390,
+          "stops": 456,
+          "breakevens": 446,
+          "win_rate": 30.185758513931887,
+          "total_return_pct": -17.71221904035496,
+          "expectancy_pct": -0.013709147864051826,
+          "profit_factor": 0.6963288022503011,
+          "win_rate_including_breakeven": 64.70588235294117,
+          "max_negative_streak": 20,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -18.298939230119345,
+          "positive_month_rate": 36.111111111111114
+        },
+        "validation_2019_2022": {
+          "trades": 365,
+          "targets": 118,
+          "stops": 135,
+          "breakevens": 112,
+          "win_rate": 32.32876712328767,
+          "total_return_pct": -3.7138520256724545,
+          "expectancy_pct": -0.010174937056636862,
+          "profit_factor": 0.7147091740149883,
+          "win_rate_including_breakeven": 63.013698630136986,
+          "max_negative_streak": 15,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -4.959895783620131,
+          "positive_month_rate": 22.916666666666668
+        },
+        "holdout_2023_2024": {
+          "trades": 169,
+          "targets": 60,
+          "stops": 57,
+          "breakevens": 52,
+          "win_rate": 35.50295857988166,
+          "total_return_pct": -0.8354002405295529,
+          "expectancy_pct": -0.004943196689523982,
+          "profit_factor": 0.8258887208433221,
+          "win_rate_including_breakeven": 66.27218934911242,
+          "max_negative_streak": 8,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -1.7765617139666607,
+          "positive_month_rate": 25.0
+        },
+        "true_oos_2025_2026": {
+          "trades": 123,
+          "targets": 44,
+          "stops": 48,
+          "breakevens": 31,
+          "win_rate": 35.77235772357724,
+          "total_return_pct": -2.2447956020310342,
+          "expectancy_pct": -0.01825037074821979,
+          "profit_factor": 0.6033024463514604,
+          "win_rate_including_breakeven": 60.97560975609756,
+          "max_negative_streak": 13,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -2.680708668904817,
+          "positive_month_rate": 26.31578947368421
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_risk_2.5atr",
+        "filter_kind": "max_risk_atr",
+        "threshold": 2.5,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1501,
+          "targets": 450,
+          "stops": 521,
+          "breakevens": 530,
+          "win_rate": 29.980013324450365,
+          "total_return_pct": -22.285027692317506,
+          "expectancy_pct": -0.01484678727003165,
+          "profit_factor": 0.69667895346328,
+          "win_rate_including_breakeven": 65.28980679546969,
+          "max_negative_streak": 22,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -22.757198748397464,
+          "positive_month_rate": 35.0
+        },
+        "validation_2019_2022": {
+          "trades": 440,
+          "targets": 142,
+          "stops": 160,
+          "breakevens": 138,
+          "win_rate": 32.27272727272727,
+          "total_return_pct": -4.496378358252126,
+          "expectancy_pct": -0.010219041723300286,
+          "profit_factor": 0.7372305238436448,
+          "win_rate_including_breakeven": 63.63636363636363,
+          "max_negative_streak": 18,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -6.728288860851074,
+          "positive_month_rate": 37.5
+        },
+        "holdout_2023_2024": {
+          "trades": 205,
+          "targets": 72,
+          "stops": 73,
+          "breakevens": 60,
+          "win_rate": 35.12195121951219,
+          "total_return_pct": -1.4390799229735154,
+          "expectancy_pct": -0.007019902063285441,
+          "profit_factor": 0.7905309986702894,
+          "win_rate_including_breakeven": 64.39024390243902,
+          "max_negative_streak": 11,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -2.5623166800421666,
+          "positive_month_rate": 37.5
+        },
+        "true_oos_2025_2026": {
+          "trades": 141,
+          "targets": 49,
+          "stops": 52,
+          "breakevens": 40,
+          "win_rate": 34.751773049645394,
+          "total_return_pct": -2.1403021039491645,
+          "expectancy_pct": -0.015179447545738755,
+          "profit_factor": 0.6526036319789122,
+          "win_rate_including_breakeven": 63.12056737588652,
+          "max_negative_streak": 10,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -2.5234580965941333,
+          "positive_month_rate": 36.8421052631579
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_ma_distance_0.75atr",
+        "filter_kind": "max_ma_distance_atr",
+        "threshold": 0.75,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 581,
+          "targets": 171,
+          "stops": 198,
+          "breakevens": 212,
+          "win_rate": 29.43201376936317,
+          "total_return_pct": -8.3593468844958,
+          "expectancy_pct": -0.014387860386395524,
+          "profit_factor": 0.6280109842537857,
+          "win_rate_including_breakeven": 65.92082616179002,
+          "max_negative_streak": 21,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -8.359346884495762,
+          "positive_month_rate": 35.26011560693642
+        },
+        "validation_2019_2022": {
+          "trades": 175,
+          "targets": 55,
+          "stops": 65,
+          "breakevens": 55,
+          "win_rate": 31.428571428571427,
+          "total_return_pct": -2.236256044024757,
+          "expectancy_pct": -0.012778605965855755,
+          "profit_factor": 0.5903193809059295,
+          "win_rate_including_breakeven": 62.857142857142854,
+          "max_negative_streak": 10,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -2.6698638625408226,
+          "positive_month_rate": 25.53191489361702
+        },
+        "holdout_2023_2024": {
+          "trades": 83,
+          "targets": 31,
+          "stops": 28,
+          "breakevens": 24,
+          "win_rate": 37.34939759036144,
+          "total_return_pct": -0.5802569428087777,
+          "expectancy_pct": -0.006991047503720213,
+          "profit_factor": 0.7294228537590633,
+          "win_rate_including_breakeven": 66.26506024096386,
+          "max_negative_streak": 8,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -0.7422589858042238,
+          "positive_month_rate": 37.5
+        },
+        "true_oos_2025_2026": {
+          "trades": 52,
+          "targets": 22,
+          "stops": 17,
+          "breakevens": 13,
+          "win_rate": 42.30769230769231,
+          "total_return_pct": 0.31578231438620424,
+          "expectancy_pct": 0.006072736815119313,
+          "profit_factor": 1.1894742868355734,
+          "win_rate_including_breakeven": 67.3076923076923,
+          "max_negative_streak": 4,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -0.4324003076324873,
+          "positive_month_rate": 43.75
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_ma_distance_1atr",
+        "filter_kind": "max_ma_distance_atr",
+        "threshold": 1.0,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 917,
+          "targets": 262,
+          "stops": 335,
+          "breakevens": 320,
+          "win_rate": 28.57142857142857,
+          "total_return_pct": -16.73431048748492,
+          "expectancy_pct": -0.018248975449819977,
+          "profit_factor": 0.5934115986335221,
+          "win_rate_including_breakeven": 63.467829880043624,
+          "max_negative_streak": 25,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -16.73431048748487,
+          "positive_month_rate": 33.5195530726257
+        },
+        "validation_2019_2022": {
+          "trades": 265,
+          "targets": 81,
+          "stops": 102,
+          "breakevens": 82,
+          "win_rate": 30.566037735849054,
+          "total_return_pct": -3.7357334689412243,
+          "expectancy_pct": -0.014097107429966884,
+          "profit_factor": 0.5827973948337631,
+          "win_rate_including_breakeven": 61.509433962264154,
+          "max_negative_streak": 9,
+          "max_stop_streak": 7,
+          "max_drawdown_pct": -4.357294463315216,
+          "positive_month_rate": 22.916666666666668
+        },
+        "holdout_2023_2024": {
+          "trades": 121,
+          "targets": 42,
+          "stops": 43,
+          "breakevens": 36,
+          "win_rate": 34.710743801652896,
+          "total_return_pct": -0.7579693987744307,
+          "expectancy_pct": -0.0062642099072267,
+          "profit_factor": 0.7814318654177748,
+          "win_rate_including_breakeven": 64.46280991735537,
+          "max_negative_streak": 8,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -1.2860831173232212,
+          "positive_month_rate": 25.0
+        },
+        "true_oos_2025_2026": {
+          "trades": 86,
+          "targets": 29,
+          "stops": 33,
+          "breakevens": 24,
+          "win_rate": 33.72093023255814,
+          "total_return_pct": -1.262289095707534,
+          "expectancy_pct": -0.014677780182645744,
+          "profit_factor": 0.6579520818784057,
+          "win_rate_including_breakeven": 61.627906976744185,
+          "max_negative_streak": 8,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -2.1245635775344454,
+          "positive_month_rate": 36.8421052631579
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_ma_distance_1.5atr",
+        "filter_kind": "max_ma_distance_atr",
+        "threshold": 1.5,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1351,
+          "targets": 407,
+          "stops": 475,
+          "breakevens": 469,
+          "win_rate": 30.12583271650629,
+          "total_return_pct": -20.26565033308121,
+          "expectancy_pct": -0.015000481371636723,
+          "profit_factor": 0.6865526543584712,
+          "win_rate_including_breakeven": 64.84085862324204,
+          "max_negative_streak": 18,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -20.389692856531923,
+          "positive_month_rate": 33.333333333333336
+        },
+        "validation_2019_2022": {
+          "trades": 385,
+          "targets": 122,
+          "stops": 145,
+          "breakevens": 118,
+          "win_rate": 31.68831168831169,
+          "total_return_pct": -4.314915448434753,
+          "expectancy_pct": -0.011207572593337023,
+          "profit_factor": 0.701051004161242,
+          "win_rate_including_breakeven": 62.33766233766234,
+          "max_negative_streak": 17,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -5.558959437500123,
+          "positive_month_rate": 25.0
+        },
+        "holdout_2023_2024": {
+          "trades": 181,
+          "targets": 63,
+          "stops": 65,
+          "breakevens": 53,
+          "win_rate": 34.806629834254146,
+          "total_return_pct": -1.5511915970331305,
+          "expectancy_pct": -0.008570119320625031,
+          "profit_factor": 0.7348536555427103,
+          "win_rate_including_breakeven": 64.08839779005525,
+          "max_negative_streak": 9,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -2.3741430908399095,
+          "positive_month_rate": 33.333333333333336
+        },
+        "true_oos_2025_2026": {
+          "trades": 121,
+          "targets": 42,
+          "stops": 46,
+          "breakevens": 33,
+          "win_rate": 34.710743801652896,
+          "total_return_pct": -1.7310443678395175,
+          "expectancy_pct": -0.014306151800326591,
+          "profit_factor": 0.6745907419466187,
+          "win_rate_including_breakeven": 61.98347107438016,
+          "max_negative_streak": 13,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -2.50089918282049,
+          "positive_month_rate": 31.57894736842105
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_ma_distance_2atr",
+        "filter_kind": "max_ma_distance_atr",
+        "threshold": 2.0,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1545,
+          "targets": 469,
+          "stops": 533,
+          "breakevens": 543,
+          "win_rate": 30.355987055016183,
+          "total_return_pct": -21.584350856433524,
+          "expectancy_pct": -0.013970453628759563,
+          "profit_factor": 0.719853846868765,
+          "win_rate_including_breakeven": 65.50161812297735,
+          "max_negative_streak": 15,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -21.841570792739073,
+          "positive_month_rate": 35.0
+        },
+        "validation_2019_2022": {
+          "trades": 448,
+          "targets": 144,
+          "stops": 162,
+          "breakevens": 142,
+          "win_rate": 32.142857142857146,
+          "total_return_pct": -4.395309611713719,
+          "expectancy_pct": -0.009810958954718122,
+          "profit_factor": 0.7470974989717738,
+          "win_rate_including_breakeven": 63.839285714285715,
+          "max_negative_streak": 18,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -6.863357928666393,
+          "positive_month_rate": 35.416666666666664
+        },
+        "holdout_2023_2024": {
+          "trades": 213,
+          "targets": 76,
+          "stops": 75,
+          "breakevens": 62,
+          "win_rate": 35.68075117370892,
+          "total_return_pct": -1.329405760635034,
+          "expectancy_pct": -0.006241341599225512,
+          "profit_factor": 0.821045538363627,
+          "win_rate_including_breakeven": 64.78873239436619,
+          "max_negative_streak": 11,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -2.4146557571608858,
+          "positive_month_rate": 41.666666666666664
+        },
+        "true_oos_2025_2026": {
+          "trades": 150,
+          "targets": 50,
+          "stops": 56,
+          "breakevens": 44,
+          "win_rate": 33.33333333333333,
+          "total_return_pct": -2.329553901943161,
+          "expectancy_pct": -0.015530359346287739,
+          "profit_factor": 0.6626134780134395,
+          "win_rate_including_breakeven": 62.666666666666664,
+          "max_negative_streak": 12,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -3.2671815226501097,
+          "positive_month_rate": 36.8421052631579
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "min_htf_slope_0.2atr",
+        "filter_kind": "min_htf_slope_atr",
+        "threshold": 0.2,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1345,
+          "targets": 409,
+          "stops": 466,
+          "breakevens": 470,
+          "win_rate": 30.4089219330855,
+          "total_return_pct": -18.344117645711634,
+          "expectancy_pct": -0.013638749178967758,
+          "profit_factor": 0.7531583173163545,
+          "win_rate_including_breakeven": 65.35315985130111,
+          "max_negative_streak": 27,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -18.601337582017038,
+          "positive_month_rate": 39.44444444444444
+        },
+        "validation_2019_2022": {
+          "trades": 403,
+          "targets": 129,
+          "stops": 145,
+          "breakevens": 129,
+          "win_rate": 32.00992555831266,
+          "total_return_pct": -4.171104660786876,
+          "expectancy_pct": -0.010350135634706888,
+          "profit_factor": 0.7605108329687483,
+          "win_rate_including_breakeven": 64.0198511166253,
+          "max_negative_streak": 15,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -6.1732214881146525,
+          "positive_month_rate": 33.333333333333336
+        },
+        "holdout_2023_2024": {
+          "trades": 187,
+          "targets": 62,
+          "stops": 69,
+          "breakevens": 56,
+          "win_rate": 33.155080213903744,
+          "total_return_pct": -1.4853841873961295,
+          "expectancy_pct": -0.007943230948642403,
+          "profit_factor": 0.7986433327931194,
+          "win_rate_including_breakeven": 63.101604278074866,
+          "max_negative_streak": 7,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -2.4626174077523215,
+          "positive_month_rate": 33.333333333333336
+        },
+        "true_oos_2025_2026": {
+          "trades": 132,
+          "targets": 43,
+          "stops": 49,
+          "breakevens": 40,
+          "win_rate": 32.57575757575758,
+          "total_return_pct": -2.2062866879168523,
+          "expectancy_pct": -0.016714293090279185,
+          "profit_factor": 0.6772309335625943,
+          "win_rate_including_breakeven": 62.878787878787875,
+          "max_negative_streak": 11,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -2.8877566866695874,
+          "positive_month_rate": 36.8421052631579
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "min_htf_slope_0.4atr",
+        "filter_kind": "min_htf_slope_atr",
+        "threshold": 0.4,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 965,
+          "targets": 286,
+          "stops": 338,
+          "breakevens": 341,
+          "win_rate": 29.637305699481864,
+          "total_return_pct": -15.73007566584182,
+          "expectancy_pct": -0.016300596544913802,
+          "profit_factor": 0.7033444612200375,
+          "win_rate_including_breakeven": 64.97409326424871,
+          "max_negative_streak": 22,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -15.863253078696482,
+          "positive_month_rate": 38.764044943820224
+        },
+        "validation_2019_2022": {
+          "trades": 296,
+          "targets": 96,
+          "stops": 100,
+          "breakevens": 100,
+          "win_rate": 32.432432432432435,
+          "total_return_pct": -2.4563561428245437,
+          "expectancy_pct": -0.008298500482515351,
+          "profit_factor": 0.7985517427494341,
+          "win_rate_including_breakeven": 66.21621621621621,
+          "max_negative_streak": 12,
+          "max_stop_streak": 7,
+          "max_drawdown_pct": -4.525512805403741,
+          "positive_month_rate": 41.666666666666664
+        },
+        "holdout_2023_2024": {
+          "trades": 136,
+          "targets": 42,
+          "stops": 56,
+          "breakevens": 38,
+          "win_rate": 30.88235294117647,
+          "total_return_pct": -2.9560903633270232,
+          "expectancy_pct": -0.02173595855387517,
+          "profit_factor": 0.49893601274091237,
+          "win_rate_including_breakeven": 58.8235294117647,
+          "max_negative_streak": 14,
+          "max_stop_streak": 7,
+          "max_drawdown_pct": -3.2284635438802827,
+          "positive_month_rate": 33.333333333333336
+        },
+        "true_oos_2025_2026": {
+          "trades": 103,
+          "targets": 34,
+          "stops": 42,
+          "breakevens": 27,
+          "win_rate": 33.00970873786408,
+          "total_return_pct": -2.8083158211702703,
+          "expectancy_pct": -0.027265202147284177,
+          "profit_factor": 0.5070273238639869,
+          "win_rate_including_breakeven": 59.22330097087379,
+          "max_negative_streak": 11,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -3.043925379635854,
+          "positive_month_rate": 27.77777777777778
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "min_htf_slope_0.7atr",
+        "filter_kind": "min_htf_slope_atr",
+        "threshold": 0.7,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 525,
+          "targets": 153,
+          "stops": 190,
+          "breakevens": 182,
+          "win_rate": 29.142857142857142,
+          "total_return_pct": -10.546497845904167,
+          "expectancy_pct": -0.020088567325531746,
+          "profit_factor": 0.6080260335953834,
+          "win_rate_including_breakeven": 63.80952380952381,
+          "max_negative_streak": 12,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -10.546497845904135,
+          "positive_month_rate": 34.78260869565217
+        },
+        "validation_2019_2022": {
+          "trades": 171,
+          "targets": 58,
+          "stops": 53,
+          "breakevens": 60,
+          "win_rate": 33.91812865497076,
+          "total_return_pct": -0.48657915275744645,
+          "expectancy_pct": -0.0028454921213885757,
+          "profit_factor": 0.9208375883963337,
+          "win_rate_including_breakeven": 69.00584795321637,
+          "max_negative_streak": 21,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -3.1732487033337033,
+          "positive_month_rate": 41.666666666666664
+        },
+        "holdout_2023_2024": {
+          "trades": 68,
+          "targets": 21,
+          "stops": 30,
+          "breakevens": 17,
+          "win_rate": 30.88235294117647,
+          "total_return_pct": -1.5623085587407664,
+          "expectancy_pct": -0.022975125863834798,
+          "profit_factor": 0.45752771900871814,
+          "win_rate_including_breakeven": 55.88235294117647,
+          "max_negative_streak": 9,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -1.8446817392940311,
+          "positive_month_rate": 29.166666666666668
+        },
+        "true_oos_2025_2026": {
+          "trades": 47,
+          "targets": 18,
+          "stops": 17,
+          "breakevens": 12,
+          "win_rate": 38.297872340425535,
+          "total_return_pct": -0.5159909420982144,
+          "expectancy_pct": -0.010978530682940732,
+          "profit_factor": 0.7484704814123729,
+          "win_rate_including_breakeven": 63.829787234042556,
+          "max_negative_streak": 4,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -1.0744462740318346,
+          "positive_month_rate": 29.41176470588235
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_ltf_slope_0.08atr",
+        "filter_kind": "max_ltf_slope_atr",
+        "threshold": 0.08,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 569,
+          "targets": 179,
+          "stops": 185,
+          "breakevens": 205,
+          "win_rate": 31.45869947275923,
+          "total_return_pct": -4.689911655446938,
+          "expectancy_pct": -0.008242375492876867,
+          "profit_factor": 0.7912855113850332,
+          "win_rate_including_breakeven": 67.48681898066783,
+          "max_negative_streak": 15,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -5.027713295521944,
+          "positive_month_rate": 42.44186046511628
+        },
+        "validation_2019_2022": {
+          "trades": 153,
+          "targets": 54,
+          "stops": 51,
+          "breakevens": 48,
+          "win_rate": 35.294117647058826,
+          "total_return_pct": -1.1015670659008296,
+          "expectancy_pct": -0.007199784744449867,
+          "profit_factor": 0.7854530030084663,
+          "win_rate_including_breakeven": 66.66666666666667,
+          "max_negative_streak": 7,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -2.207020188041993,
+          "positive_month_rate": 31.914893617021278
+        },
+        "holdout_2023_2024": {
+          "trades": 74,
+          "targets": 25,
+          "stops": 29,
+          "breakevens": 20,
+          "win_rate": 33.78378378378378,
+          "total_return_pct": -1.166513209011161,
+          "expectancy_pct": -0.015763692013664336,
+          "profit_factor": 0.5689316995127512,
+          "win_rate_including_breakeven": 60.810810810810814,
+          "max_negative_streak": 6,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -1.456208872152124,
+          "positive_month_rate": 30.434782608695652
+        },
+        "true_oos_2025_2026": {
+          "trades": 46,
+          "targets": 15,
+          "stops": 19,
+          "breakevens": 12,
+          "win_rate": 32.608695652173914,
+          "total_return_pct": -0.9419328508373309,
+          "expectancy_pct": -0.020476801105159367,
+          "profit_factor": 0.5314458812957139,
+          "win_rate_including_breakeven": 58.69565217391305,
+          "max_negative_streak": 5,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -1.0142031649784742,
+          "positive_month_rate": 33.333333333333336
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_ltf_slope_0.12atr",
+        "filter_kind": "max_ltf_slope_atr",
+        "threshold": 0.12,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1055,
+          "targets": 329,
+          "stops": 368,
+          "breakevens": 358,
+          "win_rate": 31.18483412322275,
+          "total_return_pct": -11.945621404406857,
+          "expectancy_pct": -0.01132286389043304,
+          "profit_factor": 0.7547501760597032,
+          "win_rate_including_breakeven": 65.11848341232228,
+          "max_negative_streak": 13,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -12.212841340712142,
+          "positive_month_rate": 37.07865168539326
+        },
+        "validation_2019_2022": {
+          "trades": 283,
+          "targets": 100,
+          "stops": 100,
+          "breakevens": 83,
+          "win_rate": 35.3356890459364,
+          "total_return_pct": -3.1318400553200387,
+          "expectancy_pct": -0.011066572633639712,
+          "profit_factor": 0.7256111472185433,
+          "win_rate_including_breakeven": 64.66431095406361,
+          "max_negative_streak": 13,
+          "max_stop_streak": 5,
+          "max_drawdown_pct": -4.56445357271731,
+          "positive_month_rate": 37.5
+        },
+        "holdout_2023_2024": {
+          "trades": 127,
+          "targets": 37,
+          "stops": 51,
+          "breakevens": 39,
+          "win_rate": 29.133858267716533,
+          "total_return_pct": -2.671051895513852,
+          "expectancy_pct": -0.02103190468908545,
+          "profit_factor": 0.5021698802277434,
+          "win_rate_including_breakeven": 59.84251968503937,
+          "max_negative_streak": 8,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -3.226474273345276,
+          "positive_month_rate": 25.0
+        },
+        "true_oos_2025_2026": {
+          "trades": 89,
+          "targets": 30,
+          "stops": 38,
+          "breakevens": 21,
+          "win_rate": 33.70786516853933,
+          "total_return_pct": -2.3353533813085714,
+          "expectancy_pct": -0.02623992563268058,
+          "profit_factor": 0.4987508190034133,
+          "win_rate_including_breakeven": 57.30337078651685,
+          "max_negative_streak": 9,
+          "max_stop_streak": 3,
+          "max_drawdown_pct": -2.3353533813085705,
+          "positive_month_rate": 26.31578947368421
+        }
+      },
+      "eligible": false
+    },
+    {
+      "candidate": {
+        "name": "max_ltf_slope_0.16atr",
+        "filter_kind": "max_ltf_slope_atr",
+        "threshold": 0.16,
+        "loss_cooldown_bars": 0,
+        "stop_after_loss_for_day": false
+      },
+      "periods": {
+        "train_2004_2018": {
+          "trades": 1396,
+          "targets": 422,
+          "stops": 484,
+          "breakevens": 490,
+          "win_rate": 30.229226361031518,
+          "total_return_pct": -20.460138071147117,
+          "expectancy_pct": -0.014656259363285901,
+          "profit_factor": 0.7113886634395998,
+          "win_rate_including_breakeven": 65.32951289398281,
+          "max_negative_streak": 15,
+          "max_stop_streak": 7,
+          "max_drawdown_pct": -20.883216139990605,
+          "positive_month_rate": 37.77777777777778
+        },
+        "validation_2019_2022": {
+          "trades": 395,
+          "targets": 132,
+          "stops": 143,
+          "breakevens": 120,
+          "win_rate": 33.41772151898734,
+          "total_return_pct": -4.446654477495989,
+          "expectancy_pct": -0.011257353107584783,
+          "profit_factor": 0.7191611538500421,
+          "win_rate_including_breakeven": 63.79746835443038,
+          "max_negative_streak": 16,
+          "max_stop_streak": 8,
+          "max_drawdown_pct": -6.105928470147797,
+          "positive_month_rate": 37.5
+        },
+        "holdout_2023_2024": {
+          "trades": 181,
+          "targets": 59,
+          "stops": 72,
+          "breakevens": 50,
+          "win_rate": 32.59668508287293,
+          "total_return_pct": -3.4847042319130406,
+          "expectancy_pct": -0.019252509568580333,
+          "profit_factor": 0.5547947572394163,
+          "win_rate_including_breakeven": 60.22099447513812,
+          "max_negative_streak": 10,
+          "max_stop_streak": 6,
+          "max_drawdown_pct": -4.372315336896427,
+          "positive_month_rate": 29.166666666666668
+        },
+        "true_oos_2025_2026": {
+          "trades": 130,
+          "targets": 43,
+          "stops": 52,
+          "breakevens": 35,
+          "win_rate": 33.07692307692307,
+          "total_return_pct": -2.425523097812163,
+          "expectancy_pct": -0.018657869983170483,
+          "profit_factor": 0.63019132096318,
+          "win_rate_including_breakeven": 60.0,
+          "max_negative_streak": 10,
+          "max_stop_streak": 4,
+          "max_drawdown_pct": -3.2404679379811774,
+          "positive_month_rate": 26.31578947368421
+        }
+      },
+      "eligible": false
+    }
+  ],
+  "selected_by_train_validation": null,
+  "adopted": null,
+  "adoption_reason": "no consistency filter passed all period gates"
+}

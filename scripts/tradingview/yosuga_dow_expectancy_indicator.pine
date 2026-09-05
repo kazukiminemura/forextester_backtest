@@ -1,5 +1,5 @@
 //@version=5
-indicator("Yosuga-style Dow + Tamukai Pullback MTF", overlay=true, shorttitle="Yosuga_Tamukai_MTF", max_labels_count=500, max_lines_count=500, dynamic_requests=true)
+indicator("Yosuga × Tamukai Simple Entry MTF v3", overlay=true, shorttitle="Yosuga_Simple_MTF_v3", max_labels_count=500, max_lines_count=500, dynamic_requests=true)
 
 // ==========================================
 // 入力パラメータ
@@ -7,7 +7,6 @@ indicator("Yosuga-style Dow + Tamukai Pullback MTF", overlay=true, shorttitle="Y
 gpDow = "【よすが式ダウ理論設定】"
 leftBars = input.int(5, "高値・安値 検出期間 (左側)", minval=1, group=gpDow)
 rightBars = input.int(5, "高値・安値 検出期間 (右側)", minval=1, group=gpDow)
-showDowSignals = input.bool(true, "ダウ転換マークを表示", group=gpDow)
 
 gpHtf = "【確定上位足方向】"
 useAutoHtf = input.bool(true, "チャート足に応じて上位足を自動選択", group=gpHtf)
@@ -16,9 +15,8 @@ htfMaLength = input.int(20, "上位足SMA期間", minval=2, group=gpHtf)
 requireDowAlignment = input.bool(true, "チャート足ダウ方向の一致を必須にする", group=gpHtf)
 
 gpEntry = "【田向式 押し目・戻り設定】"
-showMa = input.bool(true, "移動平均線を表示", group=gpEntry)
 maLength = input.int(20, "押し目・戻りSMA期間", minval=2, group=gpEntry)
-setupWaitBars = input.int(4, "接触後の再加速待機本数", minval=1, maxval=16, group=gpEntry)
+setupWaitBars = input.int(4, "接触後のブレイク待機本数", minval=1, maxval=16, group=gpEntry)
 closeLocationThreshold = input.float(0.65, "反転足の終値位置", minval=0.5, maxval=0.9, step=0.05, group=gpEntry)
 requireMaSlope = input.bool(true, "チャート足SMAの傾き一致を必須にする", group=gpEntry)
 
@@ -28,6 +26,90 @@ structureBufferAtr = input.float(0.1, "構造SLのATRバッファ", minval=0.0, 
 enableBreakeven = input.bool(true, "建値撤退を有効にする", group=gpRisk)
 breakevenTriggerR = input.float(0.5, "建値移動を有効にするR", minval=0.1, maxval=0.9, step=0.05, group=gpRisk)
 roundTripCostPct = input.float(0.01, "1取引の往復コスト (%)", minval=0.0, step=0.01, group=gpRisk)
+
+gpScanner = "【時間足別 エントリーチャンス】"
+showOpportunityScanner = input.bool(true, "5分〜日足のチャンス一覧を表示", group=gpScanner)
+
+// スキャナーは各時間足の1本前の確定足を参照します。
+fScannerDowTrend() =>
+    float scannerPivotHigh = ta.pivothigh(high, leftBars, rightBars)
+    float scannerPivotLow = ta.pivotlow(low, leftBars, rightBars)
+    var float scannerLastHigh = na
+    var float scannerLastLow = na
+    var int scannerTrend = 0
+    if not na(scannerPivotHigh)
+        scannerLastHigh := scannerPivotHigh
+    if not na(scannerPivotLow)
+        scannerLastLow := scannerPivotLow
+    bool scannerCrossUp = ta.crossover(close, scannerLastHigh)
+    bool scannerCrossDown = ta.crossunder(close, scannerLastLow)
+    if not na(scannerLastHigh) and scannerCrossUp and scannerTrend <= 0
+        scannerTrend := 1
+    if not na(scannerLastLow) and scannerCrossDown and scannerTrend >= 0
+        scannerTrend := -1
+    scannerTrend
+
+// 2/-2 = ブレイク確認、1/-1 = MA接触後の反発・反落待ち、0 = 接触待ち。
+fScannerPullbackState() =>
+    float scannerMa = ta.sma(close, maLength)
+    float scannerRange = high - low
+    float scannerLongCloseLocation = scannerRange > 0 ? (close - low) / scannerRange : 0.5
+    float scannerShortCloseLocation = 1.0 - scannerLongCloseLocation
+    bool scannerLongTouch = low[1] > scannerMa[1] and low <= scannerMa and close >= scannerMa and scannerLongCloseLocation >= closeLocationThreshold
+    bool scannerShortTouch = high[1] < scannerMa[1] and high >= scannerMa and close <= scannerMa and scannerShortCloseLocation >= closeLocationThreshold
+    int scannerLongAge = ta.barssince(scannerLongTouch)
+    int scannerShortAge = ta.barssince(scannerShortTouch)
+    bool scannerLongRecent = not na(scannerLongAge) and scannerLongAge <= setupWaitBars
+    bool scannerShortRecent = not na(scannerShortAge) and scannerShortAge <= setupWaitBars
+    bool scannerLongSlopeOk = not requireMaSlope or scannerMa > scannerMa[1]
+    bool scannerShortSlopeOk = not requireMaSlope or scannerMa < scannerMa[1]
+    bool scannerLongBreak = scannerLongRecent and scannerLongSlopeOk and close > high[1] and close > scannerMa
+    bool scannerShortBreak = scannerShortRecent and scannerShortSlopeOk and close < low[1] and close < scannerMa
+    scannerLongBreak ? 2 : scannerShortBreak ? -2 : scannerLongRecent and close >= scannerMa ? 1 : scannerShortRecent and close <= scannerMa ? -1 : 0
+
+fScannerHtfDirection(float completedMa, float previousMa) =>
+    completedMa > previousMa ? 1 : completedMa < previousMa ? -1 : 0
+
+fScannerDirectionText(int htfDirection, int localDow) =>
+    htfDirection == 1 and (not requireDowAlignment or localDow == 1) ? "↑ 一致" : htfDirection == -1 and (not requireDowAlignment or localDow == -1) ? "↓ 一致" : htfDirection == 0 ? "横ばい" : "不一致"
+
+fScannerChanceText(int htfDirection, int localDow, int pullbackState) =>
+    bool scannerLongAllowed = htfDirection == 1 and (not requireDowAlignment or localDow == 1)
+    bool scannerShortAllowed = htfDirection == -1 and (not requireDowAlignment or localDow == -1)
+    scannerLongAllowed ? (pullbackState == 2 ? "BUY候補" : pullbackState == 1 ? "反発待ち" : "押し目待ち") : scannerShortAllowed ? (pullbackState == -2 ? "SELL候補" : pullbackState == -1 ? "反落待ち" : "戻り待ち") : "方向待ち"
+
+fScannerChanceColor(int htfDirection, int localDow, int pullbackState) =>
+    bool scannerLongAllowed = htfDirection == 1 and (not requireDowAlignment or localDow == 1)
+    bool scannerShortAllowed = htfDirection == -1 and (not requireDowAlignment or localDow == -1)
+    scannerLongAllowed and pullbackState == 2 ? color.lime : scannerShortAllowed and pullbackState == -2 ? color.orange : (scannerLongAllowed and pullbackState == 1) or (scannerShortAllowed and pullbackState == -1) ? color.yellow : scannerLongAllowed ? color.aqua : scannerShortAllowed ? color.rgb(255, 120, 80) : color.silver
+
+fScannerDisplayText(int htfDirection, int localDow, int pullbackState, bool isChartTimeframe, int activeTradeDirection) =>
+    bool isEntryTimeframe = isChartTimeframe and activeTradeDirection != 0
+    isEntryTimeframe ? (activeTradeDirection == 1 ? "BUY エントリー中" : "SELL エントリー中") : fScannerChanceText(htfDirection, localDow, pullbackState)
+
+fScannerDisplayColor(int htfDirection, int localDow, int pullbackState, bool isChartTimeframe, int activeTradeDirection) =>
+    bool isEntryTimeframe = isChartTimeframe and activeTradeDirection != 0
+    isEntryTimeframe ? (activeTradeDirection == 1 ? color.blue : color.orange) : color.new(fScannerChanceColor(htfDirection, localDow, pullbackState), 25)
+
+fScannerDisplayTextColor(bool isChartTimeframe, int activeTradeDirection) =>
+    isChartTimeframe and activeTradeDirection != 0 ? color.white : color.black
+
+[scannerDow5m, scannerPullback5m] = request.security(syminfo.tickerid, "5", [fScannerDowTrend()[1], fScannerPullbackState()[1]], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scannerDow15m, scannerPullback15m] = request.security(syminfo.tickerid, "15", [fScannerDowTrend()[1], fScannerPullbackState()[1]], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scannerDow1h, scannerPullback1h] = request.security(syminfo.tickerid, "60", [fScannerDowTrend()[1], fScannerPullbackState()[1]], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scannerDow4h, scannerPullback4h] = request.security(syminfo.tickerid, "240", [fScannerDowTrend()[1], fScannerPullbackState()[1]], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scannerDow1d, scannerPullback1d] = request.security(syminfo.tickerid, "D", [fScannerDowTrend()[1], fScannerPullbackState()[1]], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+
+[scanner1hMa, scanner1hMaPrevious] = request.security(syminfo.tickerid, "60", [ta.sma(close, htfMaLength)[1], ta.sma(close, htfMaLength)[2]], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanner4hMa, scanner4hMaPrevious] = request.security(syminfo.tickerid, "240", [ta.sma(close, htfMaLength)[1], ta.sma(close, htfMaLength)[2]], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanner1dMa, scanner1dMaPrevious] = request.security(syminfo.tickerid, "D", [ta.sma(close, htfMaLength)[1], ta.sma(close, htfMaLength)[2]], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+[scanner1wMa, scanner1wMaPrevious] = request.security(syminfo.tickerid, "W", [ta.sma(close, htfMaLength)[1], ta.sma(close, htfMaLength)[2]], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+
+int scannerHtf5m = fScannerHtfDirection(scanner1hMa, scanner1hMaPrevious)
+int scannerHtf15m = fScannerHtfDirection(scanner4hMa, scanner4hMaPrevious)
+int scannerHtf1h = scannerHtf15m
+int scannerHtf4h = fScannerHtfDirection(scanner1dMa, scanner1dMaPrevious)
+int scannerHtf1d = fScannerHtfDirection(scanner1wMa, scanner1wMaPrevious)
 
 // ==========================================
 // よすが式: 確定スイングとチャート足ダウ方向
@@ -43,9 +125,6 @@ if not na(pH)
 if not na(pL)
     lastLow := pL
 
-plot(lastHigh, color=color.new(color.red, 30), style=plot.style_linebr, linewidth=2, title="直近高値 (レジスタンス)")
-plot(lastLow, color=color.new(color.green, 30), style=plot.style_linebr, linewidth=2, title="直近安値 (サポート)")
-
 var int dowTrend = 0
 bool crossedAboveLastHigh = ta.crossover(close, lastHigh)
 bool crossedBelowLastLow = ta.crossunder(close, lastLow)
@@ -56,9 +135,6 @@ if dowTurnedUp
     dowTrend := 1
 if dowTurnedDown
     dowTrend := -1
-
-plotshape(showDowSignals and dowTurnedUp, title="ダウ上昇転換", style=shape.circle, location=location.belowbar, color=color.new(color.blue, 35), size=size.tiny, text="D↑", textcolor=color.white)
-plotshape(showDowSignals and dowTurnedDown, title="ダウ下降転換", style=shape.circle, location=location.abovebar, color=color.new(color.orange, 35), size=size.tiny, text="D↓", textcolor=color.white)
 
 // ==========================================
 // 対応チャート足と確定した上位足
@@ -78,21 +154,18 @@ string chartTimeframeName = isFiveMinuteChart ? "5分" : isFifteenMinuteChart ? 
 string htfTimeframeName = effectiveHtfTimeframe == "60" ? "1時間" : effectiveHtfTimeframe == "240" ? "4時間" : effectiveHtfTimeframe == "D" ? "日足" : effectiveHtfTimeframe == "W" ? "週足" : effectiveHtfTimeframe
 float entryMa = ta.sma(close, maLength)
 float atrValue = ta.atr(atrLength)
-float completedHtfMa = request.security(syminfo.tickerid, effectiveHtfTimeframe, ta.sma(close, htfMaLength)[1], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
-float previousCompletedHtfMa = request.security(syminfo.tickerid, effectiveHtfTimeframe, ta.sma(close, htfMaLength)[2], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+completedHtfMa = request.security(syminfo.tickerid, effectiveHtfTimeframe, ta.sma(close, htfMaLength)[1], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+previousCompletedHtfMa = request.security(syminfo.tickerid, effectiveHtfTimeframe, ta.sma(close, htfMaLength)[2], gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
 bool htfLong = completedHtfMa > previousCompletedHtfMa
 bool htfShort = completedHtfMa < previousCompletedHtfMa
 bool longDirectionAllowed = isHigherTimeframeValid and htfLong and (not requireDowAlignment or dowTrend == 1)
 bool shortDirectionAllowed = isHigherTimeframeValid and htfShort and (not requireDowAlignment or dowTrend == -1)
 
-maColor = ta.rising(entryMa, 1) ? color.blue : color.red
-plot(showMa ? entryMa : na, "押し目・戻り SMA", color=maColor, linewidth=2)
-
 // ==========================================
 // 押し目・戻りの状態
 // 1. トレンド側からMA20へ初回接触
 // 2. 接触足がトレンド側へ戻って確定
-// 3. 後続足が直前高値・安値を終値で突破して再加速
+// 3. 後続足が直前高値・安値を終値で突破
 // ==========================================
 var int armedDirection = 0
 var int armedBar = na
@@ -140,12 +213,13 @@ if tradeDirection != 0 and bar_index > entryBar
         exitPrice := targetPrice
         exitName := "利確 1R"
         exitColor := color.green
-    else if enableBreakeven and triggerHit
+    else if enableBreakeven and not breakevenActive and triggerHit
         // 足の中の値動き順を推測せず、建値SLは次の足から有効にします。
         breakevenActive := true
         line.set_y1(activeStopLine, entryPrice)
         line.set_y2(activeStopLine, entryPrice)
         line.set_color(activeStopLine, color.gray)
+        label.new(bar_index, entryPrice, "建値\n" + str.tostring(entryPrice, format.mintick), xloc=xloc.bar_index, yloc=yloc.price, style=tradeDirection == 1 ? label.style_label_up : label.style_label_down, color=color.gray, textcolor=color.white, size=size.small)
 
     if not na(exitPrice)
         float tradeReturnPct = tradeDirection * (exitPrice - entryPrice) / entryPrice * 100.0 - roundTripCostPct
@@ -193,9 +267,9 @@ if isSupportedChart and isHigherTimeframeValid and tradeDirection == 0 and not n
         else if setupAge >= 1
             armedExtreme := armedDirection == 1 ? math.min(armedExtreme, low) : math.max(armedExtreme, high)
             bool maSlopeOk = not requireMaSlope or (armedDirection == 1 ? entryMa > entryMa[1] : entryMa < entryMa[1])
-            bool reaccelerated = armedDirection == 1 ? close > high[1] : close < low[1]
+            bool priceBreakConfirmed = armedDirection == 1 ? close > high[1] : close < low[1]
             bool correctMaSide = armedDirection == 1 ? close > entryMa : close < entryMa
-            if maSlopeOk and reaccelerated and correctMaSide
+            if maSlopeOk and priceBreakConfirmed and correctMaSide
                 float proposedStop = armedExtreme - armedDirection * atrValue * structureBufferAtr
                 float riskDistance = armedDirection * (close - proposedStop)
                 if riskDistance > syminfo.mintick
@@ -232,13 +306,16 @@ if isSupportedChart and isHigherTimeframeValid and tradeDirection == 0 and not n
             armedBar := bar_index
             armedExtreme := high
 
-plotshape(longEntrySignal, title="押し目買い", style=shape.triangleup, location=location.belowbar, color=color.blue, size=size.normal, text="BUY", textcolor=color.white)
-plotshape(shortEntrySignal, title="戻り売り", style=shape.triangledown, location=location.abovebar, color=color.orange, size=size.normal, text="SELL", textcolor=color.white)
+alertcondition(longEntrySignal, "押し目BUY", "押し目BUYエントリーしました")
+alertcondition(shortEntrySignal, "戻りSELL", "戻りSELLエントリーしました")
 
 // ==========================================
 // 成績表示
 // ==========================================
-float winRate = closedTrades > 0 ? wins * 100.0 / closedTrades : na
+// 勝率では、損失を回避できた建値撤退も勝ちとして数えます。
+// 損益・PFでは往復コストを残し、成績を過大評価しないようにします。
+int winsIncludingBreakeven = wins + breakevens
+float winRate = closedTrades > 0 ? winsIncludingBreakeven * 100.0 / closedTrades : na
 float expectancyPct = closedTrades > 0 ? totalReturnPct / closedTrades : na
 float averageWinPct = wins > 0 ? grossProfitPct / wins : na
 float averageLossPct = losses > 0 ? grossLossPct / losses : na
@@ -255,6 +332,32 @@ fValueColor(float value) =>
     na(value) ? color.silver : value > 0 ? color.lime : value < 0 ? color.red : color.white
 
 var table statsTable = table.new(position.bottom_right, 2, 13, bgcolor=color.new(color.black, 5), border_width=2, frame_width=2, frame_color=color.orange)
+var table opportunityTable = table.new(position.top_right, 3, 6, bgcolor=color.new(color.black, 5), border_width=2, frame_width=2, frame_color=color.aqua)
+
+if barstate.islast
+    if showOpportunityScanner
+        color scannerHeader = color.rgb(25, 95, 165)
+        color scannerTfBg = color.rgb(45, 50, 60)
+        table.cell(opportunityTable, 0, 0, "時間足", bgcolor=scannerHeader, text_color=color.white)
+        table.cell(opportunityTable, 1, 0, "上位足 / ダウ", bgcolor=scannerHeader, text_color=color.white)
+        table.cell(opportunityTable, 2, 0, "エントリーチャンス", bgcolor=scannerHeader, text_color=color.white)
+        table.cell(opportunityTable, 0, 1, "5分", bgcolor=isFiveMinuteChart ? color.blue : scannerTfBg, text_color=color.white)
+        table.cell(opportunityTable, 1, 1, fScannerDirectionText(scannerHtf5m, scannerDow5m), bgcolor=color.new(fScannerChanceColor(scannerHtf5m, scannerDow5m, 0), 70), text_color=color.white)
+        table.cell(opportunityTable, 2, 1, fScannerDisplayText(scannerHtf5m, scannerDow5m, scannerPullback5m, isFiveMinuteChart, tradeDirection), bgcolor=fScannerDisplayColor(scannerHtf5m, scannerDow5m, scannerPullback5m, isFiveMinuteChart, tradeDirection), text_color=fScannerDisplayTextColor(isFiveMinuteChart, tradeDirection))
+        table.cell(opportunityTable, 0, 2, "15分", bgcolor=isFifteenMinuteChart ? color.blue : scannerTfBg, text_color=color.white)
+        table.cell(opportunityTable, 1, 2, fScannerDirectionText(scannerHtf15m, scannerDow15m), bgcolor=color.new(fScannerChanceColor(scannerHtf15m, scannerDow15m, 0), 70), text_color=color.white)
+        table.cell(opportunityTable, 2, 2, fScannerDisplayText(scannerHtf15m, scannerDow15m, scannerPullback15m, isFifteenMinuteChart, tradeDirection), bgcolor=fScannerDisplayColor(scannerHtf15m, scannerDow15m, scannerPullback15m, isFifteenMinuteChart, tradeDirection), text_color=fScannerDisplayTextColor(isFifteenMinuteChart, tradeDirection))
+        table.cell(opportunityTable, 0, 3, "1時間", bgcolor=isOneHourChart ? color.blue : scannerTfBg, text_color=color.white)
+        table.cell(opportunityTable, 1, 3, fScannerDirectionText(scannerHtf1h, scannerDow1h), bgcolor=color.new(fScannerChanceColor(scannerHtf1h, scannerDow1h, 0), 70), text_color=color.white)
+        table.cell(opportunityTable, 2, 3, fScannerDisplayText(scannerHtf1h, scannerDow1h, scannerPullback1h, isOneHourChart, tradeDirection), bgcolor=fScannerDisplayColor(scannerHtf1h, scannerDow1h, scannerPullback1h, isOneHourChart, tradeDirection), text_color=fScannerDisplayTextColor(isOneHourChart, tradeDirection))
+        table.cell(opportunityTable, 0, 4, "4時間", bgcolor=isFourHourChart ? color.blue : scannerTfBg, text_color=color.white)
+        table.cell(opportunityTable, 1, 4, fScannerDirectionText(scannerHtf4h, scannerDow4h), bgcolor=color.new(fScannerChanceColor(scannerHtf4h, scannerDow4h, 0), 70), text_color=color.white)
+        table.cell(opportunityTable, 2, 4, fScannerDisplayText(scannerHtf4h, scannerDow4h, scannerPullback4h, isFourHourChart, tradeDirection), bgcolor=fScannerDisplayColor(scannerHtf4h, scannerDow4h, scannerPullback4h, isFourHourChart, tradeDirection), text_color=fScannerDisplayTextColor(isFourHourChart, tradeDirection))
+        table.cell(opportunityTable, 0, 5, "日足", bgcolor=isOneDayChart ? color.blue : scannerTfBg, text_color=color.white)
+        table.cell(opportunityTable, 1, 5, fScannerDirectionText(scannerHtf1d, scannerDow1d), bgcolor=color.new(fScannerChanceColor(scannerHtf1d, scannerDow1d, 0), 70), text_color=color.white)
+        table.cell(opportunityTable, 2, 5, fScannerDisplayText(scannerHtf1d, scannerDow1d, scannerPullback1d, isOneDayChart, tradeDirection), bgcolor=fScannerDisplayColor(scannerHtf1d, scannerDow1d, scannerPullback1d, isOneDayChart, tradeDirection), text_color=fScannerDisplayTextColor(isOneDayChart, tradeDirection))
+    else
+        table.clear(opportunityTable, 0, 0, 2, 5)
 
 if barstate.islast
     color headerColor = color.rgb(25, 95, 165)
@@ -275,7 +378,7 @@ if barstate.islast
     table.cell(statsTable, 1, 5, str.tostring(closedTrades), bgcolor=valueColor, text_color=color.white)
     table.cell(statsTable, 0, 6, "利確 / 損切 / 建値", bgcolor=labelColor, text_color=color.white)
     table.cell(statsTable, 1, 6, str.tostring(wins) + " / " + str.tostring(losses) + " / " + str.tostring(breakevens), bgcolor=valueColor, text_color=color.white)
-    table.cell(statsTable, 0, 7, "勝率", bgcolor=labelColor, text_color=color.white)
+    table.cell(statsTable, 0, 7, "勝率 (建値含む)", bgcolor=labelColor, text_color=color.white)
     table.cell(statsTable, 1, 7, fPercent(winRate), bgcolor=valueColor, text_color=fValueColor(winRate - 50.0))
     table.cell(statsTable, 0, 8, "期待値 / 取引", bgcolor=labelColor, text_color=color.white)
     table.cell(statsTable, 1, 8, fPercent(expectancyPct), bgcolor=valueColor, text_color=fValueColor(expectancyPct))

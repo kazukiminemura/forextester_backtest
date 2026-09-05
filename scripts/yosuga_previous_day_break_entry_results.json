@@ -1,0 +1,1206 @@
+{
+  "definition": "long only after the current day exceeds the previous completed day high; short only after it falls below the previous day low",
+  "round_trip_cost_pct": 0.01,
+  "results": [
+    {
+      "symbol": "EURUSD",
+      "timeframe": "15m",
+      "candidates": [
+        {
+          "candidate": {
+            "name": "baseline",
+            "mode": "none",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 1698,
+              "targets": 521,
+              "stops": 575,
+              "breakevens": 602,
+              "win_rate": 30.683156654888105,
+              "total_return_pct": -21.586584653014516,
+              "expectancy_pct": -0.012712947381045062,
+              "profit_factor": 0.7707675876069198
+            },
+            "validation_2019_2022": {
+              "trades": 498,
+              "targets": 166,
+              "stops": 175,
+              "breakevens": 157,
+              "win_rate": 33.33333333333333,
+              "total_return_pct": -4.9737581903980965,
+              "expectancy_pct": -0.00998746624577931,
+              "profit_factor": 0.7794051238781625
+            },
+            "holdout_2023_2024": {
+              "trades": 240,
+              "targets": 83,
+              "stops": 86,
+              "breakevens": 71,
+              "win_rate": 34.583333333333336,
+              "total_return_pct": -1.494280899790246,
+              "expectancy_pct": -0.0062261704157926916,
+              "profit_factor": 0.8425552886814504
+            },
+            "true_oos_2025_2026": {
+              "trades": 172,
+              "targets": 54,
+              "stops": 68,
+              "breakevens": 50,
+              "win_rate": 31.3953488372093,
+              "total_return_pct": -5.086813638971369,
+              "expectancy_pct": -0.029574497900996335,
+              "profit_factor": 0.5284006146339905
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "same_bar_wick_update",
+            "mode": "wick",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 1017,
+              "targets": 306,
+              "stops": 351,
+              "breakevens": 360,
+              "win_rate": 30.08849557522124,
+              "total_return_pct": -13.113823031455924,
+              "expectancy_pct": -0.012894614583535816,
+              "profit_factor": 0.7841464744752805
+            },
+            "validation_2019_2022": {
+              "trades": 293,
+              "targets": 87,
+              "stops": 109,
+              "breakevens": 97,
+              "win_rate": 29.692832764505116,
+              "total_return_pct": -5.1212152934671975,
+              "expectancy_pct": -0.01747855048964914,
+              "profit_factor": 0.6741246338245634
+            },
+            "holdout_2023_2024": {
+              "trades": 142,
+              "targets": 52,
+              "stops": 49,
+              "breakevens": 41,
+              "win_rate": 36.61971830985916,
+              "total_return_pct": -0.09112969067893006,
+              "expectancy_pct": -0.0006417583850628878,
+              "profit_factor": 0.9837210382019475
+            },
+            "true_oos_2025_2026": {
+              "trades": 104,
+              "targets": 36,
+              "stops": 39,
+              "breakevens": 29,
+              "win_rate": 34.61538461538461,
+              "total_return_pct": -1.9200045622423776,
+              "expectancy_pct": -0.018461582329253632,
+              "profit_factor": 0.6847301407809671
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "prior_bar_wick_update",
+            "mode": "prior_wick",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 956,
+              "targets": 287,
+              "stops": 333,
+              "breakevens": 336,
+              "win_rate": 30.020920502092054,
+              "total_return_pct": -13.237432089174437,
+              "expectancy_pct": -0.013846686285747319,
+              "profit_factor": 0.7671974019576111
+            },
+            "validation_2019_2022": {
+              "trades": 277,
+              "targets": 80,
+              "stops": 104,
+              "breakevens": 93,
+              "win_rate": 28.880866425992778,
+              "total_return_pct": -5.555362126323698,
+              "expectancy_pct": -0.020055458939796742,
+              "profit_factor": 0.631554728894959
+            },
+            "holdout_2023_2024": {
+              "trades": 130,
+              "targets": 51,
+              "stops": 42,
+              "breakevens": 37,
+              "win_rate": 39.23076923076923,
+              "total_return_pct": 1.1105857448055996,
+              "expectancy_pct": 0.008542967267735381,
+              "profit_factor": 1.2571859264377458
+            },
+            "true_oos_2025_2026": {
+              "trades": 96,
+              "targets": 33,
+              "stops": 36,
+              "breakevens": 27,
+              "win_rate": 34.375,
+              "total_return_pct": -1.7909174355972057,
+              "expectancy_pct": -0.01865538995413756,
+              "profit_factor": 0.6700957119738635
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "entry_close_beyond_level",
+            "mode": "close",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 824,
+              "targets": 245,
+              "stops": 268,
+              "breakevens": 311,
+              "win_rate": 29.73300970873786,
+              "total_return_pct": -7.817672061307162,
+              "expectancy_pct": -0.00948746609381937,
+              "profit_factor": 0.8406846438090747
+            },
+            "validation_2019_2022": {
+              "trades": 240,
+              "targets": 67,
+              "stops": 95,
+              "breakevens": 78,
+              "win_rate": 27.916666666666668,
+              "total_return_pct": -5.545857965507016,
+              "expectancy_pct": -0.023107741522945903,
+              "profit_factor": 0.6125873505747307
+            },
+            "holdout_2023_2024": {
+              "trades": 108,
+              "targets": 44,
+              "stops": 36,
+              "breakevens": 28,
+              "win_rate": 40.74074074074074,
+              "total_return_pct": 0.7101496111502513,
+              "expectancy_pct": 0.006575459362502327,
+              "profit_factor": 1.1687885753889953
+            },
+            "true_oos_2025_2026": {
+              "trades": 85,
+              "targets": 30,
+              "stops": 30,
+              "breakevens": 25,
+              "win_rate": 35.294117647058826,
+              "total_return_pct": -1.1980184934536888,
+              "expectancy_pct": -0.014094335217102221,
+              "profit_factor": 0.7630968263822567
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "same_bar_wick_update_0.05atr",
+            "mode": "wick",
+            "buffer_atr": 0.05
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 1014,
+              "targets": 304,
+              "stops": 350,
+              "breakevens": 360,
+              "win_rate": 29.980276134122285,
+              "total_return_pct": -13.375565303901345,
+              "expectancy_pct": -0.013190892804636435,
+              "profit_factor": 0.7793054009208652
+            },
+            "validation_2019_2022": {
+              "trades": 289,
+              "targets": 87,
+              "stops": 108,
+              "breakevens": 94,
+              "win_rate": 30.103806228373703,
+              "total_return_pct": -4.991903069597667,
+              "expectancy_pct": -0.01727302100206805,
+              "profit_factor": 0.6797176571543373
+            },
+            "holdout_2023_2024": {
+              "trades": 140,
+              "targets": 52,
+              "stops": 48,
+              "breakevens": 40,
+              "win_rate": 37.142857142857146,
+              "total_return_pct": 0.0009946796895914378,
+              "expectancy_pct": 7.104854925653127e-06,
+              "profit_factor": 1.0001806577304915
+            },
+            "true_oos_2025_2026": {
+              "trades": 101,
+              "targets": 36,
+              "stops": 36,
+              "breakevens": 29,
+              "win_rate": 35.64356435643564,
+              "total_return_pct": -1.6039266531418797,
+              "expectancy_pct": -0.015880461912295838,
+              "profit_factor": 0.7222136304683227
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "prior_bar_wick_update_0.05atr",
+            "mode": "prior_wick",
+            "buffer_atr": 0.05
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 954,
+              "targets": 286,
+              "stops": 332,
+              "breakevens": 336,
+              "win_rate": 29.979035639413,
+              "total_return_pct": -13.383561710581493,
+              "expectancy_pct": -0.01402889068195125,
+              "profit_factor": 0.764076437562444
+            },
+            "validation_2019_2022": {
+              "trades": 276,
+              "targets": 80,
+              "stops": 104,
+              "breakevens": 92,
+              "win_rate": 28.985507246376812,
+              "total_return_pct": -5.545362126323698,
+              "expectancy_pct": -0.020091891762042385,
+              "profit_factor": 0.631973869498909
+            },
+            "holdout_2023_2024": {
+              "trades": 128,
+              "targets": 51,
+              "stops": 41,
+              "breakevens": 36,
+              "win_rate": 39.84375,
+              "total_return_pct": 1.202710115174121,
+              "expectancy_pct": 0.009396172774797821,
+              "profit_factor": 1.2845912282854692
+            },
+            "true_oos_2025_2026": {
+              "trades": 93,
+              "targets": 33,
+              "stops": 33,
+              "breakevens": 27,
+              "win_rate": 35.483870967741936,
+              "total_return_pct": -1.4748395264967082,
+              "expectancy_pct": -0.01585848953222267,
+              "profit_factor": 0.7115239094732676
+            }
+          }
+        }
+      ]
+    },
+    {
+      "symbol": "EURUSD",
+      "timeframe": "1h",
+      "candidates": [
+        {
+          "candidate": {
+            "name": "baseline",
+            "mode": "none",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 464,
+              "targets": 150,
+              "stops": 167,
+              "breakevens": 147,
+              "win_rate": 32.327586206896555,
+              "total_return_pct": -5.006816504327485,
+              "expectancy_pct": -0.010790552811050614,
+              "profit_factor": 0.9053468530044144
+            },
+            "validation_2019_2022": {
+              "trades": 145,
+              "targets": 46,
+              "stops": 53,
+              "breakevens": 46,
+              "win_rate": 31.724137931034484,
+              "total_return_pct": -2.4105193638508533,
+              "expectancy_pct": -0.01662427147483347,
+              "profit_factor": 0.801958750650721
+            },
+            "holdout_2023_2024": {
+              "trades": 78,
+              "targets": 20,
+              "stops": 31,
+              "breakevens": 27,
+              "win_rate": 25.64102564102564,
+              "total_return_pct": -1.7733159000591654,
+              "expectancy_pct": -0.022734819231527762,
+              "profit_factor": 0.7732942829264815
+            },
+            "true_oos_2025_2026": {
+              "trades": 53,
+              "targets": 19,
+              "stops": 15,
+              "breakevens": 19,
+              "win_rate": 35.84905660377358,
+              "total_return_pct": 1.1970933186437795,
+              "expectancy_pct": 0.022586666389505274,
+              "profit_factor": 1.3933354343162283
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "same_bar_wick_update",
+            "mode": "wick",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 319,
+              "targets": 95,
+              "stops": 112,
+              "breakevens": 112,
+              "win_rate": 29.780564263322884,
+              "total_return_pct": -3.700187067442456,
+              "expectancy_pct": -0.011599332499819611,
+              "profit_factor": 0.9080407679548551
+            },
+            "validation_2019_2022": {
+              "trades": 95,
+              "targets": 29,
+              "stops": 36,
+              "breakevens": 30,
+              "win_rate": 30.526315789473685,
+              "total_return_pct": -0.32170745645317944,
+              "expectancy_pct": -0.0033863942784545203,
+              "profit_factor": 0.962052630584362
+            },
+            "holdout_2023_2024": {
+              "trades": 53,
+              "targets": 14,
+              "stops": 22,
+              "breakevens": 17,
+              "win_rate": 26.41509433962264,
+              "total_return_pct": -1.009602821689412,
+              "expectancy_pct": -0.01904910984319645,
+              "profit_factor": 0.8411838401566337
+            },
+            "true_oos_2025_2026": {
+              "trades": 28,
+              "targets": 10,
+              "stops": 8,
+              "breakevens": 10,
+              "win_rate": 35.714285714285715,
+              "total_return_pct": 0.919755010058887,
+              "expectancy_pct": 0.03284839321638882,
+              "profit_factor": 1.530068678434857
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "prior_bar_wick_update",
+            "mode": "prior_wick",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 258,
+              "targets": 80,
+              "stops": 89,
+              "breakevens": 89,
+              "win_rate": 31.007751937984494,
+              "total_return_pct": -1.7760347049984029,
+              "expectancy_pct": -0.006883855445730244,
+              "profit_factor": 0.9447193331052584
+            },
+            "validation_2019_2022": {
+              "trades": 78,
+              "targets": 20,
+              "stops": 33,
+              "breakevens": 25,
+              "win_rate": 25.64102564102564,
+              "total_return_pct": -2.578735723591673,
+              "expectancy_pct": -0.033060714405021445,
+              "profit_factor": 0.6650911825677999
+            },
+            "holdout_2023_2024": {
+              "trades": 46,
+              "targets": 11,
+              "stops": 19,
+              "breakevens": 16,
+              "win_rate": 23.91304347826087,
+              "total_return_pct": -1.8591620135397076,
+              "expectancy_pct": -0.040416565511732776,
+              "profit_factor": 0.6723852533697627
+            },
+            "true_oos_2025_2026": {
+              "trades": 26,
+              "targets": 10,
+              "stops": 7,
+              "breakevens": 9,
+              "win_rate": 38.46153846153847,
+              "total_return_pct": 1.063563464907744,
+              "expectancy_pct": 0.040906287111836304,
+              "profit_factor": 1.6683389062316163
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "entry_close_beyond_level",
+            "mode": "close",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 242,
+              "targets": 79,
+              "stops": 82,
+              "breakevens": 81,
+              "win_rate": 32.64462809917356,
+              "total_return_pct": 0.6220547969756742,
+              "expectancy_pct": 0.0025704743676680753,
+              "profit_factor": 1.018941927320982
+            },
+            "validation_2019_2022": {
+              "trades": 72,
+              "targets": 23,
+              "stops": 25,
+              "breakevens": 24,
+              "win_rate": 31.944444444444443,
+              "total_return_pct": 0.246748387383245,
+              "expectancy_pct": 0.003427060935878403,
+              "profit_factor": 1.036315152773842
+            },
+            "holdout_2023_2024": {
+              "trades": 40,
+              "targets": 12,
+              "stops": 16,
+              "breakevens": 12,
+              "win_rate": 30.0,
+              "total_return_pct": -0.13368147535428143,
+              "expectancy_pct": -0.003342036883857036,
+              "profit_factor": 0.9742384803979652
+            },
+            "true_oos_2025_2026": {
+              "trades": 21,
+              "targets": 9,
+              "stops": 4,
+              "breakevens": 8,
+              "win_rate": 42.857142857142854,
+              "total_return_pct": 1.5666454649850545,
+              "expectancy_pct": 0.07460216499928832,
+              "profit_factor": 2.5527309424166478
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "same_bar_wick_update_0.05atr",
+            "mode": "wick",
+            "buffer_atr": 0.05
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 313,
+              "targets": 94,
+              "stops": 111,
+              "breakevens": 108,
+              "win_rate": 30.031948881789138,
+              "total_return_pct": -3.6164679565415137,
+              "expectancy_pct": -0.011554210723774805,
+              "profit_factor": 0.9094992064846921
+            },
+            "validation_2019_2022": {
+              "trades": 94,
+              "targets": 29,
+              "stops": 36,
+              "breakevens": 29,
+              "win_rate": 30.851063829787233,
+              "total_return_pct": -0.3117074564531799,
+              "expectancy_pct": -0.0033160367707785092,
+              "profit_factor": 0.9631887708687097
+            },
+            "holdout_2023_2024": {
+              "trades": 53,
+              "targets": 14,
+              "stops": 22,
+              "breakevens": 17,
+              "win_rate": 26.41509433962264,
+              "total_return_pct": -1.009602821689412,
+              "expectancy_pct": -0.01904910984319645,
+              "profit_factor": 0.8411838401566337
+            },
+            "true_oos_2025_2026": {
+              "trades": 27,
+              "targets": 10,
+              "stops": 8,
+              "breakevens": 9,
+              "win_rate": 37.03703703703704,
+              "total_return_pct": 0.929755010058887,
+              "expectancy_pct": 0.034435370742921745,
+              "profit_factor": 1.5389378090371193
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "prior_bar_wick_update_0.05atr",
+            "mode": "prior_wick",
+            "buffer_atr": 0.05
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 253,
+              "targets": 79,
+              "stops": 87,
+              "breakevens": 87,
+              "win_rate": 31.225296442687743,
+              "total_return_pct": -1.0058986595194073,
+              "expectancy_pct": -0.003975884029720977,
+              "profit_factor": 0.9677229758058218
+            },
+            "validation_2019_2022": {
+              "trades": 78,
+              "targets": 20,
+              "stops": 33,
+              "breakevens": 25,
+              "win_rate": 25.64102564102564,
+              "total_return_pct": -2.578735723591673,
+              "expectancy_pct": -0.033060714405021445,
+              "profit_factor": 0.6650911825677999
+            },
+            "holdout_2023_2024": {
+              "trades": 46,
+              "targets": 11,
+              "stops": 19,
+              "breakevens": 16,
+              "win_rate": 23.91304347826087,
+              "total_return_pct": -1.8591620135397076,
+              "expectancy_pct": -0.040416565511732776,
+              "profit_factor": 0.6723852533697627
+            },
+            "true_oos_2025_2026": {
+              "trades": 23,
+              "targets": 8,
+              "stops": 7,
+              "breakevens": 8,
+              "win_rate": 34.78260869565217,
+              "total_return_pct": 0.7391211985654015,
+              "expectancy_pct": 0.03213570428545224,
+              "profit_factor": 1.4673978294336285
+            }
+          }
+        }
+      ]
+    },
+    {
+      "symbol": "GBPCHF",
+      "timeframe": "15m",
+      "candidates": [
+        {
+          "candidate": {
+            "name": "baseline",
+            "mode": "none",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 1743,
+              "targets": 517,
+              "stops": 664,
+              "breakevens": 562,
+              "win_rate": 29.661503155479057,
+              "total_return_pct": -32.47629164469634,
+              "expectancy_pct": -0.0186324105821551,
+              "profit_factor": 0.7151072700258359
+            },
+            "validation_2019_2022": {
+              "trades": 508,
+              "targets": 169,
+              "stops": 185,
+              "breakevens": 154,
+              "win_rate": 33.267716535433074,
+              "total_return_pct": -8.802811119678028,
+              "expectancy_pct": -0.017328368345822888,
+              "profit_factor": 0.7112285787391329
+            },
+            "holdout_2023_2024": {
+              "trades": 250,
+              "targets": 78,
+              "stops": 89,
+              "breakevens": 83,
+              "win_rate": 31.2,
+              "total_return_pct": -4.640418014614881,
+              "expectancy_pct": -0.018561672058459523,
+              "profit_factor": 0.6240371408298405
+            },
+            "true_oos_2025_2026": {
+              "trades": 175,
+              "targets": 53,
+              "stops": 77,
+              "breakevens": 45,
+              "win_rate": 30.28571428571429,
+              "total_return_pct": -4.816806824738938,
+              "expectancy_pct": -0.027524610427079647,
+              "profit_factor": 0.5297571922775534
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "same_bar_wick_update",
+            "mode": "wick",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 1038,
+              "targets": 309,
+              "stops": 392,
+              "breakevens": 337,
+              "win_rate": 29.76878612716763,
+              "total_return_pct": -19.40532768865203,
+              "expectancy_pct": -0.018694920701976907,
+              "profit_factor": 0.7325026163215435
+            },
+            "validation_2019_2022": {
+              "trades": 271,
+              "targets": 87,
+              "stops": 100,
+              "breakevens": 84,
+              "win_rate": 32.10332103321033,
+              "total_return_pct": -5.565720998894491,
+              "expectancy_pct": -0.020537715863079304,
+              "profit_factor": 0.6961891429311773
+            },
+            "holdout_2023_2024": {
+              "trades": 138,
+              "targets": 40,
+              "stops": 46,
+              "breakevens": 52,
+              "win_rate": 28.985507246376812,
+              "total_return_pct": -2.2490317557345185,
+              "expectancy_pct": -0.01629733156329361,
+              "profit_factor": 0.6935050209139978
+            },
+            "true_oos_2025_2026": {
+              "trades": 92,
+              "targets": 30,
+              "stops": 42,
+              "breakevens": 20,
+              "win_rate": 32.608695652173914,
+              "total_return_pct": -3.197838144485263,
+              "expectancy_pct": -0.03475911026614416,
+              "profit_factor": 0.4840652015186418
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "prior_bar_wick_update",
+            "mode": "prior_wick",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 972,
+              "targets": 294,
+              "stops": 368,
+              "breakevens": 310,
+              "win_rate": 30.246913580246915,
+              "total_return_pct": -18.2646241138131,
+              "expectancy_pct": -0.01879076554919043,
+              "profit_factor": 0.7233606766673711
+            },
+            "validation_2019_2022": {
+              "trades": 252,
+              "targets": 82,
+              "stops": 92,
+              "breakevens": 78,
+              "win_rate": 32.53968253968254,
+              "total_return_pct": -4.319897218661658,
+              "expectancy_pct": -0.017142449280403402,
+              "profit_factor": 0.7319882342996906
+            },
+            "holdout_2023_2024": {
+              "trades": 132,
+              "targets": 38,
+              "stops": 44,
+              "breakevens": 50,
+              "win_rate": 28.78787878787879,
+              "total_return_pct": -2.6017393637556165,
+              "expectancy_pct": -0.019710146695118308,
+              "profit_factor": 0.62751303467586
+            },
+            "true_oos_2025_2026": {
+              "trades": 82,
+              "targets": 28,
+              "stops": 37,
+              "breakevens": 17,
+              "win_rate": 34.146341463414636,
+              "total_return_pct": -2.358558011256134,
+              "expectancy_pct": -0.028762902576294318,
+              "profit_factor": 0.5383317101360596
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "entry_close_beyond_level",
+            "mode": "close",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 848,
+              "targets": 251,
+              "stops": 316,
+              "breakevens": 281,
+              "win_rate": 29.599056603773583,
+              "total_return_pct": -13.437630664964736,
+              "expectancy_pct": -0.015846262576609357,
+              "profit_factor": 0.774748491453672
+            },
+            "validation_2019_2022": {
+              "trades": 204,
+              "targets": 69,
+              "stops": 75,
+              "breakevens": 60,
+              "win_rate": 33.82352941176471,
+              "total_return_pct": -4.425304984640983,
+              "expectancy_pct": -0.021692671493338152,
+              "profit_factor": 0.7068575600780649
+            },
+            "holdout_2023_2024": {
+              "trades": 114,
+              "targets": 37,
+              "stops": 36,
+              "breakevens": 41,
+              "win_rate": 32.45614035087719,
+              "total_return_pct": -1.4117449227594079,
+              "expectancy_pct": -0.012383727392626385,
+              "profit_factor": 0.776248776110537
+            },
+            "true_oos_2025_2026": {
+              "trades": 69,
+              "targets": 22,
+              "stops": 32,
+              "breakevens": 15,
+              "win_rate": 31.88405797101449,
+              "total_return_pct": -2.5553495495072545,
+              "expectancy_pct": -0.03703405144213412,
+              "profit_factor": 0.47804266823020686
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "same_bar_wick_update_0.05atr",
+            "mode": "wick",
+            "buffer_atr": 0.05
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 1028,
+              "targets": 304,
+              "stops": 393,
+              "breakevens": 331,
+              "win_rate": 29.571984435797667,
+              "total_return_pct": -20.5429468220635,
+              "expectancy_pct": -0.01998341130550924,
+              "profit_factor": 0.7172724882223462
+            },
+            "validation_2019_2022": {
+              "trades": 270,
+              "targets": 86,
+              "stops": 100,
+              "breakevens": 84,
+              "win_rate": 31.851851851851855,
+              "total_return_pct": -5.594005623122143,
+              "expectancy_pct": -0.020718539344896827,
+              "profit_factor": 0.6946451963463272
+            },
+            "holdout_2023_2024": {
+              "trades": 138,
+              "targets": 40,
+              "stops": 46,
+              "breakevens": 52,
+              "win_rate": 28.985507246376812,
+              "total_return_pct": -2.2490317557345185,
+              "expectancy_pct": -0.01629733156329361,
+              "profit_factor": 0.6935050209139978
+            },
+            "true_oos_2025_2026": {
+              "trades": 91,
+              "targets": 30,
+              "stops": 41,
+              "breakevens": 20,
+              "win_rate": 32.967032967032964,
+              "total_return_pct": -3.091057931564964,
+              "expectancy_pct": -0.033967669577636965,
+              "profit_factor": 0.49255075378639834
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "prior_bar_wick_update_0.05atr",
+            "mode": "prior_wick",
+            "buffer_atr": 0.05
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 960,
+              "targets": 289,
+              "stops": 367,
+              "breakevens": 304,
+              "win_rate": 30.104166666666664,
+              "total_return_pct": -18.778070638723232,
+              "expectancy_pct": -0.019560490248670032,
+              "profit_factor": 0.7148493913779267
+            },
+            "validation_2019_2022": {
+              "trades": 251,
+              "targets": 81,
+              "stops": 92,
+              "breakevens": 78,
+              "win_rate": 32.27091633466135,
+              "total_return_pct": -4.34818184288931,
+              "expectancy_pct": -0.0173234336370092,
+              "profit_factor": 0.7302334212340753
+            },
+            "holdout_2023_2024": {
+              "trades": 132,
+              "targets": 38,
+              "stops": 44,
+              "breakevens": 50,
+              "win_rate": 28.78787878787879,
+              "total_return_pct": -2.6017393637556165,
+              "expectancy_pct": -0.019710146695118308,
+              "profit_factor": 0.62751303467586
+            },
+            "true_oos_2025_2026": {
+              "trades": 80,
+              "targets": 27,
+              "stops": 36,
+              "breakevens": 17,
+              "win_rate": 33.75,
+              "total_return_pct": -2.4814415864568296,
+              "expectancy_pct": -0.03101801983071037,
+              "profit_factor": 0.5039092995429504
+            }
+          }
+        }
+      ]
+    },
+    {
+      "symbol": "GBPCHF",
+      "timeframe": "1h",
+      "candidates": [
+        {
+          "candidate": {
+            "name": "baseline",
+            "mode": "none",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 519,
+              "targets": 178,
+              "stops": 175,
+              "breakevens": 166,
+              "win_rate": 34.296724470134876,
+              "total_return_pct": 10.350149598143389,
+              "expectancy_pct": 0.019942484774842752,
+              "profit_factor": 1.1875610358978088
+            },
+            "validation_2019_2022": {
+              "trades": 147,
+              "targets": 44,
+              "stops": 45,
+              "breakevens": 58,
+              "win_rate": 29.931972789115648,
+              "total_return_pct": 0.3970812767244388,
+              "expectancy_pct": 0.0027012331749961824,
+              "profit_factor": 1.0331829909672616
+            },
+            "holdout_2023_2024": {
+              "trades": 96,
+              "targets": 32,
+              "stops": 29,
+              "breakevens": 35,
+              "win_rate": 33.33333333333333,
+              "total_return_pct": -1.2839888166379159,
+              "expectancy_pct": -0.013374883506644957,
+              "profit_factor": 0.8322484187851571
+            },
+            "true_oos_2025_2026": {
+              "trades": 68,
+              "targets": 19,
+              "stops": 24,
+              "breakevens": 25,
+              "win_rate": 27.941176470588236,
+              "total_return_pct": 0.12619583398380818,
+              "expectancy_pct": 0.001855821087997179,
+              "profit_factor": 1.024741460251539
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "same_bar_wick_update",
+            "mode": "wick",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 338,
+              "targets": 120,
+              "stops": 108,
+              "breakevens": 110,
+              "win_rate": 35.50295857988166,
+              "total_return_pct": 10.690158315809748,
+              "expectancy_pct": 0.031627687324880915,
+              "profit_factor": 1.2651230711362613
+            },
+            "validation_2019_2022": {
+              "trades": 96,
+              "targets": 28,
+              "stops": 24,
+              "breakevens": 44,
+              "win_rate": 29.166666666666668,
+              "total_return_pct": 3.1293699269232595,
+              "expectancy_pct": 0.03259760340545062,
+              "profit_factor": 1.4617967492349766
+            },
+            "holdout_2023_2024": {
+              "trades": 66,
+              "targets": 23,
+              "stops": 22,
+              "breakevens": 21,
+              "win_rate": 34.84848484848485,
+              "total_return_pct": -1.1176029420395341,
+              "expectancy_pct": -0.01693337790968991,
+              "profit_factor": 0.8198267027677363
+            },
+            "true_oos_2025_2026": {
+              "trades": 36,
+              "targets": 8,
+              "stops": 15,
+              "breakevens": 13,
+              "win_rate": 22.22222222222222,
+              "total_return_pct": -0.05438927345424255,
+              "expectancy_pct": -0.0015108131515067375,
+              "profit_factor": 0.9844276642560759
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "prior_bar_wick_update",
+            "mode": "prior_wick",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 275,
+              "targets": 99,
+              "stops": 84,
+              "breakevens": 92,
+              "win_rate": 36.0,
+              "total_return_pct": 11.717207235168742,
+              "expectancy_pct": 0.04260802630970451,
+              "profit_factor": 1.3865439350675322
+            },
+            "validation_2019_2022": {
+              "trades": 83,
+              "targets": 24,
+              "stops": 20,
+              "breakevens": 39,
+              "win_rate": 28.915662650602407,
+              "total_return_pct": 3.450098328199581,
+              "expectancy_pct": 0.04156744973734435,
+              "profit_factor": 1.6210514092191435
+            },
+            "holdout_2023_2024": {
+              "trades": 57,
+              "targets": 20,
+              "stops": 18,
+              "breakevens": 19,
+              "win_rate": 35.08771929824561,
+              "total_return_pct": -0.6301415298297939,
+              "expectancy_pct": -0.011055114558417437,
+              "profit_factor": 0.8767931780672245
+            },
+            "true_oos_2025_2026": {
+              "trades": 33,
+              "targets": 8,
+              "stops": 12,
+              "breakevens": 13,
+              "win_rate": 24.242424242424242,
+              "total_return_pct": 0.7864444339366203,
+              "expectancy_pct": 0.02383164951323092,
+              "profit_factor": 1.2965642326713673
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "entry_close_beyond_level",
+            "mode": "close",
+            "buffer_atr": 0.0
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 272,
+              "targets": 104,
+              "stops": 81,
+              "breakevens": 87,
+              "win_rate": 38.23529411764706,
+              "total_return_pct": 13.098410701581056,
+              "expectancy_pct": 0.04815592169698918,
+              "profit_factor": 1.3926039068690665
+            },
+            "validation_2019_2022": {
+              "trades": 78,
+              "targets": 25,
+              "stops": 16,
+              "breakevens": 37,
+              "win_rate": 32.05128205128205,
+              "total_return_pct": 4.62049916845439,
+              "expectancy_pct": 0.05923716882633833,
+              "profit_factor": 1.9850955745004928
+            },
+            "holdout_2023_2024": {
+              "trades": 54,
+              "targets": 19,
+              "stops": 18,
+              "breakevens": 17,
+              "win_rate": 35.18518518518518,
+              "total_return_pct": -1.0437802041498028,
+              "expectancy_pct": -0.019329263039811164,
+              "profit_factor": 0.8067926608501386
+            },
+            "true_oos_2025_2026": {
+              "trades": 33,
+              "targets": 8,
+              "stops": 13,
+              "breakevens": 12,
+              "win_rate": 24.242424242424242,
+              "total_return_pct": 0.21896766259640066,
+              "expectancy_pct": 0.006635383715042444,
+              "profit_factor": 1.068016559551573
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "same_bar_wick_update_0.05atr",
+            "mode": "wick",
+            "buffer_atr": 0.05
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 336,
+              "targets": 119,
+              "stops": 107,
+              "breakevens": 110,
+              "win_rate": 35.41666666666667,
+              "total_return_pct": 10.97323044335791,
+              "expectancy_pct": 0.032658423938565204,
+              "profit_factor": 1.2749206391197603
+            },
+            "validation_2019_2022": {
+              "trades": 95,
+              "targets": 28,
+              "stops": 23,
+              "breakevens": 44,
+              "win_rate": 29.47368421052631,
+              "total_return_pct": 3.480803613423493,
+              "expectancy_pct": 0.03664003803603677,
+              "profit_factor": 1.541752948686841
+            },
+            "holdout_2023_2024": {
+              "trades": 64,
+              "targets": 23,
+              "stops": 22,
+              "breakevens": 19,
+              "win_rate": 35.9375,
+              "total_return_pct": -1.142257147711817,
+              "expectancy_pct": -0.017847767932997142,
+              "profit_factor": 0.8152564332329822
+            },
+            "true_oos_2025_2026": {
+              "trades": 36,
+              "targets": 8,
+              "stops": 15,
+              "breakevens": 13,
+              "win_rate": 22.22222222222222,
+              "total_return_pct": -0.05438927345424255,
+              "expectancy_pct": -0.0015108131515067375,
+              "profit_factor": 0.9844276642560759
+            }
+          }
+        },
+        {
+          "candidate": {
+            "name": "prior_bar_wick_update_0.05atr",
+            "mode": "prior_wick",
+            "buffer_atr": 0.05
+          },
+          "periods": {
+            "train_2004_2018": {
+              "trades": 272,
+              "targets": 97,
+              "stops": 83,
+              "breakevens": 92,
+              "win_rate": 35.661764705882355,
+              "total_return_pct": 10.238197556593011,
+              "expectancy_pct": 0.03764043219335666,
+              "profit_factor": 1.3423525236819405
+            },
+            "validation_2019_2022": {
+              "trades": 83,
+              "targets": 24,
+              "stops": 20,
+              "breakevens": 39,
+              "win_rate": 28.915662650602407,
+              "total_return_pct": 3.450098328199581,
+              "expectancy_pct": 0.04156744973734435,
+              "profit_factor": 1.6210514092191435
+            },
+            "holdout_2023_2024": {
+              "trades": 56,
+              "targets": 20,
+              "stops": 18,
+              "breakevens": 18,
+              "win_rate": 35.714285714285715,
+              "total_return_pct": -0.6201415298297942,
+              "expectancy_pct": -0.011073955889817754,
+              "profit_factor": 0.8785108641183355
+            },
+            "true_oos_2025_2026": {
+              "trades": 33,
+              "targets": 8,
+              "stops": 12,
+              "breakevens": 13,
+              "win_rate": 24.242424242424242,
+              "total_return_pct": 0.7864444339366203,
+              "expectancy_pct": 0.02383164951323092,
+              "profit_factor": 1.2965642326713673
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

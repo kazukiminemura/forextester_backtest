@@ -8,6 +8,7 @@ import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
+from typing import Callable
 
 import numpy as np
 
@@ -133,7 +134,21 @@ def _simulate(
     pullback: PullbackState | None = None,
     trend_context: tuple[ConfirmedHtf | None, np.ndarray | None] | None = None,
     local_dow: np.ndarray | None = None,
+    entry_delay_bars: int = 0,
+    stop_buffer_atr: float = 0.1,
+    target_r: float = TARGET_R,
+    entry_filter: Callable[[int, int, float, float], bool] | None = None,
+    loss_cooldown_bars: int = 0,
+    stop_after_loss_for_day: bool = False,
 ) -> list[RiskTrade]:
+    if entry_delay_bars < -1:
+        raise ValueError("entry_delay_bars must be -1 or greater")
+    if stop_buffer_atr < 0:
+        raise ValueError("stop_buffer_atr must be non-negative")
+    if target_r <= 0:
+        raise ValueError("target_r must be positive")
+    if loss_cooldown_bars < 0:
+        raise ValueError("loss_cooldown_bars must be non-negative")
     atr = _atr(data) if atr is None else atr
     pullback = _pullback_state(data) if pullback is None else pullback
     features, dow_trend = (
@@ -152,7 +167,27 @@ def _simulate(
     armed_direction = 0
     armed_index = -1
     armed_extreme = np.nan
+    pending_direction = 0
+    pending_entry_index = -1
+    pending_extreme = np.nan
+    last_loss_exit_index = -1_000_000_000
+    last_loss_exit_date = None
     trades: list[RiskTrade] = []
+
+    def entry_policy_allows(
+        index: int, direction: int, entry: float, stop: float
+    ) -> bool:
+        if (
+            loss_cooldown_bars > 0
+            and index - last_loss_exit_index <= loss_cooldown_bars
+        ):
+            return False
+        if (
+            stop_after_loss_for_day
+            and last_loss_exit_date == data.times[index].date()
+        ):
+            return False
+        return entry_filter is None or entry_filter(index, direction, entry, stop)
 
     for index in range(data.close.size):
         if position != 0 and index > entry_index:
@@ -186,6 +221,9 @@ def _simulate(
                         float(raw_return * 100.0 - cost_pct),
                     )
                 )
+                if trades[-1].return_pct <= 0:
+                    last_loss_exit_index = index
+                    last_loss_exit_date = data.times[index].date()
                 position = 0
                 entry_index = -1
                 entry_price = np.nan
@@ -198,6 +236,62 @@ def _simulate(
                 armed_extreme = np.nan
 
         if position != 0 or index == 0 or np.isnan(atr[index]):
+            continue
+
+        if pending_direction != 0:
+            pending_extreme = (
+                min(pending_extreme, data.low[index])
+                if pending_direction == 1
+                else max(pending_extreme, data.high[index])
+            )
+            if index < pending_entry_index:
+                continue
+            direction_still_valid = _entry_allowed(
+                pending_direction,
+                index,
+                candidate.htf,
+                features,
+                dow_trend,
+            ) and (
+                not candidate.require_local_dow
+                or pending_direction == int(local_dow[index])
+            )
+            correct_side = (
+                pending_direction
+                * (data.close[index] - pullback.average[index])
+                > 0
+            )
+            if direction_still_valid and correct_side:
+                position = pending_direction
+                entry_index = index
+                entry_price = data.close[index]
+                stop_price = (
+                    pending_extreme - position * atr[index] * stop_buffer_atr
+                )
+                risk_distance = position * (entry_price - stop_price)
+                entry_accepted = risk_distance > 0 and entry_policy_allows(
+                    index, position, entry_price, stop_price
+                )
+                if entry_accepted:
+                    target_price = (
+                        entry_price + position * risk_distance * target_r
+                    )
+                    trigger_r = (
+                        candidate.breakeven_trigger_r
+                        if candidate.breakeven_trigger_r is not None
+                        else target_r
+                    )
+                    trigger_price = (
+                        entry_price + position * risk_distance * trigger_r
+                    )
+                    breakeven_active = False
+                else:
+                    position = 0
+                    entry_index = -1
+                    entry_price = np.nan
+            pending_direction = 0
+            pending_entry_index = -1
+            pending_extreme = np.nan
             continue
 
         if armed_direction != 0:
@@ -236,27 +330,42 @@ def _simulate(
                 )
                 correct_side = armed_direction * (data.close[index] - average) > 0
                 if slope_ok and reaccelerated and correct_side:
-                    position = armed_direction
-                    entry_index = index
-                    entry_price = data.close[index]
-                    stop_price = armed_extreme - position * atr[index] * 0.1
-                    risk_distance = position * (entry_price - stop_price)
-                    if risk_distance <= 0:
-                        position = 0
-                        entry_index = -1
-                        entry_price = np.nan
-                        armed_direction = 0
-                        armed_index = -1
-                        armed_extreme = np.nan
-                        continue
-                    target_price = entry_price + position * risk_distance * TARGET_R
-                    trigger_r = (
-                        candidate.breakeven_trigger_r
-                        if candidate.breakeven_trigger_r is not None
-                        else TARGET_R
-                    )
-                    trigger_price = entry_price + position * risk_distance * trigger_r
-                    breakeven_active = False
+                    if entry_delay_bars > 0:
+                        pending_direction = armed_direction
+                        pending_entry_index = index + entry_delay_bars
+                        pending_extreme = armed_extreme
+                    else:
+                        position = armed_direction
+                        entry_index = index
+                        entry_price = data.close[index]
+                        stop_price = (
+                            armed_extreme
+                            - position * atr[index] * stop_buffer_atr
+                        )
+                        risk_distance = position * (entry_price - stop_price)
+                        entry_accepted = risk_distance > 0 and entry_policy_allows(
+                            index, position, entry_price, stop_price
+                        )
+                        if not entry_accepted:
+                            position = 0
+                            entry_index = -1
+                            entry_price = np.nan
+                            armed_direction = 0
+                            armed_index = -1
+                            armed_extreme = np.nan
+                            continue
+                        target_price = (
+                            entry_price + position * risk_distance * target_r
+                        )
+                        trigger_r = (
+                            candidate.breakeven_trigger_r
+                            if candidate.breakeven_trigger_r is not None
+                            else target_r
+                        )
+                        trigger_price = (
+                            entry_price + position * risk_distance * trigger_r
+                        )
+                        breakeven_active = False
                     armed_direction = 0
                     armed_index = -1
                     armed_extreme = np.nan
@@ -286,14 +395,44 @@ def _simulate(
                 and data.close[index] <= pullback.average[index]
                 and short_close_location >= 0.65
             )
-            if long_touch:
-                armed_direction = 1
-                armed_index = index
-                armed_extreme = data.low[index]
-            elif short_touch:
-                armed_direction = -1
-                armed_index = index
-                armed_extreme = data.high[index]
+            touch_direction = 1 if long_touch else -1 if short_touch else 0
+            if touch_direction != 0:
+                touch_extreme = (
+                    data.low[index] if touch_direction == 1 else data.high[index]
+                )
+                if entry_delay_bars == -1:
+                    position = touch_direction
+                    entry_index = index
+                    entry_price = data.close[index]
+                    stop_price = (
+                        touch_extreme
+                        - position * atr[index] * stop_buffer_atr
+                    )
+                    risk_distance = position * (entry_price - stop_price)
+                    entry_accepted = risk_distance > 0 and entry_policy_allows(
+                        index, position, entry_price, stop_price
+                    )
+                    if entry_accepted:
+                        target_price = (
+                            entry_price + position * risk_distance * target_r
+                        )
+                        trigger_r = (
+                            candidate.breakeven_trigger_r
+                            if candidate.breakeven_trigger_r is not None
+                            else target_r
+                        )
+                        trigger_price = (
+                            entry_price + position * risk_distance * trigger_r
+                        )
+                        breakeven_active = False
+                    else:
+                        position = 0
+                        entry_index = -1
+                        entry_price = np.nan
+                else:
+                    armed_direction = touch_direction
+                    armed_index = index
+                    armed_extreme = touch_extreme
     return trades
 
 

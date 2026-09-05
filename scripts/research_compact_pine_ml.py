@@ -48,6 +48,23 @@ MODEL_CONFIGS = (
 )
 
 
+def _max_loss_streak(trades, start_year: int, end_year: int) -> int:
+    ordered = sorted(
+        (
+            trade
+            for trade in trades
+            if start_year <= trade.entry_time.year <= end_year
+        ),
+        key=lambda trade: (trade.entry_time, trade.symbol),
+    )
+    longest = 0
+    current = 0
+    for trade in ordered:
+        current = current + 1 if trade.result_r < 0 else 0
+        longest = max(longest, current)
+    return longest
+
+
 def _model(config: CompactModelConfig) -> HistGradientBoostingClassifier:
     return HistGradientBoostingClassifier(
         learning_rate=config.learning_rate,
@@ -159,6 +176,10 @@ def main() -> int:
                 name: _stats(trades, start, finish, months)
                 for name, (start, finish, months) in PERIODS.items()
             }
+            for name, (start, finish, _) in PERIODS.items():
+                periods[name]["max_loss_streak"] = _max_loss_streak(
+                    trades, start, finish
+                )
             annual_periods = {
                 str(year): _stats(trades, year, year, 12)
                 for year in range(2010, 2027)
@@ -170,6 +191,11 @@ def main() -> int:
                 }
                 for symbol, symbol_trades in trades_by_symbol.items()
             }
+            for symbol, symbol_trades in trades_by_symbol.items():
+                for name, (start, finish, _) in PERIODS.items():
+                    symbol_periods[symbol][name]["max_loss_streak"] = (
+                        _max_loss_streak(symbol_trades, start, finish)
+                    )
             prequalified = _passes(periods["train_2010_2018"]) and _passes(
                 periods["validation_2019_2022"]
             )

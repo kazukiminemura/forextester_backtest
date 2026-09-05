@@ -286,20 +286,22 @@ f_scanCompactRow(table target, int row, string symbol, int trend,
     bool sellReady = mlEligible and fresh and trend == -1 and shortValue >= {threshold} and shortValue >= longValue
     bool showReady = row <= 6 and (buyReady or sellReady)
     color statusColor = buyReady ? color.rgb(34, 197, 94) : color.rgb(239, 68, 68)
-    float activeProbability = buyReady ? longValue : sellReady ? shortValue : na
     float entryPrice = buyReady and not na(entryOpen) ? entryOpen + requestedSpread :
          sellReady and not na(entryOpen) ? entryOpen : na
     float stopPrice = buyReady ? signalClose - signalAtr * 2.0 :
          sellReady ? signalClose + signalAtr * 2.0 + requestedSpread : na
+    float riskPrice = not na(entryPrice) and not na(stopPrice) ? math.abs(entryPrice - stopPrice) : na
+    float targetPrice = not na(riskPrice) ?
+         buyReady ? entryPrice + riskPrice : entryPrice - riskPrice : na
     if showReady
         table.cell(target, 0, row, f_scanName(symbol), text_color=color.white,
              bgcolor=color.rgb(31, 41, 55), text_size=size.small)
         table.cell(target, 1, row, buyReady ? "BUY" : "SELL",
              text_color=color.white, bgcolor=statusColor, text_size=size.small)
-        table.cell(target, 2, row, str.tostring(activeProbability * 100.0, "#.0") + "%",
-             text_color=color.white, bgcolor=color.rgb(17, 24, 39), text_size=size.small)
-        table.cell(target, 3, row, na(entryPrice) ? "次足始値" : str.tostring(entryPrice, "#.#####"),
+        table.cell(target, 2, row, na(entryPrice) ? "次足始値" : str.tostring(entryPrice, "#.#####"),
              text_color=color.white, bgcolor=statusColor, text_size=size.small)
+        table.cell(target, 3, row, na(targetPrice) ? "計算待ち" : str.tostring(targetPrice, "#.#####"),
+             text_color=color.white, bgcolor=color.rgb(21, 128, 61), text_size=size.small)
         table.cell(target, 4, row, na(stopPrice) ? "計算待ち" : str.tostring(stopPrice, "#.#####"),
              text_color=color.white, bgcolor=color.rgb(153, 27, 27), text_size=size.small)
     showReady ? row + 1 : row
@@ -549,8 +551,32 @@ float visibleEntry = not na(pendingEntryPrice) ? pendingEntryPrice :
      trackingTrade ? trackedEntry : showHistoricalWindow ? historicalEntry : na
 float visibleStop = not na(pendingStopPrice) ? pendingStopPrice :
      trackingTrade ? trackedStop : showHistoricalWindow ? historicalStop : na
-float visibleTarget = trackingTrade ? trackedTarget :
+float visibleTarget = not na(pendingTargetPrice) ? pendingTargetPrice :
+     trackingTrade ? trackedTarget :
      showHistoricalWindow ? historicalTarget : na
+var line pendingTargetLine = na
+var label pendingTargetLabel = na
+if barstate.islast
+    if not na(pendingTargetPrice)
+        if na(pendingTargetLine)
+            pendingTargetLine := line.new(bar_index, pendingTargetPrice,
+                 bar_index + i_entryLineBars, pendingTargetPrice,
+                 xloc=xloc.bar_index, color=color.lime, width=2)
+            pendingTargetLabel := label.new(bar_index + i_entryLineBars,
+                 pendingTargetPrice, "TP 利確\\n" + str.tostring(pendingTargetPrice, format.mintick),
+                 xloc=xloc.bar_index, style=label.style_label_left,
+                 color=color.lime, textcolor=color.black, size=size.tiny)
+        else
+            line.set_xy1(pendingTargetLine, bar_index, pendingTargetPrice)
+            line.set_xy2(pendingTargetLine, bar_index + i_entryLineBars, pendingTargetPrice)
+            label.set_xy(pendingTargetLabel, bar_index + i_entryLineBars, pendingTargetPrice)
+            label.set_text(pendingTargetLabel,
+                 "TP 利確\\n" + str.tostring(pendingTargetPrice, format.mintick))
+    else if not na(pendingTargetLine)
+        line.delete(pendingTargetLine)
+        pendingTargetLine := na
+        label.delete(pendingTargetLabel)
+        pendingTargetLabel := na
 // 透明plotで価格を自動縮尺へ含め、見た目は名称付きlineだけにする。
 plot(visibleEntry, "Entry scale", color=color.new(color.yellow, 100), linewidth=1,
      style=plot.style_linebr)
@@ -689,7 +715,7 @@ color entryGuideColor = trackingTrade ? color.rgb(37, 99, 235) :
 string guideEntryText = trackingTrade ? str.tostring(trackedEntry, format.mintick) :
      guidePending ? "次の15分足始値" : "--"
 string guideTargetText = trackingTrade ? str.tostring(trackedTarget, format.mintick) :
-     guidePending and not na(pendingTargetPrice) ? "ENTRY後に確定" : "--"
+     guidePending and not na(pendingTargetPrice) ? str.tostring(pendingTargetPrice, format.mintick) : "--"
 string guideStopText = trackingTrade ? str.tostring(trackedStop, format.mintick) :
      guidePending and not na(pendingStopPrice) ? str.tostring(pendingStopPrice, format.mintick) : "--"
 string guideMlText = htfTrend == 1 ? "↑" : htfTrend == -1 ? "↓" : "–"
@@ -722,8 +748,8 @@ if barstate.islast
     if i_showScanner
         table.cell(scanner, 0, 0, "通貨", text_color=color.white, bgcolor=color.rgb(30, 64, 175), text_size=size.small)
         table.cell(scanner, 1, 0, "方向", text_color=color.white, bgcolor=color.rgb(30, 64, 175), text_size=size.small)
-        table.cell(scanner, 2, 0, "ML", text_color=color.white, bgcolor=color.rgb(30, 64, 175), text_size=size.small)
-        table.cell(scanner, 3, 0, "Entry", text_color=color.white, bgcolor=color.rgb(30, 64, 175), text_size=size.small)
+        table.cell(scanner, 2, 0, "Entry", text_color=color.white, bgcolor=color.rgb(30, 64, 175), text_size=size.small)
+        table.cell(scanner, 3, 0, "TP", text_color=color.white, bgcolor=color.rgb(21, 128, 61), text_size=size.small)
         table.cell(scanner, 4, 0, "SL", text_color=color.white, bgcolor=color.rgb(153, 27, 27), text_size=size.small)
         int compactRow = 1
 {scanner_rows}

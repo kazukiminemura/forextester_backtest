@@ -49,8 +49,8 @@ def test_strict_rr_ml_pine_shows_entry_rr_and_readable_win_rate() -> None:
     assert "int historyObjectLimit = i_historyTradeCount * 3" in SOURCE
     assert "while array.size(tradeLines) > historyObjectLimit" in SOURCE
     assert "while array.size(tradeLabels) > historyObjectLimit" in SOURCE
-    assert SOURCE.count("line.delete") == 3
-    assert SOURCE.count("label.delete") == 2
+    assert SOURCE.count("line.delete") == 4
+    assert SOURCE.count("label.delete") == 3
     assert SOURCE.count("box.delete") == 1
     assert "historicalStop := trackedStop" in SOURCE
     assert "historicalTarget := trackedTarget" in SOURCE
@@ -61,6 +61,12 @@ def test_strict_rr_ml_pine_shows_entry_rr_and_readable_win_rate() -> None:
     assert 'plot(visibleStop, "SL scale", color=color.new(color.red, 100)' in SOURCE
     assert "pendingClose - pendingAtr * 2.0" in SOURCE
     assert 'plot(visibleTarget, "TP scale", color=color.new(color.lime, 100)' in SOURCE
+    assert "float visibleTarget = not na(pendingTargetPrice) ? pendingTargetPrice" in SOURCE
+    assert "var line pendingTargetLine = na" in SOURCE
+    assert "var label pendingTargetLabel = na" in SOURCE
+    assert "pendingTargetLine := line.new(bar_index, pendingTargetPrice" in SOURCE
+    assert "xloc=xloc.bar_index, color=color.lime, width=2" in SOURCE
+    assert 'pendingTargetPrice, "TP 利確\\n"' in SOURCE
     assert "table.new(position.middle_right" not in SOURCE
     assert "table.cell(stats" not in SOURCE
     assert '"勝率"' in SOURCE
@@ -200,8 +206,10 @@ def test_multi_pair_scanner_shows_only_complete_mobile_candidates() -> None:
     assert SOURCE.count("f_scanCompactRow(scanner, compactRow,") == 18
     assert '"現在候補なし"' in SOURCE
     assert "table.clear(scanner, 0, 0, 4, 6)" in SOURCE
-    assert '"ML"' in SOURCE
     assert '"Entry"' in SOURCE
+    assert 'table.cell(scanner, 3, 0, "TP"' in SOURCE
+    assert "float targetPrice = not na(riskPrice)" in SOURCE
+    assert 'str.tostring(targetPrice, "#.#####")' in SOURCE
     assert 'na(entryPrice) ? "次足始値"' in SOURCE
     assert 'table.cell(scanner, 4, 0, "SL"' in SOURCE
     assert "signalClose - signalAtr * 2.0" in SOURCE
