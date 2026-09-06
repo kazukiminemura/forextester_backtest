@@ -1,0 +1,339 @@
+//@version=6
+// Independent reconstruction of publicly described features, not the original algorithm.
+// No trained AI model. See docs/sniper_vip_pro_reconstruction.md for assumptions.
+indicator("Sniper VIP 機能再現・独自ロジック", shorttitle="Sniper 独自版", overlay=true,
+     max_lines_count=400, max_labels_count=400, max_boxes_count=100, max_bars_back=1000)
+
+string gSignal = "1. 売買判定（独自ルール）"
+int atrLength = input.int(14, "ATR期間", minval=2, maxval=100, group=gSignal)
+float stFactor = input.float(3.0, "Supertrend ATR倍率", minval=0.1, step=0.1, group=gSignal)
+int emaLength = input.int(100, "トレンドEMA期間", minval=2, maxval=500, group=gSignal)
+int rsiLength = input.int(14, "RSI期間", minval=2, maxval=100, group=gSignal)
+float rsiThreshold = input.float(52, "買いRSI下限（売りは100−下限）", minval=50, maxval=80, group=gSignal)
+int dmiLength = input.int(14, "DI・ADX期間", minval=2, maxval=100, group=gSignal)
+float adxMinimum = input.float(18, "ADX下限", minval=0, maxval=60, group=gSignal)
+bool useEmaFilter = input.bool(true, "EMA方向フィルター", group=gSignal)
+int cooldown = input.int(5, "採用サインの最小間隔（本）", minval=1, maxval=500, group=gSignal)
+
+string gRisk = "2. Entry・SL・TP（表示上の追跡）"
+float slAtr = input.float(1.5, "SL ATR倍率", minval=0.1, step=0.1, group=gRisk)
+float tp1Atr = input.float(1.0, "TP1 ATR倍率", minval=0.1, step=0.1, group=gRisk)
+float tp2Atr = input.float(2.0, "TP2 ATR倍率", minval=0.1, step=0.1, group=gRisk)
+float tp3Atr = input.float(3.0, "TP3 ATR倍率", minval=0.1, step=0.1, group=gRisk)
+bool rollTargets = input.bool(false, "TP到達後に3目標を前進（SLまで追跡継続）", group=gRisk)
+int keepSets = input.int(25, "価格ライン履歴の保持セット数", minval=1, maxval=60, group=gRisk)
+
+string gVisual = "3. 描画"
+bool showAverages = input.bool(true, "EMA・Supertrend", group=gVisual)
+bool showZones = input.bool(true, "需給ゾーン", group=gVisual)
+bool showFvg = input.bool(true, "FVG", group=gVisual)
+bool showTrendlines = input.bool(true, "確定ピボットのトレンドライン", group=gVisual)
+bool showPanel = input.bool(true, "時間足別パネル", group=gVisual)
+int pivotLength = input.int(5, "ピボット左右本数", minval=2, maxval=50, group=gVisual)
+float zoneAtr = input.float(0.4, "需給ゾーン厚み（ピボット足ATR）", minval=0.05, step=0.05, group=gVisual)
+float fvgMinimum = input.float(0.1, "FVG最小幅（ATR）", minval=0, step=0.05, group=gVisual)
+int keepZones = input.int(40, "ゾーン・FVG合計上限", minval=1, maxval=80, group=gVisual)
+int zoneLife = input.int(300, "ゾーン延長上限（本）", minval=10, maxval=2000, group=gVisual)
+float nearAtr = input.float(0.3, "高安への接近判定（時間足ATR）", minval=0.05, step=0.05, group=gVisual)
+
+if barstate.isfirst and not (tp1Atr < tp2Atr and tp2Atr < tp3Atr)
+    runtime.error("TP倍率は TP1 < TP2 < TP3 に設定してください。")
+if barstate.isfirst and not chart.is_standard
+    runtime.error("通常のローソク足チャートで使用してください。")
+
+// Signal calculation is shared by the chart and all dashboard timeframes.
+// A setup edge occurs when the complete filter changes from false to true.
+f_engine() =>
+    float a = ta.atr(atrLength)
+    float e = ta.ema(close, emaLength)
+    float r = ta.rsi(close, rsiLength)
+    [st, stDirection] = ta.supertrend(stFactor, atrLength)
+    [diPlus, diMinus, adx] = ta.dmi(dmiLength, dmiLength)
+    bool ready = not na(a) and not na(e) and not na(adx) and not na(r)
+    bool longSetup = ready and stDirection < 0 and (not useEmaFilter or close > e) and r >= rsiThreshold and adx >= adxMinimum and diPlus > diMinus
+    bool shortSetup = ready and stDirection > 0 and (not useEmaFilter or close < e) and r <= 100 - rsiThreshold and adx >= adxMinimum and diMinus > diPlus
+    int edge = longSetup and not longSetup[1] ? 1 : shortSetup and not shortSetup[1] ? -1 : 0
+    int trend = ready ? (stDirection < 0 and close > e ? 1 : stDirection > 0 and close < e ? -1 : 0) : 0
+    [a, e, st, stDirection, adx, edge, trend]
+
+f_snapshot() =>
+    [a, e, st, sd, ax, edge, trend] = f_engine()
+    float ph = ta.pivothigh(high, pivotLength, pivotLength)
+    float pl = ta.pivotlow(low, pivotLength, pivotLength)
+    float resistance = ta.valuewhen(not na(ph), ph, 0)
+    float support = ta.valuewhen(not na(pl), pl, 0)
+    int lastSide = ta.valuewhen(edge != 0, edge, 0)
+    float lastPrice = ta.valuewhen(edge != 0, close, 0)
+    int lastTime = ta.valuewhen(edge != 0, time_close, 0)
+    [trend, lastSide, lastPrice, lastTime, resistance, support, a]
+
+// Every field is shifted: lookahead_on here exposes only completed HTF bars.
+f_previousSnapshot() =>
+    [tr, side, price, stamp, resistance, support, a] = f_snapshot()
+    [tr[1], side[1], price[1], stamp[1], resistance[1], support[1], a[1]]
+
+f_price(float value) =>
+    na(value) ? "—" : str.tostring(value, format.mintick)
+
+color buyColor = color.rgb(0, 190, 155)
+color sellColor = color.rgb(239, 83, 100)
+var array<line> levelLines = array.new<line>()
+var array<label> levelLabels = array.new<label>()
+var array<label> eventLabels = array.new<label>()
+
+f_event(float price, string message, color shade, bool below) =>
+    label item = label.new(bar_index, price, message, style=below ? label.style_label_up : label.style_label_down,
+         color=shade, textcolor=color.white, size=size.tiny)
+    array.push(eventLabels, item)
+    if array.size(eventLabels) > 75
+        label.delete(array.shift(eventLabels))
+
+f_level(float price, string name, color shade) =>
+    array.push(levelLines, line.new(bar_index, price, bar_index + 1, price, color=shade))
+    array.push(levelLabels, label.new(bar_index + 1, price, name + " " + f_price(price),
+         style=label.style_label_left, color=color.new(shade, 20), textcolor=color.white, size=size.tiny))
+    if array.size(levelLines) > keepSets * 5
+        line.delete(array.shift(levelLines))
+        label.delete(array.shift(levelLabels))
+
+f_levels(float entry, float stop, float t1, float t2, float t3) =>
+    f_level(entry, "Entry", color.gray)
+    f_level(stop, "SL", sellColor)
+    f_level(t1, "TP1", buyColor)
+    f_level(t2, "TP2", buyColor)
+    f_level(t3, "TP3", buyColor)
+
+f_extendLevels() =>
+    int n = array.size(levelLines)
+    if n >= 5
+        for i = n - 5 to n - 1
+            line.set_x2(array.get(levelLines, i), bar_index + 1)
+            label.set_x(array.get(levelLabels, i), bar_index + 1)
+
+[atr, ema, supertrend, stDirection, adx, signalEdge, trend] = f_engine()
+plot(showAverages ? ema : na, "トレンドEMA", color.orange, 2)
+plot(showAverages and stDirection < 0 ? supertrend : na, "上昇Supertrend", buyColor, 2, plot.style_linebr)
+plot(showAverages and stDirection > 0 ? supertrend : na, "下降Supertrend", sellColor, 2, plot.style_linebr)
+
+// One virtual setup at a time. Entry is a reference close, not an execution fill.
+var int side = 0
+var int entryBar = na
+var int lastEntryBar = na
+var float entry = na
+var float stop = na
+var float target1 = na
+var float target2 = na
+var float target3 = na
+var bool hit1 = false
+var bool hit2 = false
+var string status = "待機"
+bool buySignal = false
+bool sellSignal = false
+bool stopEvent = false
+bool tpEvent = false
+bool oppositeEvent = false
+bool strongSignal = false
+
+if barstate.isconfirmed
+    bool closedThisBar = false
+    if side != 0 and bar_index > entryBar
+        f_extendLevels()
+        bool stopTouched = side == 1 ? low <= stop : high >= stop
+        bool touch1 = side == 1 ? high >= target1 : low <= target1
+        bool touch2 = side == 1 ? high >= target2 : low <= target2
+        bool touch3 = side == 1 ? high >= target3 : low <= target3
+        // OHLC cannot determine intrabar order. Stop takes priority over all targets.
+        if stopTouched
+            stopEvent := true
+            status := "SL到達（同一足はSL優先）"
+            f_event(stop, "SL到達\n" + f_price(stop), sellColor, side == -1)
+            side := 0
+            closedThisBar := true
+        else
+            if touch1 and not hit1
+                hit1 := true
+                tpEvent := true
+                f_event(target1, "TP1到達\n" + f_price(target1), buyColor, side == -1)
+                status := "TP1到達"
+            if touch2 and not hit2
+                hit2 := true
+                tpEvent := true
+                f_event(target2, "TP2到達\n" + f_price(target2), buyColor, side == -1)
+                status := "TP2到達"
+            if touch3
+                tpEvent := true
+                f_event(target3, "TP3到達\n" + f_price(target3), buyColor, side == -1)
+                status := "TP3完了"
+            if rollTargets and (touch1 or touch2 or touch3)
+                // Advance from the furthest OLD target hit. New targets activate next bar.
+                float anchor = touch3 ? target3 : touch2 ? target2 : target1
+                float base = side == 1 ? math.max(anchor, close) : math.min(anchor, close)
+                target1 := math.round_to_mintick(base + side * math.max(atr * tp1Atr, syminfo.mintick))
+                target2 := math.round_to_mintick(base + side * math.max(atr * tp2Atr, syminfo.mintick * 2))
+                target3 := math.round_to_mintick(base + side * math.max(atr * tp3Atr, syminfo.mintick * 3))
+                target2 := side == 1 ? math.max(target2, target1 + syminfo.mintick) : math.min(target2, target1 - syminfo.mintick)
+                target3 := side == 1 ? math.max(target3, target2 + syminfo.mintick) : math.min(target3, target2 - syminfo.mintick)
+                hit1 := false
+                hit2 := false
+                status := "目標更新・SLは固定"
+                f_levels(entry, stop, target1, target2, target3)
+            else if touch3
+                side := 0
+                closedThisBar := true
+        if side != 0 and signalEdge == -side
+            oppositeEvent := true
+            f_event(close, "逆方向候補・追跡継続", color.orange, side == -1)
+    if side == 0 and not closedThisBar and signalEdge != 0 and (na(lastEntryBar) or bar_index - lastEntryBar >= cooldown)
+        side := signalEdge
+        entryBar := bar_index
+        lastEntryBar := bar_index
+        entry := math.round_to_mintick(close)
+        stop := math.round_to_mintick(entry - side * math.max(atr * slAtr, syminfo.mintick))
+        target1 := math.round_to_mintick(entry + side * math.max(atr * tp1Atr, syminfo.mintick))
+        target2 := math.round_to_mintick(entry + side * math.max(atr * tp2Atr, syminfo.mintick * 2))
+        target3 := math.round_to_mintick(entry + side * math.max(atr * tp3Atr, syminfo.mintick * 3))
+        target2 := side == 1 ? math.max(target2, target1 + syminfo.mintick) : math.min(target2, target1 - syminfo.mintick)
+        target3 := side == 1 ? math.max(target3, target2 + syminfo.mintick) : math.min(target3, target2 - syminfo.mintick)
+        hit1 := false
+        hit2 := false
+        buySignal := side == 1
+        sellSignal := side == -1
+        strongSignal := trend == side and adx >= adxMinimum + 7 and math.abs(close - open) >= atr * 0.5
+        status := side == 1 ? "BUY追跡中" : "SELL追跡中"
+        f_event(entry, (side == 1 ? "BUY" : "SELL") + "\n" + f_price(entry), side == 1 ? buyColor : sellColor, side == 1)
+        if trend != side
+            oppositeEvent := true
+            status := status + "・EMA方向不一致"
+            f_event(side == 1 ? low : high, "注意：EMA方向不一致", color.orange, side == 1)
+        f_levels(entry, stop, target1, target2, target3)
+
+barcolor(strongSignal ? color.purple : na, title="強いサイン（独自条件）")
+
+// Zones begin on the confirmation bar: no retrospective zone availability.
+type Zone
+    box drawing
+    int direction
+    bool gap
+    int born
+    bool active
+
+var array<Zone> zones = array.new<Zone>()
+f_zone(float top, float bottom, int direction, bool gap) =>
+    color shade = direction == 1 ? buyColor : sellColor
+    string title = gap ? (direction == 1 ? "上昇FVG" : "下降FVG") : (direction == 1 ? "需要" : "供給")
+    box drawing = box.new(bar_index, top, bar_index + 1, bottom, border_color=color.new(shade, 45),
+         bgcolor=color.new(shade, 88), text=title, text_color=shade, text_size=size.tiny)
+    array.push(zones, Zone.new(drawing, direction, gap, bar_index, true))
+    if array.size(zones) > keepZones
+        Zone old = array.shift(zones)
+        box.delete(old.drawing)
+
+float pivotHigh = ta.pivothigh(high, pivotLength, pivotLength)
+float pivotLow = ta.pivotlow(low, pivotLength, pivotLength)
+var float priorHigh = na
+var float priorLow = na
+var int priorHighTime = na
+var int priorLowTime = na
+var line highTrend = na
+var line lowTrend = na
+
+if barstate.isconfirmed
+    if array.size(zones) > 0
+        for i = 0 to array.size(zones) - 1
+            Zone z = array.get(zones, i)
+            if z.active
+                box.set_right(z.drawing, bar_index)
+                bool invalid = z.gap ? (z.direction == 1 ? low <= box.get_bottom(z.drawing) : high >= box.get_top(z.drawing)) : (z.direction == 1 ? close < box.get_bottom(z.drawing) : close > box.get_top(z.drawing))
+                if invalid or bar_index - z.born >= zoneLife
+                    z.active := false
+                    box.set_bgcolor(z.drawing, color.new(color.gray, 94))
+                    box.set_border_color(z.drawing, color.new(color.gray, 80))
+                    box.set_text(z.drawing, invalid ? "終了" : "期限終了")
+    if not na(pivotHigh)
+        float bottom = pivotHigh - atr[pivotLength] * zoneAtr
+        if showZones and not na(bottom) and close <= pivotHigh
+            f_zone(pivotHigh, bottom, -1, false)
+        if showTrendlines and not na(priorHigh)
+            line.delete(highTrend)
+            highTrend := line.new(priorHighTime, priorHigh, time[pivotLength], pivotHigh, xloc=xloc.bar_time, extend=extend.right, color=sellColor, style=line.style_dashed)
+        priorHigh := pivotHigh
+        priorHighTime := time[pivotLength]
+    if not na(pivotLow)
+        float top = pivotLow + atr[pivotLength] * zoneAtr
+        if showZones and not na(top) and close >= pivotLow
+            f_zone(top, pivotLow, 1, false)
+        if showTrendlines and not na(priorLow)
+            line.delete(lowTrend)
+            lowTrend := line.new(priorLowTime, priorLow, time[pivotLength], pivotLow, xloc=xloc.bar_time, extend=extend.right, color=buyColor, style=line.style_dashed)
+        priorLow := pivotLow
+        priorLowTime := time[pivotLength]
+    if showFvg and not na(atr)
+        if low > high[2] and low - high[2] >= atr * fvgMinimum
+            f_zone(low, high[2], 1, true)
+        if high < low[2] and low[2] - high >= atr * fvgMinimum
+            f_zone(low[2], high, -1, true)
+
+// Lower-than-chart rows are explicitly omitted rather than sampling incomplete intrabars.
+var table panel = table.new(position.top_right, 6, 9, bgcolor=color.rgb(20, 26, 36), border_width=1)
+if barstate.isfirst
+    table.merge_cells(panel, 0, 6, 5, 6)
+    table.merge_cells(panel, 0, 7, 5, 7)
+    table.merge_cells(panel, 0, 8, 5, 8)
+var array<string> frames = array.from("5", "15", "60", "240", "1D")
+[localTrend, localSide, localPrice, localTime, localResistance, localSupport, localAtr] = f_snapshot()
+for i = 0 to array.size(frames) - 1
+    string tf = array.get(frames, i)
+    bool lower = timeframe.in_seconds(tf) < timeframe.in_seconds()
+    bool equal = timeframe.in_seconds(tf) == timeframe.in_seconds()
+    int tr = na
+    int candidateSide = na
+    float candidatePrice = na
+    int candidateTime = na
+    float resistance = na
+    float support = na
+    float frameAtr = na
+    if not lower
+        if equal
+            tr := barstate.isconfirmed ? localTrend : localTrend[1]
+            candidateSide := barstate.isconfirmed ? localSide : localSide[1]
+            candidatePrice := barstate.isconfirmed ? localPrice : localPrice[1]
+            candidateTime := barstate.isconfirmed ? localTime : localTime[1]
+            resistance := barstate.isconfirmed ? localResistance : localResistance[1]
+            support := barstate.isconfirmed ? localSupport : localSupport[1]
+            frameAtr := barstate.isconfirmed ? localAtr : localAtr[1]
+        else
+            [rt, rs, rp, rtime, rr, rlow, ra] = request.security(syminfo.tickerid, tf, f_previousSnapshot(), lookahead=barmerge.lookahead_on)
+            tr := rt
+            candidateSide := rs
+            candidatePrice := rp
+            candidateTime := rtime
+            resistance := rr
+            support := rlow
+            frameAtr := ra
+    if barstate.islast and showPanel
+        string nearHigh = not na(resistance) and math.abs(close - resistance) <= frameAtr * nearAtr ? " ●" : ""
+        string nearLow = not na(support) and math.abs(close - support) <= frameAtr * nearAtr ? " ●" : ""
+        string candidate = na(candidateSide) ? "—" : (candidateSide == 1 ? "BUY " : "SELL ") + f_price(candidatePrice)
+        table.cell(panel, 0, i + 1, tf, text_color=color.white, text_size=size.tiny)
+        table.cell(panel, 1, i + 1, lower ? "下位足・対象外" : na(tr) ? "準備中" : tr == 1 ? "上昇" : tr == -1 ? "下降" : "混在", text_color=tr == 1 ? buyColor : tr == -1 ? sellColor : color.silver, text_size=size.tiny)
+        table.cell(panel, 2, i + 1, candidate, text_color=color.white, text_size=size.tiny)
+        table.cell(panel, 3, i + 1, na(candidateTime) ? "—" : str.format_time(candidateTime, "MM/dd HH:mm", syminfo.timezone), text_color=color.silver, text_size=size.tiny)
+        table.cell(panel, 4, i + 1, f_price(resistance) + nearHigh, text_color=nearHigh != "" ? color.aqua : sellColor, text_size=size.tiny)
+        table.cell(panel, 5, i + 1, f_price(support) + nearLow, text_color=nearLow != "" ? color.aqua : buyColor, text_size=size.tiny)
+
+if barstate.islast and showPanel
+    table.cell(panel, 0, 0, "時間足", text_color=color.white, text_size=size.tiny)
+    table.cell(panel, 1, 0, "確定方向", text_color=color.white, text_size=size.tiny)
+    table.cell(panel, 2, 0, "最新候補・価格", text_color=color.white, text_size=size.tiny)
+    table.cell(panel, 3, 0, "候補確定時刻", text_color=color.white, text_size=size.tiny)
+    table.cell(panel, 4, 0, "確定高値", text_color=color.white, text_size=size.tiny)
+    table.cell(panel, 5, 0, "確定安値", text_color=color.white, text_size=size.tiny)
+    table.cell(panel, 0, 6, status, text_color=color.white, text_size=size.tiny)
+    table.cell(panel, 0, 7, side == 0 ? "追跡なし" : "Entry " + f_price(entry) + " / SL " + f_price(stop), text_color=color.white, text_size=size.tiny)
+    table.cell(panel, 0, 8, "独自ルール / 候補≠採用サイン / 時刻: " + syminfo.timezone, text_color=color.silver, text_size=size.tiny)
+
+alertcondition(buySignal, "BUY", "Sniper独自版 BUY {{ticker}} {{interval}} 基準終値={{close}}")
+alertcondition(sellSignal, "SELL", "Sniper独自版 SELL {{ticker}} {{interval}} 基準終値={{close}}")
+alertcondition(tpEvent, "TP到達", "Sniper独自版 TP到達 {{ticker}} {{interval}}")
+alertcondition(stopEvent, "SL到達", "Sniper独自版 SL到達 {{ticker}} {{interval}}")
+alertcondition(oppositeEvent, "方向警告", "Sniper独自版 逆方向候補またはEMA方向不一致 {{ticker}} {{interval}}")
