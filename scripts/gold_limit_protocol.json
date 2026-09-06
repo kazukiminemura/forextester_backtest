@@ -1,0 +1,157 @@
+{
+  "policies": [
+    {
+      "signal": "direct",
+      "offset": 0.1,
+      "ttl_hours": 1,
+      "anchored": false
+    },
+    {
+      "signal": "direct",
+      "offset": 0.1,
+      "ttl_hours": 1,
+      "anchored": true
+    },
+    {
+      "signal": "direct",
+      "offset": 0.1,
+      "ttl_hours": 2,
+      "anchored": false
+    },
+    {
+      "signal": "direct",
+      "offset": 0.1,
+      "ttl_hours": 2,
+      "anchored": true
+    },
+    {
+      "signal": "direct",
+      "offset": 0.25,
+      "ttl_hours": 1,
+      "anchored": false
+    },
+    {
+      "signal": "direct",
+      "offset": 0.25,
+      "ttl_hours": 1,
+      "anchored": true
+    },
+    {
+      "signal": "direct",
+      "offset": 0.25,
+      "ttl_hours": 2,
+      "anchored": false
+    },
+    {
+      "signal": "direct",
+      "offset": 0.25,
+      "ttl_hours": 2,
+      "anchored": true
+    },
+    {
+      "signal": "direct",
+      "offset": 0.5,
+      "ttl_hours": 1,
+      "anchored": false
+    },
+    {
+      "signal": "direct",
+      "offset": 0.5,
+      "ttl_hours": 1,
+      "anchored": true
+    },
+    {
+      "signal": "direct",
+      "offset": 0.5,
+      "ttl_hours": 2,
+      "anchored": false
+    },
+    {
+      "signal": "direct",
+      "offset": 0.5,
+      "ttl_hours": 2,
+      "anchored": true
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.1,
+      "ttl_hours": 1,
+      "anchored": false
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.1,
+      "ttl_hours": 1,
+      "anchored": true
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.1,
+      "ttl_hours": 2,
+      "anchored": false
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.1,
+      "ttl_hours": 2,
+      "anchored": true
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.25,
+      "ttl_hours": 1,
+      "anchored": false
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.25,
+      "ttl_hours": 1,
+      "anchored": true
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.25,
+      "ttl_hours": 2,
+      "anchored": false
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.25,
+      "ttl_hours": 2,
+      "anchored": true
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.5,
+      "ttl_hours": 1,
+      "anchored": false
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.5,
+      "ttl_hours": 1,
+      "anchored": true
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.5,
+      "ttl_hours": 2,
+      "anchored": false
+    },
+    {
+      "signal": "impulse",
+      "offset": 0.5,
+      "ttl_hours": 2,
+      "anchored": true
+    }
+  ],
+  "counts": [
+    250,
+    100,
+    50,
+    50
+  ],
+  "selection": "minimum train/validation PF; later results are not used for reselection",
+  "target": "all-period PF > 1",
+  "same_bar_fill": "SL allowed; TP ignored unless filled at open"
+}

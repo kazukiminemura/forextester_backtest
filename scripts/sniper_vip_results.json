@@ -1,0 +1,7190 @@
+{
+  "start": "2010-01-01T00:00:00",
+  "end": "2026-07-17T23:59:59",
+  "timeframe": "15m",
+  "pine_sha256": "82e483ac065982a356f8e7c2c69f3dc3c6ac7d09c243aac899e55ecff9cf6f13",
+  "symbols": {
+    "AUDUSD": {
+      "all": {
+        "TP1": {
+          "signals": 12926,
+          "wins": 7652,
+          "losses": 5273,
+          "pending": 1,
+          "win_rate_pct": 59.20309477756286,
+          "ambiguous_stop_first": 72
+        },
+        "TP2": {
+          "signals": 12926,
+          "wins": 5473,
+          "losses": 7452,
+          "pending": 1,
+          "win_rate_pct": 42.34429400386847,
+          "ambiguous_stop_first": 57
+        },
+        "TP3": {
+          "signals": 12926,
+          "wins": 4253,
+          "losses": 8672,
+          "pending": 1,
+          "win_rate_pct": 32.90522243713733,
+          "ambiguous_stop_first": 43
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 7079,
+          "wins": 4190,
+          "losses": 2889,
+          "pending": 0,
+          "win_rate_pct": 59.18915101002967,
+          "ambiguous_stop_first": 41
+        },
+        "TP2": {
+          "signals": 7079,
+          "wins": 2968,
+          "losses": 4111,
+          "pending": 0,
+          "win_rate_pct": 41.92682582285634,
+          "ambiguous_stop_first": 27
+        },
+        "TP3": {
+          "signals": 7079,
+          "wins": 2321,
+          "losses": 4758,
+          "pending": 0,
+          "win_rate_pct": 32.78711682441023,
+          "ambiguous_stop_first": 22
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 3072,
+          "wins": 1849,
+          "losses": 1222,
+          "pending": 1,
+          "win_rate_pct": 60.20840117225659,
+          "ambiguous_stop_first": 17
+        },
+        "TP2": {
+          "signals": 3072,
+          "wins": 1351,
+          "losses": 1720,
+          "pending": 1,
+          "win_rate_pct": 43.992184956040376,
+          "ambiguous_stop_first": 14
+        },
+        "TP3": {
+          "signals": 3072,
+          "wins": 1044,
+          "losses": 2027,
+          "pending": 1,
+          "win_rate_pct": 33.99544122435689,
+          "ambiguous_stop_first": 9
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1563,
+          "wins": 938,
+          "losses": 625,
+          "pending": 0,
+          "win_rate_pct": 60.0127959053103,
+          "ambiguous_stop_first": 6
+        },
+        "TP2": {
+          "signals": 1563,
+          "wins": 655,
+          "losses": 908,
+          "pending": 0,
+          "win_rate_pct": 41.9065898912348,
+          "ambiguous_stop_first": 11
+        },
+        "TP3": {
+          "signals": 1563,
+          "wins": 511,
+          "losses": 1051,
+          "pending": 1,
+          "win_rate_pct": 32.71446862996159,
+          "ambiguous_stop_first": 8
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1212,
+          "wins": 675,
+          "losses": 536,
+          "pending": 1,
+          "win_rate_pct": 55.73905862923204,
+          "ambiguous_stop_first": 8
+        },
+        "TP2": {
+          "signals": 1212,
+          "wins": 499,
+          "losses": 712,
+          "pending": 1,
+          "win_rate_pct": 41.2056151940545,
+          "ambiguous_stop_first": 5
+        },
+        "TP3": {
+          "signals": 1212,
+          "wins": 377,
+          "losses": 834,
+          "pending": 1,
+          "win_rate_pct": 31.131296449215526,
+          "ambiguous_stop_first": 4
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 777,
+            "wins": 440,
+            "losses": 336,
+            "pending": 1,
+            "win_rate_pct": 56.70103092783505,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 777,
+            "wins": 316,
+            "losses": 460,
+            "pending": 1,
+            "win_rate_pct": 40.72164948453608,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 777,
+            "wins": 235,
+            "losses": 541,
+            "pending": 1,
+            "win_rate_pct": 30.283505154639176,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 794,
+            "wins": 463,
+            "losses": 331,
+            "pending": 0,
+            "win_rate_pct": 58.31234256926952,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 794,
+            "wins": 335,
+            "losses": 459,
+            "pending": 0,
+            "win_rate_pct": 42.19143576826197,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 794,
+            "wins": 257,
+            "losses": 537,
+            "pending": 0,
+            "win_rate_pct": 32.367758186397985,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 819,
+            "wins": 496,
+            "losses": 323,
+            "pending": 0,
+            "win_rate_pct": 60.56166056166056,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 819,
+            "wins": 348,
+            "losses": 471,
+            "pending": 0,
+            "win_rate_pct": 42.49084249084249,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 819,
+            "wins": 274,
+            "losses": 545,
+            "pending": 0,
+            "win_rate_pct": 33.45543345543346,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 816,
+            "wins": 490,
+            "losses": 326,
+            "pending": 0,
+            "win_rate_pct": 60.049019607843135,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 816,
+            "wins": 345,
+            "losses": 471,
+            "pending": 0,
+            "win_rate_pct": 42.279411764705884,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 816,
+            "wins": 268,
+            "losses": 548,
+            "pending": 0,
+            "win_rate_pct": 32.84313725490196,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 767,
+            "wins": 448,
+            "losses": 319,
+            "pending": 0,
+            "win_rate_pct": 58.40938722294654,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 767,
+            "wins": 318,
+            "losses": 448,
+            "pending": 1,
+            "win_rate_pct": 41.514360313315926,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 767,
+            "wins": 269,
+            "losses": 497,
+            "pending": 1,
+            "win_rate_pct": 35.117493472584854,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 772,
+            "wins": 470,
+            "losses": 302,
+            "pending": 0,
+            "win_rate_pct": 60.880829015544045,
+            "ambiguous_stop_first": 9
+          },
+          "TP2": {
+            "signals": 772,
+            "wins": 341,
+            "losses": 431,
+            "pending": 0,
+            "win_rate_pct": 44.170984455958546,
+            "ambiguous_stop_first": 8
+          },
+          "TP3": {
+            "signals": 772,
+            "wins": 267,
+            "losses": 505,
+            "pending": 0,
+            "win_rate_pct": 34.58549222797927,
+            "ambiguous_stop_first": 7
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 801,
+            "wins": 474,
+            "losses": 327,
+            "pending": 0,
+            "win_rate_pct": 59.176029962546814,
+            "ambiguous_stop_first": 9
+          },
+          "TP2": {
+            "signals": 801,
+            "wins": 338,
+            "losses": 463,
+            "pending": 0,
+            "win_rate_pct": 42.19725343320849,
+            "ambiguous_stop_first": 6
+          },
+          "TP3": {
+            "signals": 801,
+            "wins": 267,
+            "losses": 534,
+            "pending": 0,
+            "win_rate_pct": 33.333333333333336,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 764,
+            "wins": 453,
+            "losses": 311,
+            "pending": 0,
+            "win_rate_pct": 59.29319371727749,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 764,
+            "wins": 301,
+            "losses": 463,
+            "pending": 0,
+            "win_rate_pct": 39.397905759162306,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 764,
+            "wins": 232,
+            "losses": 531,
+            "pending": 1,
+            "win_rate_pct": 30.40629095674967,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 769,
+            "wins": 456,
+            "losses": 313,
+            "pending": 0,
+            "win_rate_pct": 59.29778933680104,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 769,
+            "wins": 326,
+            "losses": 443,
+            "pending": 0,
+            "win_rate_pct": 42.392717815344604,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 769,
+            "wins": 252,
+            "losses": 517,
+            "pending": 0,
+            "win_rate_pct": 32.76983094928479,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 720,
+            "wins": 434,
+            "losses": 285,
+            "pending": 1,
+            "win_rate_pct": 60.36161335187761,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 720,
+            "wins": 320,
+            "losses": 399,
+            "pending": 1,
+            "win_rate_pct": 44.50625869262865,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 720,
+            "wins": 244,
+            "losses": 475,
+            "pending": 1,
+            "win_rate_pct": 33.936022253129345,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 786,
+            "wins": 474,
+            "losses": 312,
+            "pending": 0,
+            "win_rate_pct": 60.30534351145038,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 786,
+            "wins": 336,
+            "losses": 449,
+            "pending": 1,
+            "win_rate_pct": 42.802547770700635,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 786,
+            "wins": 256,
+            "losses": 529,
+            "pending": 1,
+            "win_rate_pct": 32.611464968152866,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 780,
+            "wins": 478,
+            "losses": 302,
+            "pending": 0,
+            "win_rate_pct": 61.282051282051285,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 780,
+            "wins": 356,
+            "losses": 424,
+            "pending": 0,
+            "win_rate_pct": 45.64102564102564,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 780,
+            "wins": 278,
+            "losses": 502,
+            "pending": 0,
+            "win_rate_pct": 35.64102564102564,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 786,
+            "wins": 462,
+            "losses": 323,
+            "pending": 1,
+            "win_rate_pct": 58.853503184713375,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 786,
+            "wins": 338,
+            "losses": 447,
+            "pending": 1,
+            "win_rate_pct": 43.05732484076433,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 786,
+            "wins": 266,
+            "losses": 519,
+            "pending": 1,
+            "win_rate_pct": 33.88535031847134,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 790,
+            "wins": 475,
+            "losses": 315,
+            "pending": 0,
+            "win_rate_pct": 60.12658227848101,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 790,
+            "wins": 332,
+            "losses": 457,
+            "pending": 1,
+            "win_rate_pct": 42.0785804816223,
+            "ambiguous_stop_first": 6
+          },
+          "TP3": {
+            "signals": 790,
+            "wins": 261,
+            "losses": 528,
+            "pending": 1,
+            "win_rate_pct": 33.07984790874525,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 773,
+            "wins": 463,
+            "losses": 310,
+            "pending": 0,
+            "win_rate_pct": 59.89650711513583,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 773,
+            "wins": 322,
+            "losses": 451,
+            "pending": 0,
+            "win_rate_pct": 41.65588615782665,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 773,
+            "wins": 250,
+            "losses": 522,
+            "pending": 1,
+            "win_rate_pct": 32.38341968911917,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 761,
+            "wins": 436,
+            "losses": 324,
+            "pending": 1,
+            "win_rate_pct": 57.36842105263158,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 761,
+            "wins": 328,
+            "losses": 432,
+            "pending": 1,
+            "win_rate_pct": 43.1578947368421,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 761,
+            "wins": 240,
+            "losses": 520,
+            "pending": 1,
+            "win_rate_pct": 31.57894736842105,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 451,
+            "wins": 238,
+            "losses": 212,
+            "pending": 1,
+            "win_rate_pct": 52.888888888888886,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 451,
+            "wins": 170,
+            "losses": 280,
+            "pending": 1,
+            "win_rate_pct": 37.77777777777778,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 451,
+            "wins": 137,
+            "losses": 313,
+            "pending": 1,
+            "win_rate_pct": 30.444444444444443,
+            "ambiguous_stop_first": 1
+          }
+        }
+      },
+      "bars": 417981,
+      "first_bar": "2009-10-01T00:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2009-10-01T00:00:00",
+      "source_end": "2026-07-19T23:59:00",
+      "source_records": 6236644,
+      "tick_size": 1e-05,
+      "metadata_spread": 0.00012000000000000002
+    },
+    "EURUSD": {
+      "all": {
+        "TP1": {
+          "signals": 12268,
+          "wins": 7266,
+          "losses": 5002,
+          "pending": 0,
+          "win_rate_pct": 59.227257906749266,
+          "ambiguous_stop_first": 87
+        },
+        "TP2": {
+          "signals": 12268,
+          "wins": 5203,
+          "losses": 7065,
+          "pending": 0,
+          "win_rate_pct": 42.41115096185197,
+          "ambiguous_stop_first": 60
+        },
+        "TP3": {
+          "signals": 12268,
+          "wins": 4054,
+          "losses": 8214,
+          "pending": 0,
+          "win_rate_pct": 33.0453211607434,
+          "ambiguous_stop_first": 38
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 6671,
+          "wins": 3958,
+          "losses": 2712,
+          "pending": 1,
+          "win_rate_pct": 59.34032983508246,
+          "ambiguous_stop_first": 53
+        },
+        "TP2": {
+          "signals": 6671,
+          "wins": 2859,
+          "losses": 3811,
+          "pending": 1,
+          "win_rate_pct": 42.86356821589205,
+          "ambiguous_stop_first": 31
+        },
+        "TP3": {
+          "signals": 6671,
+          "wins": 2241,
+          "losses": 4429,
+          "pending": 1,
+          "win_rate_pct": 33.59820089955023,
+          "ambiguous_stop_first": 20
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 3005,
+          "wins": 1793,
+          "losses": 1211,
+          "pending": 1,
+          "win_rate_pct": 59.68708388814913,
+          "ambiguous_stop_first": 13
+        },
+        "TP2": {
+          "signals": 3005,
+          "wins": 1265,
+          "losses": 1739,
+          "pending": 1,
+          "win_rate_pct": 42.11051930758988,
+          "ambiguous_stop_first": 12
+        },
+        "TP3": {
+          "signals": 3005,
+          "wins": 980,
+          "losses": 2024,
+          "pending": 1,
+          "win_rate_pct": 32.62316910785619,
+          "ambiguous_stop_first": 6
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1441,
+          "wins": 853,
+          "losses": 587,
+          "pending": 1,
+          "win_rate_pct": 59.236111111111114,
+          "ambiguous_stop_first": 9
+        },
+        "TP2": {
+          "signals": 1441,
+          "wins": 607,
+          "losses": 833,
+          "pending": 1,
+          "win_rate_pct": 42.15277777777778,
+          "ambiguous_stop_first": 12
+        },
+        "TP3": {
+          "signals": 1441,
+          "wins": 474,
+          "losses": 966,
+          "pending": 1,
+          "win_rate_pct": 32.916666666666664,
+          "ambiguous_stop_first": 10
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1151,
+          "wins": 661,
+          "losses": 490,
+          "pending": 0,
+          "win_rate_pct": 57.42832319721981,
+          "ambiguous_stop_first": 12
+        },
+        "TP2": {
+          "signals": 1151,
+          "wins": 472,
+          "losses": 679,
+          "pending": 0,
+          "win_rate_pct": 41.00781928757602,
+          "ambiguous_stop_first": 5
+        },
+        "TP3": {
+          "signals": 1151,
+          "wins": 359,
+          "losses": 792,
+          "pending": 0,
+          "win_rate_pct": 31.19026933101651,
+          "ambiguous_stop_first": 2
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 701,
+            "wins": 438,
+            "losses": 262,
+            "pending": 1,
+            "win_rate_pct": 62.57142857142857,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 701,
+            "wins": 337,
+            "losses": 363,
+            "pending": 1,
+            "win_rate_pct": 48.142857142857146,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 701,
+            "wins": 273,
+            "losses": 427,
+            "pending": 1,
+            "win_rate_pct": 39.0,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 763,
+            "wins": 470,
+            "losses": 292,
+            "pending": 1,
+            "win_rate_pct": 61.67979002624672,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 763,
+            "wins": 342,
+            "losses": 420,
+            "pending": 1,
+            "win_rate_pct": 44.881889763779526,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 763,
+            "wins": 258,
+            "losses": 504,
+            "pending": 1,
+            "win_rate_pct": 33.85826771653543,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 762,
+            "wins": 446,
+            "losses": 316,
+            "pending": 0,
+            "win_rate_pct": 58.53018372703412,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 762,
+            "wins": 328,
+            "losses": 434,
+            "pending": 0,
+            "win_rate_pct": 43.044619422572175,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 762,
+            "wins": 266,
+            "losses": 496,
+            "pending": 0,
+            "win_rate_pct": 34.90813648293963,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 748,
+            "wins": 431,
+            "losses": 317,
+            "pending": 0,
+            "win_rate_pct": 57.62032085561497,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 748,
+            "wins": 304,
+            "losses": 444,
+            "pending": 0,
+            "win_rate_pct": 40.64171122994652,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 748,
+            "wins": 230,
+            "losses": 518,
+            "pending": 0,
+            "win_rate_pct": 30.74866310160428,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 732,
+            "wins": 421,
+            "losses": 311,
+            "pending": 0,
+            "win_rate_pct": 57.513661202185794,
+            "ambiguous_stop_first": 9
+          },
+          "TP2": {
+            "signals": 732,
+            "wins": 300,
+            "losses": 432,
+            "pending": 0,
+            "win_rate_pct": 40.98360655737705,
+            "ambiguous_stop_first": 8
+          },
+          "TP3": {
+            "signals": 732,
+            "wins": 231,
+            "losses": 501,
+            "pending": 0,
+            "win_rate_pct": 31.557377049180328,
+            "ambiguous_stop_first": 9
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 750,
+            "wins": 431,
+            "losses": 319,
+            "pending": 0,
+            "win_rate_pct": 57.46666666666667,
+            "ambiguous_stop_first": 10
+          },
+          "TP2": {
+            "signals": 750,
+            "wins": 311,
+            "losses": 438,
+            "pending": 1,
+            "win_rate_pct": 41.52202937249666,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 750,
+            "wins": 242,
+            "losses": 507,
+            "pending": 1,
+            "win_rate_pct": 32.30974632843792,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 710,
+            "wins": 422,
+            "losses": 288,
+            "pending": 0,
+            "win_rate_pct": 59.436619718309856,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 710,
+            "wins": 304,
+            "losses": 406,
+            "pending": 0,
+            "win_rate_pct": 42.816901408450704,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 710,
+            "wins": 234,
+            "losses": 476,
+            "pending": 0,
+            "win_rate_pct": 32.95774647887324,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 728,
+            "wins": 424,
+            "losses": 304,
+            "pending": 0,
+            "win_rate_pct": 58.24175824175824,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 728,
+            "wins": 294,
+            "losses": 434,
+            "pending": 0,
+            "win_rate_pct": 40.38461538461539,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 728,
+            "wins": 233,
+            "losses": 495,
+            "pending": 0,
+            "win_rate_pct": 32.005494505494504,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 777,
+            "wins": 474,
+            "losses": 302,
+            "pending": 1,
+            "win_rate_pct": 61.08247422680412,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 777,
+            "wins": 338,
+            "losses": 438,
+            "pending": 1,
+            "win_rate_pct": 43.55670103092783,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 777,
+            "wins": 273,
+            "losses": 503,
+            "pending": 1,
+            "win_rate_pct": 35.18041237113402,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 729,
+            "wins": 441,
+            "losses": 287,
+            "pending": 1,
+            "win_rate_pct": 60.57692307692308,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 729,
+            "wins": 313,
+            "losses": 415,
+            "pending": 1,
+            "win_rate_pct": 42.994505494505496,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 729,
+            "wins": 238,
+            "losses": 490,
+            "pending": 1,
+            "win_rate_pct": 32.69230769230769,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 761,
+            "wins": 469,
+            "losses": 292,
+            "pending": 0,
+            "win_rate_pct": 61.629434954007884,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 761,
+            "wins": 331,
+            "losses": 430,
+            "pending": 0,
+            "win_rate_pct": 43.49540078843627,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 761,
+            "wins": 256,
+            "losses": 504,
+            "pending": 1,
+            "win_rate_pct": 33.68421052631579,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 734,
+            "wins": 447,
+            "losses": 286,
+            "pending": 1,
+            "win_rate_pct": 60.982264665757164,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 734,
+            "wins": 314,
+            "losses": 419,
+            "pending": 1,
+            "win_rate_pct": 42.83765347885402,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 734,
+            "wins": 241,
+            "losses": 492,
+            "pending": 1,
+            "win_rate_pct": 32.87858117326057,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 781,
+            "wins": 436,
+            "losses": 344,
+            "pending": 1,
+            "win_rate_pct": 55.8974358974359,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 781,
+            "wins": 307,
+            "losses": 473,
+            "pending": 1,
+            "win_rate_pct": 39.35897435897436,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 781,
+            "wins": 245,
+            "losses": 535,
+            "pending": 1,
+            "win_rate_pct": 31.41025641025641,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 712,
+            "wins": 426,
+            "losses": 286,
+            "pending": 0,
+            "win_rate_pct": 59.831460674157306,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 712,
+            "wins": 307,
+            "losses": 405,
+            "pending": 0,
+            "win_rate_pct": 43.11797752808989,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 712,
+            "wins": 237,
+            "losses": 475,
+            "pending": 0,
+            "win_rate_pct": 33.28651685393258,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 729,
+            "wins": 427,
+            "losses": 301,
+            "pending": 1,
+            "win_rate_pct": 58.65384615384615,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 729,
+            "wins": 300,
+            "losses": 428,
+            "pending": 1,
+            "win_rate_pct": 41.20879120879121,
+            "ambiguous_stop_first": 7
+          },
+          "TP3": {
+            "signals": 729,
+            "wins": 237,
+            "losses": 491,
+            "pending": 1,
+            "win_rate_pct": 32.55494505494506,
+            "ambiguous_stop_first": 7
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 770,
+            "wins": 424,
+            "losses": 345,
+            "pending": 1,
+            "win_rate_pct": 55.136540962288684,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 770,
+            "wins": 300,
+            "losses": 469,
+            "pending": 1,
+            "win_rate_pct": 39.01170351105332,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 770,
+            "wins": 229,
+            "losses": 540,
+            "pending": 1,
+            "win_rate_pct": 29.778933680104032,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 381,
+            "wins": 237,
+            "losses": 144,
+            "pending": 0,
+            "win_rate_pct": 62.20472440944882,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 381,
+            "wins": 172,
+            "losses": 209,
+            "pending": 0,
+            "win_rate_pct": 45.14435695538058,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 381,
+            "wins": 130,
+            "losses": 251,
+            "pending": 0,
+            "win_rate_pct": 34.120734908136484,
+            "ambiguous_stop_first": 1
+          }
+        }
+      },
+      "bars": 437613,
+      "first_bar": "2009-01-01T00:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2003-05-06T00:00:00",
+      "source_end": "2026-07-17T20:59:00",
+      "source_records": 8517565,
+      "tick_size": 1e-05,
+      "metadata_spread": 0.00011
+    },
+    "GBPUSD": {
+      "all": {
+        "TP1": {
+          "signals": 12096,
+          "wins": 7022,
+          "losses": 5074,
+          "pending": 0,
+          "win_rate_pct": 58.05224867724868,
+          "ambiguous_stop_first": 85
+        },
+        "TP2": {
+          "signals": 12096,
+          "wins": 5005,
+          "losses": 7091,
+          "pending": 0,
+          "win_rate_pct": 41.37731481481482,
+          "ambiguous_stop_first": 46
+        },
+        "TP3": {
+          "signals": 12096,
+          "wins": 3893,
+          "losses": 8203,
+          "pending": 0,
+          "win_rate_pct": 32.18419312169312,
+          "ambiguous_stop_first": 31
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 6669,
+          "wins": 3839,
+          "losses": 2830,
+          "pending": 0,
+          "win_rate_pct": 57.56485230169441,
+          "ambiguous_stop_first": 48
+        },
+        "TP2": {
+          "signals": 6669,
+          "wins": 2724,
+          "losses": 3945,
+          "pending": 0,
+          "win_rate_pct": 40.84570400359874,
+          "ambiguous_stop_first": 24
+        },
+        "TP3": {
+          "signals": 6669,
+          "wins": 2138,
+          "losses": 4531,
+          "pending": 0,
+          "win_rate_pct": 32.05877942720048,
+          "ambiguous_stop_first": 15
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 2884,
+          "wins": 1705,
+          "losses": 1179,
+          "pending": 0,
+          "win_rate_pct": 59.11927877947296,
+          "ambiguous_stop_first": 16
+        },
+        "TP2": {
+          "signals": 2884,
+          "wins": 1229,
+          "losses": 1655,
+          "pending": 0,
+          "win_rate_pct": 42.61442441054091,
+          "ambiguous_stop_first": 11
+        },
+        "TP3": {
+          "signals": 2884,
+          "wins": 949,
+          "losses": 1935,
+          "pending": 0,
+          "win_rate_pct": 32.905686546463244,
+          "ambiguous_stop_first": 7
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1425,
+          "wins": 824,
+          "losses": 600,
+          "pending": 1,
+          "win_rate_pct": 57.86516853932584,
+          "ambiguous_stop_first": 9
+        },
+        "TP2": {
+          "signals": 1425,
+          "wins": 583,
+          "losses": 841,
+          "pending": 1,
+          "win_rate_pct": 40.94101123595506,
+          "ambiguous_stop_first": 6
+        },
+        "TP3": {
+          "signals": 1425,
+          "wins": 456,
+          "losses": 968,
+          "pending": 1,
+          "win_rate_pct": 32.02247191011236,
+          "ambiguous_stop_first": 7
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1118,
+          "wins": 654,
+          "losses": 464,
+          "pending": 0,
+          "win_rate_pct": 58.49731663685152,
+          "ambiguous_stop_first": 12
+        },
+        "TP2": {
+          "signals": 1118,
+          "wins": 469,
+          "losses": 649,
+          "pending": 0,
+          "win_rate_pct": 41.94991055456172,
+          "ambiguous_stop_first": 5
+        },
+        "TP3": {
+          "signals": 1118,
+          "wins": 350,
+          "losses": 768,
+          "pending": 0,
+          "win_rate_pct": 31.305903398926656,
+          "ambiguous_stop_first": 2
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 774,
+            "wins": 459,
+            "losses": 315,
+            "pending": 0,
+            "win_rate_pct": 59.30232558139535,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 774,
+            "wins": 328,
+            "losses": 446,
+            "pending": 0,
+            "win_rate_pct": 42.377260981912144,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 774,
+            "wins": 256,
+            "losses": 518,
+            "pending": 0,
+            "win_rate_pct": 33.07493540051679,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 763,
+            "wins": 448,
+            "losses": 315,
+            "pending": 0,
+            "win_rate_pct": 58.71559633027523,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 763,
+            "wins": 311,
+            "losses": 452,
+            "pending": 0,
+            "win_rate_pct": 40.76015727391874,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 763,
+            "wins": 237,
+            "losses": 526,
+            "pending": 0,
+            "win_rate_pct": 31.061598951507207,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 714,
+            "wins": 385,
+            "losses": 329,
+            "pending": 0,
+            "win_rate_pct": 53.92156862745098,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 714,
+            "wins": 275,
+            "losses": 439,
+            "pending": 0,
+            "win_rate_pct": 38.515406162464984,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 714,
+            "wins": 214,
+            "losses": 500,
+            "pending": 0,
+            "win_rate_pct": 29.971988795518207,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 741,
+            "wins": 425,
+            "losses": 316,
+            "pending": 0,
+            "win_rate_pct": 57.35492577597841,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 741,
+            "wins": 306,
+            "losses": 435,
+            "pending": 0,
+            "win_rate_pct": 41.29554655870445,
+            "ambiguous_stop_first": 6
+          },
+          "TP3": {
+            "signals": 741,
+            "wins": 242,
+            "losses": 498,
+            "pending": 1,
+            "win_rate_pct": 32.7027027027027,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 733,
+            "wins": 423,
+            "losses": 310,
+            "pending": 0,
+            "win_rate_pct": 57.70804911323329,
+            "ambiguous_stop_first": 10
+          },
+          "TP2": {
+            "signals": 733,
+            "wins": 290,
+            "losses": 443,
+            "pending": 0,
+            "win_rate_pct": 39.56343792633015,
+            "ambiguous_stop_first": 6
+          },
+          "TP3": {
+            "signals": 733,
+            "wins": 222,
+            "losses": 511,
+            "pending": 0,
+            "win_rate_pct": 30.286493860845837,
+            "ambiguous_stop_first": 6
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 711,
+            "wins": 412,
+            "losses": 299,
+            "pending": 0,
+            "win_rate_pct": 57.94655414908579,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 711,
+            "wins": 285,
+            "losses": 426,
+            "pending": 0,
+            "win_rate_pct": 40.08438818565401,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 711,
+            "wins": 224,
+            "losses": 486,
+            "pending": 1,
+            "win_rate_pct": 31.549295774647888,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 718,
+            "wins": 418,
+            "losses": 300,
+            "pending": 0,
+            "win_rate_pct": 58.21727019498607,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 718,
+            "wins": 304,
+            "losses": 414,
+            "pending": 0,
+            "win_rate_pct": 42.33983286908078,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 718,
+            "wins": 241,
+            "losses": 477,
+            "pending": 0,
+            "win_rate_pct": 33.56545961002786,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 748,
+            "wins": 432,
+            "losses": 316,
+            "pending": 0,
+            "win_rate_pct": 57.75401069518717,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 748,
+            "wins": 307,
+            "losses": 441,
+            "pending": 0,
+            "win_rate_pct": 41.0427807486631,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 748,
+            "wins": 244,
+            "losses": 504,
+            "pending": 0,
+            "win_rate_pct": 32.62032085561497,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 767,
+            "wins": 437,
+            "losses": 330,
+            "pending": 0,
+            "win_rate_pct": 56.97522816166884,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 767,
+            "wins": 318,
+            "losses": 449,
+            "pending": 0,
+            "win_rate_pct": 41.46023468057366,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 767,
+            "wins": 256,
+            "losses": 511,
+            "pending": 0,
+            "win_rate_pct": 33.3767926988266,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 679,
+            "wins": 392,
+            "losses": 287,
+            "pending": 0,
+            "win_rate_pct": 57.7319587628866,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 679,
+            "wins": 280,
+            "losses": 399,
+            "pending": 0,
+            "win_rate_pct": 41.23711340206186,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 679,
+            "wins": 219,
+            "losses": 459,
+            "pending": 1,
+            "win_rate_pct": 32.30088495575221,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 738,
+            "wins": 457,
+            "losses": 281,
+            "pending": 0,
+            "win_rate_pct": 61.924119241192415,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 738,
+            "wins": 345,
+            "losses": 393,
+            "pending": 0,
+            "win_rate_pct": 46.7479674796748,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 738,
+            "wins": 265,
+            "losses": 473,
+            "pending": 0,
+            "win_rate_pct": 35.90785907859079,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 754,
+            "wins": 417,
+            "losses": 337,
+            "pending": 0,
+            "win_rate_pct": 55.30503978779841,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 754,
+            "wins": 304,
+            "losses": 450,
+            "pending": 0,
+            "win_rate_pct": 40.318302387267906,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 754,
+            "wins": 237,
+            "losses": 517,
+            "pending": 0,
+            "win_rate_pct": 31.43236074270557,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 713,
+            "wins": 439,
+            "losses": 274,
+            "pending": 0,
+            "win_rate_pct": 61.57082748948107,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 713,
+            "wins": 300,
+            "losses": 413,
+            "pending": 0,
+            "win_rate_pct": 42.07573632538569,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 713,
+            "wins": 228,
+            "losses": 485,
+            "pending": 0,
+            "win_rate_pct": 31.977559607293127,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 708,
+            "wins": 406,
+            "losses": 302,
+            "pending": 0,
+            "win_rate_pct": 57.344632768361585,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 708,
+            "wins": 283,
+            "losses": 425,
+            "pending": 0,
+            "win_rate_pct": 39.97175141242938,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 708,
+            "wins": 225,
+            "losses": 483,
+            "pending": 0,
+            "win_rate_pct": 31.779661016949152,
+            "ambiguous_stop_first": 6
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 717,
+            "wins": 418,
+            "losses": 298,
+            "pending": 1,
+            "win_rate_pct": 58.37988826815643,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 717,
+            "wins": 300,
+            "losses": 416,
+            "pending": 1,
+            "win_rate_pct": 41.899441340782126,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 717,
+            "wins": 231,
+            "losses": 485,
+            "pending": 1,
+            "win_rate_pct": 32.262569832402235,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 718,
+            "wins": 416,
+            "losses": 301,
+            "pending": 1,
+            "win_rate_pct": 58.01952580195258,
+            "ambiguous_stop_first": 10
+          },
+          "TP2": {
+            "signals": 718,
+            "wins": 302,
+            "losses": 415,
+            "pending": 1,
+            "win_rate_pct": 42.11994421199442,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 718,
+            "wins": 219,
+            "losses": 498,
+            "pending": 1,
+            "win_rate_pct": 30.543933054393307,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 400,
+            "wins": 238,
+            "losses": 162,
+            "pending": 0,
+            "win_rate_pct": 59.5,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 400,
+            "wins": 167,
+            "losses": 233,
+            "pending": 0,
+            "win_rate_pct": 41.75,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 400,
+            "wins": 131,
+            "losses": 269,
+            "pending": 0,
+            "win_rate_pct": 32.75,
+            "ambiguous_stop_first": 1
+          }
+        }
+      },
+      "bars": 437603,
+      "first_bar": "2009-01-01T00:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2003-05-06T00:00:00",
+      "source_end": "2026-07-17T20:59:00",
+      "source_records": 8631252,
+      "tick_size": 1e-05,
+      "metadata_spread": 0.00014000000000000001
+    },
+    "NZDUSD": {
+      "all": {
+        "TP1": {
+          "signals": 13058,
+          "wins": 7565,
+          "losses": 5493,
+          "pending": 0,
+          "win_rate_pct": 57.93383366518609,
+          "ambiguous_stop_first": 74
+        },
+        "TP2": {
+          "signals": 13058,
+          "wins": 5402,
+          "losses": 7655,
+          "pending": 1,
+          "win_rate_pct": 41.37244389982385,
+          "ambiguous_stop_first": 64
+        },
+        "TP3": {
+          "signals": 13058,
+          "wins": 4222,
+          "losses": 8835,
+          "pending": 1,
+          "win_rate_pct": 32.33514589875163,
+          "ambiguous_stop_first": 34
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 7207,
+          "wins": 4166,
+          "losses": 3041,
+          "pending": 0,
+          "win_rate_pct": 57.804911891216875,
+          "ambiguous_stop_first": 40
+        },
+        "TP2": {
+          "signals": 7207,
+          "wins": 2966,
+          "losses": 4241,
+          "pending": 0,
+          "win_rate_pct": 41.15443318995421,
+          "ambiguous_stop_first": 38
+        },
+        "TP3": {
+          "signals": 7207,
+          "wins": 2360,
+          "losses": 4847,
+          "pending": 0,
+          "win_rate_pct": 32.74594144581657,
+          "ambiguous_stop_first": 16
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 3099,
+          "wins": 1804,
+          "losses": 1295,
+          "pending": 0,
+          "win_rate_pct": 58.212326556953855,
+          "ambiguous_stop_first": 12
+        },
+        "TP2": {
+          "signals": 3099,
+          "wins": 1310,
+          "losses": 1789,
+          "pending": 0,
+          "win_rate_pct": 42.271700548564056,
+          "ambiguous_stop_first": 10
+        },
+        "TP3": {
+          "signals": 3099,
+          "wins": 984,
+          "losses": 2115,
+          "pending": 0,
+          "win_rate_pct": 31.75217812197483,
+          "ambiguous_stop_first": 8
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1559,
+          "wins": 890,
+          "losses": 669,
+          "pending": 0,
+          "win_rate_pct": 57.087876844130854,
+          "ambiguous_stop_first": 12
+        },
+        "TP2": {
+          "signals": 1559,
+          "wins": 623,
+          "losses": 936,
+          "pending": 0,
+          "win_rate_pct": 39.961513790891594,
+          "ambiguous_stop_first": 12
+        },
+        "TP3": {
+          "signals": 1559,
+          "wins": 480,
+          "losses": 1079,
+          "pending": 0,
+          "win_rate_pct": 30.788967286722258,
+          "ambiguous_stop_first": 7
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1193,
+          "wins": 705,
+          "losses": 488,
+          "pending": 0,
+          "win_rate_pct": 59.09471919530595,
+          "ambiguous_stop_first": 10
+        },
+        "TP2": {
+          "signals": 1193,
+          "wins": 503,
+          "losses": 689,
+          "pending": 1,
+          "win_rate_pct": 42.19798657718121,
+          "ambiguous_stop_first": 4
+        },
+        "TP3": {
+          "signals": 1193,
+          "wins": 398,
+          "losses": 794,
+          "pending": 1,
+          "win_rate_pct": 33.38926174496644,
+          "ambiguous_stop_first": 3
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 826,
+            "wins": 473,
+            "losses": 353,
+            "pending": 0,
+            "win_rate_pct": 57.26392251815981,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 826,
+            "wins": 333,
+            "losses": 492,
+            "pending": 1,
+            "win_rate_pct": 40.36363636363637,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 826,
+            "wins": 260,
+            "losses": 565,
+            "pending": 1,
+            "win_rate_pct": 31.515151515151516,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 800,
+            "wins": 462,
+            "losses": 338,
+            "pending": 0,
+            "win_rate_pct": 57.75,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 800,
+            "wins": 327,
+            "losses": 473,
+            "pending": 0,
+            "win_rate_pct": 40.875,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 800,
+            "wins": 248,
+            "losses": 552,
+            "pending": 0,
+            "win_rate_pct": 31.0,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 830,
+            "wins": 480,
+            "losses": 350,
+            "pending": 0,
+            "win_rate_pct": 57.83132530120482,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 830,
+            "wins": 340,
+            "losses": 490,
+            "pending": 0,
+            "win_rate_pct": 40.963855421686745,
+            "ambiguous_stop_first": 7
+          },
+          "TP3": {
+            "signals": 830,
+            "wins": 285,
+            "losses": 545,
+            "pending": 0,
+            "win_rate_pct": 34.33734939759036,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 808,
+            "wins": 445,
+            "losses": 363,
+            "pending": 0,
+            "win_rate_pct": 55.07425742574257,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 808,
+            "wins": 318,
+            "losses": 490,
+            "pending": 0,
+            "win_rate_pct": 39.35643564356435,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 808,
+            "wins": 265,
+            "losses": 543,
+            "pending": 0,
+            "win_rate_pct": 32.7970297029703,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 813,
+            "wins": 469,
+            "losses": 344,
+            "pending": 0,
+            "win_rate_pct": 57.687576875768755,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 813,
+            "wins": 336,
+            "losses": 477,
+            "pending": 0,
+            "win_rate_pct": 41.32841328413284,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 813,
+            "wins": 272,
+            "losses": 541,
+            "pending": 0,
+            "win_rate_pct": 33.456334563345635,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 790,
+            "wins": 443,
+            "losses": 347,
+            "pending": 0,
+            "win_rate_pct": 56.075949367088604,
+            "ambiguous_stop_first": 10
+          },
+          "TP2": {
+            "signals": 790,
+            "wins": 310,
+            "losses": 479,
+            "pending": 1,
+            "win_rate_pct": 39.29024081115336,
+            "ambiguous_stop_first": 9
+          },
+          "TP3": {
+            "signals": 790,
+            "wins": 244,
+            "losses": 545,
+            "pending": 1,
+            "win_rate_pct": 30.925221799746513,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 809,
+            "wins": 479,
+            "losses": 330,
+            "pending": 0,
+            "win_rate_pct": 59.2088998763906,
+            "ambiguous_stop_first": 0
+          },
+          "TP2": {
+            "signals": 809,
+            "wins": 345,
+            "losses": 464,
+            "pending": 0,
+            "win_rate_pct": 42.645241038318915,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 809,
+            "wins": 280,
+            "losses": 529,
+            "pending": 0,
+            "win_rate_pct": 34.610630407911,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 747,
+            "wins": 458,
+            "losses": 289,
+            "pending": 0,
+            "win_rate_pct": 61.31191432396252,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 747,
+            "wins": 320,
+            "losses": 427,
+            "pending": 0,
+            "win_rate_pct": 42.8380187416332,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 747,
+            "wins": 249,
+            "losses": 498,
+            "pending": 0,
+            "win_rate_pct": 33.333333333333336,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 784,
+            "wins": 457,
+            "losses": 327,
+            "pending": 0,
+            "win_rate_pct": 58.29081632653061,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 784,
+            "wins": 336,
+            "losses": 448,
+            "pending": 0,
+            "win_rate_pct": 42.857142857142854,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 784,
+            "wins": 256,
+            "losses": 528,
+            "pending": 0,
+            "win_rate_pct": 32.6530612244898,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 740,
+            "wins": 428,
+            "losses": 312,
+            "pending": 0,
+            "win_rate_pct": 57.83783783783784,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 740,
+            "wins": 306,
+            "losses": 433,
+            "pending": 1,
+            "win_rate_pct": 41.40730717185386,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 740,
+            "wins": 234,
+            "losses": 505,
+            "pending": 1,
+            "win_rate_pct": 31.66441136671177,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 786,
+            "wins": 476,
+            "losses": 310,
+            "pending": 0,
+            "win_rate_pct": 60.55979643765903,
+            "ambiguous_stop_first": 0
+          },
+          "TP2": {
+            "signals": 786,
+            "wins": 358,
+            "losses": 428,
+            "pending": 0,
+            "win_rate_pct": 45.5470737913486,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 786,
+            "wins": 270,
+            "losses": 515,
+            "pending": 1,
+            "win_rate_pct": 34.394904458598724,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 790,
+            "wins": 459,
+            "losses": 331,
+            "pending": 0,
+            "win_rate_pct": 58.10126582278481,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 790,
+            "wins": 327,
+            "losses": 463,
+            "pending": 0,
+            "win_rate_pct": 41.392405063291136,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 790,
+            "wins": 248,
+            "losses": 542,
+            "pending": 0,
+            "win_rate_pct": 31.39240506329114,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 783,
+            "wins": 441,
+            "losses": 342,
+            "pending": 0,
+            "win_rate_pct": 56.32183908045977,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 783,
+            "wins": 318,
+            "losses": 465,
+            "pending": 0,
+            "win_rate_pct": 40.61302681992337,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 783,
+            "wins": 231,
+            "losses": 552,
+            "pending": 0,
+            "win_rate_pct": 29.50191570881226,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 795,
+            "wins": 436,
+            "losses": 358,
+            "pending": 1,
+            "win_rate_pct": 54.91183879093199,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 795,
+            "wins": 302,
+            "losses": 492,
+            "pending": 1,
+            "win_rate_pct": 38.0352644836272,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 795,
+            "wins": 225,
+            "losses": 569,
+            "pending": 1,
+            "win_rate_pct": 28.337531486146094,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 764,
+            "wins": 453,
+            "losses": 311,
+            "pending": 0,
+            "win_rate_pct": 59.29319371727749,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 764,
+            "wins": 320,
+            "losses": 444,
+            "pending": 0,
+            "win_rate_pct": 41.8848167539267,
+            "ambiguous_stop_first": 7
+          },
+          "TP3": {
+            "signals": 764,
+            "wins": 254,
+            "losses": 510,
+            "pending": 0,
+            "win_rate_pct": 33.246073298429316,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 763,
+            "wins": 447,
+            "losses": 315,
+            "pending": 1,
+            "win_rate_pct": 58.661417322834644,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 763,
+            "wins": 322,
+            "losses": 440,
+            "pending": 1,
+            "win_rate_pct": 42.25721784776903,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 763,
+            "wins": 255,
+            "losses": 507,
+            "pending": 1,
+            "win_rate_pct": 33.46456692913386,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 430,
+            "wins": 258,
+            "losses": 172,
+            "pending": 0,
+            "win_rate_pct": 60.0,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 430,
+            "wins": 181,
+            "losses": 248,
+            "pending": 1,
+            "win_rate_pct": 42.19114219114219,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 430,
+            "wins": 143,
+            "losses": 286,
+            "pending": 1,
+            "win_rate_pct": 33.333333333333336,
+            "ambiguous_stop_first": 1
+          }
+        }
+      },
+      "bars": 437314,
+      "first_bar": "2009-01-01T00:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2003-08-05T00:00:00",
+      "source_end": "2026-07-17T20:59:00",
+      "source_records": 8525392,
+      "tick_size": 1e-05,
+      "metadata_spread": 0.00014000000000000001
+    },
+    "USDCHF": {
+      "all": {
+        "TP1": {
+          "signals": 12641,
+          "wins": 7213,
+          "losses": 5428,
+          "pending": 0,
+          "win_rate_pct": 57.06035914880152,
+          "ambiguous_stop_first": 98
+        },
+        "TP2": {
+          "signals": 12641,
+          "wins": 5206,
+          "losses": 7435,
+          "pending": 0,
+          "win_rate_pct": 41.18345067637054,
+          "ambiguous_stop_first": 47
+        },
+        "TP3": {
+          "signals": 12641,
+          "wins": 4120,
+          "losses": 8521,
+          "pending": 0,
+          "win_rate_pct": 32.59235819950953,
+          "ambiguous_stop_first": 36
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 6760,
+          "wins": 3867,
+          "losses": 2893,
+          "pending": 0,
+          "win_rate_pct": 57.20414201183432,
+          "ambiguous_stop_first": 56
+        },
+        "TP2": {
+          "signals": 6760,
+          "wins": 2779,
+          "losses": 3980,
+          "pending": 1,
+          "win_rate_pct": 41.115549637520346,
+          "ambiguous_stop_first": 32
+        },
+        "TP3": {
+          "signals": 6760,
+          "wins": 2213,
+          "losses": 4546,
+          "pending": 1,
+          "win_rate_pct": 32.741529812102385,
+          "ambiguous_stop_first": 27
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 3085,
+          "wins": 1743,
+          "losses": 1342,
+          "pending": 0,
+          "win_rate_pct": 56.499189627228525,
+          "ambiguous_stop_first": 25
+        },
+        "TP2": {
+          "signals": 3085,
+          "wins": 1253,
+          "losses": 1832,
+          "pending": 0,
+          "win_rate_pct": 40.61588330632091,
+          "ambiguous_stop_first": 11
+        },
+        "TP3": {
+          "signals": 3085,
+          "wins": 981,
+          "losses": 2104,
+          "pending": 0,
+          "win_rate_pct": 31.79902755267423,
+          "ambiguous_stop_first": 4
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1557,
+          "wins": 882,
+          "losses": 675,
+          "pending": 0,
+          "win_rate_pct": 56.64739884393064,
+          "ambiguous_stop_first": 9
+        },
+        "TP2": {
+          "signals": 1557,
+          "wins": 645,
+          "losses": 912,
+          "pending": 0,
+          "win_rate_pct": 41.42581888246628,
+          "ambiguous_stop_first": 2
+        },
+        "TP3": {
+          "signals": 1557,
+          "wins": 516,
+          "losses": 1041,
+          "pending": 0,
+          "win_rate_pct": 33.140655105973025,
+          "ambiguous_stop_first": 4
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1239,
+          "wins": 721,
+          "losses": 518,
+          "pending": 0,
+          "win_rate_pct": 58.19209039548023,
+          "ambiguous_stop_first": 8
+        },
+        "TP2": {
+          "signals": 1239,
+          "wins": 529,
+          "losses": 710,
+          "pending": 0,
+          "win_rate_pct": 42.6957223567393,
+          "ambiguous_stop_first": 2
+        },
+        "TP3": {
+          "signals": 1239,
+          "wins": 410,
+          "losses": 829,
+          "pending": 0,
+          "win_rate_pct": 33.09120258272801,
+          "ambiguous_stop_first": 1
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 766,
+            "wins": 435,
+            "losses": 331,
+            "pending": 0,
+            "win_rate_pct": 56.78851174934726,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 766,
+            "wins": 309,
+            "losses": 457,
+            "pending": 0,
+            "win_rate_pct": 40.33942558746736,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 766,
+            "wins": 252,
+            "losses": 514,
+            "pending": 0,
+            "win_rate_pct": 32.89817232375979,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 744,
+            "wins": 424,
+            "losses": 319,
+            "pending": 1,
+            "win_rate_pct": 57.065948855989234,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 744,
+            "wins": 308,
+            "losses": 435,
+            "pending": 1,
+            "win_rate_pct": 41.453566621803496,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 744,
+            "wins": 247,
+            "losses": 496,
+            "pending": 1,
+            "win_rate_pct": 33.24360699865411,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 771,
+            "wins": 451,
+            "losses": 320,
+            "pending": 0,
+            "win_rate_pct": 58.49546044098573,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 771,
+            "wins": 319,
+            "losses": 452,
+            "pending": 0,
+            "win_rate_pct": 41.37483787289235,
+            "ambiguous_stop_first": 6
+          },
+          "TP3": {
+            "signals": 771,
+            "wins": 276,
+            "losses": 495,
+            "pending": 0,
+            "win_rate_pct": 35.797665369649806,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 756,
+            "wins": 424,
+            "losses": 332,
+            "pending": 0,
+            "win_rate_pct": 56.08465608465608,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 756,
+            "wins": 300,
+            "losses": 456,
+            "pending": 0,
+            "win_rate_pct": 39.682539682539684,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 756,
+            "wins": 245,
+            "losses": 511,
+            "pending": 0,
+            "win_rate_pct": 32.407407407407405,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 739,
+            "wins": 430,
+            "losses": 309,
+            "pending": 0,
+            "win_rate_pct": 58.18673883626522,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 739,
+            "wins": 323,
+            "losses": 416,
+            "pending": 0,
+            "win_rate_pct": 43.707713125845736,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 739,
+            "wins": 241,
+            "losses": 498,
+            "pending": 0,
+            "win_rate_pct": 32.61163734776725,
+            "ambiguous_stop_first": 5
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 712,
+            "wins": 412,
+            "losses": 300,
+            "pending": 0,
+            "win_rate_pct": 57.86516853932584,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 712,
+            "wins": 295,
+            "losses": 417,
+            "pending": 0,
+            "win_rate_pct": 41.43258426966292,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 712,
+            "wins": 222,
+            "losses": 490,
+            "pending": 0,
+            "win_rate_pct": 31.179775280898877,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 759,
+            "wins": 420,
+            "losses": 339,
+            "pending": 0,
+            "win_rate_pct": 55.33596837944664,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 759,
+            "wins": 289,
+            "losses": 470,
+            "pending": 0,
+            "win_rate_pct": 38.076416337285906,
+            "ambiguous_stop_first": 7
+          },
+          "TP3": {
+            "signals": 759,
+            "wins": 227,
+            "losses": 532,
+            "pending": 0,
+            "win_rate_pct": 29.907773386034254,
+            "ambiguous_stop_first": 7
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 759,
+            "wins": 432,
+            "losses": 327,
+            "pending": 0,
+            "win_rate_pct": 56.91699604743083,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 759,
+            "wins": 308,
+            "losses": 450,
+            "pending": 1,
+            "win_rate_pct": 40.63324538258575,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 759,
+            "wins": 231,
+            "losses": 527,
+            "pending": 1,
+            "win_rate_pct": 30.474934036939313,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 754,
+            "wins": 439,
+            "losses": 315,
+            "pending": 0,
+            "win_rate_pct": 58.222811671087534,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 754,
+            "wins": 327,
+            "losses": 426,
+            "pending": 1,
+            "win_rate_pct": 43.42629482071713,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 754,
+            "wins": 271,
+            "losses": 482,
+            "pending": 1,
+            "win_rate_pct": 35.98937583001328,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 758,
+            "wins": 415,
+            "losses": 343,
+            "pending": 0,
+            "win_rate_pct": 54.74934036939314,
+            "ambiguous_stop_first": 9
+          },
+          "TP2": {
+            "signals": 758,
+            "wins": 300,
+            "losses": 458,
+            "pending": 0,
+            "win_rate_pct": 39.577836411609496,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 758,
+            "wins": 234,
+            "losses": 524,
+            "pending": 0,
+            "win_rate_pct": 30.87071240105541,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 757,
+            "wins": 459,
+            "losses": 298,
+            "pending": 0,
+            "win_rate_pct": 60.634081902245704,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 757,
+            "wins": 332,
+            "losses": 425,
+            "pending": 0,
+            "win_rate_pct": 43.85733157199471,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 757,
+            "wins": 255,
+            "losses": 501,
+            "pending": 1,
+            "win_rate_pct": 33.73015873015873,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 807,
+            "wins": 427,
+            "losses": 380,
+            "pending": 0,
+            "win_rate_pct": 52.91201982651797,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 807,
+            "wins": 315,
+            "losses": 492,
+            "pending": 0,
+            "win_rate_pct": 39.03345724907063,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 807,
+            "wins": 256,
+            "losses": 551,
+            "pending": 0,
+            "win_rate_pct": 31.722428748451055,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 763,
+            "wins": 442,
+            "losses": 321,
+            "pending": 0,
+            "win_rate_pct": 57.929226736566186,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 763,
+            "wins": 306,
+            "losses": 457,
+            "pending": 0,
+            "win_rate_pct": 40.10484927916121,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 763,
+            "wins": 236,
+            "losses": 527,
+            "pending": 0,
+            "win_rate_pct": 30.9305373525557,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 780,
+            "wins": 435,
+            "losses": 345,
+            "pending": 0,
+            "win_rate_pct": 55.76923076923077,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 780,
+            "wins": 319,
+            "losses": 460,
+            "pending": 1,
+            "win_rate_pct": 40.949935815147626,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 780,
+            "wins": 257,
+            "losses": 522,
+            "pending": 1,
+            "win_rate_pct": 32.99101412066752,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 777,
+            "wins": 447,
+            "losses": 330,
+            "pending": 0,
+            "win_rate_pct": 57.52895752895753,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 777,
+            "wins": 325,
+            "losses": 452,
+            "pending": 0,
+            "win_rate_pct": 41.82754182754183,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 777,
+            "wins": 258,
+            "losses": 519,
+            "pending": 0,
+            "win_rate_pct": 33.204633204633204,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 782,
+            "wins": 471,
+            "losses": 310,
+            "pending": 1,
+            "win_rate_pct": 60.30729833546735,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 782,
+            "wins": 343,
+            "losses": 438,
+            "pending": 1,
+            "win_rate_pct": 43.918053777208705,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 782,
+            "wins": 265,
+            "losses": 516,
+            "pending": 1,
+            "win_rate_pct": 33.930857874519845,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 457,
+            "wins": 249,
+            "losses": 208,
+            "pending": 0,
+            "win_rate_pct": 54.48577680525164,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 457,
+            "wins": 185,
+            "losses": 272,
+            "pending": 0,
+            "win_rate_pct": 40.481400437636765,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 457,
+            "wins": 144,
+            "losses": 313,
+            "pending": 0,
+            "win_rate_pct": 31.50984682713348,
+            "ambiguous_stop_first": 0
+          }
+        }
+      },
+      "bars": 430140,
+      "first_bar": "2009-01-01T22:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2001-01-02T23:01:00",
+      "source_end": "2026-07-17T20:59:00",
+      "source_records": 9176194,
+      "tick_size": 1e-05,
+      "metadata_spread": 0.00015000000000000001
+    },
+    "USDJPY": {
+      "all": {
+        "TP1": {
+          "signals": 12604,
+          "wins": 7404,
+          "losses": 5200,
+          "pending": 0,
+          "win_rate_pct": 58.74325610917169,
+          "ambiguous_stop_first": 89
+        },
+        "TP2": {
+          "signals": 12604,
+          "wins": 5334,
+          "losses": 7270,
+          "pending": 0,
+          "win_rate_pct": 42.31989844493811,
+          "ambiguous_stop_first": 61
+        },
+        "TP3": {
+          "signals": 12604,
+          "wins": 4165,
+          "losses": 8439,
+          "pending": 0,
+          "win_rate_pct": 33.04506505871152,
+          "ambiguous_stop_first": 51
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 6855,
+          "wins": 4074,
+          "losses": 2781,
+          "pending": 0,
+          "win_rate_pct": 59.43107221006564,
+          "ambiguous_stop_first": 42
+        },
+        "TP2": {
+          "signals": 6855,
+          "wins": 2956,
+          "losses": 3899,
+          "pending": 0,
+          "win_rate_pct": 43.12180889861415,
+          "ambiguous_stop_first": 32
+        },
+        "TP3": {
+          "signals": 6855,
+          "wins": 2312,
+          "losses": 4543,
+          "pending": 0,
+          "win_rate_pct": 33.7272064186725,
+          "ambiguous_stop_first": 20
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 3025,
+          "wins": 1770,
+          "losses": 1255,
+          "pending": 0,
+          "win_rate_pct": 58.51239669421488,
+          "ambiguous_stop_first": 16
+        },
+        "TP2": {
+          "signals": 3025,
+          "wins": 1261,
+          "losses": 1763,
+          "pending": 1,
+          "win_rate_pct": 41.69973544973545,
+          "ambiguous_stop_first": 6
+        },
+        "TP3": {
+          "signals": 3025,
+          "wins": 991,
+          "losses": 2033,
+          "pending": 1,
+          "win_rate_pct": 32.77116402116402,
+          "ambiguous_stop_first": 8
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1516,
+          "wins": 884,
+          "losses": 632,
+          "pending": 0,
+          "win_rate_pct": 58.31134564643799,
+          "ambiguous_stop_first": 19
+        },
+        "TP2": {
+          "signals": 1516,
+          "wins": 633,
+          "losses": 883,
+          "pending": 0,
+          "win_rate_pct": 41.754617414248024,
+          "ambiguous_stop_first": 16
+        },
+        "TP3": {
+          "signals": 1516,
+          "wins": 494,
+          "losses": 1022,
+          "pending": 0,
+          "win_rate_pct": 32.58575197889182,
+          "ambiguous_stop_first": 14
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1208,
+          "wins": 676,
+          "losses": 532,
+          "pending": 0,
+          "win_rate_pct": 55.96026490066225,
+          "ambiguous_stop_first": 12
+        },
+        "TP2": {
+          "signals": 1208,
+          "wins": 483,
+          "losses": 725,
+          "pending": 0,
+          "win_rate_pct": 39.98344370860927,
+          "ambiguous_stop_first": 7
+        },
+        "TP3": {
+          "signals": 1208,
+          "wins": 367,
+          "losses": 841,
+          "pending": 0,
+          "win_rate_pct": 30.380794701986755,
+          "ambiguous_stop_first": 9
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 756,
+            "wins": 447,
+            "losses": 309,
+            "pending": 0,
+            "win_rate_pct": 59.12698412698413,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 756,
+            "wins": 322,
+            "losses": 434,
+            "pending": 0,
+            "win_rate_pct": 42.592592592592595,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 756,
+            "wins": 255,
+            "losses": 501,
+            "pending": 0,
+            "win_rate_pct": 33.73015873015873,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 769,
+            "wins": 442,
+            "losses": 327,
+            "pending": 0,
+            "win_rate_pct": 57.47724317295189,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 769,
+            "wins": 315,
+            "losses": 454,
+            "pending": 0,
+            "win_rate_pct": 40.96228868660598,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 769,
+            "wins": 229,
+            "losses": 540,
+            "pending": 0,
+            "win_rate_pct": 29.778933680104032,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 759,
+            "wins": 451,
+            "losses": 308,
+            "pending": 0,
+            "win_rate_pct": 59.42028985507246,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 759,
+            "wins": 325,
+            "losses": 434,
+            "pending": 0,
+            "win_rate_pct": 42.81949934123847,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 759,
+            "wins": 255,
+            "losses": 504,
+            "pending": 0,
+            "win_rate_pct": 33.59683794466403,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 770,
+            "wins": 472,
+            "losses": 298,
+            "pending": 0,
+            "win_rate_pct": 61.298701298701296,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 770,
+            "wins": 331,
+            "losses": 439,
+            "pending": 0,
+            "win_rate_pct": 42.98701298701299,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 770,
+            "wins": 268,
+            "losses": 501,
+            "pending": 1,
+            "win_rate_pct": 34.850455136540965,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 787,
+            "wins": 465,
+            "losses": 322,
+            "pending": 0,
+            "win_rate_pct": 59.0851334180432,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 787,
+            "wins": 339,
+            "losses": 448,
+            "pending": 0,
+            "win_rate_pct": 43.07496823379924,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 787,
+            "wins": 272,
+            "losses": 515,
+            "pending": 0,
+            "win_rate_pct": 34.561626429479034,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 786,
+            "wins": 449,
+            "losses": 337,
+            "pending": 0,
+            "win_rate_pct": 57.12468193384224,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 786,
+            "wins": 328,
+            "losses": 458,
+            "pending": 0,
+            "win_rate_pct": 41.73027989821883,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 786,
+            "wins": 257,
+            "losses": 529,
+            "pending": 0,
+            "win_rate_pct": 32.69720101781171,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 721,
+            "wins": 433,
+            "losses": 288,
+            "pending": 0,
+            "win_rate_pct": 60.05547850208045,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 721,
+            "wins": 322,
+            "losses": 399,
+            "pending": 0,
+            "win_rate_pct": 44.66019417475728,
+            "ambiguous_stop_first": 7
+          },
+          "TP3": {
+            "signals": 721,
+            "wins": 244,
+            "losses": 477,
+            "pending": 0,
+            "win_rate_pct": 33.841886269070734,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 754,
+            "wins": 468,
+            "losses": 286,
+            "pending": 0,
+            "win_rate_pct": 62.06896551724138,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 754,
+            "wins": 345,
+            "losses": 409,
+            "pending": 0,
+            "win_rate_pct": 45.755968169761275,
+            "ambiguous_stop_first": 6
+          },
+          "TP3": {
+            "signals": 754,
+            "wins": 276,
+            "losses": 478,
+            "pending": 0,
+            "win_rate_pct": 36.60477453580902,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 753,
+            "wins": 447,
+            "losses": 306,
+            "pending": 0,
+            "win_rate_pct": 59.36254980079681,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 753,
+            "wins": 329,
+            "losses": 424,
+            "pending": 0,
+            "win_rate_pct": 43.691899070385126,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 753,
+            "wins": 255,
+            "losses": 498,
+            "pending": 0,
+            "win_rate_pct": 33.864541832669325,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 759,
+            "wins": 422,
+            "losses": 337,
+            "pending": 0,
+            "win_rate_pct": 55.599472990777336,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 759,
+            "wins": 304,
+            "losses": 455,
+            "pending": 0,
+            "win_rate_pct": 40.05270092226614,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 759,
+            "wins": 247,
+            "losses": 512,
+            "pending": 0,
+            "win_rate_pct": 32.54281949934124,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 774,
+            "wins": 448,
+            "losses": 326,
+            "pending": 0,
+            "win_rate_pct": 57.88113695090439,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 774,
+            "wins": 317,
+            "losses": 457,
+            "pending": 0,
+            "win_rate_pct": 40.95607235142119,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 774,
+            "wins": 248,
+            "losses": 526,
+            "pending": 0,
+            "win_rate_pct": 32.041343669250644,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 746,
+            "wins": 469,
+            "losses": 277,
+            "pending": 0,
+            "win_rate_pct": 62.8686327077748,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 746,
+            "wins": 326,
+            "losses": 420,
+            "pending": 0,
+            "win_rate_pct": 43.69973190348526,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 746,
+            "wins": 245,
+            "losses": 501,
+            "pending": 0,
+            "win_rate_pct": 32.84182305630027,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 746,
+            "wins": 431,
+            "losses": 315,
+            "pending": 0,
+            "win_rate_pct": 57.77479892761394,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 746,
+            "wins": 314,
+            "losses": 431,
+            "pending": 1,
+            "win_rate_pct": 42.147651006711406,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 746,
+            "wins": 251,
+            "losses": 494,
+            "pending": 1,
+            "win_rate_pct": 33.691275167785236,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 768,
+            "wins": 443,
+            "losses": 325,
+            "pending": 0,
+            "win_rate_pct": 57.682291666666664,
+            "ambiguous_stop_first": 10
+          },
+          "TP2": {
+            "signals": 768,
+            "wins": 316,
+            "losses": 452,
+            "pending": 0,
+            "win_rate_pct": 41.145833333333336,
+            "ambiguous_stop_first": 8
+          },
+          "TP3": {
+            "signals": 768,
+            "wins": 238,
+            "losses": 530,
+            "pending": 0,
+            "win_rate_pct": 30.989583333333332,
+            "ambiguous_stop_first": 6
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 748,
+            "wins": 441,
+            "losses": 307,
+            "pending": 0,
+            "win_rate_pct": 58.9572192513369,
+            "ambiguous_stop_first": 9
+          },
+          "TP2": {
+            "signals": 748,
+            "wins": 317,
+            "losses": 431,
+            "pending": 0,
+            "win_rate_pct": 42.37967914438503,
+            "ambiguous_stop_first": 8
+          },
+          "TP3": {
+            "signals": 748,
+            "wins": 256,
+            "losses": 492,
+            "pending": 0,
+            "win_rate_pct": 34.224598930481285,
+            "ambiguous_stop_first": 8
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 769,
+            "wins": 452,
+            "losses": 317,
+            "pending": 0,
+            "win_rate_pct": 58.777633289986994,
+            "ambiguous_stop_first": 10
+          },
+          "TP2": {
+            "signals": 769,
+            "wins": 325,
+            "losses": 444,
+            "pending": 0,
+            "win_rate_pct": 42.262678803641094,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 769,
+            "wins": 248,
+            "losses": 521,
+            "pending": 0,
+            "win_rate_pct": 32.249674902470744,
+            "ambiguous_stop_first": 6
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 439,
+            "wins": 224,
+            "losses": 215,
+            "pending": 0,
+            "win_rate_pct": 51.0250569476082,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 439,
+            "wins": 158,
+            "losses": 281,
+            "pending": 0,
+            "win_rate_pct": 35.99088838268793,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 439,
+            "wins": 119,
+            "losses": 320,
+            "pending": 0,
+            "win_rate_pct": 27.107061503416855,
+            "ambiguous_stop_first": 3
+          }
+        }
+      },
+      "bars": 436710,
+      "first_bar": "2009-01-01T22:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2003-05-06T00:00:00",
+      "source_end": "2026-07-17T20:59:00",
+      "source_records": 8486336,
+      "tick_size": 0.001,
+      "metadata_spread": 0.012
+    },
+    "AUDJPY": {
+      "all": {
+        "TP1": {
+          "signals": 12604,
+          "wins": 7379,
+          "losses": 5225,
+          "pending": 0,
+          "win_rate_pct": 58.54490637892732,
+          "ambiguous_stop_first": 71
+        },
+        "TP2": {
+          "signals": 12604,
+          "wins": 5308,
+          "losses": 7295,
+          "pending": 1,
+          "win_rate_pct": 42.11695628025073,
+          "ambiguous_stop_first": 49
+        },
+        "TP3": {
+          "signals": 12604,
+          "wins": 4176,
+          "losses": 8427,
+          "pending": 1,
+          "win_rate_pct": 33.1349678647941,
+          "ambiguous_stop_first": 28
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 6774,
+          "wins": 3973,
+          "losses": 2800,
+          "pending": 1,
+          "win_rate_pct": 58.65938284364388,
+          "ambiguous_stop_first": 36
+        },
+        "TP2": {
+          "signals": 6774,
+          "wins": 2828,
+          "losses": 3945,
+          "pending": 1,
+          "win_rate_pct": 41.75402332791968,
+          "ambiguous_stop_first": 22
+        },
+        "TP3": {
+          "signals": 6774,
+          "wins": 2211,
+          "losses": 4562,
+          "pending": 1,
+          "win_rate_pct": 32.64432304739407,
+          "ambiguous_stop_first": 14
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 3089,
+          "wins": 1815,
+          "losses": 1274,
+          "pending": 0,
+          "win_rate_pct": 58.75687924894788,
+          "ambiguous_stop_first": 18
+        },
+        "TP2": {
+          "signals": 3089,
+          "wins": 1348,
+          "losses": 1741,
+          "pending": 0,
+          "win_rate_pct": 43.638718031725475,
+          "ambiguous_stop_first": 13
+        },
+        "TP3": {
+          "signals": 3089,
+          "wins": 1070,
+          "losses": 2019,
+          "pending": 0,
+          "win_rate_pct": 34.63904176108773,
+          "ambiguous_stop_first": 8
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1516,
+          "wins": 875,
+          "losses": 641,
+          "pending": 0,
+          "win_rate_pct": 57.71767810026385,
+          "ambiguous_stop_first": 12
+        },
+        "TP2": {
+          "signals": 1516,
+          "wins": 625,
+          "losses": 891,
+          "pending": 0,
+          "win_rate_pct": 41.226912928759894,
+          "ambiguous_stop_first": 13
+        },
+        "TP3": {
+          "signals": 1516,
+          "wins": 494,
+          "losses": 1022,
+          "pending": 0,
+          "win_rate_pct": 32.58575197889182,
+          "ambiguous_stop_first": 5
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1225,
+          "wins": 716,
+          "losses": 509,
+          "pending": 0,
+          "win_rate_pct": 58.44897959183673,
+          "ambiguous_stop_first": 5
+        },
+        "TP2": {
+          "signals": 1225,
+          "wins": 507,
+          "losses": 717,
+          "pending": 1,
+          "win_rate_pct": 41.42156862745098,
+          "ambiguous_stop_first": 1
+        },
+        "TP3": {
+          "signals": 1225,
+          "wins": 401,
+          "losses": 823,
+          "pending": 1,
+          "win_rate_pct": 32.76143790849673,
+          "ambiguous_stop_first": 1
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 773,
+            "wins": 436,
+            "losses": 336,
+            "pending": 1,
+            "win_rate_pct": 56.476683937823836,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 773,
+            "wins": 299,
+            "losses": 473,
+            "pending": 1,
+            "win_rate_pct": 38.73056994818653,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 773,
+            "wins": 228,
+            "losses": 544,
+            "pending": 1,
+            "win_rate_pct": 29.533678756476682,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 751,
+            "wins": 444,
+            "losses": 307,
+            "pending": 0,
+            "win_rate_pct": 59.12117177097204,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 751,
+            "wins": 303,
+            "losses": 448,
+            "pending": 0,
+            "win_rate_pct": 40.34620505992011,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 751,
+            "wins": 242,
+            "losses": 508,
+            "pending": 1,
+            "win_rate_pct": 32.266666666666666,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 796,
+            "wins": 459,
+            "losses": 337,
+            "pending": 0,
+            "win_rate_pct": 57.663316582914575,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 796,
+            "wins": 336,
+            "losses": 460,
+            "pending": 0,
+            "win_rate_pct": 42.21105527638191,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 796,
+            "wins": 265,
+            "losses": 531,
+            "pending": 0,
+            "win_rate_pct": 33.29145728643216,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 713,
+            "wins": 432,
+            "losses": 281,
+            "pending": 0,
+            "win_rate_pct": 60.589060308555396,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 713,
+            "wins": 303,
+            "losses": 410,
+            "pending": 0,
+            "win_rate_pct": 42.49649368863955,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 713,
+            "wins": 235,
+            "losses": 478,
+            "pending": 0,
+            "win_rate_pct": 32.959326788218796,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 745,
+            "wins": 426,
+            "losses": 319,
+            "pending": 0,
+            "win_rate_pct": 57.18120805369127,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 745,
+            "wins": 305,
+            "losses": 440,
+            "pending": 0,
+            "win_rate_pct": 40.939597315436245,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 745,
+            "wins": 246,
+            "losses": 499,
+            "pending": 0,
+            "win_rate_pct": 33.02013422818792,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 743,
+            "wins": 441,
+            "losses": 302,
+            "pending": 0,
+            "win_rate_pct": 59.353970390309556,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 743,
+            "wins": 320,
+            "losses": 423,
+            "pending": 0,
+            "win_rate_pct": 43.06864064602961,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 743,
+            "wins": 253,
+            "losses": 490,
+            "pending": 0,
+            "win_rate_pct": 34.05114401076716,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 734,
+            "wins": 442,
+            "losses": 291,
+            "pending": 1,
+            "win_rate_pct": 60.30013642564802,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 734,
+            "wins": 334,
+            "losses": 399,
+            "pending": 1,
+            "win_rate_pct": 45.56616643929058,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 734,
+            "wins": 273,
+            "losses": 460,
+            "pending": 1,
+            "win_rate_pct": 37.244201909959074,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 778,
+            "wins": 459,
+            "losses": 319,
+            "pending": 0,
+            "win_rate_pct": 58.9974293059126,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 778,
+            "wins": 306,
+            "losses": 472,
+            "pending": 0,
+            "win_rate_pct": 39.33161953727507,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 778,
+            "wins": 229,
+            "losses": 549,
+            "pending": 0,
+            "win_rate_pct": 29.434447300771208,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 741,
+            "wins": 433,
+            "losses": 307,
+            "pending": 1,
+            "win_rate_pct": 58.513513513513516,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 741,
+            "wins": 321,
+            "losses": 419,
+            "pending": 1,
+            "win_rate_pct": 43.37837837837838,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 741,
+            "wins": 239,
+            "losses": 501,
+            "pending": 1,
+            "win_rate_pct": 32.2972972972973,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 769,
+            "wins": 442,
+            "losses": 326,
+            "pending": 1,
+            "win_rate_pct": 57.552083333333336,
+            "ambiguous_stop_first": 9
+          },
+          "TP2": {
+            "signals": 769,
+            "wins": 321,
+            "losses": 447,
+            "pending": 1,
+            "win_rate_pct": 41.796875,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 769,
+            "wins": 255,
+            "losses": 513,
+            "pending": 1,
+            "win_rate_pct": 33.203125,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 801,
+            "wins": 469,
+            "losses": 331,
+            "pending": 1,
+            "win_rate_pct": 58.625,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 801,
+            "wins": 349,
+            "losses": 451,
+            "pending": 1,
+            "win_rate_pct": 43.625,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 801,
+            "wins": 271,
+            "losses": 529,
+            "pending": 1,
+            "win_rate_pct": 33.875,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 748,
+            "wins": 429,
+            "losses": 318,
+            "pending": 1,
+            "win_rate_pct": 57.429718875502004,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 748,
+            "wins": 317,
+            "losses": 430,
+            "pending": 1,
+            "win_rate_pct": 42.43641231593039,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 748,
+            "wins": 260,
+            "losses": 487,
+            "pending": 1,
+            "win_rate_pct": 34.805890227576974,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 771,
+            "wins": 475,
+            "losses": 296,
+            "pending": 0,
+            "win_rate_pct": 61.608300907911804,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 771,
+            "wins": 361,
+            "losses": 410,
+            "pending": 0,
+            "win_rate_pct": 46.82230869001297,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 771,
+            "wins": 284,
+            "losses": 487,
+            "pending": 0,
+            "win_rate_pct": 36.83527885862516,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 744,
+            "wins": 428,
+            "losses": 316,
+            "pending": 0,
+            "win_rate_pct": 57.526881720430104,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 744,
+            "wins": 316,
+            "losses": 428,
+            "pending": 0,
+            "win_rate_pct": 42.473118279569896,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 744,
+            "wins": 249,
+            "losses": 494,
+            "pending": 1,
+            "win_rate_pct": 33.51278600269179,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 772,
+            "wins": 447,
+            "losses": 325,
+            "pending": 0,
+            "win_rate_pct": 57.90155440414508,
+            "ambiguous_stop_first": 9
+          },
+          "TP2": {
+            "signals": 772,
+            "wins": 309,
+            "losses": 463,
+            "pending": 0,
+            "win_rate_pct": 40.02590673575129,
+            "ambiguous_stop_first": 8
+          },
+          "TP3": {
+            "signals": 772,
+            "wins": 244,
+            "losses": 528,
+            "pending": 0,
+            "win_rate_pct": 31.60621761658031,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 788,
+            "wins": 465,
+            "losses": 323,
+            "pending": 0,
+            "win_rate_pct": 59.01015228426396,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 788,
+            "wins": 327,
+            "losses": 460,
+            "pending": 1,
+            "win_rate_pct": 41.550190597204576,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 788,
+            "wins": 256,
+            "losses": 531,
+            "pending": 1,
+            "win_rate_pct": 32.52858958068615,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 437,
+            "wins": 251,
+            "losses": 186,
+            "pending": 0,
+            "win_rate_pct": 57.4370709382151,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 437,
+            "wins": 179,
+            "losses": 257,
+            "pending": 1,
+            "win_rate_pct": 41.055045871559635,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 437,
+            "wins": 144,
+            "losses": 292,
+            "pending": 1,
+            "win_rate_pct": 33.027522935779814,
+            "ambiguous_stop_first": 1
+          }
+        }
+      },
+      "bars": 437380,
+      "first_bar": "2009-01-01T00:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2003-12-02T00:00:00",
+      "source_end": "2026-07-17T20:59:00",
+      "source_records": 8429303,
+      "tick_size": 0.001,
+      "metadata_spread": 0.014
+    },
+    "CHFJPY": {
+      "all": {
+        "TP1": {
+          "signals": 12587,
+          "wins": 7176,
+          "losses": 5411,
+          "pending": 0,
+          "win_rate_pct": 57.01120203384444,
+          "ambiguous_stop_first": 70
+        },
+        "TP2": {
+          "signals": 12587,
+          "wins": 5145,
+          "losses": 7442,
+          "pending": 0,
+          "win_rate_pct": 40.875506474934454,
+          "ambiguous_stop_first": 38
+        },
+        "TP3": {
+          "signals": 12587,
+          "wins": 4013,
+          "losses": 8574,
+          "pending": 0,
+          "win_rate_pct": 31.882100579963453,
+          "ambiguous_stop_first": 18
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 6841,
+          "wins": 3888,
+          "losses": 2953,
+          "pending": 0,
+          "win_rate_pct": 56.833796228621544,
+          "ambiguous_stop_first": 26
+        },
+        "TP2": {
+          "signals": 6841,
+          "wins": 2787,
+          "losses": 4054,
+          "pending": 0,
+          "win_rate_pct": 40.73965794474492,
+          "ambiguous_stop_first": 17
+        },
+        "TP3": {
+          "signals": 6841,
+          "wins": 2151,
+          "losses": 4690,
+          "pending": 0,
+          "win_rate_pct": 31.442771524630903,
+          "ambiguous_stop_first": 8
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 3035,
+          "wins": 1758,
+          "losses": 1277,
+          "pending": 0,
+          "win_rate_pct": 57.924217462932454,
+          "ambiguous_stop_first": 18
+        },
+        "TP2": {
+          "signals": 3035,
+          "wins": 1260,
+          "losses": 1775,
+          "pending": 0,
+          "win_rate_pct": 41.5156507413509,
+          "ambiguous_stop_first": 11
+        },
+        "TP3": {
+          "signals": 3035,
+          "wins": 997,
+          "losses": 2038,
+          "pending": 0,
+          "win_rate_pct": 32.8500823723229,
+          "ambiguous_stop_first": 4
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1525,
+          "wins": 886,
+          "losses": 639,
+          "pending": 0,
+          "win_rate_pct": 58.09836065573771,
+          "ambiguous_stop_first": 17
+        },
+        "TP2": {
+          "signals": 1525,
+          "wins": 633,
+          "losses": 892,
+          "pending": 0,
+          "win_rate_pct": 41.50819672131148,
+          "ambiguous_stop_first": 7
+        },
+        "TP3": {
+          "signals": 1525,
+          "wins": 502,
+          "losses": 1023,
+          "pending": 0,
+          "win_rate_pct": 32.91803278688525,
+          "ambiguous_stop_first": 4
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1186,
+          "wins": 644,
+          "losses": 542,
+          "pending": 0,
+          "win_rate_pct": 54.30016863406408,
+          "ambiguous_stop_first": 9
+        },
+        "TP2": {
+          "signals": 1186,
+          "wins": 465,
+          "losses": 721,
+          "pending": 0,
+          "win_rate_pct": 39.20741989881956,
+          "ambiguous_stop_first": 3
+        },
+        "TP3": {
+          "signals": 1186,
+          "wins": 363,
+          "losses": 823,
+          "pending": 0,
+          "win_rate_pct": 30.607082630691398,
+          "ambiguous_stop_first": 2
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 761,
+            "wins": 431,
+            "losses": 330,
+            "pending": 0,
+            "win_rate_pct": 56.63600525624179,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 761,
+            "wins": 313,
+            "losses": 448,
+            "pending": 0,
+            "win_rate_pct": 41.13009198423128,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 761,
+            "wins": 232,
+            "losses": 529,
+            "pending": 0,
+            "win_rate_pct": 30.486202365308806,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 728,
+            "wins": 400,
+            "losses": 328,
+            "pending": 0,
+            "win_rate_pct": 54.94505494505494,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 728,
+            "wins": 290,
+            "losses": 437,
+            "pending": 1,
+            "win_rate_pct": 39.88995873452545,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 728,
+            "wins": 225,
+            "losses": 502,
+            "pending": 1,
+            "win_rate_pct": 30.949105914718018,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 722,
+            "wins": 440,
+            "losses": 282,
+            "pending": 0,
+            "win_rate_pct": 60.94182825484764,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 722,
+            "wins": 306,
+            "losses": 416,
+            "pending": 0,
+            "win_rate_pct": 42.38227146814405,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 722,
+            "wins": 243,
+            "losses": 479,
+            "pending": 0,
+            "win_rate_pct": 33.65650969529086,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 757,
+            "wins": 447,
+            "losses": 310,
+            "pending": 0,
+            "win_rate_pct": 59.04887714663144,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 757,
+            "wins": 306,
+            "losses": 451,
+            "pending": 0,
+            "win_rate_pct": 40.422721268163805,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 757,
+            "wins": 240,
+            "losses": 517,
+            "pending": 0,
+            "win_rate_pct": 31.704095112285337,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 767,
+            "wins": 422,
+            "losses": 344,
+            "pending": 1,
+            "win_rate_pct": 55.09138381201044,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 767,
+            "wins": 320,
+            "losses": 446,
+            "pending": 1,
+            "win_rate_pct": 41.775456919060055,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 767,
+            "wins": 246,
+            "losses": 520,
+            "pending": 1,
+            "win_rate_pct": 32.114882506527415,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 745,
+            "wins": 420,
+            "losses": 325,
+            "pending": 0,
+            "win_rate_pct": 56.375838926174495,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 745,
+            "wins": 303,
+            "losses": 442,
+            "pending": 0,
+            "win_rate_pct": 40.671140939597315,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 745,
+            "wins": 231,
+            "losses": 514,
+            "pending": 0,
+            "win_rate_pct": 31.006711409395972,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 759,
+            "wins": 438,
+            "losses": 321,
+            "pending": 0,
+            "win_rate_pct": 57.70750988142292,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 759,
+            "wins": 317,
+            "losses": 442,
+            "pending": 0,
+            "win_rate_pct": 41.76548089591568,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 759,
+            "wins": 245,
+            "losses": 514,
+            "pending": 0,
+            "win_rate_pct": 32.27931488801054,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 799,
+            "wins": 444,
+            "losses": 355,
+            "pending": 0,
+            "win_rate_pct": 55.56946182728411,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 799,
+            "wins": 307,
+            "losses": 492,
+            "pending": 0,
+            "win_rate_pct": 38.42302878598248,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 799,
+            "wins": 235,
+            "losses": 564,
+            "pending": 0,
+            "win_rate_pct": 29.41176470588235,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 803,
+            "wins": 445,
+            "losses": 358,
+            "pending": 0,
+            "win_rate_pct": 55.41718555417186,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 803,
+            "wins": 324,
+            "losses": 479,
+            "pending": 0,
+            "win_rate_pct": 40.34869240348692,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 803,
+            "wins": 253,
+            "losses": 550,
+            "pending": 0,
+            "win_rate_pct": 31.506849315068493,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 763,
+            "wins": 448,
+            "losses": 315,
+            "pending": 0,
+            "win_rate_pct": 58.71559633027523,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 763,
+            "wins": 310,
+            "losses": 453,
+            "pending": 0,
+            "win_rate_pct": 40.62909567496723,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 763,
+            "wins": 248,
+            "losses": 515,
+            "pending": 0,
+            "win_rate_pct": 32.50327653997379,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 784,
+            "wins": 456,
+            "losses": 328,
+            "pending": 0,
+            "win_rate_pct": 58.16326530612245,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 784,
+            "wins": 329,
+            "losses": 455,
+            "pending": 0,
+            "win_rate_pct": 41.964285714285715,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 784,
+            "wins": 262,
+            "losses": 522,
+            "pending": 0,
+            "win_rate_pct": 33.41836734693877,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 791,
+            "wins": 445,
+            "losses": 346,
+            "pending": 0,
+            "win_rate_pct": 56.257901390644754,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 791,
+            "wins": 322,
+            "losses": 469,
+            "pending": 0,
+            "win_rate_pct": 40.70796460176991,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 791,
+            "wins": 249,
+            "losses": 542,
+            "pending": 0,
+            "win_rate_pct": 31.479140328697852,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 697,
+            "wins": 409,
+            "losses": 288,
+            "pending": 0,
+            "win_rate_pct": 58.68005738880918,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 697,
+            "wins": 299,
+            "losses": 398,
+            "pending": 0,
+            "win_rate_pct": 42.89813486370158,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 697,
+            "wins": 238,
+            "losses": 459,
+            "pending": 0,
+            "win_rate_pct": 34.146341463414636,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 771,
+            "wins": 437,
+            "losses": 334,
+            "pending": 0,
+            "win_rate_pct": 56.679636835278856,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 771,
+            "wins": 319,
+            "losses": 452,
+            "pending": 0,
+            "win_rate_pct": 41.37483787289235,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 771,
+            "wins": 256,
+            "losses": 515,
+            "pending": 0,
+            "win_rate_pct": 33.20363164721142,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 754,
+            "wins": 449,
+            "losses": 305,
+            "pending": 0,
+            "win_rate_pct": 59.54907161803713,
+            "ambiguous_stop_first": 10
+          },
+          "TP2": {
+            "signals": 754,
+            "wins": 314,
+            "losses": 440,
+            "pending": 0,
+            "win_rate_pct": 41.644562334217504,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 754,
+            "wins": 246,
+            "losses": 508,
+            "pending": 0,
+            "win_rate_pct": 32.62599469496021,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 758,
+            "wins": 411,
+            "losses": 347,
+            "pending": 0,
+            "win_rate_pct": 54.221635883905016,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 758,
+            "wins": 294,
+            "losses": 464,
+            "pending": 0,
+            "win_rate_pct": 38.78627968337731,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 758,
+            "wins": 226,
+            "losses": 532,
+            "pending": 0,
+            "win_rate_pct": 29.815303430079155,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 428,
+            "wins": 233,
+            "losses": 195,
+            "pending": 0,
+            "win_rate_pct": 54.4392523364486,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 428,
+            "wins": 171,
+            "losses": 257,
+            "pending": 0,
+            "win_rate_pct": 39.953271028037385,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 428,
+            "wins": 137,
+            "losses": 291,
+            "pending": 0,
+            "win_rate_pct": 32.00934579439252,
+            "ambiguous_stop_first": 0
+          }
+        }
+      },
+      "bars": 430223,
+      "first_bar": "2009-01-01T22:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2001-01-02T23:01:00",
+      "source_end": "2026-07-19T23:59:00",
+      "source_records": 9136956,
+      "tick_size": 0.001,
+      "metadata_spread": 0.018000000000000002
+    },
+    "EURCHF": {
+      "all": {
+        "TP1": {
+          "signals": 11615,
+          "wins": 6481,
+          "losses": 5134,
+          "pending": 0,
+          "win_rate_pct": 55.79853637537667,
+          "ambiguous_stop_first": 91
+        },
+        "TP2": {
+          "signals": 11615,
+          "wins": 4409,
+          "losses": 7206,
+          "pending": 0,
+          "win_rate_pct": 37.95953508394318,
+          "ambiguous_stop_first": 32
+        },
+        "TP3": {
+          "signals": 11615,
+          "wins": 3311,
+          "losses": 8304,
+          "pending": 0,
+          "win_rate_pct": 28.506241928540682,
+          "ambiguous_stop_first": 14
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 6099,
+          "wins": 3400,
+          "losses": 2699,
+          "pending": 0,
+          "win_rate_pct": 55.74684374487621,
+          "ambiguous_stop_first": 44
+        },
+        "TP2": {
+          "signals": 6099,
+          "wins": 2301,
+          "losses": 3798,
+          "pending": 0,
+          "win_rate_pct": 37.727496310870634,
+          "ambiguous_stop_first": 17
+        },
+        "TP3": {
+          "signals": 6099,
+          "wins": 1720,
+          "losses": 4378,
+          "pending": 1,
+          "win_rate_pct": 28.205969170219745,
+          "ambiguous_stop_first": 10
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 2906,
+          "wins": 1634,
+          "losses": 1272,
+          "pending": 0,
+          "win_rate_pct": 56.22849277357192,
+          "ambiguous_stop_first": 21
+        },
+        "TP2": {
+          "signals": 2906,
+          "wins": 1124,
+          "losses": 1782,
+          "pending": 0,
+          "win_rate_pct": 38.67859600825877,
+          "ambiguous_stop_first": 9
+        },
+        "TP3": {
+          "signals": 2906,
+          "wins": 842,
+          "losses": 2064,
+          "pending": 0,
+          "win_rate_pct": 28.974535443909154,
+          "ambiguous_stop_first": 3
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1466,
+          "wins": 822,
+          "losses": 644,
+          "pending": 0,
+          "win_rate_pct": 56.07094133697135,
+          "ambiguous_stop_first": 13
+        },
+        "TP2": {
+          "signals": 1466,
+          "wins": 578,
+          "losses": 888,
+          "pending": 0,
+          "win_rate_pct": 39.427012278308325,
+          "ambiguous_stop_first": 3
+        },
+        "TP3": {
+          "signals": 1466,
+          "wins": 443,
+          "losses": 1023,
+          "pending": 0,
+          "win_rate_pct": 30.218281036834924,
+          "ambiguous_stop_first": 0
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1144,
+          "wins": 625,
+          "losses": 519,
+          "pending": 0,
+          "win_rate_pct": 54.63286713286713,
+          "ambiguous_stop_first": 13
+        },
+        "TP2": {
+          "signals": 1144,
+          "wins": 406,
+          "losses": 738,
+          "pending": 0,
+          "win_rate_pct": 35.48951048951049,
+          "ambiguous_stop_first": 3
+        },
+        "TP3": {
+          "signals": 1144,
+          "wins": 305,
+          "losses": 839,
+          "pending": 0,
+          "win_rate_pct": 26.66083916083916,
+          "ambiguous_stop_first": 1
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 677,
+            "wins": 375,
+            "losses": 302,
+            "pending": 0,
+            "win_rate_pct": 55.391432791728214,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 677,
+            "wins": 261,
+            "losses": 416,
+            "pending": 0,
+            "win_rate_pct": 38.55243722304284,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 677,
+            "wins": 205,
+            "losses": 472,
+            "pending": 0,
+            "win_rate_pct": 30.280649926144758,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 685,
+            "wins": 380,
+            "losses": 305,
+            "pending": 0,
+            "win_rate_pct": 55.47445255474452,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 685,
+            "wins": 275,
+            "losses": 410,
+            "pending": 0,
+            "win_rate_pct": 40.14598540145985,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 685,
+            "wins": 217,
+            "losses": 468,
+            "pending": 0,
+            "win_rate_pct": 31.67883211678832,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 523,
+            "wins": 277,
+            "losses": 246,
+            "pending": 0,
+            "win_rate_pct": 52.96367112810707,
+            "ambiguous_stop_first": 10
+          },
+          "TP2": {
+            "signals": 523,
+            "wins": 179,
+            "losses": 344,
+            "pending": 0,
+            "win_rate_pct": 34.22562141491396,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 523,
+            "wins": 117,
+            "losses": 406,
+            "pending": 0,
+            "win_rate_pct": 22.37093690248566,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 709,
+            "wins": 393,
+            "losses": 316,
+            "pending": 0,
+            "win_rate_pct": 55.43018335684062,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 709,
+            "wins": 269,
+            "losses": 440,
+            "pending": 0,
+            "win_rate_pct": 37.94076163610719,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 709,
+            "wins": 205,
+            "losses": 504,
+            "pending": 0,
+            "win_rate_pct": 28.913963328631876,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 681,
+            "wins": 382,
+            "losses": 299,
+            "pending": 0,
+            "win_rate_pct": 56.093979441997064,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 681,
+            "wins": 252,
+            "losses": 429,
+            "pending": 0,
+            "win_rate_pct": 37.00440528634361,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 681,
+            "wins": 177,
+            "losses": 503,
+            "pending": 1,
+            "win_rate_pct": 26.029411764705884,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 695,
+            "wins": 380,
+            "losses": 315,
+            "pending": 0,
+            "win_rate_pct": 54.67625899280576,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 695,
+            "wins": 247,
+            "losses": 448,
+            "pending": 0,
+            "win_rate_pct": 35.539568345323744,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 695,
+            "wins": 182,
+            "losses": 513,
+            "pending": 0,
+            "win_rate_pct": 26.18705035971223,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 685,
+            "wins": 379,
+            "losses": 306,
+            "pending": 0,
+            "win_rate_pct": 55.32846715328467,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 685,
+            "wins": 258,
+            "losses": 426,
+            "pending": 1,
+            "win_rate_pct": 37.719298245614034,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 685,
+            "wins": 183,
+            "losses": 501,
+            "pending": 1,
+            "win_rate_pct": 26.75438596491228,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 709,
+            "wins": 400,
+            "losses": 309,
+            "pending": 0,
+            "win_rate_pct": 56.41748942172073,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 709,
+            "wins": 264,
+            "losses": 445,
+            "pending": 0,
+            "win_rate_pct": 37.23554301833568,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 709,
+            "wins": 203,
+            "losses": 506,
+            "pending": 0,
+            "win_rate_pct": 28.63187588152327,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 735,
+            "wins": 434,
+            "losses": 301,
+            "pending": 0,
+            "win_rate_pct": 59.04761904761905,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 735,
+            "wins": 295,
+            "losses": 440,
+            "pending": 0,
+            "win_rate_pct": 40.136054421768705,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 735,
+            "wins": 230,
+            "losses": 504,
+            "pending": 1,
+            "win_rate_pct": 31.33514986376022,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 749,
+            "wins": 419,
+            "losses": 330,
+            "pending": 0,
+            "win_rate_pct": 55.94125500667557,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 749,
+            "wins": 296,
+            "losses": 453,
+            "pending": 0,
+            "win_rate_pct": 39.51935914552737,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 749,
+            "wins": 230,
+            "losses": 519,
+            "pending": 0,
+            "win_rate_pct": 30.707610146862482,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 745,
+            "wins": 405,
+            "losses": 340,
+            "pending": 0,
+            "win_rate_pct": 54.36241610738255,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 745,
+            "wins": 283,
+            "losses": 462,
+            "pending": 0,
+            "win_rate_pct": 37.986577181208055,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 745,
+            "wins": 204,
+            "losses": 541,
+            "pending": 0,
+            "win_rate_pct": 27.38255033557047,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 719,
+            "wins": 425,
+            "losses": 294,
+            "pending": 0,
+            "win_rate_pct": 59.109874826147426,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 719,
+            "wins": 274,
+            "losses": 445,
+            "pending": 0,
+            "win_rate_pct": 38.108484005563284,
+            "ambiguous_stop_first": 6
+          },
+          "TP3": {
+            "signals": 719,
+            "wins": 203,
+            "losses": 516,
+            "pending": 0,
+            "win_rate_pct": 28.2336578581363,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 693,
+            "wins": 385,
+            "losses": 308,
+            "pending": 0,
+            "win_rate_pct": 55.55555555555556,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 693,
+            "wins": 271,
+            "losses": 422,
+            "pending": 0,
+            "win_rate_pct": 39.105339105339105,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 693,
+            "wins": 205,
+            "losses": 488,
+            "pending": 0,
+            "win_rate_pct": 29.58152958152958,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 727,
+            "wins": 412,
+            "losses": 315,
+            "pending": 0,
+            "win_rate_pct": 56.671251719394775,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 727,
+            "wins": 278,
+            "losses": 449,
+            "pending": 0,
+            "win_rate_pct": 38.239339752407155,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 727,
+            "wins": 220,
+            "losses": 507,
+            "pending": 0,
+            "win_rate_pct": 30.261348005502064,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 739,
+            "wins": 410,
+            "losses": 329,
+            "pending": 0,
+            "win_rate_pct": 55.48037889039242,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 739,
+            "wins": 300,
+            "losses": 439,
+            "pending": 0,
+            "win_rate_pct": 40.59539918809202,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 739,
+            "wins": 223,
+            "losses": 516,
+            "pending": 0,
+            "win_rate_pct": 30.175913396481732,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 735,
+            "wins": 391,
+            "losses": 344,
+            "pending": 0,
+            "win_rate_pct": 53.197278911564624,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 735,
+            "wins": 247,
+            "losses": 488,
+            "pending": 0,
+            "win_rate_pct": 33.605442176870746,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 735,
+            "wins": 186,
+            "losses": 549,
+            "pending": 0,
+            "win_rate_pct": 25.306122448979593,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 409,
+            "wins": 234,
+            "losses": 175,
+            "pending": 0,
+            "win_rate_pct": 57.21271393643032,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 409,
+            "wins": 159,
+            "losses": 250,
+            "pending": 0,
+            "win_rate_pct": 38.87530562347188,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 409,
+            "wins": 119,
+            "losses": 290,
+            "pending": 0,
+            "win_rate_pct": 29.095354523227385,
+            "ambiguous_stop_first": 1
+          }
+        }
+      },
+      "bars": 437553,
+      "first_bar": "2009-01-01T00:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2003-08-05T00:00:00",
+      "source_end": "2026-07-17T20:59:00",
+      "source_records": 8471194,
+      "tick_size": 1e-05,
+      "metadata_spread": 0.00017
+    },
+    "GBPCHF": {
+      "all": {
+        "TP1": {
+          "signals": 11715,
+          "wins": 6722,
+          "losses": 4993,
+          "pending": 0,
+          "win_rate_pct": 57.37942808365344,
+          "ambiguous_stop_first": 81
+        },
+        "TP2": {
+          "signals": 11715,
+          "wins": 4730,
+          "losses": 6985,
+          "pending": 0,
+          "win_rate_pct": 40.375586854460096,
+          "ambiguous_stop_first": 35
+        },
+        "TP3": {
+          "signals": 11715,
+          "wins": 3612,
+          "losses": 8103,
+          "pending": 0,
+          "win_rate_pct": 30.832266325224072,
+          "ambiguous_stop_first": 16
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 6237,
+          "wins": 3605,
+          "losses": 2632,
+          "pending": 0,
+          "win_rate_pct": 57.80022446689113,
+          "ambiguous_stop_first": 38
+        },
+        "TP2": {
+          "signals": 6237,
+          "wins": 2551,
+          "losses": 3685,
+          "pending": 1,
+          "win_rate_pct": 40.90763309813983,
+          "ambiguous_stop_first": 19
+        },
+        "TP3": {
+          "signals": 6237,
+          "wins": 1967,
+          "losses": 4269,
+          "pending": 1,
+          "win_rate_pct": 31.54265554842848,
+          "ambiguous_stop_first": 12
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 2795,
+          "wins": 1658,
+          "losses": 1137,
+          "pending": 0,
+          "win_rate_pct": 59.32021466905188,
+          "ambiguous_stop_first": 17
+        },
+        "TP2": {
+          "signals": 2795,
+          "wins": 1160,
+          "losses": 1635,
+          "pending": 0,
+          "win_rate_pct": 41.50268336314848,
+          "ambiguous_stop_first": 8
+        },
+        "TP3": {
+          "signals": 2795,
+          "wins": 876,
+          "losses": 1919,
+          "pending": 0,
+          "win_rate_pct": 31.341681574239715,
+          "ambiguous_stop_first": 4
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1499,
+          "wins": 808,
+          "losses": 691,
+          "pending": 0,
+          "win_rate_pct": 53.90260173448966,
+          "ambiguous_stop_first": 14
+        },
+        "TP2": {
+          "signals": 1499,
+          "wins": 556,
+          "losses": 943,
+          "pending": 0,
+          "win_rate_pct": 37.091394262841895,
+          "ambiguous_stop_first": 6
+        },
+        "TP3": {
+          "signals": 1499,
+          "wins": 416,
+          "losses": 1083,
+          "pending": 0,
+          "win_rate_pct": 27.751834556370913,
+          "ambiguous_stop_first": 0
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1184,
+          "wins": 651,
+          "losses": 533,
+          "pending": 0,
+          "win_rate_pct": 54.983108108108105,
+          "ambiguous_stop_first": 12
+        },
+        "TP2": {
+          "signals": 1184,
+          "wins": 462,
+          "losses": 722,
+          "pending": 0,
+          "win_rate_pct": 39.020270270270274,
+          "ambiguous_stop_first": 2
+        },
+        "TP3": {
+          "signals": 1184,
+          "wins": 352,
+          "losses": 832,
+          "pending": 0,
+          "win_rate_pct": 29.72972972972973,
+          "ambiguous_stop_first": 0
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 688,
+            "wins": 397,
+            "losses": 291,
+            "pending": 0,
+            "win_rate_pct": 57.70348837209303,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 688,
+            "wins": 284,
+            "losses": 403,
+            "pending": 1,
+            "win_rate_pct": 41.3391557496361,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 688,
+            "wins": 222,
+            "losses": 465,
+            "pending": 1,
+            "win_rate_pct": 32.314410480349345,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 686,
+            "wins": 383,
+            "losses": 303,
+            "pending": 0,
+            "win_rate_pct": 55.83090379008746,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 686,
+            "wins": 265,
+            "losses": 420,
+            "pending": 1,
+            "win_rate_pct": 38.68613138686131,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 686,
+            "wins": 208,
+            "losses": 477,
+            "pending": 1,
+            "win_rate_pct": 30.364963503649633,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 706,
+            "wins": 416,
+            "losses": 290,
+            "pending": 0,
+            "win_rate_pct": 58.92351274787536,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 706,
+            "wins": 276,
+            "losses": 429,
+            "pending": 1,
+            "win_rate_pct": 39.148936170212764,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 706,
+            "wins": 208,
+            "losses": 497,
+            "pending": 1,
+            "win_rate_pct": 29.50354609929078,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 685,
+            "wins": 383,
+            "losses": 301,
+            "pending": 1,
+            "win_rate_pct": 55.994152046783626,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 685,
+            "wins": 275,
+            "losses": 409,
+            "pending": 1,
+            "win_rate_pct": 40.2046783625731,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 685,
+            "wins": 210,
+            "losses": 474,
+            "pending": 1,
+            "win_rate_pct": 30.70175438596491,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 662,
+            "wins": 397,
+            "losses": 265,
+            "pending": 0,
+            "win_rate_pct": 59.96978851963746,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 662,
+            "wins": 285,
+            "losses": 377,
+            "pending": 0,
+            "win_rate_pct": 43.051359516616316,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 662,
+            "wins": 232,
+            "losses": 429,
+            "pending": 1,
+            "win_rate_pct": 35.09833585476551,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 684,
+            "wins": 413,
+            "losses": 271,
+            "pending": 0,
+            "win_rate_pct": 60.380116959064324,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 684,
+            "wins": 299,
+            "losses": 385,
+            "pending": 0,
+            "win_rate_pct": 43.71345029239766,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 684,
+            "wins": 223,
+            "losses": 461,
+            "pending": 0,
+            "win_rate_pct": 32.60233918128655,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 740,
+            "wins": 429,
+            "losses": 310,
+            "pending": 1,
+            "win_rate_pct": 58.05142083897158,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 740,
+            "wins": 303,
+            "losses": 436,
+            "pending": 1,
+            "win_rate_pct": 41.00135317997294,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 740,
+            "wins": 231,
+            "losses": 508,
+            "pending": 1,
+            "win_rate_pct": 31.25845737483085,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 674,
+            "wins": 388,
+            "losses": 286,
+            "pending": 0,
+            "win_rate_pct": 57.566765578635014,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 674,
+            "wins": 286,
+            "losses": 388,
+            "pending": 0,
+            "win_rate_pct": 42.433234421364986,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 674,
+            "wins": 216,
+            "losses": 457,
+            "pending": 1,
+            "win_rate_pct": 32.09509658246657,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 712,
+            "wins": 398,
+            "losses": 314,
+            "pending": 0,
+            "win_rate_pct": 55.89887640449438,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 712,
+            "wins": 277,
+            "losses": 434,
+            "pending": 1,
+            "win_rate_pct": 38.9592123769339,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 712,
+            "wins": 214,
+            "losses": 497,
+            "pending": 1,
+            "win_rate_pct": 30.09845288326301,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 724,
+            "wins": 413,
+            "losses": 311,
+            "pending": 0,
+            "win_rate_pct": 57.04419889502763,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 724,
+            "wins": 277,
+            "losses": 447,
+            "pending": 0,
+            "win_rate_pct": 38.25966850828729,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 724,
+            "wins": 201,
+            "losses": 523,
+            "pending": 0,
+            "win_rate_pct": 27.76243093922652,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 696,
+            "wins": 420,
+            "losses": 276,
+            "pending": 0,
+            "win_rate_pct": 60.3448275862069,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 696,
+            "wins": 300,
+            "losses": 395,
+            "pending": 1,
+            "win_rate_pct": 43.16546762589928,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 696,
+            "wins": 237,
+            "losses": 458,
+            "pending": 1,
+            "win_rate_pct": 34.10071942446043,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 694,
+            "wins": 426,
+            "losses": 268,
+            "pending": 0,
+            "win_rate_pct": 61.38328530259366,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 694,
+            "wins": 303,
+            "losses": 390,
+            "pending": 1,
+            "win_rate_pct": 43.722943722943725,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 694,
+            "wins": 229,
+            "losses": 464,
+            "pending": 1,
+            "win_rate_pct": 33.04473304473304,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 681,
+            "wins": 399,
+            "losses": 282,
+            "pending": 0,
+            "win_rate_pct": 58.590308370044056,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 681,
+            "wins": 280,
+            "losses": 401,
+            "pending": 0,
+            "win_rate_pct": 41.116005873715125,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 681,
+            "wins": 209,
+            "losses": 472,
+            "pending": 0,
+            "win_rate_pct": 30.690161527165934,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 761,
+            "wins": 404,
+            "losses": 357,
+            "pending": 0,
+            "win_rate_pct": 53.088042049934295,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 761,
+            "wins": 279,
+            "losses": 481,
+            "pending": 1,
+            "win_rate_pct": 36.71052631578947,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 761,
+            "wins": 198,
+            "losses": 562,
+            "pending": 1,
+            "win_rate_pct": 26.05263157894737,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 738,
+            "wins": 404,
+            "losses": 334,
+            "pending": 0,
+            "win_rate_pct": 54.74254742547426,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 738,
+            "wins": 277,
+            "losses": 461,
+            "pending": 0,
+            "win_rate_pct": 37.53387533875339,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 738,
+            "wins": 218,
+            "losses": 520,
+            "pending": 0,
+            "win_rate_pct": 29.539295392953928,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 773,
+            "wins": 414,
+            "losses": 359,
+            "pending": 0,
+            "win_rate_pct": 53.557567917205695,
+            "ambiguous_stop_first": 10
+          },
+          "TP2": {
+            "signals": 773,
+            "wins": 300,
+            "losses": 473,
+            "pending": 0,
+            "win_rate_pct": 38.809831824062094,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 773,
+            "wins": 229,
+            "losses": 544,
+            "pending": 0,
+            "win_rate_pct": 29.6248382923674,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 411,
+            "wins": 237,
+            "losses": 174,
+            "pending": 0,
+            "win_rate_pct": 57.66423357664234,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 411,
+            "wins": 162,
+            "losses": 249,
+            "pending": 0,
+            "win_rate_pct": 39.416058394160586,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 411,
+            "wins": 123,
+            "losses": 288,
+            "pending": 0,
+            "win_rate_pct": 29.927007299270073,
+            "ambiguous_stop_first": 0
+          }
+        }
+      },
+      "bars": 437183,
+      "first_bar": "2009-01-01T00:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2003-08-15T08:55:00",
+      "source_end": "2026-07-17T20:59:00",
+      "source_records": 8539678,
+      "tick_size": 1e-05,
+      "metadata_spread": 0.00016
+    },
+    "GBPJPY": {
+      "all": {
+        "TP1": {
+          "signals": 12371,
+          "wins": 7186,
+          "losses": 5184,
+          "pending": 1,
+          "win_rate_pct": 58.09215844785772,
+          "ambiguous_stop_first": 57
+        },
+        "TP2": {
+          "signals": 12371,
+          "wins": 5202,
+          "losses": 7168,
+          "pending": 1,
+          "win_rate_pct": 42.053354890864995,
+          "ambiguous_stop_first": 24
+        },
+        "TP3": {
+          "signals": 12371,
+          "wins": 4122,
+          "losses": 8248,
+          "pending": 1,
+          "win_rate_pct": 33.322554567502024,
+          "ambiguous_stop_first": 21
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 6716,
+          "wins": 3916,
+          "losses": 2800,
+          "pending": 0,
+          "win_rate_pct": 58.30851697438952,
+          "ambiguous_stop_first": 22
+        },
+        "TP2": {
+          "signals": 6716,
+          "wins": 2802,
+          "losses": 3914,
+          "pending": 0,
+          "win_rate_pct": 41.721262656343065,
+          "ambiguous_stop_first": 11
+        },
+        "TP3": {
+          "signals": 6716,
+          "wins": 2214,
+          "losses": 4502,
+          "pending": 0,
+          "win_rate_pct": 32.96605122096486,
+          "ambiguous_stop_first": 7
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 2954,
+          "wins": 1727,
+          "losses": 1227,
+          "pending": 0,
+          "win_rate_pct": 58.46310088016249,
+          "ambiguous_stop_first": 16
+        },
+        "TP2": {
+          "signals": 2954,
+          "wins": 1253,
+          "losses": 1701,
+          "pending": 0,
+          "win_rate_pct": 42.41706161137441,
+          "ambiguous_stop_first": 2
+        },
+        "TP3": {
+          "signals": 2954,
+          "wins": 1007,
+          "losses": 1947,
+          "pending": 0,
+          "win_rate_pct": 34.08937034529452,
+          "ambiguous_stop_first": 6
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1548,
+          "wins": 890,
+          "losses": 658,
+          "pending": 0,
+          "win_rate_pct": 57.49354005167959,
+          "ambiguous_stop_first": 12
+        },
+        "TP2": {
+          "signals": 1548,
+          "wins": 668,
+          "losses": 880,
+          "pending": 0,
+          "win_rate_pct": 43.15245478036176,
+          "ambiguous_stop_first": 9
+        },
+        "TP3": {
+          "signals": 1548,
+          "wins": 531,
+          "losses": 1016,
+          "pending": 1,
+          "win_rate_pct": 34.32449903038138,
+          "ambiguous_stop_first": 6
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1153,
+          "wins": 653,
+          "losses": 499,
+          "pending": 1,
+          "win_rate_pct": 56.68402777777778,
+          "ambiguous_stop_first": 7
+        },
+        "TP2": {
+          "signals": 1153,
+          "wins": 479,
+          "losses": 673,
+          "pending": 1,
+          "win_rate_pct": 41.579861111111114,
+          "ambiguous_stop_first": 2
+        },
+        "TP3": {
+          "signals": 1153,
+          "wins": 369,
+          "losses": 783,
+          "pending": 1,
+          "win_rate_pct": 32.03125,
+          "ambiguous_stop_first": 2
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 767,
+            "wins": 457,
+            "losses": 310,
+            "pending": 0,
+            "win_rate_pct": 59.58279009126467,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 767,
+            "wins": 322,
+            "losses": 445,
+            "pending": 0,
+            "win_rate_pct": 41.98174706649283,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 767,
+            "wins": 253,
+            "losses": 514,
+            "pending": 0,
+            "win_rate_pct": 32.98565840938722,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 741,
+            "wins": 453,
+            "losses": 288,
+            "pending": 0,
+            "win_rate_pct": 61.1336032388664,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 741,
+            "wins": 307,
+            "losses": 433,
+            "pending": 1,
+            "win_rate_pct": 41.486486486486484,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 741,
+            "wins": 229,
+            "losses": 511,
+            "pending": 1,
+            "win_rate_pct": 30.945945945945947,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 714,
+            "wins": 420,
+            "losses": 294,
+            "pending": 0,
+            "win_rate_pct": 58.8235294117647,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 714,
+            "wins": 306,
+            "losses": 408,
+            "pending": 0,
+            "win_rate_pct": 42.857142857142854,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 714,
+            "wins": 251,
+            "losses": 463,
+            "pending": 0,
+            "win_rate_pct": 35.15406162464986,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 739,
+            "wins": 443,
+            "losses": 296,
+            "pending": 0,
+            "win_rate_pct": 59.945872801082544,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 739,
+            "wins": 313,
+            "losses": 426,
+            "pending": 0,
+            "win_rate_pct": 42.35453315290934,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 739,
+            "wins": 246,
+            "losses": 493,
+            "pending": 0,
+            "win_rate_pct": 33.28822733423545,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 753,
+            "wins": 407,
+            "losses": 346,
+            "pending": 0,
+            "win_rate_pct": 54.05046480743692,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 753,
+            "wins": 298,
+            "losses": 455,
+            "pending": 0,
+            "win_rate_pct": 39.57503320053121,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 753,
+            "wins": 224,
+            "losses": 529,
+            "pending": 0,
+            "win_rate_pct": 29.747675962815403,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 721,
+            "wins": 434,
+            "losses": 287,
+            "pending": 0,
+            "win_rate_pct": 60.19417475728155,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 721,
+            "wins": 291,
+            "losses": 429,
+            "pending": 1,
+            "win_rate_pct": 40.416666666666664,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 721,
+            "wins": 242,
+            "losses": 478,
+            "pending": 1,
+            "win_rate_pct": 33.611111111111114,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 757,
+            "wins": 429,
+            "losses": 328,
+            "pending": 0,
+            "win_rate_pct": 56.67107001321004,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 757,
+            "wins": 326,
+            "losses": 431,
+            "pending": 0,
+            "win_rate_pct": 43.064729194187585,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 757,
+            "wins": 256,
+            "losses": 501,
+            "pending": 0,
+            "win_rate_pct": 33.81770145310436,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 786,
+            "wins": 436,
+            "losses": 349,
+            "pending": 1,
+            "win_rate_pct": 55.54140127388535,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 786,
+            "wins": 317,
+            "losses": 468,
+            "pending": 1,
+            "win_rate_pct": 40.382165605095544,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 786,
+            "wins": 252,
+            "losses": 533,
+            "pending": 1,
+            "win_rate_pct": 32.10191082802548,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 738,
+            "wins": 436,
+            "losses": 302,
+            "pending": 0,
+            "win_rate_pct": 59.078590785907856,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 738,
+            "wins": 319,
+            "losses": 419,
+            "pending": 0,
+            "win_rate_pct": 43.22493224932249,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 738,
+            "wins": 259,
+            "losses": 479,
+            "pending": 0,
+            "win_rate_pct": 35.09485094850948,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 742,
+            "wins": 427,
+            "losses": 315,
+            "pending": 0,
+            "win_rate_pct": 57.54716981132076,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 742,
+            "wins": 307,
+            "losses": 435,
+            "pending": 0,
+            "win_rate_pct": 41.37466307277628,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 742,
+            "wins": 249,
+            "losses": 493,
+            "pending": 0,
+            "win_rate_pct": 33.55795148247979,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 763,
+            "wins": 420,
+            "losses": 343,
+            "pending": 0,
+            "win_rate_pct": 55.04587155963303,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 763,
+            "wins": 306,
+            "losses": 457,
+            "pending": 0,
+            "win_rate_pct": 40.10484927916121,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 763,
+            "wins": 253,
+            "losses": 510,
+            "pending": 0,
+            "win_rate_pct": 33.158584534731325,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 744,
+            "wins": 451,
+            "losses": 292,
+            "pending": 1,
+            "win_rate_pct": 60.69986541049798,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 744,
+            "wins": 329,
+            "losses": 414,
+            "pending": 1,
+            "win_rate_pct": 44.279946164199195,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 744,
+            "wins": 261,
+            "losses": 482,
+            "pending": 1,
+            "win_rate_pct": 35.1278600269179,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 705,
+            "wins": 428,
+            "losses": 277,
+            "pending": 0,
+            "win_rate_pct": 60.709219858156025,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 705,
+            "wins": 310,
+            "losses": 395,
+            "pending": 0,
+            "win_rate_pct": 43.97163120567376,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 705,
+            "wins": 243,
+            "losses": 462,
+            "pending": 0,
+            "win_rate_pct": 34.46808510638298,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 748,
+            "wins": 435,
+            "losses": 313,
+            "pending": 0,
+            "win_rate_pct": 58.155080213903744,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 748,
+            "wins": 339,
+            "losses": 409,
+            "pending": 0,
+            "win_rate_pct": 45.32085561497326,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 748,
+            "wins": 275,
+            "losses": 473,
+            "pending": 0,
+            "win_rate_pct": 36.76470588235294,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 800,
+            "wins": 455,
+            "losses": 345,
+            "pending": 0,
+            "win_rate_pct": 56.875,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 800,
+            "wins": 329,
+            "losses": 471,
+            "pending": 0,
+            "win_rate_pct": 41.125,
+            "ambiguous_stop_first": 6
+          },
+          "TP3": {
+            "signals": 800,
+            "wins": 256,
+            "losses": 543,
+            "pending": 1,
+            "win_rate_pct": 32.040050062578224,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 753,
+            "wins": 418,
+            "losses": 335,
+            "pending": 0,
+            "win_rate_pct": 55.51128818061089,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 753,
+            "wins": 303,
+            "losses": 450,
+            "pending": 0,
+            "win_rate_pct": 40.2390438247012,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 753,
+            "wins": 229,
+            "losses": 524,
+            "pending": 0,
+            "win_rate_pct": 30.411686586985393,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 400,
+            "wins": 235,
+            "losses": 164,
+            "pending": 1,
+            "win_rate_pct": 58.89724310776943,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 400,
+            "wins": 176,
+            "losses": 223,
+            "pending": 1,
+            "win_rate_pct": 44.11027568922306,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 400,
+            "wins": 140,
+            "losses": 259,
+            "pending": 1,
+            "win_rate_pct": 35.08771929824562,
+            "ambiguous_stop_first": 0
+          }
+        }
+      },
+      "bars": 430409,
+      "first_bar": "2009-01-01T22:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2001-01-02T23:01:00",
+      "source_end": "2026-07-17T20:59:00",
+      "source_records": 9222676,
+      "tick_size": 0.001,
+      "metadata_spread": 0.018000000000000002
+    },
+    "XAUUSD": {
+      "all": {
+        "TP1": {
+          "signals": 9452,
+          "wins": 5559,
+          "losses": 3893,
+          "pending": 0,
+          "win_rate_pct": 58.81294964028777,
+          "ambiguous_stop_first": 69
+        },
+        "TP2": {
+          "signals": 9452,
+          "wins": 4017,
+          "losses": 5435,
+          "pending": 0,
+          "win_rate_pct": 42.498942022852304,
+          "ambiguous_stop_first": 42
+        },
+        "TP3": {
+          "signals": 9452,
+          "wins": 3125,
+          "losses": 6326,
+          "pending": 1,
+          "win_rate_pct": 33.06528409692096,
+          "ambiguous_stop_first": 30
+        }
+      },
+      "2010–2018": {
+        "TP1": {
+          "signals": 4053,
+          "wins": 2373,
+          "losses": 1680,
+          "pending": 0,
+          "win_rate_pct": 58.54922279792746,
+          "ambiguous_stop_first": 31
+        },
+        "TP2": {
+          "signals": 4053,
+          "wins": 1711,
+          "losses": 2342,
+          "pending": 0,
+          "win_rate_pct": 42.21564273377745,
+          "ambiguous_stop_first": 20
+        },
+        "TP3": {
+          "signals": 4053,
+          "wins": 1364,
+          "losses": 2689,
+          "pending": 0,
+          "win_rate_pct": 33.65408339501604,
+          "ambiguous_stop_first": 13
+        }
+      },
+      "2019–2022": {
+        "TP1": {
+          "signals": 2831,
+          "wins": 1671,
+          "losses": 1159,
+          "pending": 1,
+          "win_rate_pct": 59.04593639575972,
+          "ambiguous_stop_first": 19
+        },
+        "TP2": {
+          "signals": 2831,
+          "wins": 1205,
+          "losses": 1625,
+          "pending": 1,
+          "win_rate_pct": 42.579505300353354,
+          "ambiguous_stop_first": 14
+        },
+        "TP3": {
+          "signals": 2831,
+          "wins": 919,
+          "losses": 1911,
+          "pending": 1,
+          "win_rate_pct": 32.47349823321555,
+          "ambiguous_stop_first": 7
+        }
+      },
+      "2023–2024": {
+        "TP1": {
+          "signals": 1448,
+          "wins": 851,
+          "losses": 597,
+          "pending": 0,
+          "win_rate_pct": 58.770718232044196,
+          "ambiguous_stop_first": 12
+        },
+        "TP2": {
+          "signals": 1448,
+          "wins": 617,
+          "losses": 831,
+          "pending": 0,
+          "win_rate_pct": 42.610497237569064,
+          "ambiguous_stop_first": 6
+        },
+        "TP3": {
+          "signals": 1448,
+          "wins": 465,
+          "losses": 982,
+          "pending": 1,
+          "win_rate_pct": 32.13545266067727,
+          "ambiguous_stop_first": 9
+        }
+      },
+      "2025–2026": {
+        "TP1": {
+          "signals": 1120,
+          "wins": 663,
+          "losses": 457,
+          "pending": 0,
+          "win_rate_pct": 59.19642857142857,
+          "ambiguous_stop_first": 7
+        },
+        "TP2": {
+          "signals": 1120,
+          "wins": 483,
+          "losses": 637,
+          "pending": 0,
+          "win_rate_pct": 43.125,
+          "ambiguous_stop_first": 2
+        },
+        "TP3": {
+          "signals": 1120,
+          "wins": 375,
+          "losses": 744,
+          "pending": 1,
+          "win_rate_pct": 33.51206434316354,
+          "ambiguous_stop_first": 1
+        }
+      },
+      "yearly": {
+        "2010": {
+          "TP1": {
+            "signals": 0,
+            "wins": 0,
+            "losses": 0,
+            "pending": 0,
+            "win_rate_pct": null,
+            "ambiguous_stop_first": 0
+          },
+          "TP2": {
+            "signals": 0,
+            "wins": 0,
+            "losses": 0,
+            "pending": 0,
+            "win_rate_pct": null,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 0,
+            "wins": 0,
+            "losses": 0,
+            "pending": 0,
+            "win_rate_pct": null,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2011": {
+          "TP1": {
+            "signals": 0,
+            "wins": 0,
+            "losses": 0,
+            "pending": 0,
+            "win_rate_pct": null,
+            "ambiguous_stop_first": 0
+          },
+          "TP2": {
+            "signals": 0,
+            "wins": 0,
+            "losses": 0,
+            "pending": 0,
+            "win_rate_pct": null,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 0,
+            "wins": 0,
+            "losses": 0,
+            "pending": 0,
+            "win_rate_pct": null,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2012": {
+          "TP1": {
+            "signals": 0,
+            "wins": 0,
+            "losses": 0,
+            "pending": 0,
+            "win_rate_pct": null,
+            "ambiguous_stop_first": 0
+          },
+          "TP2": {
+            "signals": 0,
+            "wins": 0,
+            "losses": 0,
+            "pending": 0,
+            "win_rate_pct": null,
+            "ambiguous_stop_first": 0
+          },
+          "TP3": {
+            "signals": 0,
+            "wins": 0,
+            "losses": 0,
+            "pending": 0,
+            "win_rate_pct": null,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2013": {
+          "TP1": {
+            "signals": 495,
+            "wins": 281,
+            "losses": 214,
+            "pending": 0,
+            "win_rate_pct": 56.76767676767677,
+            "ambiguous_stop_first": 3
+          },
+          "TP2": {
+            "signals": 495,
+            "wins": 214,
+            "losses": 281,
+            "pending": 0,
+            "win_rate_pct": 43.23232323232323,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 495,
+            "wins": 169,
+            "losses": 326,
+            "pending": 0,
+            "win_rate_pct": 34.14141414141414,
+            "ambiguous_stop_first": 3
+          }
+        },
+        "2014": {
+          "TP1": {
+            "signals": 714,
+            "wins": 419,
+            "losses": 295,
+            "pending": 0,
+            "win_rate_pct": 58.68347338935574,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 714,
+            "wins": 288,
+            "losses": 426,
+            "pending": 0,
+            "win_rate_pct": 40.33613445378151,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 714,
+            "wins": 235,
+            "losses": 479,
+            "pending": 0,
+            "win_rate_pct": 32.91316526610644,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2015": {
+          "TP1": {
+            "signals": 729,
+            "wins": 442,
+            "losses": 287,
+            "pending": 0,
+            "win_rate_pct": 60.631001371742116,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 729,
+            "wins": 295,
+            "losses": 434,
+            "pending": 0,
+            "win_rate_pct": 40.46639231824417,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 729,
+            "wins": 242,
+            "losses": 487,
+            "pending": 0,
+            "win_rate_pct": 33.19615912208505,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2016": {
+          "TP1": {
+            "signals": 725,
+            "wins": 422,
+            "losses": 303,
+            "pending": 0,
+            "win_rate_pct": 58.206896551724135,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 725,
+            "wins": 300,
+            "losses": 425,
+            "pending": 0,
+            "win_rate_pct": 41.37931034482759,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 725,
+            "wins": 233,
+            "losses": 492,
+            "pending": 0,
+            "win_rate_pct": 32.13793103448276,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2017": {
+          "TP1": {
+            "signals": 698,
+            "wins": 406,
+            "losses": 292,
+            "pending": 0,
+            "win_rate_pct": 58.16618911174785,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 698,
+            "wins": 306,
+            "losses": 392,
+            "pending": 0,
+            "win_rate_pct": 43.83954154727794,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 698,
+            "wins": 243,
+            "losses": 455,
+            "pending": 0,
+            "win_rate_pct": 34.81375358166189,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2018": {
+          "TP1": {
+            "signals": 692,
+            "wins": 403,
+            "losses": 289,
+            "pending": 0,
+            "win_rate_pct": 58.23699421965318,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 692,
+            "wins": 308,
+            "losses": 384,
+            "pending": 0,
+            "win_rate_pct": 44.50867052023121,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 692,
+            "wins": 242,
+            "losses": 450,
+            "pending": 0,
+            "win_rate_pct": 34.971098265895954,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2019": {
+          "TP1": {
+            "signals": 714,
+            "wins": 439,
+            "losses": 274,
+            "pending": 1,
+            "win_rate_pct": 61.57082748948107,
+            "ambiguous_stop_first": 6
+          },
+          "TP2": {
+            "signals": 714,
+            "wins": 318,
+            "losses": 395,
+            "pending": 1,
+            "win_rate_pct": 44.60028050490884,
+            "ambiguous_stop_first": 5
+          },
+          "TP3": {
+            "signals": 714,
+            "wins": 240,
+            "losses": 473,
+            "pending": 1,
+            "win_rate_pct": 33.66058906030855,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2020": {
+          "TP1": {
+            "signals": 701,
+            "wins": 417,
+            "losses": 283,
+            "pending": 1,
+            "win_rate_pct": 59.57142857142857,
+            "ambiguous_stop_first": 4
+          },
+          "TP2": {
+            "signals": 701,
+            "wins": 301,
+            "losses": 399,
+            "pending": 1,
+            "win_rate_pct": 43.0,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 701,
+            "wins": 245,
+            "losses": 455,
+            "pending": 1,
+            "win_rate_pct": 35.0,
+            "ambiguous_stop_first": 0
+          }
+        },
+        "2021": {
+          "TP1": {
+            "signals": 704,
+            "wins": 414,
+            "losses": 290,
+            "pending": 0,
+            "win_rate_pct": 58.80681818181818,
+            "ambiguous_stop_first": 8
+          },
+          "TP2": {
+            "signals": 704,
+            "wins": 290,
+            "losses": 414,
+            "pending": 0,
+            "win_rate_pct": 41.19318181818182,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 704,
+            "wins": 202,
+            "losses": 502,
+            "pending": 0,
+            "win_rate_pct": 28.693181818181817,
+            "ambiguous_stop_first": 2
+          }
+        },
+        "2022": {
+          "TP1": {
+            "signals": 712,
+            "wins": 400,
+            "losses": 311,
+            "pending": 1,
+            "win_rate_pct": 56.258790436005626,
+            "ambiguous_stop_first": 1
+          },
+          "TP2": {
+            "signals": 712,
+            "wins": 295,
+            "losses": 416,
+            "pending": 1,
+            "win_rate_pct": 41.49085794655415,
+            "ambiguous_stop_first": 3
+          },
+          "TP3": {
+            "signals": 712,
+            "wins": 231,
+            "losses": 480,
+            "pending": 1,
+            "win_rate_pct": 32.48945147679325,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2023": {
+          "TP1": {
+            "signals": 718,
+            "wins": 420,
+            "losses": 298,
+            "pending": 0,
+            "win_rate_pct": 58.4958217270195,
+            "ambiguous_stop_first": 7
+          },
+          "TP2": {
+            "signals": 718,
+            "wins": 311,
+            "losses": 406,
+            "pending": 1,
+            "win_rate_pct": 43.375174337517436,
+            "ambiguous_stop_first": 4
+          },
+          "TP3": {
+            "signals": 718,
+            "wins": 225,
+            "losses": 492,
+            "pending": 1,
+            "win_rate_pct": 31.380753138075313,
+            "ambiguous_stop_first": 5
+          }
+        },
+        "2024": {
+          "TP1": {
+            "signals": 730,
+            "wins": 431,
+            "losses": 299,
+            "pending": 0,
+            "win_rate_pct": 59.04109589041096,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 730,
+            "wins": 306,
+            "losses": 424,
+            "pending": 0,
+            "win_rate_pct": 41.917808219178085,
+            "ambiguous_stop_first": 2
+          },
+          "TP3": {
+            "signals": 730,
+            "wins": 240,
+            "losses": 489,
+            "pending": 1,
+            "win_rate_pct": 32.92181069958848,
+            "ambiguous_stop_first": 4
+          }
+        },
+        "2025": {
+          "TP1": {
+            "signals": 726,
+            "wins": 450,
+            "losses": 276,
+            "pending": 0,
+            "win_rate_pct": 61.98347107438016,
+            "ambiguous_stop_first": 5
+          },
+          "TP2": {
+            "signals": 726,
+            "wins": 324,
+            "losses": 402,
+            "pending": 0,
+            "win_rate_pct": 44.62809917355372,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 726,
+            "wins": 252,
+            "losses": 474,
+            "pending": 0,
+            "win_rate_pct": 34.710743801652896,
+            "ambiguous_stop_first": 1
+          }
+        },
+        "2026": {
+          "TP1": {
+            "signals": 394,
+            "wins": 213,
+            "losses": 181,
+            "pending": 0,
+            "win_rate_pct": 54.06091370558376,
+            "ambiguous_stop_first": 2
+          },
+          "TP2": {
+            "signals": 394,
+            "wins": 159,
+            "losses": 235,
+            "pending": 0,
+            "win_rate_pct": 40.35532994923858,
+            "ambiguous_stop_first": 1
+          },
+          "TP3": {
+            "signals": 394,
+            "wins": 123,
+            "losses": 270,
+            "pending": 1,
+            "win_rate_pct": 31.297709923664122,
+            "ambiguous_stop_first": 0
+          }
+        }
+      },
+      "bars": 311903,
+      "first_bar": "2013-05-01T00:00:00",
+      "last_bar": "2026-07-17T20:45:00",
+      "source_start": "2013-05-01T00:00:00",
+      "source_end": "2026-07-17T20:59:00",
+      "source_records": 4669303,
+      "tick_size": 0.001,
+      "metadata_spread": 0.376
+    }
+  },
+  "aggregate": {
+    "all": {
+      "TP1": {
+        "signals": 145937,
+        "wins": 84625,
+        "losses": 61310,
+        "pending": 2,
+        "win_rate_pct": 57.988145407201834,
+        "ambiguous_stop_first": 944
+      },
+      "TP2": {
+        "signals": 145937,
+        "wins": 60434,
+        "losses": 85499,
+        "pending": 4,
+        "win_rate_pct": 41.41215489299884,
+        "ambiguous_stop_first": 555
+      },
+      "TP3": {
+        "signals": 145937,
+        "wins": 47066,
+        "losses": 98866,
+        "pending": 5,
+        "win_rate_pct": 32.25200778444755,
+        "ambiguous_stop_first": 360
+      }
+    },
+    "2010–2018": {
+      "TP1": {
+        "signals": 77961,
+        "wins": 45249,
+        "losses": 32710,
+        "pending": 2,
+        "win_rate_pct": 58.04204774304442,
+        "ambiguous_stop_first": 477
+      },
+      "TP2": {
+        "signals": 77961,
+        "wins": 32232,
+        "losses": 45725,
+        "pending": 4,
+        "win_rate_pct": 41.345870159190326,
+        "ambiguous_stop_first": 290
+      },
+      "TP3": {
+        "signals": 77961,
+        "wins": 25212,
+        "losses": 52744,
+        "pending": 5,
+        "win_rate_pct": 32.34132074503566,
+        "ambiguous_stop_first": 184
+      }
+    },
+    "2019–2022": {
+      "TP1": {
+        "signals": 35780,
+        "wins": 20927,
+        "losses": 14850,
+        "pending": 3,
+        "win_rate_pct": 58.49288649132124,
+        "ambiguous_stop_first": 208
+      },
+      "TP2": {
+        "signals": 35780,
+        "wins": 15019,
+        "losses": 20757,
+        "pending": 4,
+        "win_rate_pct": 41.98065742397138,
+        "ambiguous_stop_first": 121
+      },
+      "TP3": {
+        "signals": 35780,
+        "wins": 11640,
+        "losses": 24136,
+        "pending": 4,
+        "win_rate_pct": 32.53577817531306,
+        "ambiguous_stop_first": 74
+      }
+    },
+    "2023–2024": {
+      "TP1": {
+        "signals": 18063,
+        "wins": 10403,
+        "losses": 7658,
+        "pending": 2,
+        "win_rate_pct": 57.59924699629035,
+        "ambiguous_stop_first": 144
+      },
+      "TP2": {
+        "signals": 18063,
+        "wins": 7423,
+        "losses": 10638,
+        "pending": 2,
+        "win_rate_pct": 41.09960688776923,
+        "ambiguous_stop_first": 103
+      },
+      "TP3": {
+        "signals": 18063,
+        "wins": 5782,
+        "losses": 12276,
+        "pending": 5,
+        "win_rate_pct": 32.01904972865212,
+        "ambiguous_stop_first": 74
+      }
+    },
+    "2025–2026": {
+      "TP1": {
+        "signals": 14133,
+        "wins": 8044,
+        "losses": 6087,
+        "pending": 2,
+        "win_rate_pct": 56.92449225107919,
+        "ambiguous_stop_first": 115
+      },
+      "TP2": {
+        "signals": 14133,
+        "wins": 5757,
+        "losses": 8372,
+        "pending": 4,
+        "win_rate_pct": 40.745983438318355,
+        "ambiguous_stop_first": 41
+      },
+      "TP3": {
+        "signals": 14133,
+        "wins": 4426,
+        "losses": 9702,
+        "pending": 5,
+        "win_rate_pct": 31.327859569648925,
+        "ambiguous_stop_first": 28
+      }
+    }
+  },
+  "execution_model": "signal_close_reference_no_costs_stop_first",
+  "tuning": false,
+  "config": {
+    "atrLength": 14,
+    "stFactor": 3.0,
+    "emaLength": 100,
+    "rsiLength": 14,
+    "rsiThreshold": 52.0,
+    "dmiLength": 14,
+    "adxMinimum": 18.0,
+    "useEmaFilter": true,
+    "cooldown": 5,
+    "slAtr": 1.5,
+    "tp1Atr": 1.0,
+    "tp2Atr": 2.0,
+    "tp3Atr": 3.0,
+    "rollTargets": false,
+    "keepSets": 25,
+    "showAverages": true,
+    "showZones": true,
+    "showFvg": true,
+    "showTrendlines": true,
+    "showPanel": true,
+    "pivotLength": 5,
+    "zoneAtr": 0.4,
+    "fvgMinimum": 0.1,
+    "keepZones": 40,
+    "zoneLife": 300,
+    "nearAtr": 0.3,
+    "showStats": true
+  },
+  "elapsed_seconds": 252.09,
+  "samples_file": "scripts\\sniper_vip_samples.jsonl.gz",
+  "samples_uncompressed_sha256": "575c8196b62532d19552323df71ba102757f468eac1dfe980e780419508e1d0f",
+  "audit": {
+    "sample_records": 437811,
+    "all_symbol_counts_match": true,
+    "aggregate_counts_match": true,
+    "compressed_content_matches": true,
+    "targeted_tests_passed": 29,
+    "history_tests_passed": 25
+  }
+}

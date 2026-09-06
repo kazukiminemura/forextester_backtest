@@ -1,0 +1,121 @@
+//@version=6
+indicator("Gold Breakout55 — independent PF research", overlay=true, max_labels_count=500, max_lines_count=500)
+
+// Independent candidate, not the proprietary SNIPER-AI algorithm.
+// Forex Tester: latest period improved, but multi-period adoption gates failed.
+// Official TradingView compilation and signal parity have not been verified.
+string clockZone = input.string("Etc/UTC", "時間帯の基準（履歴データに合わせる）")
+float spread = input.float(0.376, "想定スプレッド（価格幅）", minval=0)
+float slip = spread * 0.1
+bool showLevels = input.bool(true, "Entry / TP / SLを残す")
+if not chart.is_standard or timeframe.in_seconds() != 3600
+    runtime.error("通常ローソク足の1時間足で使用してください。")
+
+float a = ta.atr(14)
+float fast = ta.ema(close, 50)
+float slow = ta.ema(close, 200)
+float priorHigh = ta.highest(high, 55)[1]
+float priorLow = ta.lowest(low, 55)[1]
+bool ready = bar_index >= 200 and a > 0
+bool buySetup = ready and fast > slow and slow > slow[5] and close > slow and close > priorHigh
+bool sellSetup = ready and fast < slow and slow < slow[5] and close < slow and close < priorLow
+
+var int side = 0
+var int lastEntry = -100
+var float entry = na
+var float risk = na
+var float target = na
+var float stop = na
+var int deadline = na
+var int count = 0
+var int wins = 0
+var float gainsR = 0
+var float lossesR = 0
+var int late = 0
+var int firstEntry = na
+bool adoptedBuy = false
+bool adoptedSell = false
+
+if barstate.isconfirmed
+    int entryHour = hour(time, clockZone)
+    bool regularNextBar = time == time_close[1]
+    bool canEnter = side == 0 and bar_index - lastEntry >= 5 and regularNextBar and entryHour >= 6 and entryHour < 16
+    if canEnter and (buySetup[1] or sellSetup[1])
+        side := buySetup[1] ? 1 : -1
+        entry := open + (side == 1 ? spread : 0) + side * slip
+        risk := 1.5 * a[1]
+        target := entry + side * 2 * risk
+        stop := entry - side * risk
+        deadline := timestamp(clockZone, year(time, clockZone), month(time, clockZone), dayofmonth(time, clockZone), 20, 0)
+        lastEntry := bar_index
+        firstEntry := na(firstEntry) ? time : firstEntry
+        adoptedBuy := side == 1
+        adoptedSell := side == -1
+        if showLevels
+            line.new(time, entry, deadline, entry, xloc=xloc.bar_time, color=color.gray)
+            line.new(time, target, deadline, target, xloc=xloc.bar_time, color=color.lime)
+            line.new(time, stop, deadline, stop, xloc=xloc.bar_time, color=color.red)
+            label.new(bar_index, entry, (side == 1 ? "BUY Entry " : "SELL Entry ") + str.tostring(entry, format.mintick), style=label.style_label_left, color=color.gray, textcolor=color.white)
+            label.new(bar_index, target, "TP " + str.tostring(target, format.mintick), style=label.style_label_left, color=color.green, textcolor=color.white)
+            label.new(bar_index, stop, "SL " + str.tostring(stop, format.mintick), style=label.style_label_left, color=color.red, textcolor=color.white)
+
+    // Bid OHLC / constant Ask spread; earliest modeled exit is the entry bar.
+    if side != 0
+        float offset = side == -1 ? spread : 0
+        float op = open + offset
+        float hi = high + offset
+        float lo = low + offset
+        float exitPrice = na
+        string reason = ""
+        if time >= deadline
+            if side * (op - target) >= 0
+                exitPrice := target
+                reason := "TP"
+            else if side * (op - stop) <= 0
+                exitPrice := op - side * slip
+                reason := "SL"
+            else
+                exitPrice := op - side * slip
+                reason := "20時決済"
+        else if (side == 1 ? lo <= stop : hi >= stop)
+            exitPrice := (side == 1 ? math.min(op, stop) : math.max(op, stop)) - side * slip
+            reason := "SL"
+        else if (side == 1 ? hi >= target : lo <= target)
+            exitPrice := target
+            reason := "TP"
+        if not na(exitPrice)
+            float r = side * (exitPrice - entry) / risk
+            count += 1
+            wins += r > 0 ? 1 : 0
+            gainsR += math.max(r, 0)
+            lossesR += math.max(-r, 0)
+            late += time > deadline ? 1 : 0
+            label.new(bar_index, exitPrice, reason + " " + str.tostring(exitPrice, format.mintick) + " / " + str.tostring(r, "#.##") + "R", color=r > 0 ? color.green : color.red, textcolor=color.white)
+            side := 0
+
+plot(fast, "EMA50", color=color.orange)
+plot(slow, "EMA200", color=color.blue)
+plot(priorHigh, "直前55本の高値", color=color.new(color.green, 75))
+plot(priorLow, "直前55本の安値", color=color.new(color.red, 75))
+plotshape(adoptedBuy, title="BUY採用", style=shape.triangleup, location=location.belowbar, color=color.lime, size=size.tiny)
+plotshape(adoptedSell, title="SELL採用", style=shape.triangledown, location=location.abovebar, color=color.red, size=size.tiny)
+// Candidates are sent at the signal close; modeled entry is the next regular open.
+bool nextSession = hour(time_close, clockZone) >= 6 and hour(time_close, clockZone) < 16
+bool alertReady = barstate.isconfirmed and side == 0 and bar_index+1-lastEntry >= 5 and nextSession
+alertcondition(alertReady and buySetup, "BUY候補", "Gold Breakout55 BUY候補。次の通常足で確認。")
+alertcondition(alertReady and sellSetup, "SELL候補", "Gold Breakout55 SELL候補。次の通常足で確認。")
+
+var table panel = table.new(position.top_right, 2, 6, bgcolor=color.new(color.black, 15))
+if barstate.islast
+    table.cell(panel, 0, 0, "研究版 / 期間安定性は未達", text_color=color.orange)
+    table.cell(panel, 1, 0, "想定コスト込み", text_color=color.white)
+    table.cell(panel, 0, 1, "決済数 / 勝率", text_color=color.white)
+    table.cell(panel, 1, 1, str.tostring(count) + " / " + (count > 0 ? str.tostring(100.0*wins/count, "#.##") + "%" : "—"), text_color=color.white)
+    table.cell(panel, 0, 2, "PF（各取引を同じ1R換算）", text_color=color.white)
+    table.cell(panel, 1, 2, lossesR > 0 ? str.tostring(gainsR/lossesR, "#.###") : "—", text_color=color.white)
+    table.cell(panel, 0, 3, "平均R / 20時超の決済", text_color=color.white)
+    table.cell(panel, 1, 3, (count > 0 ? str.tostring((gainsR-lossesR)/count, "#.###") : "—") + " / " + str.tostring(late), text_color=color.white)
+    table.cell(panel, 0, 4, "集計開始 / 未決済", text_color=color.white)
+    table.cell(panel, 1, 4, (na(firstEntry) ? "—" : str.format_time(firstEntry, "yyyy-MM-dd", clockZone)) + " / " + (side == 0 ? "0" : "1"), text_color=color.white)
+    table.cell(panel, 0, 5, "読込済み履歴 / 基準時刻", text_color=color.white)
+    table.cell(panel, 1, 5, clockZone, text_color=color.white)

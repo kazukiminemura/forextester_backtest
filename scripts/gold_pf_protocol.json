@@ -1,0 +1,59 @@
+{
+  "frames": [
+    15,
+    30,
+    60
+  ],
+  "families": [
+    "ema_reclaim",
+    "pullback_break",
+    "breakout20",
+    "breakout55",
+    "sweep20"
+  ],
+  "target_atr": [
+    1.5,
+    3
+  ],
+  "hold_hours": [
+    4,
+    null
+  ],
+  "direction": [
+    "both",
+    "long"
+  ],
+  "stop_atr": 1.5,
+  "entry_hours": [
+    6,
+    16
+  ],
+  "cooldown_bars": 5,
+  "selection": "max minimum train/validation PF; tie validation mean R",
+  "counts": [
+    250,
+    100,
+    50,
+    50
+  ],
+  "required_pf": 1.2,
+  "periods": [
+    [
+      2010,
+      2018
+    ],
+    [
+      2019,
+      2022
+    ],
+    [
+      2023,
+      2024
+    ],
+    [
+      2025,
+      2026
+    ]
+  ],
+  "evaluation_previously_seen": true
+}

@@ -36,10 +36,65 @@ int keepZones = input.int(40, "ゾーン・FVG合計上限", minval=1, maxval=80
 int zoneLife = input.int(300, "ゾーン延長上限（本）", minval=10, maxval=2000, group=gVisual)
 float nearAtr = input.float(0.3, "高安への接近判定（時間足ATR）", minval=0.05, step=0.05, group=gVisual)
 
+string gStats = "4. 過去の勝率"
+bool showStats = input.bool(true, "勝率パネルを表示", group=gStats)
+int statsStart = input.time(timestamp("01 Jan 2000 00:00 +0000"), "集計開始", group=gStats)
+int statsEnd = input.time(timestamp("31 Dec 2099 23:59 +0000"), "集計終了", group=gStats)
+
 if barstate.isfirst and not (tp1Atr < tp2Atr and tp2Atr < tp3Atr)
     runtime.error("TP倍率は TP1 < TP2 < TP3 に設定してください。")
 if barstate.isfirst and not chart.is_standard
     runtime.error("通常のローソク足チャートで使用してください。")
+if barstate.isfirst and statsStart > statsEnd
+    runtime.error("勝率の集計開始は集計終了以前に設定してください。")
+
+// Each initial target has its own binary outcome; this is not monetary P/L.
+// Statistics never change the chart's signal acceptance or rolling targets.
+type OutcomeStats
+    int wins = 0
+    int losses = 0
+    int pendingSide = 0
+    int signalBar = na
+    float initialTarget = na
+    float initialStop = na
+
+method startSample(OutcomeStats this, int direction, int signalBar, float target, float stopPrice) =>
+    this.pendingSide := direction
+    this.signalBar := signalBar
+    this.initialTarget := target
+    this.initialStop := stopPrice
+
+method observe(OutcomeStats this, int barNumber, float barHigh, float barLow) =>
+    if this.pendingSide != 0 and barNumber > this.signalBar
+        bool stopped = this.pendingSide == 1 ? barLow <= this.initialStop : barHigh >= this.initialStop
+        bool reached = this.pendingSide == 1 ? barHigh >= this.initialTarget : barLow <= this.initialTarget
+        if stopped
+            this.losses += 1
+            this.pendingSide := 0
+        else if reached
+            this.wins += 1
+            this.pendingSide := 0
+
+f_winRate(int wins, int losses) =>
+    int settled = wins + losses
+    settled > 0 ? str.tostring(100.0 * wins / settled, "#.0") + "%" : "—"
+
+var OutcomeStats tp1Stats = OutcomeStats.new()
+var OutcomeStats tp2Stats = OutcomeStats.new()
+var OutcomeStats tp3Stats = OutcomeStats.new()
+var int sampledSignals = 0
+var int firstSampleTime = na
+var int lastSampleTime = na
+var int firstLoadedTime = time
+var int lastConfirmedTime = na
+
+// Observe BEFORE the price tracker clears its side or advances its targets.
+if barstate.isconfirmed
+    lastConfirmedTime := time_close
+    if time_close >= statsStart and time_close <= statsEnd
+        tp1Stats.observe(bar_index, high, low)
+        tp2Stats.observe(bar_index, high, low)
+        tp3Stats.observe(bar_index, high, low)
 
 // Signal calculation is shared by the chart and all dashboard timeframes.
 // A setup edge occurs when the complete filter changes from false to true.
@@ -196,6 +251,14 @@ if barstate.isconfirmed
         target3 := side == 1 ? math.max(target3, target2 + syminfo.mintick) : math.min(target3, target2 - syminfo.mintick)
         hit1 := false
         hit2 := false
+        if time_close >= statsStart and time_close <= statsEnd
+            tp1Stats.startSample(side, bar_index, target1, stop)
+            tp2Stats.startSample(side, bar_index, target2, stop)
+            tp3Stats.startSample(side, bar_index, target3, stop)
+            sampledSignals += 1
+            if na(firstSampleTime)
+                firstSampleTime := time_close
+            lastSampleTime := time_close
         buySignal := side == 1
         sellSignal := side == -1
         strongSignal := trend == side and adx >= adxMinimum + 7 and math.abs(close - open) >= atr * 0.5
@@ -331,6 +394,41 @@ if barstate.islast and showPanel
     table.cell(panel, 0, 6, status, text_color=color.white, text_size=size.tiny)
     table.cell(panel, 0, 7, side == 0 ? "追跡なし" : "Entry " + f_price(entry) + " / SL " + f_price(stop), text_color=color.white, text_size=size.tiny)
     table.cell(panel, 0, 8, "独自ルール / 候補≠採用サイン / 時刻: " + syminfo.timezone, text_color=color.silver, text_size=size.tiny)
+
+// Separate panel remains visible when the multi-timeframe panel is hidden.
+var table statsPanel = table.new(position.bottom_right, 5, 9, bgcolor=color.rgb(20, 26, 36), border_width=1)
+if barstate.isfirst
+    table.merge_cells(statsPanel, 0, 0, 4, 0)
+    table.merge_cells(statsPanel, 0, 5, 4, 5)
+    table.merge_cells(statsPanel, 0, 6, 4, 6)
+    table.merge_cells(statsPanel, 0, 7, 4, 7)
+    table.merge_cells(statsPanel, 0, 8, 4, 8)
+
+f_statsRow(table output, int row, string title, OutcomeStats result) =>
+    table.cell(output, 0, row, title, text_color=color.white, text_size=size.small)
+    table.cell(output, 1, row, f_winRate(result.wins, result.losses), text_color=color.aqua, text_size=size.small)
+    table.cell(output, 2, row, str.tostring(result.wins), text_color=buyColor, text_size=size.small)
+    table.cell(output, 3, row, str.tostring(result.losses), text_color=sellColor, text_size=size.small)
+    table.cell(output, 4, row, result.pendingSide == 0 ? "0" : "1", text_color=color.silver, text_size=size.small)
+
+if barstate.islast and showStats
+    table.cell(statsPanel, 0, 0, "過去の勝率（初期TP到達 / コスト未考慮）", text_color=color.white, text_size=size.small)
+    table.cell(statsPanel, 0, 1, "判定基準", text_color=color.silver, text_size=size.small)
+    table.cell(statsPanel, 1, 1, "勝率", text_color=color.silver, text_size=size.small)
+    table.cell(statsPanel, 2, 1, "勝ち", text_color=color.silver, text_size=size.small)
+    table.cell(statsPanel, 3, 1, "負け", text_color=color.silver, text_size=size.small)
+    table.cell(statsPanel, 4, 1, "未決着", text_color=color.silver, text_size=size.small)
+    f_statsRow(statsPanel, 2, "TP3 / SL", tp3Stats)
+    f_statsRow(statsPanel, 3, "TP1 / SL", tp1Stats)
+    f_statsRow(statsPanel, 4, "TP2 / SL", tp2Stats)
+    int effectiveStart = math.max(statsStart, firstLoadedTime)
+    int effectiveEnd = na(lastConfirmedTime) ? na : math.min(statsEnd, lastConfirmedTime)
+    string rangeText = na(effectiveEnd) or effectiveStart > effectiveEnd ? "対象の確定足なし" : str.format_time(effectiveStart, "yyyy/MM/dd HH:mm", syminfo.timezone) + " ～ " + str.format_time(effectiveEnd, "yyyy/MM/dd HH:mm", syminfo.timezone)
+    string sampleText = na(firstSampleTime) ? "採用サインなし" : "採用 " + str.tostring(sampledSignals) + "件 / " + str.format_time(firstSampleTime, "MM/dd HH:mm", syminfo.timezone) + " ～ " + str.format_time(lastSampleTime, "MM/dd HH:mm", syminfo.timezone)
+    table.cell(statsPanel, 0, 5, rangeText, text_color=color.silver, text_size=size.tiny)
+    table.cell(statsPanel, 0, 6, sampleText, text_color=color.silver, text_size=size.tiny)
+    table.cell(statsPanel, 0, 7, "読込済み履歴のみ / 未決着除外 / 同一足SL優先", text_color=color.silver, text_size=size.tiny)
+    table.cell(statsPanel, 0, 8, rollTargets ? "前進モードも初期TPで判定（実損益の勝率ではない）" : "勝率 = 勝ち ÷ (勝ち + 負け) / " + syminfo.timezone, text_color=color.silver, text_size=size.tiny)
 
 alertcondition(buySignal, "BUY", "Sniper独自版 BUY {{ticker}} {{interval}} 基準終値={{close}}")
 alertcondition(sellSignal, "SELL", "Sniper独自版 SELL {{ticker}} {{interval}} 基準終値={{close}}")

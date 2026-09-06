@@ -1,0 +1,916 @@
+{
+  "selected": {
+    "policy": {
+      "signal": "direct",
+      "offset": 0.1,
+      "ttl_hours": 2,
+      "anchored": true
+    },
+    "train": {
+      "n": 368,
+      "wins": 133,
+      "win_rate": 36.141304347826086,
+      "pf": 0.870500235094434,
+      "mean_r": -0.07084209020494955,
+      "total_r": -26.069889195421435,
+      "target_hits": 61,
+      "timed_exits": 105,
+      "late_exits": 0
+    },
+    "validation": {
+      "n": 269,
+      "wins": 108,
+      "win_rate": 40.14869888475837,
+      "pf": 0.9175826059804674,
+      "mean_r": -0.04319663528180254,
+      "total_r": -11.619894890804883,
+      "target_hits": 42,
+      "timed_exits": 81,
+      "late_exits": 1
+    },
+    "orders": 747,
+    "fill_rate": 85.27443105756359
+  },
+  "results": {
+    "periods": [
+      {
+        "n": 368,
+        "wins": 133,
+        "win_rate": 36.141304347826086,
+        "pf": 0.870500235094434,
+        "mean_r": -0.07084209020494955,
+        "total_r": -26.069889195421435,
+        "target_hits": 61,
+        "timed_exits": 105,
+        "late_exits": 0
+      },
+      {
+        "n": 269,
+        "wins": 108,
+        "win_rate": 40.14869888475837,
+        "pf": 0.9175826059804674,
+        "mean_r": -0.04319663528180254,
+        "total_r": -11.619894890804883,
+        "target_hits": 42,
+        "timed_exits": 81,
+        "late_exits": 1
+      },
+      {
+        "n": 146,
+        "wins": 52,
+        "win_rate": 35.61643835616438,
+        "pf": 0.8831743787500348,
+        "mean_r": -0.06669333143917261,
+        "total_r": -9.7372263901192,
+        "target_hits": 26,
+        "timed_exits": 33,
+        "late_exits": 0
+      },
+      {
+        "n": 114,
+        "wins": 63,
+        "win_rate": 55.26315789473685,
+        "pf": 1.767546067518695,
+        "mean_r": 0.29638218860946086,
+        "total_r": 33.787569501478536,
+        "target_hits": 23,
+        "timed_exits": 46,
+        "late_exits": 1
+      }
+    ],
+    "orders": 1045,
+    "expired": 148,
+    "filled": 897,
+    "fill_rate": 85.83732057416267
+  },
+  "doubled_spread": {
+    "periods": [
+      {
+        "n": 343,
+        "wins": 108,
+        "win_rate": 31.486880466472307,
+        "pf": 0.6880859653178997,
+        "mean_r": -0.1859995772003388,
+        "total_r": -63.797854979716206,
+        "target_hits": 49,
+        "timed_exits": 90,
+        "late_exits": 0
+      },
+      {
+        "n": 260,
+        "wins": 95,
+        "win_rate": 36.53846153846153,
+        "pf": 0.7749271858122526,
+        "mean_r": -0.1266032366281984,
+        "total_r": -32.916841523331584,
+        "target_hits": 36,
+        "timed_exits": 73,
+        "late_exits": 0
+      },
+      {
+        "n": 138,
+        "wins": 44,
+        "win_rate": 31.88405797101449,
+        "pf": 0.7004522242385813,
+        "mean_r": -0.18224032456693226,
+        "total_r": -25.149164790236654,
+        "target_hits": 20,
+        "timed_exits": 31,
+        "late_exits": 0
+      },
+      {
+        "n": 111,
+        "wins": 61,
+        "win_rate": 54.95495495495496,
+        "pf": 1.7513116651972793,
+        "mean_r": 0.28671730800846507,
+        "total_r": 31.825621188939625,
+        "target_hits": 22,
+        "timed_exits": 46,
+        "late_exits": 1
+      }
+    ],
+    "orders": 1066,
+    "expired": 214,
+    "filled": 852,
+    "fill_rate": 79.9249530956848
+  },
+  "gates": [
+    false,
+    false,
+    false,
+    true
+  ],
+  "adopted": false,
+  "eligible_count": 12,
+  "candidates": [
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.1,
+        "ttl_hours": 1,
+        "anchored": false
+      },
+      "train": {
+        "n": 376,
+        "wins": 142,
+        "win_rate": 37.765957446808514,
+        "pf": 0.8659886407227397,
+        "mean_r": -0.07442908186419679,
+        "total_r": -27.985334780937993,
+        "target_hits": 67,
+        "timed_exits": 118,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 273,
+        "wins": 107,
+        "win_rate": 39.1941391941392,
+        "pf": 0.8463215700188045,
+        "mean_r": -0.08516529818663554,
+        "total_r": -23.2501264049515,
+        "target_hits": 43,
+        "timed_exits": 86,
+        "late_exits": 1
+      },
+      "orders": 825,
+      "fill_rate": 78.66666666666667
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.1,
+        "ttl_hours": 1,
+        "anchored": true
+      },
+      "train": {
+        "n": 377,
+        "wins": 139,
+        "win_rate": 36.87002652519894,
+        "pf": 0.8862595610654697,
+        "mean_r": -0.06076341055518126,
+        "total_r": -22.907805779303335,
+        "target_hits": 61,
+        "timed_exits": 116,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 273,
+        "wins": 104,
+        "win_rate": 38.095238095238095,
+        "pf": 0.8585214545331321,
+        "mean_r": -0.07641573817536265,
+        "total_r": -20.861496521874002,
+        "target_hits": 40,
+        "timed_exits": 81,
+        "late_exits": 1
+      },
+      "orders": 826,
+      "fill_rate": 78.69249394673123
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.1,
+        "ttl_hours": 2,
+        "anchored": false
+      },
+      "train": {
+        "n": 367,
+        "wins": 136,
+        "win_rate": 37.05722070844686,
+        "pf": 0.8536598680912656,
+        "mean_r": -0.08308262208015627,
+        "total_r": -30.49132230341735,
+        "target_hits": 66,
+        "timed_exits": 109,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 269,
+        "wins": 111,
+        "win_rate": 41.2639405204461,
+        "pf": 0.9087253329677377,
+        "mean_r": -0.048796342957318266,
+        "total_r": -13.126216255518614,
+        "target_hits": 45,
+        "timed_exits": 86,
+        "late_exits": 2
+      },
+      "orders": 746,
+      "fill_rate": 85.25469168900804
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.1,
+        "ttl_hours": 2,
+        "anchored": true
+      },
+      "train": {
+        "n": 368,
+        "wins": 133,
+        "win_rate": 36.141304347826086,
+        "pf": 0.870500235094434,
+        "mean_r": -0.07084209020494955,
+        "total_r": -26.069889195421435,
+        "target_hits": 61,
+        "timed_exits": 105,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 269,
+        "wins": 108,
+        "win_rate": 40.14869888475837,
+        "pf": 0.9175826059804674,
+        "mean_r": -0.04319663528180254,
+        "total_r": -11.619894890804883,
+        "target_hits": 42,
+        "timed_exits": 81,
+        "late_exits": 1
+      },
+      "orders": 747,
+      "fill_rate": 85.27443105756359
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.25,
+        "ttl_hours": 1,
+        "anchored": false
+      },
+      "train": {
+        "n": 341,
+        "wins": 133,
+        "win_rate": 39.002932551319645,
+        "pf": 0.9037822329244652,
+        "mean_r": -0.052935409746248135,
+        "total_r": -18.050974723470613,
+        "target_hits": 62,
+        "timed_exits": 106,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 255,
+        "wins": 101,
+        "win_rate": 39.6078431372549,
+        "pf": 0.8276092217684025,
+        "mean_r": -0.09520618496770317,
+        "total_r": -24.277577166764306,
+        "target_hits": 37,
+        "timed_exits": 83,
+        "late_exits": 1
+      },
+      "orders": 891,
+      "fill_rate": 66.89113355780023
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.25,
+        "ttl_hours": 1,
+        "anchored": true
+      },
+      "train": {
+        "n": 342,
+        "wins": 123,
+        "win_rate": 35.96491228070175,
+        "pf": 0.9316414111186551,
+        "mean_r": -0.03434565903055531,
+        "total_r": -11.746215388449915,
+        "target_hits": 50,
+        "timed_exits": 96,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 255,
+        "wins": 90,
+        "win_rate": 35.294117647058826,
+        "pf": 0.840590940162117,
+        "mean_r": -0.08214287969713822,
+        "total_r": -20.946434322770248,
+        "target_hits": 31,
+        "timed_exits": 70,
+        "late_exits": 1
+      },
+      "orders": 892,
+      "fill_rate": 66.92825112107623
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.25,
+        "ttl_hours": 2,
+        "anchored": false
+      },
+      "train": {
+        "n": 329,
+        "wins": 118,
+        "win_rate": 35.86626139817629,
+        "pf": 0.8331766830187168,
+        "mean_r": -0.09576167069049928,
+        "total_r": -31.505589657174262,
+        "target_hits": 57,
+        "timed_exits": 98,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 255,
+        "wins": 111,
+        "win_rate": 43.529411764705884,
+        "pf": 0.969662142290356,
+        "mean_r": -0.015815925136650522,
+        "total_r": -4.033060909845883,
+        "target_hits": 41,
+        "timed_exits": 85,
+        "late_exits": 2
+      },
+      "orders": 772,
+      "fill_rate": 75.64766839378238
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.25,
+        "ttl_hours": 2,
+        "anchored": true
+      },
+      "train": {
+        "n": 330,
+        "wins": 108,
+        "win_rate": 32.72727272727273,
+        "pf": 0.8391983640758851,
+        "mean_r": -0.08451992418080613,
+        "total_r": -27.891574979666025,
+        "target_hits": 45,
+        "timed_exits": 87,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 255,
+        "wins": 100,
+        "win_rate": 39.21568627450981,
+        "pf": 0.981979105405611,
+        "mean_r": -0.008788882769021041,
+        "total_r": -2.2411651061003655,
+        "target_hits": 34,
+        "timed_exits": 75,
+        "late_exits": 1
+      },
+      "orders": 772,
+      "fill_rate": 75.77720207253886
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.5,
+        "ttl_hours": 1,
+        "anchored": false
+      },
+      "train": {
+        "n": 269,
+        "wins": 105,
+        "win_rate": 39.03345724907063,
+        "pf": 0.9058730582746162,
+        "mean_r": -0.05043618387642181,
+        "total_r": -13.567333462757468,
+        "target_hits": 47,
+        "timed_exits": 91,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 207,
+        "wins": 82,
+        "win_rate": 39.61352657004831,
+        "pf": 0.8273768812506227,
+        "mean_r": -0.0959268721946107,
+        "total_r": -19.856862544284414,
+        "target_hits": 31,
+        "timed_exits": 67,
+        "late_exits": 2
+      },
+      "orders": 1022,
+      "fill_rate": 46.57534246575342
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.5,
+        "ttl_hours": 1,
+        "anchored": true
+      },
+      "train": {
+        "n": 268,
+        "wins": 84,
+        "win_rate": 31.343283582089555,
+        "pf": 0.8925495716304025,
+        "mean_r": -0.047575228573077104,
+        "total_r": -12.750161257584663,
+        "target_hits": 28,
+        "timed_exits": 69,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 208,
+        "wins": 63,
+        "win_rate": 30.288461538461537,
+        "pf": 0.8297020536470019,
+        "mean_r": -0.07766767675482668,
+        "total_r": -16.154876765003948,
+        "target_hits": 17,
+        "timed_exits": 51,
+        "late_exits": 1
+      },
+      "orders": 1024,
+      "fill_rate": 46.484375
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.5,
+        "ttl_hours": 2,
+        "anchored": false
+      },
+      "train": {
+        "n": 272,
+        "wins": 103,
+        "win_rate": 37.86764705882353,
+        "pf": 0.848644223478921,
+        "mean_r": -0.08353504102787129,
+        "total_r": -22.72153115958099,
+        "target_hits": 46,
+        "timed_exits": 89,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 211,
+        "wins": 93,
+        "win_rate": 44.07582938388626,
+        "pf": 1.0298381128569292,
+        "mean_r": 0.015414573912341495,
+        "total_r": 3.2524750955040553,
+        "target_hits": 36,
+        "timed_exits": 71,
+        "late_exits": 2
+      },
+      "orders": 823,
+      "fill_rate": 58.68772782503038
+    },
+    {
+      "policy": {
+        "signal": "direct",
+        "offset": 0.5,
+        "ttl_hours": 2,
+        "anchored": true
+      },
+      "train": {
+        "n": 273,
+        "wins": 79,
+        "win_rate": 28.93772893772894,
+        "pf": 0.8170899139385177,
+        "mean_r": -0.08407609573100766,
+        "total_r": -22.95277413456509,
+        "target_hits": 27,
+        "timed_exits": 64,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 214,
+        "wins": 68,
+        "win_rate": 31.775700934579437,
+        "pf": 0.9471418642844014,
+        "mean_r": -0.023629954201995356,
+        "total_r": -5.056810199227006,
+        "target_hits": 20,
+        "timed_exits": 53,
+        "late_exits": 0
+      },
+      "orders": 826,
+      "fill_rate": 58.958837772397096
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.1,
+        "ttl_hours": 1,
+        "anchored": false
+      },
+      "train": {
+        "n": 235,
+        "wins": 101,
+        "win_rate": 42.97872340425532,
+        "pf": 0.9772630520732342,
+        "mean_r": -0.011516049966024575,
+        "total_r": -2.706271742015775,
+        "target_hits": 41,
+        "timed_exits": 83,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 178,
+        "wins": 75,
+        "win_rate": 42.13483146067416,
+        "pf": 0.8901770575381199,
+        "mean_r": -0.05761422694199969,
+        "total_r": -10.255332395675945,
+        "target_hits": 26,
+        "timed_exits": 63,
+        "late_exits": 1
+      },
+      "orders": 508,
+      "fill_rate": 81.2992125984252
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.1,
+        "ttl_hours": 1,
+        "anchored": true
+      },
+      "train": {
+        "n": 236,
+        "wins": 96,
+        "win_rate": 40.67796610169492,
+        "pf": 0.9524994302143813,
+        "mean_r": -0.023868342804026044,
+        "total_r": -5.632928901750146,
+        "target_hits": 38,
+        "timed_exits": 78,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 178,
+        "wins": 74,
+        "win_rate": 41.57303370786517,
+        "pf": 0.9286700968531707,
+        "mean_r": -0.03653647737536827,
+        "total_r": -6.503492972815551,
+        "target_hits": 26,
+        "timed_exits": 57,
+        "late_exits": 1
+      },
+      "orders": 509,
+      "fill_rate": 81.33595284872298
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.1,
+        "ttl_hours": 2,
+        "anchored": false
+      },
+      "train": {
+        "n": 238,
+        "wins": 101,
+        "win_rate": 42.436974789915965,
+        "pf": 0.9779855378109236,
+        "mean_r": -0.011321663726407905,
+        "total_r": -2.6945559668850816,
+        "target_hits": 43,
+        "timed_exits": 81,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 181,
+        "wins": 79,
+        "win_rate": 43.646408839779006,
+        "pf": 0.9312263587033108,
+        "mean_r": -0.0351574679782203,
+        "total_r": -6.3635017040578745,
+        "target_hits": 28,
+        "timed_exits": 64,
+        "late_exits": 1
+      },
+      "orders": 486,
+      "fill_rate": 86.21399176954732
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.1,
+        "ttl_hours": 2,
+        "anchored": true
+      },
+      "train": {
+        "n": 239,
+        "wins": 96,
+        "win_rate": 40.1673640167364,
+        "pf": 0.9628610811882785,
+        "mean_r": -0.018797150785700417,
+        "total_r": -4.492519037782399,
+        "target_hits": 40,
+        "timed_exits": 77,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 181,
+        "wins": 78,
+        "win_rate": 43.0939226519337,
+        "pf": 0.9732601908395643,
+        "mean_r": -0.013334093031606854,
+        "total_r": -2.4134708387208406,
+        "target_hits": 28,
+        "timed_exits": 59,
+        "late_exits": 1
+      },
+      "orders": 487,
+      "fill_rate": 86.24229979466119
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.25,
+        "ttl_hours": 1,
+        "anchored": false
+      },
+      "train": {
+        "n": 206,
+        "wins": 88,
+        "win_rate": 42.71844660194174,
+        "pf": 0.9565393819653862,
+        "mean_r": -0.022760578466902708,
+        "total_r": -4.688679164181957,
+        "target_hits": 37,
+        "timed_exits": 67,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 156,
+        "wins": 65,
+        "win_rate": 41.66666666666667,
+        "pf": 0.8526034474562588,
+        "mean_r": -0.07876498974553049,
+        "total_r": -12.287338400302756,
+        "target_hits": 23,
+        "timed_exits": 53,
+        "late_exits": 1
+      },
+      "orders": 529,
+      "fill_rate": 68.43100189035917
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.25,
+        "ttl_hours": 1,
+        "anchored": true
+      },
+      "train": {
+        "n": 207,
+        "wins": 79,
+        "win_rate": 38.164251207729464,
+        "pf": 0.9258806809488648,
+        "mean_r": -0.03626309239042377,
+        "total_r": -7.506460124817721,
+        "target_hits": 28,
+        "timed_exits": 62,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 156,
+        "wins": 60,
+        "win_rate": 38.46153846153847,
+        "pf": 0.9079368877028893,
+        "mean_r": -0.045747745401687856,
+        "total_r": -7.136648282663305,
+        "target_hits": 20,
+        "timed_exits": 45,
+        "late_exits": 1
+      },
+      "orders": 530,
+      "fill_rate": 68.49056603773585
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.25,
+        "ttl_hours": 2,
+        "anchored": false
+      },
+      "train": {
+        "n": 210,
+        "wins": 88,
+        "win_rate": 41.904761904761905,
+        "pf": 0.955190341600975,
+        "mean_r": -0.023457146692772515,
+        "total_r": -4.926000805482228,
+        "target_hits": 38,
+        "timed_exits": 69,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 164,
+        "wins": 75,
+        "win_rate": 45.73170731707317,
+        "pf": 0.9494513586373727,
+        "mean_r": -0.025400214151533998,
+        "total_r": -4.165635120851576,
+        "target_hits": 25,
+        "timed_exits": 59,
+        "late_exits": 1
+      },
+      "orders": 495,
+      "fill_rate": 75.55555555555556
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.25,
+        "ttl_hours": 2,
+        "anchored": true
+      },
+      "train": {
+        "n": 211,
+        "wins": 79,
+        "win_rate": 37.44075829383886,
+        "pf": 0.924256894067849,
+        "mean_r": -0.037010172867402026,
+        "total_r": -7.809146475021827,
+        "target_hits": 29,
+        "timed_exits": 64,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 164,
+        "wins": 69,
+        "win_rate": 42.073170731707314,
+        "pf": 0.993154092827099,
+        "mean_r": -0.003202787514691645,
+        "total_r": -0.5252571524094298,
+        "target_hits": 21,
+        "timed_exits": 53,
+        "late_exits": 1
+      },
+      "orders": 496,
+      "fill_rate": 75.60483870967742
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.5,
+        "ttl_hours": 1,
+        "anchored": false
+      },
+      "train": {
+        "n": 150,
+        "wins": 65,
+        "win_rate": 43.333333333333336,
+        "pf": 1.0278026938548308,
+        "mean_r": 0.014365000738323188,
+        "total_r": 2.1547501107484783,
+        "target_hits": 27,
+        "timed_exits": 52,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 120,
+        "wins": 49,
+        "win_rate": 40.833333333333336,
+        "pf": 0.8336976311118889,
+        "mean_r": -0.09273371593097779,
+        "total_r": -11.128045911717335,
+        "target_hits": 18,
+        "timed_exits": 38,
+        "late_exits": 1
+      },
+      "orders": 566,
+      "fill_rate": 47.70318021201413
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.5,
+        "ttl_hours": 1,
+        "anchored": true
+      },
+      "train": {
+        "n": 150,
+        "wins": 54,
+        "win_rate": 36.0,
+        "pf": 1.0147205560193928,
+        "mean_r": 0.006249383772650606,
+        "total_r": 0.9374075658975909,
+        "target_hits": 14,
+        "timed_exits": 43,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 120,
+        "wins": 38,
+        "win_rate": 31.666666666666664,
+        "pf": 0.9024032391104492,
+        "mean_r": -0.04365676930217204,
+        "total_r": -5.2388123162606455,
+        "target_hits": 11,
+        "timed_exits": 30,
+        "late_exits": 0
+      },
+      "orders": 565,
+      "fill_rate": 47.78761061946903
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.5,
+        "ttl_hours": 2,
+        "anchored": false
+      },
+      "train": {
+        "n": 168,
+        "wins": 72,
+        "win_rate": 42.857142857142854,
+        "pf": 0.9858039796567375,
+        "mean_r": -0.007274490208751599,
+        "total_r": -1.2221143550702687,
+        "target_hits": 29,
+        "timed_exits": 61,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 130,
+        "wins": 60,
+        "win_rate": 46.15384615384615,
+        "pf": 1.0385372597484792,
+        "mean_r": 0.01967186501596805,
+        "total_r": 2.5573424520758463,
+        "target_hits": 22,
+        "timed_exits": 44,
+        "late_exits": 1
+      },
+      "orders": 509,
+      "fill_rate": 58.54616895874263
+    },
+    {
+      "policy": {
+        "signal": "impulse",
+        "offset": 0.5,
+        "ttl_hours": 2,
+        "anchored": true
+      },
+      "train": {
+        "n": 168,
+        "wins": 57,
+        "win_rate": 33.92857142857143,
+        "pf": 0.9654444371507891,
+        "mean_r": -0.014978621833609403,
+        "total_r": -2.5164084680463796,
+        "target_hits": 17,
+        "timed_exits": 45,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 130,
+        "wins": 44,
+        "win_rate": 33.84615384615385,
+        "pf": 0.9883175604107028,
+        "mean_r": -0.0050699221671749225,
+        "total_r": -0.65908988173274,
+        "target_hits": 13,
+        "timed_exits": 34,
+        "late_exits": 0
+      },
+      "orders": 508,
+      "fill_rate": 58.661417322834644
+    }
+  ]
+}

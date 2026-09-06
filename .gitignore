@@ -5,3 +5,10 @@ __pycache__/
 .coverage
 trades.csv
 *_trades.csv
+scripts/sniper_daytrade_cache/
+scripts/sniper_daytrade_run.log
+scripts/sniper_daytrade_audit.log
+scripts/gold_pf_run.log
+scripts/gold_pf_refinement_run.log
+scripts/gold_pf_minute_run.log
+scripts/gold_limit_run.log

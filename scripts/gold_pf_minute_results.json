@@ -1,0 +1,191 @@
+{
+  "selected": {
+    "minutes": 60,
+    "entry_mode": "impulse",
+    "adx_min": 18,
+    "exit_mode": "fixed2R",
+    "train": {
+      "n": 272,
+      "wins": 109,
+      "win_rate": 40.07352941176471,
+      "pf": 1.0157685378509196,
+      "mean_r": 0.008078378104423037,
+      "total_r": 2.197318844403066,
+      "target_hits": 51,
+      "timed_exits": 92,
+      "late_exits": 0
+    },
+    "validation": {
+      "n": 202,
+      "wins": 85,
+      "win_rate": 42.07920792079208,
+      "pf": 0.9765301867380917,
+      "mean_r": -0.012200552621721634,
+      "total_r": -2.4645116295877703,
+      "target_hits": 36,
+      "timed_exits": 65,
+      "late_exits": 2
+    }
+  },
+  "hourly_execution": [
+    {
+      "n": 272,
+      "wins": 109,
+      "win_rate": 40.07352941176471,
+      "pf": 1.0157685378509196,
+      "mean_r": 0.008078378104423037,
+      "total_r": 2.197318844403066,
+      "target_hits": 51,
+      "timed_exits": 92,
+      "late_exits": 0,
+      "max_drawdown_r": 11.873325615470707
+    },
+    {
+      "n": 202,
+      "wins": 85,
+      "win_rate": 42.07920792079208,
+      "pf": 0.9765301867380917,
+      "mean_r": -0.012200552621721634,
+      "total_r": -2.4645116295877703,
+      "target_hits": 36,
+      "timed_exits": 65,
+      "late_exits": 2,
+      "max_drawdown_r": 19.31801405949933
+    },
+    {
+      "n": 102,
+      "wins": 43,
+      "win_rate": 42.15686274509804,
+      "pf": 1.0654411299572755,
+      "mean_r": 0.035403117661406656,
+      "total_r": 3.611118001463479,
+      "target_hits": 19,
+      "timed_exits": 30,
+      "late_exits": 0,
+      "max_drawdown_r": 8.661307766491056
+    },
+    {
+      "n": 91,
+      "wins": 49,
+      "win_rate": 53.84615384615385,
+      "pf": 1.6904793384279488,
+      "mean_r": 0.2741874627142326,
+      "total_r": 24.951059106995167,
+      "target_hits": 22,
+      "timed_exits": 35,
+      "late_exits": 0,
+      "max_drawdown_r": 6.103165985122631
+    }
+  ],
+  "minute_execution": [
+    {
+      "n": 272,
+      "wins": 110,
+      "win_rate": 40.44117647058824,
+      "pf": 1.03221741956514,
+      "mean_r": 0.016471782081207045,
+      "total_r": 4.480324726088316,
+      "target_hits": 52,
+      "timed_exits": 92,
+      "late_exits": 0,
+      "max_drawdown_r": 11.8849754193495
+    },
+    {
+      "n": 202,
+      "wins": 85,
+      "win_rate": 42.07920792079208,
+      "pf": 0.9765301867380917,
+      "mean_r": -0.012200552621721634,
+      "total_r": -2.4645116295877703,
+      "target_hits": 36,
+      "timed_exits": 65,
+      "late_exits": 2,
+      "max_drawdown_r": 19.31801405949933
+    },
+    {
+      "n": 102,
+      "wins": 43,
+      "win_rate": 42.15686274509804,
+      "pf": 1.0654411299572755,
+      "mean_r": 0.035403117661406656,
+      "total_r": 3.611118001463479,
+      "target_hits": 19,
+      "timed_exits": 30,
+      "late_exits": 0,
+      "max_drawdown_r": 8.661307766491056
+    },
+    {
+      "n": 91,
+      "wins": 49,
+      "win_rate": 53.84615384615385,
+      "pf": 1.6904793384279488,
+      "mean_r": 0.2741874627142326,
+      "total_r": 24.951059106995167,
+      "target_hits": 22,
+      "timed_exits": 35,
+      "late_exits": 0,
+      "max_drawdown_r": 6.103165985122631
+    }
+  ],
+  "minute_doubled_spread": [
+    {
+      "n": 271,
+      "wins": 101,
+      "win_rate": 37.269372693726936,
+      "pf": 0.85926802933065,
+      "mean_r": -0.07961303417636405,
+      "total_r": -21.575132261794657,
+      "target_hits": 50,
+      "timed_exits": 80,
+      "late_exits": 0,
+      "max_drawdown_r": 21.575132261794653
+    },
+    {
+      "n": 204,
+      "wins": 78,
+      "win_rate": 38.23529411764706,
+      "pf": 0.8348661899032122,
+      "mean_r": -0.09267628768086238,
+      "total_r": -18.905962686895926,
+      "target_hits": 35,
+      "timed_exits": 60,
+      "late_exits": 1,
+      "max_drawdown_r": 31.413636207918415
+    },
+    {
+      "n": 102,
+      "wins": 42,
+      "win_rate": 41.17647058823529,
+      "pf": 0.995562524460912,
+      "mean_r": -0.0024716050400740023,
+      "total_r": -0.2521037140875482,
+      "target_hits": 18,
+      "timed_exits": 30,
+      "late_exits": 0,
+      "max_drawdown_r": 9.30897548237559
+    },
+    {
+      "n": 91,
+      "wins": 47,
+      "win_rate": 51.64835164835166,
+      "pf": 1.4882222081111587,
+      "mean_r": 0.20461322806538365,
+      "total_r": 18.619803753949913,
+      "target_hits": 20,
+      "timed_exits": 35,
+      "late_exits": 0,
+      "max_drawdown_r": 6.535915072620309
+    }
+  ],
+  "missing_minute_open_signals": 0,
+  "gates": [
+    true,
+    false,
+    true,
+    true
+  ],
+  "adopted": false,
+  "captured_minutes": 752475,
+  "candidate_reselected": false,
+  "limitations": "Same previously inspected periods. Minute OHLC still uses stop-first if both barriers touch inside one minute."
+}

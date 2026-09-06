@@ -1,0 +1,157 @@
+//@version=6
+indicator("Gold Breakout55 Confirm | XAUUSD 1H", overlay=true, max_labels_count=500, max_lines_count=500)
+
+// Independent fixed rules accepted by the user; not the proprietary SNIPER-AI algorithm.
+// Rules: docs/gold_breakout55_logic.md. All-period PF > 1 remains unproven.
+// ADX >= 18, body >= 0.5 ATR, close in directional outer 25%; full exit at 2R.
+// Official TradingView compilation and signal parity have not been verified.
+string clockZone = input.string("Etc/UTC", "時間帯の基準（履歴データに合わせる）")
+float spread = input.float(0.376, "想定スプレッド（価格幅）", minval=0)
+bool showLevels = input.bool(true, "Entry / TP / SLを残す")
+bool showPreparation = input.bool(true, "確定足にBUY / SELL準備を表示")
+if not chart.is_standard or timeframe.in_seconds() != 3600
+    runtime.error("通常ローソク足の1時間足で使用してください。")
+
+float a = ta.atr(14)
+float fast = ta.ema(close, 50)
+float slow = ta.ema(close, 200)
+[diPlus, diMinus, adx] = ta.dmi(14, 14)
+float priorHigh = ta.highest(high, 55)[1]
+float priorLow = ta.lowest(low, 55)[1]
+bool ready = bar_index >= 200 and a > 0
+bool buySetup = ready and fast > slow and slow > slow[5] and close > slow and close > priorHigh and adx >= 18 and close-open >= 0.5*a and high > low and (close-low)/(high-low) >= 0.75
+bool sellSetup = ready and fast < slow and slow < slow[5] and close < slow and close < priorLow and adx >= 18 and open-close >= 0.5*a and high > low and (high-close)/(high-low) >= 0.75
+
+type GoldTrade
+    int side = 0
+    int lastEntry = -100
+    float entry = na
+    float risk = na
+    float target = na
+    float stop = na
+    int deadline = na
+    int firstEntry = na
+    int count = 0
+    int wins = 0
+    float gainsR = 0
+    float lossesR = 0
+    int late = 0
+    float exitPrice = na
+    string exitReason = ""
+
+// Fixed prices use only the previous confirmed ATR and the new bar's open.
+method enter(GoldTrade this, int direction, int barNumber, int barTime, int dueTime, float barOpen, float signalAtr, float costSpread) =>
+    this.side := direction
+    this.entry := barOpen + (direction == 1 ? costSpread : 0) + direction * costSpread * 0.1
+    this.risk := 1.5 * signalAtr
+    this.target := this.entry + direction * 2 * this.risk
+    this.stop := this.entry - direction * this.risk
+    this.deadline := dueTime
+    this.lastEntry := barNumber
+    this.firstEntry := na(this.firstEntry) ? barTime : this.firstEntry
+
+// Bid OHLC / constant Ask spread. Intrabar TP/SL accounting waits for the close
+// to retain the research's stop-first rule. The 20:00 exit uses the open immediately.
+method observe(GoldTrade this, int barTime, float barOpen, float barHigh, float barLow, bool confirmed, float costSpread) =>
+    this.exitPrice := na
+    this.exitReason := ""
+    if this.side != 0
+        float slip = costSpread * 0.1
+        float offset = this.side == -1 ? costSpread : 0
+        float op = barOpen + offset
+        float hi = barHigh + offset
+        float lo = barLow + offset
+        if barTime >= this.deadline
+            if this.side * (op - this.target) >= 0
+                this.exitPrice := this.target
+                this.exitReason := "TP"
+            else if this.side * (op - this.stop) <= 0
+                this.exitPrice := op - this.side * slip
+                this.exitReason := "SL"
+            else
+                this.exitPrice := op - this.side * slip
+                this.exitReason := "20時決済"
+        else if confirmed
+            if (this.side == 1 ? lo <= this.stop : hi >= this.stop)
+                this.exitPrice := (this.side == 1 ? math.min(op, this.stop) : math.max(op, this.stop)) - this.side * slip
+                this.exitReason := "SL"
+            else if (this.side == 1 ? hi >= this.target : lo <= this.target)
+                this.exitPrice := this.target
+                this.exitReason := "TP"
+        if not na(this.exitPrice)
+            float r = this.side * (this.exitPrice - this.entry) / this.risk
+            this.count += 1
+            this.wins += r > 0 ? 1 : 0
+            this.gainsR += math.max(r, 0)
+            this.lossesR += math.max(-r, 0)
+            this.late += barTime > this.deadline ? 1 : 0
+            this.side := 0
+
+var GoldTrade trade = GoldTrade.new()
+int entryHour = hour(time, clockZone)
+bool regularNextBar = time == time_close[1]
+bool canEnter = trade.side == 0 and bar_index - trade.lastEntry >= 5 and regularNextBar and entryHour >= 6 and entryHour < 16
+bool adoptedBuy = canEnter and buySetup[1]
+bool adoptedSell = canEnter and sellSetup[1]
+
+// Run on every update: rollback replays the same entry from confirmed state.
+// Do not gate this with isnew or use varip; labels must survive the closing update.
+if adoptedBuy or adoptedSell
+    int dueTime = timestamp(clockZone, year(time, clockZone), month(time, clockZone), dayofmonth(time, clockZone), 20, 0)
+    trade.enter(adoptedBuy ? 1 : -1, bar_index, time, dueTime, open, a[1], spread)
+    if showLevels
+        line.new(time, trade.entry, trade.deadline, trade.entry, xloc=xloc.bar_time, color=color.gray)
+        line.new(time, trade.target, trade.deadline, trade.target, xloc=xloc.bar_time, color=color.lime)
+        line.new(time, trade.stop, trade.deadline, trade.stop, xloc=xloc.bar_time, color=color.red)
+        label.new(bar_index, trade.entry, (adoptedBuy ? "BUY Entry " : "SELL Entry ") + str.tostring(trade.entry, format.mintick), style=label.style_label_left, color=color.gray, textcolor=color.white)
+        label.new(bar_index, trade.target, "TP " + str.tostring(trade.target, format.mintick), style=label.style_label_left, color=color.green, textcolor=color.white)
+        label.new(bar_index, trade.stop, "SL " + str.tostring(trade.stop, format.mintick), style=label.style_label_left, color=color.red, textcolor=color.white)
+
+// Admission precedes observation: an exit never permits another entry on the same bar.
+trade.observe(time, open, high, low, barstate.isconfirmed, spread)
+if trade.exitReason != ""
+    label.new(bar_index, trade.exitPrice, trade.exitReason + " " + str.tostring(trade.exitPrice, format.mintick), color=trade.exitReason == "TP" ? color.green : color.orange, textcolor=color.white)
+
+plot(fast, "EMA50", color=color.orange)
+plot(slow, "EMA200", color=color.blue)
+plot(priorHigh, "直前55本の高値", color=color.new(color.green, 75))
+plot(priorLow, "直前55本の安値", color=color.new(color.red, 75))
+plotshape(adoptedBuy, title="BUY採用", style=shape.triangleup, location=location.belowbar, color=color.lime, size=size.tiny)
+plotshape(adoptedSell, title="SELL採用", style=shape.triangledown, location=location.abovebar, color=color.red, size=size.tiny)
+// Preparation at confirmed close; adoption only when the next regular bar arrives.
+bool nextSession = hour(time_close, clockZone) >= 6 and hour(time_close, clockZone) < 16
+bool alertReady = barstate.isconfirmed and trade.side == 0 and bar_index+1-trade.lastEntry >= 5 and nextSession
+bool prepareBuy = alertReady and buySetup
+bool prepareSell = alertReady and sellSetup
+plotshape(showPreparation and prepareBuy, title="BUY準備", text="BUY準備", style=shape.labelup, location=location.belowbar, color=color.new(color.green, 30), textcolor=color.white, size=size.tiny)
+plotshape(showPreparation and prepareSell, title="SELL準備", text="SELL準備", style=shape.labeldown, location=location.abovebar, color=color.new(color.red, 30), textcolor=color.white, size=size.tiny)
+plot(trade.entry, "通知Entry", display=display.none)
+plot(trade.target, "通知TP", display=display.none)
+plot(trade.stop, "通知SL", display=display.none)
+plot(trade.exitPrice, "通知決済価格", display=display.none)
+alertcondition(prepareBuy, "BUY準備", "{{ticker}} 1H BUY準備。次の通常足始値でエントリー。")
+alertcondition(prepareSell, "SELL準備", "{{ticker}} 1H SELL準備。次の通常足始値でエントリー。")
+alertcondition(adoptedBuy, "BUYエントリー", '{{ticker}} BUY Entry={{plot("通知Entry")}} TP={{plot("通知TP")}} SL={{plot("通知SL")}}')
+alertcondition(adoptedSell, "SELLエントリー", '{{ticker}} SELL Entry={{plot("通知Entry")}} TP={{plot("通知TP")}} SL={{plot("通知SL")}}')
+alertcondition(trade.exitReason != "", "決済判定", '{{ticker}} 決済判定 価格={{plot("通知決済価格")}}。TP/SLの集計は1時間足確定時。')
+
+var table panel = table.new(position.top_right, 2, 9, bgcolor=color.new(color.black, 15))
+if barstate.islast
+    table.cell(panel, 0, 0, "Gold Confirm / 1H", text_color=color.white)
+    table.cell(panel, 1, 0, trade.side == 1 ? "BUY保有" : trade.side == -1 ? "SELL保有" : prepareBuy ? "BUY準備" : prepareSell ? "SELL準備" : "待機", text_color=color.yellow)
+    table.cell(panel, 0, 1, "Entry", text_color=color.white)
+    table.cell(panel, 1, 1, trade.side == 0 ? "—" : str.tostring(trade.entry, format.mintick), text_color=color.white)
+    table.cell(panel, 0, 2, "TP / SL", text_color=color.white)
+    table.cell(panel, 1, 2, trade.side == 0 ? "—" : str.tostring(trade.target, format.mintick) + " / " + str.tostring(trade.stop, format.mintick), text_color=color.white)
+    table.cell(panel, 0, 3, "決済数 / 勝率", text_color=color.white)
+    table.cell(panel, 1, 3, str.tostring(trade.count) + " / " + (trade.count > 0 ? str.tostring(100.0*trade.wins/trade.count, "#.##") + "%" : "—"), text_color=color.white)
+    table.cell(panel, 0, 4, "PF / 平均R（コスト込み）", text_color=color.white)
+    table.cell(panel, 1, 4, (trade.lossesR > 0 ? str.tostring(trade.gainsR/trade.lossesR, "#.###") : "—") + " / " + (trade.count > 0 ? str.tostring((trade.gainsR-trade.lossesR)/trade.count, "#.###") : "—"), text_color=color.white)
+    table.cell(panel, 0, 5, "集計開始 / 20時超の決済", text_color=color.white)
+    table.cell(panel, 1, 5, (na(trade.firstEntry) ? "—" : str.format_time(trade.firstEntry, "yyyy-MM-dd", clockZone)) + " / " + str.tostring(trade.late), text_color=color.white)
+    table.cell(panel, 0, 6, "基準時刻 / 新規受付", text_color=color.white)
+    table.cell(panel, 1, 6, clockZone + " / 06:00〜16:00未満", text_color=color.white)
+    table.cell(panel, 0, 7, "固定TP / SL / 時間決済", text_color=color.white)
+    table.cell(panel, 1, 7, "3ATR / 1.5ATR / 20:00", text_color=color.white)
+    table.cell(panel, 0, 8, "読込済み1時間足で集計", text_color=color.silver)
+    table.cell(panel, 1, 8, "各期間すべてのPF>1は未達", text_color=color.silver)

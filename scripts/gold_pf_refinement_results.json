@@ -1,0 +1,4685 @@
+{
+  "specification": {
+    "frames": [
+      30,
+      60
+    ],
+    "entry_modes": [
+      "direct",
+      "impulse",
+      "first_break",
+      "retest3",
+      "retest6"
+    ],
+    "adx_min": [
+      0,
+      18,
+      25
+    ],
+    "exit_modes": [
+      "fixed1R",
+      "fixed2R",
+      "breakeven",
+      "half1R",
+      "half1R_breakeven"
+    ],
+    "stop_atr": 1.5,
+    "entry_hours": [
+      6,
+      16
+    ],
+    "exit_hour": 20,
+    "cooldown": 5,
+    "counts": [
+      250,
+      100,
+      50,
+      50
+    ],
+    "target": "PF > 1 and positive mean R in every period",
+    "selection": "maximize minimum development PF",
+    "periods": [
+      [
+        2010,
+        2018
+      ],
+      [
+        2019,
+        2022
+      ],
+      [
+        2023,
+        2024
+      ],
+      [
+        2025,
+        2026
+      ]
+    ],
+    "prior_evaluation_inspected": true
+  },
+  "candidate_count": 150,
+  "eligible_count": 105,
+  "development_profitable_count": 0,
+  "selected": {
+    "minutes": 60,
+    "entry_mode": "impulse",
+    "adx_min": 18,
+    "exit_mode": "fixed2R",
+    "train": {
+      "n": 272,
+      "wins": 109,
+      "win_rate": 40.07352941176471,
+      "pf": 1.0157685378509196,
+      "mean_r": 0.008078378104423037,
+      "total_r": 2.197318844403066,
+      "target_hits": 51,
+      "timed_exits": 92,
+      "late_exits": 0
+    },
+    "validation": {
+      "n": 202,
+      "wins": 85,
+      "win_rate": 42.07920792079208,
+      "pf": 0.9765301867380917,
+      "mean_r": -0.012200552621721634,
+      "total_r": -2.4645116295877703,
+      "target_hits": 36,
+      "timed_exits": 65,
+      "late_exits": 2
+    }
+  },
+  "results": [
+    {
+      "n": 272,
+      "wins": 109,
+      "win_rate": 40.07352941176471,
+      "pf": 1.0157685378509196,
+      "mean_r": 0.008078378104423037,
+      "total_r": 2.197318844403066,
+      "target_hits": 51,
+      "timed_exits": 92,
+      "late_exits": 0,
+      "max_drawdown_r": 11.873325615470707
+    },
+    {
+      "n": 202,
+      "wins": 85,
+      "win_rate": 42.07920792079208,
+      "pf": 0.9765301867380917,
+      "mean_r": -0.012200552621721634,
+      "total_r": -2.4645116295877703,
+      "target_hits": 36,
+      "timed_exits": 65,
+      "late_exits": 2,
+      "max_drawdown_r": 19.31801405949933
+    },
+    {
+      "n": 102,
+      "wins": 43,
+      "win_rate": 42.15686274509804,
+      "pf": 1.0654411299572755,
+      "mean_r": 0.035403117661406656,
+      "total_r": 3.611118001463479,
+      "target_hits": 19,
+      "timed_exits": 30,
+      "late_exits": 0,
+      "max_drawdown_r": 8.661307766491056
+    },
+    {
+      "n": 91,
+      "wins": 49,
+      "win_rate": 53.84615384615385,
+      "pf": 1.6904793384279488,
+      "mean_r": 0.2741874627142326,
+      "total_r": 24.951059106995167,
+      "target_hits": 22,
+      "timed_exits": 35,
+      "late_exits": 0,
+      "max_drawdown_r": 6.103165985122631
+    }
+  ],
+  "doubled_spread": [
+    {
+      "n": 271,
+      "wins": 100,
+      "win_rate": 36.90036900369004,
+      "pf": 0.8450782998950556,
+      "mean_r": -0.08775889828493705,
+      "total_r": -23.78266143521794,
+      "target_hits": 49,
+      "timed_exits": 80,
+      "late_exits": 0,
+      "max_drawdown_r": 23.782661435217936
+    },
+    {
+      "n": 204,
+      "wins": 78,
+      "win_rate": 38.23529411764706,
+      "pf": 0.8348661899032122,
+      "mean_r": -0.09267628768086238,
+      "total_r": -18.905962686895926,
+      "target_hits": 35,
+      "timed_exits": 60,
+      "late_exits": 1,
+      "max_drawdown_r": 31.413636207918415
+    },
+    {
+      "n": 102,
+      "wins": 42,
+      "win_rate": 41.17647058823529,
+      "pf": 0.995562524460912,
+      "mean_r": -0.0024716050400740023,
+      "total_r": -0.2521037140875482,
+      "target_hits": 18,
+      "timed_exits": 30,
+      "late_exits": 0,
+      "max_drawdown_r": 9.30897548237559
+    },
+    {
+      "n": 91,
+      "wins": 47,
+      "win_rate": 51.64835164835166,
+      "pf": 1.4882222081111587,
+      "mean_r": 0.20461322806538365,
+      "total_r": 18.619803753949913,
+      "target_hits": 20,
+      "timed_exits": 35,
+      "late_exits": 0,
+      "max_drawdown_r": 6.535915072620309
+    }
+  ],
+  "gates": [
+    true,
+    false,
+    true,
+    true
+  ],
+  "adopted": false,
+  "baseline_verified": true,
+  "development_candidates": [
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 780,
+        "wins": 364,
+        "win_rate": 46.666666666666664,
+        "pf": 0.8601608056404146,
+        "mean_r": -0.07342522968747928,
+        "total_r": -57.27167915623384,
+        "target_hits": 346,
+        "timed_exits": 36,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 605,
+        "wins": 277,
+        "win_rate": 45.78512396694215,
+        "pf": 0.8198889942650199,
+        "mean_r": -0.096028376709962,
+        "total_r": -58.09716790952701,
+        "target_hits": 259,
+        "timed_exits": 31,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 739,
+        "wins": 270,
+        "win_rate": 36.53585926928282,
+        "pf": 0.9816605510425023,
+        "mean_r": -0.011331887605027378,
+        "total_r": -8.374264940115232,
+        "target_hits": 202,
+        "timed_exits": 95,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 577,
+        "wins": 198,
+        "win_rate": 34.31542461005199,
+        "pf": 0.8689257061260314,
+        "mean_r": -0.08445941550729276,
+        "total_r": -48.733082747707925,
+        "target_hits": 142,
+        "timed_exits": 72,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 745,
+        "wins": 205,
+        "win_rate": 27.516778523489933,
+        "pf": 0.9103205436649077,
+        "mean_r": -0.0469930143130531,
+        "total_r": -35.00979566322456,
+        "target_hits": 164,
+        "timed_exits": 58,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 581,
+        "wins": 159,
+        "win_rate": 27.36660929432014,
+        "pf": 0.8230558684738117,
+        "mean_r": -0.09642157424131258,
+        "total_r": -56.020934634202604,
+        "target_hits": 115,
+        "timed_exits": 58,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 739,
+        "wins": 281,
+        "win_rate": 38.02435723951286,
+        "pf": 0.9346154551321194,
+        "mean_r": -0.03383245018897743,
+        "total_r": -25.002180689654324,
+        "target_hits": 202,
+        "timed_exits": 95,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 577,
+        "wins": 200,
+        "win_rate": 34.66204506065858,
+        "pf": 0.8190587644475409,
+        "mean_r": -0.09780489587568075,
+        "total_r": -56.4334249202678,
+        "target_hits": 142,
+        "timed_exits": 72,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 745,
+        "wins": 352,
+        "win_rate": 47.24832214765101,
+        "pf": 0.8942254585851338,
+        "mean_r": -0.054971515288260685,
+        "total_r": -40.95377888975421,
+        "target_hits": 164,
+        "timed_exits": 58,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 581,
+        "wins": 261,
+        "win_rate": 44.922547332185886,
+        "pf": 0.808388568778447,
+        "mean_r": -0.10342042697236305,
+        "total_r": -60.08726807094293,
+        "target_hits": 115,
+        "timed_exits": 58,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 719,
+        "wins": 334,
+        "win_rate": 46.453407510431155,
+        "pf": 0.8579391872487442,
+        "mean_r": -0.07437216026288791,
+        "total_r": -53.473583229016405,
+        "target_hits": 317,
+        "timed_exits": 37,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 546,
+        "wins": 255,
+        "win_rate": 46.7032967032967,
+        "pf": 0.8535967530168143,
+        "mean_r": -0.07690695876786269,
+        "total_r": -41.99119948725303,
+        "target_hits": 240,
+        "timed_exits": 26,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 683,
+        "wins": 248,
+        "win_rate": 36.310395314787705,
+        "pf": 0.9589070544845941,
+        "mean_r": -0.02534582057369083,
+        "total_r": -17.311195451830837,
+        "target_hits": 182,
+        "timed_exits": 94,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 521,
+        "wins": 180,
+        "win_rate": 34.548944337811896,
+        "pf": 0.8922551492214492,
+        "mean_r": -0.06919402293400652,
+        "total_r": -36.050085948617394,
+        "target_hits": 132,
+        "timed_exits": 63,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 689,
+        "wins": 187,
+        "win_rate": 27.14078374455733,
+        "pf": 0.9023213495771204,
+        "mean_r": -0.050776461058803096,
+        "total_r": -34.984981669515335,
+        "target_hits": 149,
+        "timed_exits": 57,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 524,
+        "wins": 145,
+        "win_rate": 27.671755725190838,
+        "pf": 0.8476979202505416,
+        "mean_r": -0.08276522828295395,
+        "total_r": -43.36897962026787,
+        "target_hits": 107,
+        "timed_exits": 50,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 683,
+        "wins": 258,
+        "win_rate": 37.774524158125914,
+        "pf": 0.9255350639267516,
+        "mean_r": -0.03818722837467703,
+        "total_r": -26.08187697990441,
+        "target_hits": 182,
+        "timed_exits": 94,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 521,
+        "wins": 183,
+        "win_rate": 35.12476007677543,
+        "pf": 0.8409269993443117,
+        "mean_r": -0.08553685596473393,
+        "total_r": -44.564701957626376,
+        "target_hits": 132,
+        "timed_exits": 63,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 689,
+        "wins": 326,
+        "win_rate": 47.314949201741655,
+        "pf": 0.8942358861375401,
+        "mean_r": -0.05450305214411014,
+        "total_r": -37.552602927291886,
+        "target_hits": 149,
+        "timed_exits": 57,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 524,
+        "wins": 237,
+        "win_rate": 45.229007633587784,
+        "pf": 0.8271309263625527,
+        "mean_r": -0.09299546031596123,
+        "total_r": -48.72962120556369,
+        "target_hits": 107,
+        "timed_exits": 50,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 25,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 557,
+        "wins": 255,
+        "win_rate": 45.78096947935368,
+        "pf": 0.8326181114996529,
+        "mean_r": -0.08878636255293242,
+        "total_r": -49.45400394198335,
+        "target_hits": 241,
+        "timed_exits": 29,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 418,
+        "wins": 198,
+        "win_rate": 47.368421052631575,
+        "pf": 0.8803913541326477,
+        "mean_r": -0.061381256576815736,
+        "total_r": -25.657365249108977,
+        "target_hits": 184,
+        "timed_exits": 25,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 25,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 532,
+        "wins": 191,
+        "win_rate": 35.902255639097746,
+        "pf": 0.920710250480689,
+        "mean_r": -0.04882151285038904,
+        "total_r": -25.97304483640697,
+        "target_hits": 132,
+        "timed_exits": 83,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 400,
+        "wins": 147,
+        "win_rate": 36.75,
+        "pf": 0.9887203596315188,
+        "mean_r": -0.006923755083655134,
+        "total_r": -2.7695020334620537,
+        "target_hits": 108,
+        "timed_exits": 53,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 25,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 537,
+        "wins": 135,
+        "win_rate": 25.139664804469277,
+        "pf": 0.7907386183327003,
+        "mean_r": -0.11136940529105589,
+        "total_r": -59.80537064129702,
+        "target_hits": 102,
+        "timed_exits": 47,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 403,
+        "wins": 122,
+        "win_rate": 30.272952853598017,
+        "pf": 0.9452980080531799,
+        "mean_r": -0.028677883555154327,
+        "total_r": -11.557187072727194,
+        "target_hits": 89,
+        "timed_exits": 45,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 25,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 532,
+        "wins": 202,
+        "win_rate": 37.96992481203007,
+        "pf": 0.8819193906357824,
+        "mean_r": -0.06199059200619787,
+        "total_r": -32.97899494729727,
+        "target_hits": 132,
+        "timed_exits": 83,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 400,
+        "wins": 149,
+        "win_rate": 37.25,
+        "pf": 0.9173709270838772,
+        "mean_r": -0.04312113933304886,
+        "total_r": -17.248455733219544,
+        "target_hits": 108,
+        "timed_exits": 53,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "direct",
+      "adx_min": 25,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 537,
+        "wins": 248,
+        "win_rate": 46.18249534450652,
+        "pf": 0.8163361721483247,
+        "mean_r": -0.09687252537180234,
+        "total_r": -52.020546124657855,
+        "target_hits": 102,
+        "timed_exits": 47,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 403,
+        "wins": 187,
+        "win_rate": 46.40198511166253,
+        "pf": 0.8990975260367555,
+        "mean_r": -0.052468113031488316,
+        "total_r": -21.144649551689792,
+        "target_hits": 89,
+        "timed_exits": 45,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 549,
+        "wins": 247,
+        "win_rate": 44.990892531876135,
+        "pf": 0.8003658835890527,
+        "mean_r": -0.10741902552866574,
+        "total_r": -58.97304501523749,
+        "target_hits": 233,
+        "timed_exits": 29,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 454,
+        "wins": 207,
+        "win_rate": 45.59471365638766,
+        "pf": 0.8040221284696267,
+        "mean_r": -0.10565699634259082,
+        "total_r": -47.96827633953623,
+        "target_hits": 192,
+        "timed_exits": 22,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 532,
+        "wins": 184,
+        "win_rate": 34.58646616541353,
+        "pf": 0.9179231027281881,
+        "mean_r": -0.05189439031667491,
+        "total_r": -27.60781564847105,
+        "target_hits": 140,
+        "timed_exits": 66,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 437,
+        "wins": 155,
+        "win_rate": 35.46910755148742,
+        "pf": 0.8939457226813885,
+        "mean_r": -0.06741200256455535,
+        "total_r": -29.459045120710687,
+        "target_hits": 109,
+        "timed_exits": 56,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 533,
+        "wins": 148,
+        "win_rate": 27.76735459662289,
+        "pf": 0.8830463793066368,
+        "mean_r": -0.06301978194237008,
+        "total_r": -33.58954377528325,
+        "target_hits": 116,
+        "timed_exits": 47,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 440,
+        "wins": 125,
+        "win_rate": 28.40909090909091,
+        "pf": 0.8276995806995214,
+        "mean_r": -0.09476412893357151,
+        "total_r": -41.69621673077147,
+        "target_hits": 88,
+        "timed_exits": 45,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 532,
+        "wins": 191,
+        "win_rate": 35.902255639097746,
+        "pf": 0.8569643333459446,
+        "mean_r": -0.07651253424410372,
+        "total_r": -40.70466821786318,
+        "target_hits": 140,
+        "timed_exits": 66,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 437,
+        "wins": 157,
+        "win_rate": 35.92677345537758,
+        "pf": 0.8288831704050542,
+        "mean_r": -0.09318717802623569,
+        "total_r": -40.722796797464994,
+        "target_hits": 109,
+        "timed_exits": 56,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 533,
+        "wins": 241,
+        "win_rate": 45.21575984990619,
+        "pf": 0.845041643242152,
+        "mean_r": -0.08292899160587844,
+        "total_r": -44.20115252593321,
+        "target_hits": 116,
+        "timed_exits": 47,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 440,
+        "wins": 196,
+        "win_rate": 44.54545454545455,
+        "pf": 0.7991883158321857,
+        "mean_r": -0.10990650091411638,
+        "total_r": -48.35886040221121,
+        "target_hits": 88,
+        "timed_exits": 45,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 511,
+        "wins": 232,
+        "win_rate": 45.40117416829745,
+        "pf": 0.8162577113944395,
+        "mean_r": -0.09783410716034174,
+        "total_r": -49.99322875893463,
+        "target_hits": 219,
+        "timed_exits": 28,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 409,
+        "wins": 193,
+        "win_rate": 47.18826405867971,
+        "pf": 0.8659430589901697,
+        "mean_r": -0.07008369471657355,
+        "total_r": -28.664231139078584,
+        "target_hits": 181,
+        "timed_exits": 19,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 494,
+        "wins": 175,
+        "win_rate": 35.4251012145749,
+        "pf": 0.9363274662576562,
+        "mean_r": -0.03978813149835995,
+        "total_r": -19.655336960189814,
+        "target_hits": 130,
+        "timed_exits": 65,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 396,
+        "wins": 141,
+        "win_rate": 35.60606060606061,
+        "pf": 0.9233455095182586,
+        "mean_r": -0.04847759253175764,
+        "total_r": -19.197126642576023,
+        "target_hits": 101,
+        "timed_exits": 51,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 495,
+        "wins": 139,
+        "win_rate": 28.08080808080808,
+        "pf": 0.8994186247823507,
+        "mean_r": -0.05360397483884448,
+        "total_r": -26.533967545228016,
+        "target_hits": 108,
+        "timed_exits": 46,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 398,
+        "wins": 114,
+        "win_rate": 28.643216080402013,
+        "pf": 0.8693656678861931,
+        "mean_r": -0.07025208282921665,
+        "total_r": -27.960328966028225,
+        "target_hits": 81,
+        "timed_exits": 41,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 494,
+        "wins": 180,
+        "win_rate": 36.43724696356275,
+        "pf": 0.8765905137508552,
+        "mean_r": -0.06526016345257302,
+        "total_r": -32.23852074557107,
+        "target_hits": 130,
+        "timed_exits": 65,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 396,
+        "wins": 144,
+        "win_rate": 36.36363636363637,
+        "pf": 0.8716681183696442,
+        "mean_r": -0.06808032936291665,
+        "total_r": -26.959810427714995,
+        "target_hits": 101,
+        "timed_exits": 51,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 495,
+        "wins": 226,
+        "win_rate": 45.656565656565654,
+        "pf": 0.86185467253997,
+        "mean_r": -0.0730978914803113,
+        "total_r": -36.18345628275409,
+        "target_hits": 108,
+        "timed_exits": 46,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 398,
+        "wins": 182,
+        "win_rate": 45.7286432160804,
+        "pf": 0.843336658434926,
+        "mean_r": -0.08380537401156304,
+        "total_r": -33.35453885660209,
+        "target_hits": 81,
+        "timed_exits": 41,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 25,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 389,
+        "wins": 163,
+        "win_rate": 41.90231362467866,
+        "pf": 0.7039769923670771,
+        "mean_r": -0.16753850138016604,
+        "total_r": -65.17247703688459,
+        "target_hits": 153,
+        "timed_exits": 23,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 307,
+        "wins": 150,
+        "win_rate": 48.85993485342019,
+        "pf": 0.9221252336398927,
+        "mean_r": -0.03898917320565964,
+        "total_r": -11.96967617413751,
+        "target_hits": 137,
+        "timed_exits": 20,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 25,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 379,
+        "wins": 123,
+        "win_rate": 32.45382585751979,
+        "pf": 0.8176943030399244,
+        "mean_r": -0.11903856743094028,
+        "total_r": -45.115617056326364,
+        "target_hits": 91,
+        "timed_exits": 49,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 303,
+        "wins": 113,
+        "win_rate": 37.29372937293729,
+        "pf": 0.9774235953780855,
+        "mean_r": -0.013762065889106539,
+        "total_r": -4.169905964399281,
+        "target_hits": 79,
+        "timed_exits": 44,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 25,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 380,
+        "wins": 95,
+        "win_rate": 25.0,
+        "pf": 0.7325313124506576,
+        "mean_r": -0.15447845902806223,
+        "total_r": -58.70181443066365,
+        "target_hits": 73,
+        "timed_exits": 35,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 303,
+        "wins": 94,
+        "win_rate": 31.02310231023102,
+        "pf": 0.9524900057512966,
+        "mean_r": -0.024269237334335666,
+        "total_r": -7.353578912303707,
+        "target_hits": 64,
+        "timed_exits": 38,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 25,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 379,
+        "wins": 127,
+        "win_rate": 33.50923482849604,
+        "pf": 0.7371638563968196,
+        "mean_r": -0.1506932983841667,
+        "total_r": -57.112760087599185,
+        "target_hits": 91,
+        "timed_exits": 49,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 303,
+        "wins": 115,
+        "win_rate": 37.95379537953795,
+        "pf": 0.9310336368924025,
+        "mean_r": -0.03504215278835136,
+        "total_r": -10.617772294870463,
+        "target_hits": 79,
+        "timed_exits": 44,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "impulse",
+      "adx_min": 25,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 380,
+        "wins": 156,
+        "win_rate": 41.05263157894737,
+        "pf": 0.704681943736457,
+        "mean_r": -0.16950389215639936,
+        "total_r": -64.41147901943175,
+        "target_hits": 73,
+        "timed_exits": 35,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 303,
+        "wins": 145,
+        "win_rate": 47.85478547854785,
+        "pf": 0.9206137944721456,
+        "mean_r": -0.04029573851096594,
+        "total_r": -12.20960876882268,
+        "target_hits": 64,
+        "timed_exits": 38,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 751,
+        "wins": 347,
+        "win_rate": 46.20505992010652,
+        "pf": 0.8426529681674123,
+        "mean_r": -0.0834554150158576,
+        "total_r": -62.67501667690905,
+        "target_hits": 330,
+        "timed_exits": 34,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 585,
+        "wins": 266,
+        "win_rate": 45.47008547008547,
+        "pf": 0.8089347788824995,
+        "mean_r": -0.10220450275249432,
+        "total_r": -59.78963411020918,
+        "target_hits": 248,
+        "timed_exits": 31,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 712,
+        "wins": 258,
+        "win_rate": 36.235955056179776,
+        "pf": 0.9683791694626226,
+        "mean_r": -0.01960348216306083,
+        "total_r": -13.957679300099311,
+        "target_hits": 193,
+        "timed_exits": 92,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 552,
+        "wins": 190,
+        "win_rate": 34.42028985507246,
+        "pf": 0.8626089826183649,
+        "mean_r": -0.08879719252903344,
+        "total_r": -49.01605027602646,
+        "target_hits": 135,
+        "timed_exits": 68,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 718,
+        "wins": 195,
+        "win_rate": 27.158774373259053,
+        "pf": 0.8962456060279529,
+        "mean_r": -0.054493102084240186,
+        "total_r": -39.12604729648445,
+        "target_hits": 156,
+        "timed_exits": 56,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 558,
+        "wins": 156,
+        "win_rate": 27.956989247311824,
+        "pf": 0.8408110810027233,
+        "mean_r": -0.08661041968202376,
+        "total_r": -48.32861418256926,
+        "target_hits": 113,
+        "timed_exits": 55,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 712,
+        "wins": 269,
+        "win_rate": 37.78089887640449,
+        "pf": 0.9215987979473843,
+        "mean_r": -0.040763154403226066,
+        "total_r": -29.02336593509696,
+        "target_hits": 193,
+        "timed_exits": 92,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 552,
+        "wins": 191,
+        "win_rate": 34.60144927536232,
+        "pf": 0.8161888986982802,
+        "mean_r": -0.09920935861870638,
+        "total_r": -54.76356595752592,
+        "target_hits": 135,
+        "timed_exits": 68,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 718,
+        "wins": 338,
+        "win_rate": 47.07520891364902,
+        "pf": 0.8843941437413588,
+        "mean_r": -0.06021716920093379,
+        "total_r": -43.23592748627046,
+        "target_hits": 156,
+        "timed_exits": 56,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 558,
+        "wins": 252,
+        "win_rate": 45.16129032258064,
+        "pf": 0.8189491735676218,
+        "mean_r": -0.09754756283935499,
+        "total_r": -54.431540064360085,
+        "target_hits": 113,
+        "timed_exits": 55,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 682,
+        "wins": 313,
+        "win_rate": 45.894428152492665,
+        "pf": 0.8370830592916064,
+        "mean_r": -0.08627006909040992,
+        "total_r": -58.83618711965957,
+        "target_hits": 297,
+        "timed_exits": 35,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 517,
+        "wins": 239,
+        "win_rate": 46.22823984526112,
+        "pf": 0.8365679782706235,
+        "mean_r": -0.08634383197278409,
+        "total_r": -44.63976112992937,
+        "target_hits": 224,
+        "timed_exits": 26,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 648,
+        "wins": 232,
+        "win_rate": 35.80246913580247,
+        "pf": 0.9347353156845319,
+        "mean_r": -0.04058249920337612,
+        "total_r": -26.297459483787726,
+        "target_hits": 170,
+        "timed_exits": 89,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 488,
+        "wins": 168,
+        "win_rate": 34.42622950819672,
+        "pf": 0.8730828949331808,
+        "mean_r": -0.08216982807144177,
+        "total_r": -40.098876098863585,
+        "target_hits": 122,
+        "timed_exits": 57,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 654,
+        "wins": 175,
+        "win_rate": 26.758409785932724,
+        "pf": 0.8815250302580363,
+        "mean_r": -0.061921500833434215,
+        "total_r": -40.496661545065976,
+        "target_hits": 139,
+        "timed_exits": 55,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 493,
+        "wins": 138,
+        "win_rate": 27.99188640973631,
+        "pf": 0.8524773783191747,
+        "mean_r": -0.08010632083408362,
+        "total_r": -39.492416171203224,
+        "target_hits": 102,
+        "timed_exits": 46,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 648,
+        "wins": 241,
+        "win_rate": 37.191358024691354,
+        "pf": 0.9021294500034067,
+        "mean_r": -0.05060136514607433,
+        "total_r": -32.78968461465617,
+        "target_hits": 170,
+        "timed_exits": 89,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 488,
+        "wins": 169,
+        "win_rate": 34.63114754098361,
+        "pf": 0.8261177587836361,
+        "mean_r": -0.09376803201528781,
+        "total_r": -45.758799623460455,
+        "target_hits": 122,
+        "timed_exits": 57,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 18,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 654,
+        "wins": 307,
+        "win_rate": 46.94189602446483,
+        "pf": 0.8774728884186588,
+        "mean_r": -0.06348266544078933,
+        "total_r": -41.517663198276225,
+        "target_hits": 139,
+        "timed_exits": 55,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 493,
+        "wins": 224,
+        "win_rate": 45.436105476673426,
+        "pf": 0.8302742126387451,
+        "mean_r": -0.09119632893988604,
+        "total_r": -44.95979016736381,
+        "target_hits": 102,
+        "timed_exits": 46,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 25,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 514,
+        "wins": 228,
+        "win_rate": 44.3579766536965,
+        "pf": 0.7881330424746137,
+        "mean_r": -0.11557729847409208,
+        "total_r": -59.40673141568333,
+        "target_hits": 218,
+        "timed_exits": 24,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 378,
+        "wins": 180,
+        "win_rate": 47.61904761904761,
+        "pf": 0.8977495524274113,
+        "mean_r": -0.05179332402514137,
+        "total_r": -19.577876481503438,
+        "target_hits": 168,
+        "timed_exits": 24,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 25,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 488,
+        "wins": 171,
+        "win_rate": 35.040983606557376,
+        "pf": 0.887436015348503,
+        "mean_r": -0.07057721338988023,
+        "total_r": -34.44168013426155,
+        "target_hits": 121,
+        "timed_exits": 71,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 357,
+        "wins": 130,
+        "win_rate": 36.41456582633053,
+        "pf": 0.9769853512973798,
+        "mean_r": -0.01420221456480296,
+        "total_r": -5.070190599634657,
+        "target_hits": 96,
+        "timed_exits": 47,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 25,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 493,
+        "wins": 120,
+        "win_rate": 24.34077079107505,
+        "pf": 0.7621432504979825,
+        "mean_r": -0.12909051501706195,
+        "total_r": -63.64162390341154,
+        "target_hits": 93,
+        "timed_exits": 41,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 361,
+        "wins": 108,
+        "win_rate": 29.916897506925206,
+        "pf": 0.9461181088337025,
+        "mean_r": -0.028110708694012027,
+        "total_r": -10.147965838538342,
+        "target_hits": 80,
+        "timed_exits": 40,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 25,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 488,
+        "wins": 179,
+        "win_rate": 36.68032786885246,
+        "pf": 0.8428765344009729,
+        "mean_r": -0.08443116697718617,
+        "total_r": -41.20240948486685,
+        "target_hits": 121,
+        "timed_exits": 71,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 357,
+        "wins": 131,
+        "win_rate": 36.69467787114846,
+        "pf": 0.9170564851224753,
+        "mean_r": -0.0428893410814874,
+        "total_r": -15.311494766091002,
+        "target_hits": 96,
+        "timed_exits": 47,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "first_break",
+      "adx_min": 25,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 493,
+        "wins": 222,
+        "win_rate": 45.030425963488845,
+        "pf": 0.7853548727700865,
+        "mean_r": -0.11546108389207528,
+        "total_r": -56.922314358793116,
+        "target_hits": 93,
+        "timed_exits": 41,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 361,
+        "wins": 168,
+        "win_rate": 46.53739612188366,
+        "pf": 0.9042252229763295,
+        "mean_r": -0.049458733776388854,
+        "total_r": -17.854602893276375,
+        "target_hits": 80,
+        "timed_exits": 40,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 280,
+        "wins": 143,
+        "win_rate": 51.07142857142857,
+        "pf": 1.0264497006525881,
+        "mean_r": 0.012830063646527475,
+        "total_r": 3.592417821027693,
+        "target_hits": 137,
+        "timed_exits": 14,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 258,
+        "wins": 111,
+        "win_rate": 43.02325581395349,
+        "pf": 0.7590052227303526,
+        "mean_r": -0.12953137210340662,
+        "total_r": -33.41909400267891,
+        "target_hits": 103,
+        "timed_exits": 22,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 270,
+        "wins": 102,
+        "win_rate": 37.77777777777778,
+        "pf": 1.0376908690316726,
+        "mean_r": 0.02248943803898735,
+        "total_r": 6.072148270526585,
+        "target_hits": 75,
+        "timed_exits": 43,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 248,
+        "wins": 75,
+        "win_rate": 30.241935483870968,
+        "pf": 0.7475555745414715,
+        "mean_r": -0.16790421552459722,
+        "total_r": -41.64024545010011,
+        "target_hits": 56,
+        "timed_exits": 33,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 0,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 271,
+        "wins": 78,
+        "win_rate": 28.782287822878228,
+        "pf": 0.9908110269172044,
+        "mean_r": -0.004569297396619187,
+        "total_r": -1.2382795944837997,
+        "target_hits": 61,
+        "timed_exits": 24,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 249,
+        "wins": 60,
+        "win_rate": 24.096385542168676,
+        "pf": 0.7193111298126923,
+        "mean_r": -0.15587960375497745,
+        "total_r": -38.814021334989384,
+        "target_hits": 46,
+        "timed_exits": 27,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 270,
+        "wins": 111,
+        "win_rate": 41.11111111111111,
+        "pf": 1.025899281814715,
+        "mean_r": 0.012738460216546834,
+        "total_r": 3.439384258467645,
+        "target_hits": 75,
+        "timed_exits": 43,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 248,
+        "wins": 76,
+        "win_rate": 30.64516129032258,
+        "pf": 0.7074074639777774,
+        "mean_r": -0.16123830090796734,
+        "total_r": -39.9870986251759,
+        "target_hits": 56,
+        "timed_exits": 33,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 0,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 271,
+        "wins": 137,
+        "win_rate": 50.55350553505535,
+        "pf": 0.9945946772377403,
+        "mean_r": -0.002665150963919793,
+        "total_r": -0.722255911222264,
+        "target_hits": 61,
+        "timed_exits": 24,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 249,
+        "wins": 105,
+        "win_rate": 42.168674698795186,
+        "pf": 0.7177370865965935,
+        "mean_r": -0.1547795685201919,
+        "total_r": -38.540112561527785,
+        "target_hits": 46,
+        "timed_exits": 27,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 270,
+        "wins": 138,
+        "win_rate": 51.11111111111111,
+        "pf": 1.0306478895513114,
+        "mean_r": 0.014842427255238455,
+        "total_r": 4.007455358914383,
+        "target_hits": 133,
+        "timed_exits": 13,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 246,
+        "wins": 106,
+        "win_rate": 43.08943089430895,
+        "pf": 0.7681212612027013,
+        "mean_r": -0.12405302312341836,
+        "total_r": -30.517043688360914,
+        "target_hits": 99,
+        "timed_exits": 21,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 260,
+        "wins": 99,
+        "win_rate": 38.07692307692307,
+        "pf": 1.0492838202380392,
+        "mean_r": 0.02936075412248187,
+        "total_r": 7.633796071845286,
+        "target_hits": 73,
+        "timed_exits": 41,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 236,
+        "wins": 70,
+        "win_rate": 29.66101694915254,
+        "pf": 0.747550299664178,
+        "mean_r": -0.16888937650355473,
+        "total_r": -39.857892854838916,
+        "target_hits": 54,
+        "timed_exits": 30,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 261,
+        "wins": 75,
+        "win_rate": 28.735632183908045,
+        "pf": 0.9938048824294173,
+        "mean_r": -0.0030779634590282403,
+        "total_r": -0.8033484628063707,
+        "target_hits": 59,
+        "timed_exits": 23,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 237,
+        "wins": 55,
+        "win_rate": 23.20675105485232,
+        "pf": 0.704832581516573,
+        "mean_r": -0.16341151999196463,
+        "total_r": -38.728530238095615,
+        "target_hits": 43,
+        "timed_exits": 25,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 260,
+        "wins": 107,
+        "win_rate": 41.15384615384615,
+        "pf": 1.03466500254404,
+        "mean_r": 0.01702971895411682,
+        "total_r": 4.427726928070373,
+        "target_hits": 73,
+        "timed_exits": 41,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 236,
+        "wins": 71,
+        "win_rate": 30.08474576271186,
+        "pf": 0.7095326217676419,
+        "mean_r": -0.1595122761457047,
+        "total_r": -37.64489717038631,
+        "target_hits": 54,
+        "timed_exits": 30,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 18,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 261,
+        "wins": 132,
+        "win_rate": 50.57471264367817,
+        "pf": 0.9976876211329652,
+        "mean_r": -0.0011389715572420328,
+        "total_r": -0.29727157644017055,
+        "target_hits": 59,
+        "timed_exits": 23,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 237,
+        "wins": 100,
+        "win_rate": 42.19409282700422,
+        "pf": 0.7138750390590403,
+        "mean_r": -0.15631367871697002,
+        "total_r": -37.046341855921895,
+        "target_hits": 43,
+        "timed_exits": 25,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 25,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 214,
+        "wins": 112,
+        "win_rate": 52.336448598130836,
+        "pf": 1.1110075436443658,
+        "mean_r": 0.05114401622824431,
+        "total_r": 10.944819472844284,
+        "target_hits": 108,
+        "timed_exits": 12,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 189,
+        "wins": 86,
+        "win_rate": 45.5026455026455,
+        "pf": 0.8416726554852492,
+        "mean_r": -0.08137985881086285,
+        "total_r": -15.38079331525308,
+        "target_hits": 80,
+        "timed_exits": 16,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 25,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 205,
+        "wins": 81,
+        "win_rate": 39.51219512195122,
+        "pf": 1.125981181315274,
+        "mean_r": 0.07158235630438456,
+        "total_r": 14.674383042398834,
+        "target_hits": 58,
+        "timed_exits": 37,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 181,
+        "wins": 55,
+        "win_rate": 30.386740331491712,
+        "pf": 0.790510234156354,
+        "mean_r": -0.1393362544698516,
+        "total_r": -25.219862059043137,
+        "target_hits": 44,
+        "timed_exits": 21,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 25,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 206,
+        "wins": 59,
+        "win_rate": 28.640776699029125,
+        "pf": 1.0317233896415572,
+        "mean_r": 0.015149769853969347,
+        "total_r": 3.1208525899176855,
+        "target_hits": 46,
+        "timed_exits": 20,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 182,
+        "wins": 42,
+        "win_rate": 23.076923076923077,
+        "pf": 0.722106539293301,
+        "mean_r": -0.14962139458140672,
+        "total_r": -27.231093813816024,
+        "target_hits": 33,
+        "timed_exits": 18,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 25,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 205,
+        "wins": 88,
+        "win_rate": 42.926829268292686,
+        "pf": 1.1130079532638357,
+        "mean_r": 0.053214422243274405,
+        "total_r": 10.908956559871253,
+        "target_hits": 58,
+        "timed_exits": 37,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 181,
+        "wins": 56,
+        "win_rate": 30.939226519337016,
+        "pf": 0.7682665033237063,
+        "mean_r": -0.1230739309796938,
+        "total_r": -22.276381507324576,
+        "target_hits": 44,
+        "timed_exits": 21,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest3",
+      "adx_min": 25,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 206,
+        "wins": 106,
+        "win_rate": 51.45631067961165,
+        "pf": 1.0474878627551765,
+        "mean_r": 0.02245517037109692,
+        "total_r": 4.625765096445965,
+        "target_hits": 46,
+        "timed_exits": 20,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 182,
+        "wins": 81,
+        "win_rate": 44.505494505494504,
+        "pf": 0.7579074160731945,
+        "mean_r": -0.12773694164075966,
+        "total_r": -23.24812337861826,
+        "target_hits": 33,
+        "timed_exits": 18,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 295,
+        "wins": 152,
+        "win_rate": 51.52542372881356,
+        "pf": 1.0499385860263777,
+        "mean_r": 0.023813909572234653,
+        "total_r": 7.025103323809223,
+        "target_hits": 144,
+        "timed_exits": 17,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 272,
+        "wins": 129,
+        "win_rate": 47.42647058823529,
+        "pf": 0.8977187859028761,
+        "mean_r": -0.051116458862427085,
+        "total_r": -13.903676810580167,
+        "target_hits": 119,
+        "timed_exits": 22,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 282,
+        "wins": 113,
+        "win_rate": 40.0709219858156,
+        "pf": 1.1633697131519591,
+        "mean_r": 0.09357181338640998,
+        "total_r": 26.38725137496761,
+        "target_hits": 85,
+        "timed_exits": 44,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 260,
+        "wins": 89,
+        "win_rate": 34.23076923076923,
+        "pf": 0.8669096742965463,
+        "mean_r": -0.08407355272705806,
+        "total_r": -21.859123709035096,
+        "target_hits": 64,
+        "timed_exits": 37,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 0,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 285,
+        "wins": 90,
+        "win_rate": 31.57894736842105,
+        "pf": 1.127792176477293,
+        "mean_r": 0.0621221530963818,
+        "total_r": 17.704813632468813,
+        "target_hits": 72,
+        "timed_exits": 26,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 261,
+        "wins": 71,
+        "win_rate": 27.203065134099617,
+        "pf": 0.8647862434928156,
+        "mean_r": -0.06921792183529243,
+        "total_r": -18.065877599011326,
+        "target_hits": 53,
+        "timed_exits": 29,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 282,
+        "wins": 121,
+        "win_rate": 42.90780141843972,
+        "pf": 1.1166829782580703,
+        "mean_r": 0.05611144430103587,
+        "total_r": 15.823427292892116,
+        "target_hits": 85,
+        "timed_exits": 44,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 260,
+        "wins": 90,
+        "win_rate": 34.61538461538461,
+        "pf": 0.8534830419115381,
+        "mean_r": -0.07434966194684135,
+        "total_r": -19.33091210617875,
+        "target_hits": 64,
+        "timed_exits": 37,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 0,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 285,
+        "wins": 146,
+        "win_rate": 51.2280701754386,
+        "pf": 1.0797911943748302,
+        "mean_r": 0.0384866235690095,
+        "total_r": 10.968687717167708,
+        "target_hits": 72,
+        "timed_exits": 26,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 261,
+        "wins": 123,
+        "win_rate": 47.12643678160919,
+        "pf": 0.8679668910402024,
+        "mean_r": -0.06666825687767859,
+        "total_r": -17.400415045074112,
+        "target_hits": 53,
+        "timed_exits": 29,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 284,
+        "wins": 145,
+        "win_rate": 51.056338028169016,
+        "pf": 1.0324181782265005,
+        "mean_r": 0.01559532858628913,
+        "total_r": 4.429073318506113,
+        "target_hits": 138,
+        "timed_exits": 16,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 259,
+        "wins": 124,
+        "win_rate": 47.87644787644788,
+        "pf": 0.9218848173407121,
+        "mean_r": -0.038562402109936035,
+        "total_r": -9.987662146473433,
+        "target_hits": 115,
+        "timed_exits": 21,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 271,
+        "wins": 108,
+        "win_rate": 39.85239852398524,
+        "pf": 1.146736102611653,
+        "mean_r": 0.0846414451405773,
+        "total_r": 22.937831633096447,
+        "target_hits": 81,
+        "timed_exits": 42,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 247,
+        "wins": 84,
+        "win_rate": 34.0080971659919,
+        "pf": 0.8779317332572467,
+        "mean_r": -0.07717735531977797,
+        "total_r": -19.062806763985158,
+        "target_hits": 62,
+        "timed_exits": 34,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 274,
+        "wins": 85,
+        "win_rate": 31.02189781021898,
+        "pf": 1.0976311687138882,
+        "mean_r": 0.04791488036845393,
+        "total_r": 13.128677220956376,
+        "target_hits": 68,
+        "timed_exits": 25,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 248,
+        "wins": 66,
+        "win_rate": 26.61290322580645,
+        "pf": 0.8648343586987074,
+        "mean_r": -0.06841299254971296,
+        "total_r": -16.966422152328814,
+        "target_hits": 50,
+        "timed_exits": 27,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 271,
+        "wins": 115,
+        "win_rate": 42.435424354243544,
+        "pf": 1.097305217427711,
+        "mean_r": 0.04723506427787814,
+        "total_r": 12.800702419304976,
+        "target_hits": 81,
+        "timed_exits": 42,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 247,
+        "wins": 85,
+        "win_rate": 34.41295546558704,
+        "pf": 0.8710244380199006,
+        "mean_r": -0.06467508624129724,
+        "total_r": -15.974746301600419,
+        "target_hits": 62,
+        "timed_exits": 34,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 18,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 274,
+        "wins": 139,
+        "win_rate": 50.72992700729927,
+        "pf": 1.0553353578606635,
+        "mean_r": 0.0269438120757662,
+        "total_r": 7.382604508759939,
+        "target_hits": 68,
+        "timed_exits": 25,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 248,
+        "wins": 118,
+        "win_rate": 47.58064516129033,
+        "pf": 0.8796168130369026,
+        "mean_r": -0.0600511289906431,
+        "total_r": -14.892679989679488,
+        "target_hits": 50,
+        "timed_exits": 27,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 25,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 225,
+        "wins": 117,
+        "win_rate": 52.0,
+        "pf": 1.0914142997209504,
+        "mean_r": 0.042372772959710106,
+        "total_r": 9.533873915934773,
+        "target_hits": 111,
+        "timed_exits": 14,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 197,
+        "wins": 99,
+        "win_rate": 50.25380710659898,
+        "pf": 1.0058711177601358,
+        "mean_r": 0.002783443270228373,
+        "total_r": 0.5483383242349895,
+        "target_hits": 92,
+        "timed_exits": 15,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 25,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 214,
+        "wins": 88,
+        "win_rate": 41.1214953271028,
+        "pf": 1.2116477361075222,
+        "mean_r": 0.11744613053076487,
+        "total_r": 25.13347193358368,
+        "target_hits": 64,
+        "timed_exits": 37,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 188,
+        "wins": 64,
+        "win_rate": 34.04255319148936,
+        "pf": 0.8983158619745544,
+        "mean_r": -0.06472888734546368,
+        "total_r": -12.169030820947173,
+        "target_hits": 49,
+        "timed_exits": 23,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 25,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 217,
+        "wins": 67,
+        "win_rate": 30.87557603686636,
+        "pf": 1.1173617154010551,
+        "mean_r": 0.056257749325410694,
+        "total_r": 12.20793160361412,
+        "target_hits": 53,
+        "timed_exits": 21,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 189,
+        "wins": 49,
+        "win_rate": 25.925925925925924,
+        "pf": 0.8599176862854025,
+        "mean_r": -0.06915697767264242,
+        "total_r": -13.070668780129418,
+        "target_hits": 37,
+        "timed_exits": 19,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 25,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 214,
+        "wins": 94,
+        "win_rate": 43.925233644859816,
+        "pf": 1.152538425973367,
+        "mean_r": 0.07213544570579229,
+        "total_r": 15.43698538103955,
+        "target_hits": 64,
+        "timed_exits": 37,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 188,
+        "wins": 65,
+        "win_rate": 34.57446808510639,
+        "pf": 0.920322647197754,
+        "mean_r": -0.03873421140545512,
+        "total_r": -7.282031744225563,
+        "target_hits": 49,
+        "timed_exits": 23,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "entry_mode": "retest6",
+      "adx_min": 25,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 217,
+        "wins": 111,
+        "win_rate": 51.1520737327189,
+        "pf": 1.0820522943096826,
+        "mean_r": 0.038989375629399865,
+        "total_r": 8.46069451157977,
+        "target_hits": 53,
+        "timed_exits": 21,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 189,
+        "wins": 94,
+        "win_rate": 49.735449735449734,
+        "pf": 0.9156475480063263,
+        "mean_r": -0.04073532654880388,
+        "total_r": -7.698976717723934,
+        "target_hits": 37,
+        "timed_exits": 19,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 428,
+        "wins": 205,
+        "win_rate": 47.89719626168225,
+        "pf": 0.9080635914446176,
+        "mean_r": -0.04394810908895508,
+        "total_r": -18.809790690072774,
+        "target_hits": 178,
+        "timed_exits": 55,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 315,
+        "wins": 155,
+        "win_rate": 49.2063492063492,
+        "pf": 0.93055948599695,
+        "mean_r": -0.03329895316497222,
+        "total_r": -10.48917024696625,
+        "target_hits": 130,
+        "timed_exits": 38,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 415,
+        "wins": 161,
+        "win_rate": 38.795180722891565,
+        "pf": 0.9773912841818739,
+        "mean_r": -0.01245565502826609,
+        "total_r": -5.169096836730428,
+        "target_hits": 84,
+        "timed_exits": 117,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 296,
+        "wins": 122,
+        "win_rate": 41.21621621621622,
+        "pf": 0.968133072082949,
+        "mean_r": -0.01717410235321394,
+        "total_r": -5.083534296551327,
+        "target_hits": 56,
+        "timed_exits": 87,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 415,
+        "wins": 142,
+        "win_rate": 34.21686746987952,
+        "pf": 1.017310058842256,
+        "mean_r": 0.00829533359901888,
+        "total_r": 3.442563443592835,
+        "target_hits": 78,
+        "timed_exits": 90,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 296,
+        "wins": 95,
+        "win_rate": 32.0945945945946,
+        "pf": 0.9337339803922112,
+        "mean_r": -0.031375357867568864,
+        "total_r": -9.287105928800383,
+        "target_hits": 52,
+        "timed_exits": 58,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 415,
+        "wins": 175,
+        "win_rate": 42.168674698795186,
+        "pf": 0.9493581595871217,
+        "mean_r": -0.024151683027915274,
+        "total_r": -10.022948456584839,
+        "target_hits": 84,
+        "timed_exits": 117,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 296,
+        "wins": 128,
+        "win_rate": 43.24324324324324,
+        "pf": 0.949791330696732,
+        "mean_r": -0.023722358922079013,
+        "total_r": -7.021818240935388,
+        "target_hits": 56,
+        "timed_exits": 87,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 415,
+        "wins": 201,
+        "win_rate": 48.433734939759034,
+        "pf": 0.9710950904585984,
+        "mean_r": -0.01377618871427281,
+        "total_r": -5.717118316423216,
+        "target_hits": 78,
+        "timed_exits": 90,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 296,
+        "wins": 146,
+        "win_rate": 49.32432432432432,
+        "pf": 0.9347333611033933,
+        "mean_r": -0.03082298667925648,
+        "total_r": -9.123604057059918,
+        "target_hits": 52,
+        "timed_exits": 58,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 389,
+        "wins": 183,
+        "win_rate": 47.04370179948586,
+        "pf": 0.8865819877918548,
+        "mean_r": -0.05439398935689151,
+        "total_r": -21.1592618598308,
+        "target_hits": 159,
+        "timed_exits": 53,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 285,
+        "wins": 142,
+        "win_rate": 49.824561403508774,
+        "pf": 0.9513476746978449,
+        "mean_r": -0.02264409460800931,
+        "total_r": -6.453566963282653,
+        "target_hits": 115,
+        "timed_exits": 41,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 378,
+        "wins": 141,
+        "win_rate": 37.301587301587304,
+        "pf": 0.9234014303031977,
+        "mean_r": -0.042677037033834055,
+        "total_r": -16.13191999878927,
+        "target_hits": 75,
+        "timed_exits": 107,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 267,
+        "wins": 114,
+        "win_rate": 42.69662921348314,
+        "pf": 1.0023823956141364,
+        "mean_r": 0.00122312938173221,
+        "total_r": 0.32657554492250007,
+        "target_hits": 48,
+        "timed_exits": 88,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 378,
+        "wins": 125,
+        "win_rate": 33.06878306878307,
+        "pf": 0.9658394825567708,
+        "mean_r": -0.01652111285905167,
+        "total_r": -6.244980660721532,
+        "target_hits": 70,
+        "timed_exits": 82,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 267,
+        "wins": 88,
+        "win_rate": 32.958801498127336,
+        "pf": 0.936398971038394,
+        "mean_r": -0.028987309924627797,
+        "total_r": -7.739611749875622,
+        "target_hits": 44,
+        "timed_exits": 60,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 378,
+        "wins": 155,
+        "win_rate": 41.00529100529101,
+        "pf": 0.9027441792783775,
+        "mean_r": -0.04680042547274154,
+        "total_r": -17.690560828696302,
+        "target_hits": 75,
+        "timed_exits": 107,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 267,
+        "wins": 120,
+        "win_rate": 44.9438202247191,
+        "pf": 0.9851848449992316,
+        "mean_r": -0.006737684188601776,
+        "total_r": -1.7989616783566742,
+        "target_hits": 48,
+        "timed_exits": 88,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 378,
+        "wins": 179,
+        "win_rate": 47.354497354497354,
+        "pf": 0.929875426030813,
+        "mean_r": -0.03372246338535036,
+        "total_r": -12.747091159662434,
+        "target_hits": 70,
+        "timed_exits": 82,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 267,
+        "wins": 134,
+        "win_rate": 50.187265917603,
+        "pf": 0.9519535669160261,
+        "mean_r": -0.02184290384178178,
+        "total_r": -5.832055325755735,
+        "target_hits": 44,
+        "timed_exits": 60,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 25,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 309,
+        "wins": 138,
+        "win_rate": 44.66019417475729,
+        "pf": 0.812977653492498,
+        "mean_r": -0.09354502068421079,
+        "total_r": -28.905411391421136,
+        "target_hits": 120,
+        "timed_exits": 42,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 218,
+        "wins": 102,
+        "win_rate": 46.788990825688074,
+        "pf": 0.8501946608704879,
+        "mean_r": -0.07359841291996774,
+        "total_r": -16.04445401655297,
+        "target_hits": 82,
+        "timed_exits": 32,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 25,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 301,
+        "wins": 103,
+        "win_rate": 34.21926910299003,
+        "pf": 0.804659695924855,
+        "mean_r": -0.11374766482783034,
+        "total_r": -34.23804711317693,
+        "target_hits": 54,
+        "timed_exits": 84,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 205,
+        "wins": 85,
+        "win_rate": 41.46341463414634,
+        "pf": 0.9870476855401317,
+        "mean_r": -0.006895294173467366,
+        "total_r": -1.41353530556081,
+        "target_hits": 40,
+        "timed_exits": 60,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 25,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 301,
+        "wins": 91,
+        "win_rate": 30.23255813953488,
+        "pf": 0.8572930967330656,
+        "mean_r": -0.07243215123581948,
+        "total_r": -21.802077521981662,
+        "target_hits": 52,
+        "timed_exits": 62,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 205,
+        "wins": 64,
+        "win_rate": 31.21951219512195,
+        "pf": 0.894313218398572,
+        "mean_r": -0.050846992190608425,
+        "total_r": -10.423633399074728,
+        "target_hits": 36,
+        "timed_exits": 41,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 25,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 301,
+        "wins": 115,
+        "win_rate": 38.205980066445186,
+        "pf": 0.7916780469954422,
+        "mean_r": -0.10515878452212503,
+        "total_r": -31.65279414115963,
+        "target_hits": 54,
+        "timed_exits": 84,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 205,
+        "wins": 87,
+        "win_rate": 42.4390243902439,
+        "pf": 0.9301603064688313,
+        "mean_r": -0.03353239549805636,
+        "total_r": -6.874141077101553,
+        "target_hits": 40,
+        "timed_exits": 60,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 25,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 301,
+        "wins": 134,
+        "win_rate": 44.518272425249165,
+        "pf": 0.8324959542801529,
+        "mean_r": -0.08450102772611959,
+        "total_r": -25.434809345561995,
+        "target_hits": 52,
+        "timed_exits": 62,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 205,
+        "wins": 97,
+        "win_rate": 47.3170731707317,
+        "pf": 0.8843487858591565,
+        "mean_r": -0.0555082445066269,
+        "total_r": -11.379190123858514,
+        "target_hits": 36,
+        "timed_exits": 41,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 312,
+        "wins": 152,
+        "win_rate": 48.717948717948715,
+        "pf": 0.9707591552098185,
+        "mean_r": -0.01320074524056167,
+        "total_r": -4.118632515055241,
+        "target_hits": 130,
+        "timed_exits": 49,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 235,
+        "wins": 116,
+        "win_rate": 49.361702127659576,
+        "pf": 0.9515491775469053,
+        "mean_r": -0.022857862219020125,
+        "total_r": -5.371597621469729,
+        "target_hits": 99,
+        "timed_exits": 28,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 302,
+        "wins": 124,
+        "win_rate": 41.05960264900662,
+        "pf": 1.0193141237625698,
+        "mean_r": 0.009883442815496912,
+        "total_r": 2.9847997302800673,
+        "target_hits": 55,
+        "timed_exits": 103,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 223,
+        "wins": 92,
+        "win_rate": 41.25560538116592,
+        "pf": 0.9669797624163424,
+        "mean_r": -0.017777223935745882,
+        "total_r": -3.9643209376713315,
+        "target_hits": 43,
+        "timed_exits": 64,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 302,
+        "wins": 109,
+        "win_rate": 36.092715231788084,
+        "pf": 1.0544334508864475,
+        "mean_r": 0.02456231771771062,
+        "total_r": 7.417819950748608,
+        "target_hits": 52,
+        "timed_exits": 82,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 223,
+        "wins": 67,
+        "win_rate": 30.04484304932735,
+        "pf": 0.8677058493416929,
+        "mean_r": -0.06364029365360341,
+        "total_r": -14.191785484753561,
+        "target_hits": 38,
+        "timed_exits": 40,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 302,
+        "wins": 133,
+        "win_rate": 44.03973509933775,
+        "pf": 1.003661027813375,
+        "mean_r": 0.0016462248406084725,
+        "total_r": 0.4971599018637587,
+        "target_hits": 55,
+        "timed_exits": 103,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 223,
+        "wins": 95,
+        "win_rate": 42.600896860986545,
+        "pf": 0.9400093244945259,
+        "mean_r": -0.02860564309677681,
+        "total_r": -6.379058410581228,
+        "target_hits": 43,
+        "timed_exits": 64,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 302,
+        "wins": 149,
+        "win_rate": 49.337748344370866,
+        "pf": 1.019994049310702,
+        "mean_r": 0.008985662291715333,
+        "total_r": 2.7136700120980306,
+        "target_hits": 52,
+        "timed_exits": 82,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 223,
+        "wins": 108,
+        "win_rate": 48.4304932735426,
+        "pf": 0.8898795419110628,
+        "mean_r": -0.05275536020388591,
+        "total_r": -11.764445325466557,
+        "target_hits": 38,
+        "timed_exits": 40,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 281,
+        "wins": 134,
+        "win_rate": 47.686832740213525,
+        "pf": 0.9456012280975282,
+        "mean_r": -0.024717949481026763,
+        "total_r": -6.94574380416852,
+        "target_hits": 115,
+        "timed_exits": 46,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 213,
+        "wins": 106,
+        "win_rate": 49.76525821596244,
+        "pf": 0.9683864663937432,
+        "mean_r": -0.014520651801198138,
+        "total_r": -3.0928988336552035,
+        "target_hits": 88,
+        "timed_exits": 30,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 272,
+        "wins": 109,
+        "win_rate": 40.07352941176471,
+        "pf": 1.0157685378509196,
+        "mean_r": 0.008078378104423037,
+        "total_r": 2.197318844403066,
+        "target_hits": 51,
+        "timed_exits": 92,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 202,
+        "wins": 85,
+        "win_rate": 42.07920792079208,
+        "pf": 0.9765301867380917,
+        "mean_r": -0.012200552621721634,
+        "total_r": -2.4645116295877703,
+        "target_hits": 36,
+        "timed_exits": 65,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 272,
+        "wins": 97,
+        "win_rate": 35.661764705882355,
+        "pf": 1.051041784656337,
+        "mean_r": 0.023091773907661477,
+        "total_r": 6.280962502883922,
+        "target_hits": 48,
+        "timed_exits": 74,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 202,
+        "wins": 62,
+        "win_rate": 30.693069306930692,
+        "pf": 0.8529990886338555,
+        "mean_r": -0.06855611772881867,
+        "total_r": -13.848335781221373,
+        "target_hits": 31,
+        "timed_exits": 43,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 272,
+        "wins": 118,
+        "win_rate": 43.38235294117647,
+        "pf": 0.993392962359115,
+        "mean_r": -0.0029784418589390163,
+        "total_r": -0.8101361856314124,
+        "target_hits": 51,
+        "timed_exits": 92,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 202,
+        "wins": 88,
+        "win_rate": 43.56435643564357,
+        "pf": 0.9572337021792191,
+        "mean_r": -0.019751506745703966,
+        "total_r": -3.989804362632201,
+        "target_hits": 36,
+        "timed_exits": 65,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 272,
+        "wins": 132,
+        "win_rate": 48.529411764705884,
+        "pf": 1.0100501592133146,
+        "mean_r": 0.004528256042680208,
+        "total_r": 1.2316856436090164,
+        "target_hits": 48,
+        "timed_exits": 74,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 202,
+        "wins": 99,
+        "win_rate": 49.00990099009901,
+        "pf": 0.8938874743495958,
+        "mean_r": -0.04927411425640206,
+        "total_r": -9.953371079793216,
+        "target_hits": 31,
+        "timed_exits": 43,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 25,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 220,
+        "wins": 104,
+        "win_rate": 47.27272727272727,
+        "pf": 0.9562189462389304,
+        "mean_r": -0.019867173232525293,
+        "total_r": -4.370778111155564,
+        "target_hits": 91,
+        "timed_exits": 35,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 157,
+        "wins": 77,
+        "win_rate": 49.044585987261144,
+        "pf": 0.9732082596027921,
+        "mean_r": -0.012402131315069946,
+        "total_r": -1.9471346164659815,
+        "target_hits": 66,
+        "timed_exits": 20,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 25,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 214,
+        "wins": 82,
+        "win_rate": 38.31775700934579,
+        "pf": 0.9738839583008653,
+        "mean_r": -0.013606308078565034,
+        "total_r": -2.911749928812917,
+        "target_hits": 39,
+        "timed_exits": 72,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 149,
+        "wins": 63,
+        "win_rate": 42.281879194630875,
+        "pf": 1.0208759553162505,
+        "mean_r": 0.010916745984846522,
+        "total_r": 1.6265951517421318,
+        "target_hits": 28,
+        "timed_exits": 45,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 25,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 214,
+        "wins": 71,
+        "win_rate": 33.177570093457945,
+        "pf": 1.0138657982875956,
+        "mean_r": 0.006300776369839637,
+        "total_r": 1.3483661431456824,
+        "target_hits": 37,
+        "timed_exits": 55,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 149,
+        "wins": 44,
+        "win_rate": 29.53020134228188,
+        "pf": 0.8987180719457216,
+        "mean_r": -0.04690716072480842,
+        "total_r": -6.989166947996455,
+        "target_hits": 24,
+        "timed_exits": 29,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 25,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 214,
+        "wins": 90,
+        "win_rate": 42.05607476635514,
+        "pf": 0.9678488621457302,
+        "mean_r": -0.014548050071061911,
+        "total_r": -3.113282715207249,
+        "target_hits": 39,
+        "timed_exits": 72,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 149,
+        "wins": 64,
+        "win_rate": 42.95302013422819,
+        "pf": 0.9979173906646089,
+        "mean_r": -0.0009598892934015228,
+        "total_r": -0.1430235047168269,
+        "target_hits": 28,
+        "timed_exits": 45,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 25,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 214,
+        "wins": 102,
+        "win_rate": 47.66355140186916,
+        "pf": 0.9898402722487235,
+        "mean_r": -0.0045945078468595845,
+        "total_r": -0.9832246792279511,
+        "target_hits": 37,
+        "timed_exits": 55,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 149,
+        "wins": 73,
+        "win_rate": 48.99328859060403,
+        "pf": 0.9351578814542227,
+        "mean_r": -0.029871842648229025,
+        "total_r": -4.450904554586125,
+        "target_hits": 24,
+        "timed_exits": 29,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 416,
+        "wins": 202,
+        "win_rate": 48.55769230769231,
+        "pf": 0.9379117178558158,
+        "mean_r": -0.02923605926744266,
+        "total_r": -12.162200655256147,
+        "target_hits": 176,
+        "timed_exits": 54,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 303,
+        "wins": 147,
+        "win_rate": 48.51485148514851,
+        "pf": 0.8973075332520388,
+        "mean_r": -0.050070090741815676,
+        "total_r": -15.17123749477015,
+        "target_hits": 122,
+        "timed_exits": 37,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 396,
+        "wins": 154,
+        "win_rate": 38.88888888888889,
+        "pf": 0.9718232145560284,
+        "mean_r": -0.015544451882472048,
+        "total_r": -6.155602945458931,
+        "target_hits": 80,
+        "timed_exits": 112,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 283,
+        "wins": 116,
+        "win_rate": 40.98939929328622,
+        "pf": 0.9453458235852764,
+        "mean_r": -0.02981482139850922,
+        "total_r": -8.43759445577811,
+        "target_hits": 52,
+        "timed_exits": 82,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 396,
+        "wins": 134,
+        "win_rate": 33.83838383838384,
+        "pf": 1.0110619271404417,
+        "mean_r": 0.0052725977206524695,
+        "total_r": 2.087948697378378,
+        "target_hits": 74,
+        "timed_exits": 85,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 284,
+        "wins": 89,
+        "win_rate": 31.338028169014088,
+        "pf": 0.8741147117998564,
+        "mean_r": -0.060722248197352925,
+        "total_r": -17.24511848804823,
+        "target_hits": 46,
+        "timed_exits": 55,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 396,
+        "wins": 167,
+        "win_rate": 42.17171717171717,
+        "pf": 0.9521357556509816,
+        "mean_r": -0.02269934267964619,
+        "total_r": -8.988939701139891,
+        "target_hits": 80,
+        "timed_exits": 112,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 283,
+        "wins": 122,
+        "win_rate": 43.109540636042404,
+        "pf": 0.9280441890985207,
+        "mean_r": -0.03450703350962201,
+        "total_r": -9.76549048322303,
+        "target_hits": 52,
+        "timed_exits": 82,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 396,
+        "wins": 193,
+        "win_rate": 48.73737373737374,
+        "pf": 0.9740657997589195,
+        "mean_r": -0.012290817878083952,
+        "total_r": -4.867163879721245,
+        "target_hits": 74,
+        "timed_exits": 85,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 284,
+        "wins": 139,
+        "win_rate": 48.943661971830984,
+        "pf": 0.8926428319146684,
+        "mean_r": -0.05166053168240428,
+        "total_r": -14.671590997802817,
+        "target_hits": 46,
+        "timed_exits": 55,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 367,
+        "wins": 175,
+        "win_rate": 47.68392370572207,
+        "pf": 0.9069390355082192,
+        "mean_r": -0.04426996887484274,
+        "total_r": -16.247078577067285,
+        "target_hits": 152,
+        "timed_exits": 50,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 267,
+        "wins": 131,
+        "win_rate": 49.063670411985015,
+        "pf": 0.9174454331035621,
+        "mean_r": -0.03934160294516596,
+        "total_r": -10.504207986359312,
+        "target_hits": 106,
+        "timed_exits": 37,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 350,
+        "wins": 129,
+        "win_rate": 36.857142857142854,
+        "pf": 0.8977007189866187,
+        "mean_r": -0.05792175303566012,
+        "total_r": -20.27261356248104,
+        "target_hits": 69,
+        "timed_exits": 97,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 247,
+        "wins": 104,
+        "win_rate": 42.10526315789473,
+        "pf": 0.9759313789505862,
+        "mean_r": -0.012652806054002682,
+        "total_r": -3.1252430953386625,
+        "target_hits": 44,
+        "timed_exits": 78,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 350,
+        "wins": 113,
+        "win_rate": 32.285714285714285,
+        "pf": 0.9391828912563404,
+        "mean_r": -0.029612072385342202,
+        "total_r": -10.36422533486977,
+        "target_hits": 64,
+        "timed_exits": 73,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 248,
+        "wins": 79,
+        "win_rate": 31.85483870967742,
+        "pf": 0.8704098790128737,
+        "mean_r": -0.060843252952258765,
+        "total_r": -15.089126732160175,
+        "target_hits": 38,
+        "timed_exits": 53,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 350,
+        "wins": 142,
+        "win_rate": 40.57142857142857,
+        "pf": 0.8843524632773709,
+        "mean_r": -0.056012416203258086,
+        "total_r": -19.60434567114033,
+        "target_hits": 69,
+        "timed_exits": 97,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 247,
+        "wins": 110,
+        "win_rate": 44.534412955465584,
+        "pf": 0.9585435475101748,
+        "mean_r": -0.019335222869627043,
+        "total_r": -4.77580004879788,
+        "target_hits": 44,
+        "timed_exits": 78,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 18,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 350,
+        "wins": 166,
+        "win_rate": 47.42857142857143,
+        "pf": 0.9135185335338668,
+        "mean_r": -0.041857575878099136,
+        "total_r": -14.650151557334699,
+        "target_hits": 64,
+        "timed_exits": 73,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 248,
+        "wins": 123,
+        "win_rate": 49.596774193548384,
+        "pf": 0.9030693876130022,
+        "mean_r": -0.04540354986150549,
+        "total_r": -11.260080365653362,
+        "target_hits": 38,
+        "timed_exits": 53,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 25,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 291,
+        "wins": 129,
+        "win_rate": 44.329896907216494,
+        "pf": 0.8087053258504333,
+        "mean_r": -0.09629998692688514,
+        "total_r": -28.023296195723574,
+        "target_hits": 114,
+        "timed_exits": 38,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 199,
+        "wins": 94,
+        "win_rate": 47.23618090452261,
+        "pf": 0.8387039582510728,
+        "mean_r": -0.08026775682175587,
+        "total_r": -15.973283607529417,
+        "target_hits": 74,
+        "timed_exits": 28,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 25,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 277,
+        "wins": 92,
+        "win_rate": 33.2129963898917,
+        "pf": 0.7552688195477767,
+        "mean_r": -0.14554833242050952,
+        "total_r": -40.316888080481135,
+        "target_hits": 48,
+        "timed_exits": 76,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 186,
+        "wins": 79,
+        "win_rate": 42.473118279569896,
+        "pf": 0.9778378737263907,
+        "mean_r": -0.011879330648093017,
+        "total_r": -2.209555500545301,
+        "target_hits": 35,
+        "timed_exits": 54,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 25,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 277,
+        "wins": 78,
+        "win_rate": 28.158844765342963,
+        "pf": 0.7946020360827547,
+        "mean_r": -0.10625194443994337,
+        "total_r": -29.431788609864316,
+        "target_hits": 46,
+        "timed_exits": 53,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 186,
+        "wins": 59,
+        "win_rate": 31.72043010752688,
+        "pf": 0.8578903225376439,
+        "mean_r": -0.06889089298734498,
+        "total_r": -12.813706095646166,
+        "target_hits": 30,
+        "timed_exits": 37,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 25,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 277,
+        "wins": 103,
+        "win_rate": 37.18411552346571,
+        "pf": 0.7504813208825686,
+        "mean_r": -0.12833101167711933,
+        "total_r": -35.547690234562054,
+        "target_hits": 48,
+        "timed_exits": 76,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 186,
+        "wins": 81,
+        "win_rate": 43.54838709677419,
+        "pf": 0.927111972048896,
+        "mean_r": -0.03526759868358563,
+        "total_r": -6.559773355146927,
+        "target_hits": 35,
+        "timed_exits": 54,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 25,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 277,
+        "wins": 121,
+        "win_rate": 43.682310469314075,
+        "pf": 0.7885517157436794,
+        "mean_r": -0.10868281768683628,
+        "total_r": -30.10514049925365,
+        "target_hits": 46,
+        "timed_exits": 53,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 186,
+        "wins": 90,
+        "win_rate": 48.38709677419355,
+        "pf": 0.8681541504016289,
+        "mean_r": -0.0637733798532116,
+        "total_r": -11.86184865269736,
+        "target_hits": 30,
+        "timed_exits": 37,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 149,
+        "wins": 68,
+        "win_rate": 45.63758389261745,
+        "pf": 0.9223629009204565,
+        "mean_r": -0.03599005147227438,
+        "total_r": -5.3625176693688825,
+        "target_hits": 63,
+        "timed_exits": 24,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 127,
+        "wins": 62,
+        "win_rate": 48.818897637795274,
+        "pf": 0.9771123189443182,
+        "mean_r": -0.01041998815184036,
+        "total_r": -1.3233384952837257,
+        "target_hits": 53,
+        "timed_exits": 19,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 146,
+        "wins": 50,
+        "win_rate": 34.24657534246575,
+        "pf": 0.879394353427683,
+        "mean_r": -0.06719493383031436,
+        "total_r": -9.810460339225896,
+        "target_hits": 29,
+        "timed_exits": 44,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 120,
+        "wins": 47,
+        "win_rate": 39.166666666666664,
+        "pf": 0.9380310858314213,
+        "mean_r": -0.03374662459196685,
+        "total_r": -4.049594951036022,
+        "target_hits": 23,
+        "timed_exits": 35,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 0,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 146,
+        "wins": 43,
+        "win_rate": 29.45205479452055,
+        "pf": 0.9481875107532162,
+        "mean_r": -0.024415510418333626,
+        "total_r": -3.5646645210767094,
+        "target_hits": 27,
+        "timed_exits": 34,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 121,
+        "wins": 33,
+        "win_rate": 27.27272727272727,
+        "pf": 0.9090421213381448,
+        "mean_r": -0.04026622600130572,
+        "total_r": -4.872213346157992,
+        "target_hits": 19,
+        "timed_exits": 23,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 146,
+        "wins": 55,
+        "win_rate": 37.67123287671233,
+        "pf": 0.8786295587648889,
+        "mean_r": -0.057024511944715785,
+        "total_r": -8.325578743928505,
+        "target_hits": 29,
+        "timed_exits": 44,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 120,
+        "wins": 49,
+        "win_rate": 40.833333333333336,
+        "pf": 0.994727014310898,
+        "mean_r": -0.002300471835596137,
+        "total_r": -0.27605662027153643,
+        "target_hits": 23,
+        "timed_exits": 35,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 0,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 146,
+        "wins": 66,
+        "win_rate": 45.20547945205479,
+        "pf": 0.9241035954347232,
+        "mean_r": -0.03563480023872541,
+        "total_r": -5.2026808348539095,
+        "target_hits": 27,
+        "timed_exits": 34,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 121,
+        "wins": 61,
+        "win_rate": 50.413223140495866,
+        "pf": 0.9776257448608415,
+        "mean_r": -0.009859579349194915,
+        "total_r": -1.1930091012525847,
+        "target_hits": 19,
+        "timed_exits": 23,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 143,
+        "wins": 63,
+        "win_rate": 44.05594405594406,
+        "pf": 0.8750588589616034,
+        "mean_r": -0.059461474673519595,
+        "total_r": -8.502990878313302,
+        "target_hits": 59,
+        "timed_exits": 23,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 117,
+        "wins": 59,
+        "win_rate": 50.427350427350426,
+        "pf": 1.0609870355645272,
+        "mean_r": 0.026455652398149395,
+        "total_r": 3.0953113305834794,
+        "target_hits": 51,
+        "timed_exits": 18,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 140,
+        "wins": 45,
+        "win_rate": 32.142857142857146,
+        "pf": 0.8167873315116132,
+        "mean_r": -0.10512177240136343,
+        "total_r": -14.717048136190881,
+        "target_hits": 27,
+        "timed_exits": 41,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 111,
+        "wins": 45,
+        "win_rate": 40.54054054054054,
+        "pf": 1.0063379182175252,
+        "mean_r": 0.003327878565646676,
+        "total_r": 0.36939452078678103,
+        "target_hits": 22,
+        "timed_exits": 34,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 140,
+        "wins": 39,
+        "win_rate": 27.857142857142858,
+        "pf": 0.8845294111140471,
+        "mean_r": -0.055899099860215636,
+        "total_r": -7.825873980430189,
+        "target_hits": 25,
+        "timed_exits": 32,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 112,
+        "wins": 31,
+        "win_rate": 27.67857142857143,
+        "pf": 0.9694058423131142,
+        "mean_r": -0.012975213163707342,
+        "total_r": -1.4532238743352224,
+        "target_hits": 18,
+        "timed_exits": 22,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 140,
+        "wins": 50,
+        "win_rate": 35.714285714285715,
+        "pf": 0.8172690054508428,
+        "mean_r": -0.08820792319202285,
+        "total_r": -12.349109246883199,
+        "target_hits": 27,
+        "timed_exits": 41,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 111,
+        "wins": 47,
+        "win_rate": 42.34234234234234,
+        "pf": 1.0785830342415612,
+        "mean_r": 0.0327730669914345,
+        "total_r": 3.6378104360492296,
+        "target_hits": 22,
+        "timed_exits": 34,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 18,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 140,
+        "wins": 61,
+        "win_rate": 43.57142857142857,
+        "pf": 0.868162671962406,
+        "mean_r": -0.06359658692144893,
+        "total_r": -8.90352216900285,
+        "target_hits": 25,
+        "timed_exits": 32,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 112,
+        "wins": 58,
+        "win_rate": 51.78571428571429,
+        "pf": 1.0469870623317261,
+        "mean_r": 0.0198290888845372,
+        "total_r": 2.2208579550681664,
+        "target_hits": 18,
+        "timed_exits": 22,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 25,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 122,
+        "wins": 53,
+        "win_rate": 43.44262295081967,
+        "pf": 0.8747640959920221,
+        "mean_r": -0.05910809264264397,
+        "total_r": -7.211187302402564,
+        "target_hits": 50,
+        "timed_exits": 21,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 97,
+        "wins": 52,
+        "win_rate": 53.608247422680414,
+        "pf": 1.140768404649832,
+        "mean_r": 0.05922925110063084,
+        "total_r": 5.745237356761192,
+        "target_hits": 43,
+        "timed_exits": 15,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 25,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 120,
+        "wins": 38,
+        "win_rate": 31.666666666666664,
+        "pf": 0.7840812513678909,
+        "mean_r": -0.12206383726721105,
+        "total_r": -14.647660472065326,
+        "target_hits": 21,
+        "timed_exits": 39,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 92,
+        "wins": 40,
+        "win_rate": 43.47826086956522,
+        "pf": 1.0238012717301495,
+        "mean_r": 0.012347874979378783,
+        "total_r": 1.136004498102848,
+        "target_hits": 19,
+        "timed_exits": 27,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 25,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 120,
+        "wins": 33,
+        "win_rate": 27.500000000000004,
+        "pf": 0.8520372052047678,
+        "mean_r": -0.0706242712115035,
+        "total_r": -8.47491254538042,
+        "target_hits": 19,
+        "timed_exits": 31,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 93,
+        "wins": 27,
+        "win_rate": 29.03225806451613,
+        "pf": 0.9821398961117491,
+        "mean_r": -0.007210512104941662,
+        "total_r": -0.6705776257595746,
+        "target_hits": 15,
+        "timed_exits": 17,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 25,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 120,
+        "wins": 43,
+        "win_rate": 35.833333333333336,
+        "pf": 0.8044001495640596,
+        "mean_r": -0.09307094689054204,
+        "total_r": -11.168513626865046,
+        "target_hits": 21,
+        "timed_exits": 39,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 92,
+        "wins": 41,
+        "win_rate": 44.565217391304344,
+        "pf": 1.156534707370932,
+        "mean_r": 0.061852262247106625,
+        "total_r": 5.69040812673381,
+        "target_hits": 19,
+        "timed_exits": 27,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest3",
+      "adx_min": 25,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 120,
+        "wins": 52,
+        "win_rate": 43.333333333333336,
+        "pf": 0.8583547150054148,
+        "mean_r": -0.06735116386268829,
+        "total_r": -8.082139663522595,
+        "target_hits": 19,
+        "timed_exits": 31,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 93,
+        "wins": 52,
+        "win_rate": 55.91397849462365,
+        "pf": 1.1147075898796361,
+        "mean_r": 0.04603735248798428,
+        "total_r": 4.281473781382538,
+        "target_hits": 15,
+        "timed_exits": 17,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 158,
+        "wins": 74,
+        "win_rate": 46.835443037974684,
+        "pf": 0.9587428462973979,
+        "mean_r": -0.01903719518923676,
+        "total_r": -3.0078768398994082,
+        "target_hits": 68,
+        "timed_exits": 24,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 136,
+        "wins": 72,
+        "win_rate": 52.94117647058824,
+        "pf": 1.0896440113844443,
+        "mean_r": 0.03843933011153232,
+        "total_r": 5.2277488951683955,
+        "target_hits": 58,
+        "timed_exits": 22,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 153,
+        "wins": 56,
+        "win_rate": 36.60130718954248,
+        "pf": 0.909162899909801,
+        "mean_r": -0.04974239416729521,
+        "total_r": -7.610586307596167,
+        "target_hits": 30,
+        "timed_exits": 47,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 127,
+        "wins": 57,
+        "win_rate": 44.881889763779526,
+        "pf": 1.1118700848711534,
+        "mean_r": 0.0567257145928319,
+        "total_r": 7.204165753289651,
+        "target_hits": 26,
+        "timed_exits": 39,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 0,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 154,
+        "wins": 48,
+        "win_rate": 31.16883116883117,
+        "pf": 0.9830989056410582,
+        "mean_r": -0.007930126519007223,
+        "total_r": -1.2212394839271123,
+        "target_hits": 29,
+        "timed_exits": 35,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 129,
+        "wins": 44,
+        "win_rate": 34.10852713178294,
+        "pf": 1.1377310200496156,
+        "mean_r": 0.05724049700842384,
+        "total_r": 7.384024114086675,
+        "target_hits": 23,
+        "timed_exits": 27,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 153,
+        "wins": 61,
+        "win_rate": 39.869281045751634,
+        "pf": 0.9117747254185676,
+        "mean_r": -0.041541224791550625,
+        "total_r": -6.355807393107246,
+        "target_hits": 30,
+        "timed_exits": 47,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 127,
+        "wins": 59,
+        "win_rate": 46.45669291338583,
+        "pf": 1.1818683947565698,
+        "mean_r": 0.07361228237471719,
+        "total_r": 9.348759861589082,
+        "target_hits": 26,
+        "timed_exits": 39,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 0,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 154,
+        "wins": 72,
+        "win_rate": 46.75324675324675,
+        "pf": 0.9630391562025488,
+        "mean_r": -0.017280090787485186,
+        "total_r": -2.6611339812727186,
+        "target_hits": 29,
+        "timed_exits": 35,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 129,
+        "wins": 71,
+        "win_rate": 55.03875968992248,
+        "pf": 1.1579202500678114,
+        "mean_r": 0.06534744714429677,
+        "total_r": 8.429820681614284,
+        "target_hits": 23,
+        "timed_exits": 27,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 152,
+        "wins": 69,
+        "win_rate": 45.39473684210527,
+        "pf": 0.9144755492338996,
+        "mean_r": -0.04044967137397254,
+        "total_r": -6.148350048843826,
+        "target_hits": 64,
+        "timed_exits": 23,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 126,
+        "wins": 69,
+        "win_rate": 54.761904761904766,
+        "pf": 1.1882167159721153,
+        "mean_r": 0.07655872000821906,
+        "total_r": 9.646398721035602,
+        "target_hits": 56,
+        "timed_exits": 21,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 147,
+        "wins": 51,
+        "win_rate": 34.69387755102041,
+        "pf": 0.8487664582921299,
+        "mean_r": -0.08515084424871532,
+        "total_r": -12.517174104561152,
+        "target_hits": 28,
+        "timed_exits": 44,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 118,
+        "wins": 55,
+        "win_rate": 46.61016949152542,
+        "pf": 1.202733981872103,
+        "mean_r": 0.09850131546705468,
+        "total_r": 11.623155225112452,
+        "target_hits": 25,
+        "timed_exits": 38,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 148,
+        "wins": 44,
+        "win_rate": 29.72972972972973,
+        "pf": 0.9230343638126334,
+        "mean_r": -0.03704357394108505,
+        "total_r": -5.482448943280588,
+        "target_hits": 27,
+        "timed_exits": 33,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 120,
+        "wins": 42,
+        "win_rate": 35.0,
+        "pf": 1.2272100937944805,
+        "mean_r": 0.09002511321591206,
+        "total_r": 10.803013585909447,
+        "target_hits": 22,
+        "timed_exits": 26,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 147,
+        "wins": 56,
+        "win_rate": 38.095238095238095,
+        "pf": 0.8538637009902625,
+        "mean_r": -0.07060774078953704,
+        "total_r": -10.379337896061944,
+        "target_hits": 28,
+        "timed_exits": 44,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 118,
+        "wins": 57,
+        "win_rate": 48.30508474576271,
+        "pf": 1.2924920246673788,
+        "mean_r": 0.11239514337211737,
+        "total_r": 13.262626917909849,
+        "target_hits": 25,
+        "timed_exits": 38,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 18,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 148,
+        "wins": 67,
+        "win_rate": 45.27027027027027,
+        "pf": 0.9103734052998939,
+        "mean_r": -0.042986319698795,
+        "total_r": -6.3619753154216605,
+        "target_hits": 27,
+        "timed_exits": 33,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 120,
+        "wins": 68,
+        "win_rate": 56.666666666666664,
+        "pf": 1.2502631908306705,
+        "mean_r": 0.09869739781612533,
+        "total_r": 11.843687737935038,
+        "target_hits": 22,
+        "timed_exits": 26,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 25,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 128,
+        "wins": 58,
+        "win_rate": 45.3125,
+        "pf": 0.9206992163236636,
+        "mean_r": -0.03738509782972351,
+        "total_r": -4.785292522204609,
+        "target_hits": 54,
+        "timed_exits": 20,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 103,
+        "wins": 60,
+        "win_rate": 58.252427184466015,
+        "pf": 1.3042826092602535,
+        "mean_r": 0.11907275332614634,
+        "total_r": 12.264493592593073,
+        "target_hits": 47,
+        "timed_exits": 17,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 25,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 124,
+        "wins": 43,
+        "win_rate": 34.67741935483871,
+        "pf": 0.8067170933154116,
+        "mean_r": -0.1078752620137671,
+        "total_r": -13.37653248970712,
+        "target_hits": 21,
+        "timed_exits": 41,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 96,
+        "wins": 48,
+        "win_rate": 50.0,
+        "pf": 1.2481392128282283,
+        "mean_r": 0.11831181299800282,
+        "total_r": 11.357934047808271,
+        "target_hits": 21,
+        "timed_exits": 30,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 25,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 125,
+        "wins": 37,
+        "win_rate": 29.599999999999998,
+        "pf": 0.8816682624569345,
+        "mean_r": -0.05648186846001882,
+        "total_r": -7.060233557502352,
+        "target_hits": 20,
+        "timed_exits": 31,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 98,
+        "wins": 36,
+        "win_rate": 36.734693877551024,
+        "pf": 1.2884557478248928,
+        "mean_r": 0.10769212938637594,
+        "total_r": 10.553828679864843,
+        "target_hits": 18,
+        "timed_exits": 20,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 25,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 124,
+        "wins": 48,
+        "win_rate": 38.70967741935484,
+        "pf": 0.8381166575518426,
+        "mean_r": -0.07764103488157513,
+        "total_r": -9.627488325315316,
+        "target_hits": 21,
+        "timed_exits": 41,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 96,
+        "wins": 49,
+        "win_rate": 51.041666666666664,
+        "pf": 1.42977157530666,
+        "mean_r": 0.1539936818122311,
+        "total_r": 14.783393453974186,
+        "target_hits": 21,
+        "timed_exits": 30,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "retest6",
+      "adx_min": 25,
+      "exit_mode": "half1R_breakeven",
+      "train": {
+        "n": 125,
+        "wins": 57,
+        "win_rate": 45.6,
+        "pf": 0.8995681705139671,
+        "mean_r": -0.04775471087370344,
+        "total_r": -5.969338859212931,
+        "target_hits": 20,
+        "timed_exits": 31,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 98,
+        "wins": 60,
+        "win_rate": 61.224489795918366,
+        "pf": 1.3675812567806491,
+        "mean_r": 0.1364538000982568,
+        "total_r": 13.372472409629168,
+        "target_hits": 18,
+        "timed_exits": 20,
+        "late_exits": 1
+      }
+    }
+  ],
+  "development_top10": [
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 272,
+        "wins": 109,
+        "win_rate": 40.07352941176471,
+        "pf": 1.0157685378509196,
+        "mean_r": 0.008078378104423037,
+        "total_r": 2.197318844403066,
+        "target_hits": 51,
+        "timed_exits": 92,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 202,
+        "wins": 85,
+        "win_rate": 42.07920792079208,
+        "pf": 0.9765301867380917,
+        "mean_r": -0.012200552621721634,
+        "total_r": -2.4645116295877703,
+        "target_hits": 36,
+        "timed_exits": 65,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 415,
+        "wins": 161,
+        "win_rate": 38.795180722891565,
+        "pf": 0.9773912841818739,
+        "mean_r": -0.01245565502826609,
+        "total_r": -5.169096836730428,
+        "target_hits": 84,
+        "timed_exits": 117,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 296,
+        "wins": 122,
+        "win_rate": 41.21621621621622,
+        "pf": 0.968133072082949,
+        "mean_r": -0.01717410235321394,
+        "total_r": -5.083534296551327,
+        "target_hits": 56,
+        "timed_exits": 87,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 302,
+        "wins": 124,
+        "win_rate": 41.05960264900662,
+        "pf": 1.0193141237625698,
+        "mean_r": 0.009883442815496912,
+        "total_r": 2.9847997302800673,
+        "target_hits": 55,
+        "timed_exits": 103,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 223,
+        "wins": 92,
+        "win_rate": 41.25560538116592,
+        "pf": 0.9669797624163424,
+        "mean_r": -0.017777223935745882,
+        "total_r": -3.9643209376713315,
+        "target_hits": 43,
+        "timed_exits": 64,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 272,
+        "wins": 118,
+        "win_rate": 43.38235294117647,
+        "pf": 0.993392962359115,
+        "mean_r": -0.0029784418589390163,
+        "total_r": -0.8101361856314124,
+        "target_hits": 51,
+        "timed_exits": 92,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 202,
+        "wins": 88,
+        "win_rate": 43.56435643564357,
+        "pf": 0.9572337021792191,
+        "mean_r": -0.019751506745703966,
+        "total_r": -3.989804362632201,
+        "target_hits": 36,
+        "timed_exits": 65,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 312,
+        "wins": 152,
+        "win_rate": 48.717948717948715,
+        "pf": 0.9707591552098185,
+        "mean_r": -0.01320074524056167,
+        "total_r": -4.118632515055241,
+        "target_hits": 130,
+        "timed_exits": 49,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 235,
+        "wins": 116,
+        "win_rate": 49.361702127659576,
+        "pf": 0.9515491775469053,
+        "mean_r": -0.022857862219020125,
+        "total_r": -5.371597621469729,
+        "target_hits": 99,
+        "timed_exits": 28,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 415,
+        "wins": 175,
+        "win_rate": 42.168674698795186,
+        "pf": 0.9493581595871217,
+        "mean_r": -0.024151683027915274,
+        "total_r": -10.022948456584839,
+        "target_hits": 84,
+        "timed_exits": 117,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 296,
+        "wins": 128,
+        "win_rate": 43.24324324324324,
+        "pf": 0.949791330696732,
+        "mean_r": -0.023722358922079013,
+        "total_r": -7.021818240935388,
+        "target_hits": 56,
+        "timed_exits": 87,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 18,
+      "exit_mode": "fixed1R",
+      "train": {
+        "n": 281,
+        "wins": 134,
+        "win_rate": 47.686832740213525,
+        "pf": 0.9456012280975282,
+        "mean_r": -0.024717949481026763,
+        "total_r": -6.94574380416852,
+        "target_hits": 115,
+        "timed_exits": 46,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 213,
+        "wins": 106,
+        "win_rate": 49.76525821596244,
+        "pf": 0.9683864663937432,
+        "mean_r": -0.014520651801198138,
+        "total_r": -3.0928988336552035,
+        "target_hits": 88,
+        "timed_exits": 30,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "first_break",
+      "adx_min": 0,
+      "exit_mode": "fixed2R",
+      "train": {
+        "n": 396,
+        "wins": 154,
+        "win_rate": 38.88888888888889,
+        "pf": 0.9718232145560284,
+        "mean_r": -0.015544451882472048,
+        "total_r": -6.155602945458931,
+        "target_hits": 80,
+        "timed_exits": 112,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 283,
+        "wins": 116,
+        "win_rate": 40.98939929328622,
+        "pf": 0.9453458235852764,
+        "mean_r": -0.02981482139850922,
+        "total_r": -8.43759445577811,
+        "target_hits": 52,
+        "timed_exits": 82,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "impulse",
+      "adx_min": 0,
+      "exit_mode": "half1R",
+      "train": {
+        "n": 302,
+        "wins": 133,
+        "win_rate": 44.03973509933775,
+        "pf": 1.003661027813375,
+        "mean_r": 0.0016462248406084725,
+        "total_r": 0.4971599018637587,
+        "target_hits": 55,
+        "timed_exits": 103,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 223,
+        "wins": 95,
+        "win_rate": 42.600896860986545,
+        "pf": 0.9400093244945259,
+        "mean_r": -0.02860564309677681,
+        "total_r": -6.379058410581228,
+        "target_hits": 43,
+        "timed_exits": 64,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "entry_mode": "direct",
+      "adx_min": 18,
+      "exit_mode": "breakeven",
+      "train": {
+        "n": 378,
+        "wins": 125,
+        "win_rate": 33.06878306878307,
+        "pf": 0.9658394825567708,
+        "mean_r": -0.01652111285905167,
+        "total_r": -6.244980660721532,
+        "target_hits": 70,
+        "timed_exits": 82,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 267,
+        "wins": 88,
+        "win_rate": 32.958801498127336,
+        "pf": 0.936398971038394,
+        "mean_r": -0.028987309924627797,
+        "total_r": -7.739611749875622,
+        "target_hits": 44,
+        "timed_exits": 60,
+        "late_exits": 2
+      }
+    }
+  ],
+  "logic_sha256": "5b67588e8817d35e981b103f54a61fc0b42cf8dce7b75beea885c07d5efadd07"
+}

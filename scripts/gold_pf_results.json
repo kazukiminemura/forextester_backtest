@@ -1,0 +1,4020 @@
+{
+  "specification": {
+    "frames": [
+      15,
+      30,
+      60
+    ],
+    "families": [
+      "ema_reclaim",
+      "pullback_break",
+      "breakout20",
+      "breakout55",
+      "sweep20"
+    ],
+    "target_atr": [
+      1.5,
+      3
+    ],
+    "hold_hours": [
+      4,
+      null
+    ],
+    "direction": [
+      "both",
+      "long"
+    ],
+    "stop_atr": 1.5,
+    "entry_hours": [
+      6,
+      16
+    ],
+    "cooldown_bars": 5,
+    "selection": "max minimum train/validation PF; tie validation mean R",
+    "counts": [
+      250,
+      100,
+      50,
+      50
+    ],
+    "required_pf": 1.2,
+    "periods": [
+      [
+        2010,
+        2018
+      ],
+      [
+        2019,
+        2022
+      ],
+      [
+        2023,
+        2024
+      ],
+      [
+        2025,
+        2026
+      ]
+    ],
+    "evaluation_previously_seen": true
+  },
+  "search_count": 120,
+  "eligible_count": 104,
+  "selected": {
+    "minutes": 60,
+    "family": "breakout55",
+    "target_atr": 3,
+    "hold_hours": null,
+    "direction": "both",
+    "train": {
+      "n": 415,
+      "wins": 161,
+      "win_rate": 38.795180722891565,
+      "pf": 0.9773912841818739,
+      "mean_r": -0.01245565502826609,
+      "total_r": -5.169096836730428,
+      "target_hits": 84,
+      "timed_exits": 117,
+      "late_exits": 0
+    },
+    "validation": {
+      "n": 296,
+      "wins": 122,
+      "win_rate": 41.21621621621622,
+      "pf": 0.968133072082949,
+      "mean_r": -0.01717410235321394,
+      "total_r": -5.083534296551327,
+      "target_hits": 56,
+      "timed_exits": 87,
+      "late_exits": 2
+    }
+  },
+  "results": [
+    {
+      "n": 415,
+      "wins": 161,
+      "win_rate": 38.795180722891565,
+      "pf": 0.9773912841818739,
+      "mean_r": -0.01245565502826609,
+      "total_r": -5.169096836730428,
+      "target_hits": 84,
+      "timed_exits": 117,
+      "late_exits": 0,
+      "max_drawdown_r": 29.201815964380753
+    },
+    {
+      "n": 296,
+      "wins": 122,
+      "win_rate": 41.21621621621622,
+      "pf": 0.968133072082949,
+      "mean_r": -0.01717410235321394,
+      "total_r": -5.083534296551327,
+      "target_hits": 56,
+      "timed_exits": 87,
+      "late_exits": 2,
+      "max_drawdown_r": 25.0919987823264
+    },
+    {
+      "n": 161,
+      "wins": 64,
+      "win_rate": 39.75155279503105,
+      "pf": 0.9385130226630142,
+      "mean_r": -0.03508119166578195,
+      "total_r": -5.648071858190893,
+      "target_hits": 31,
+      "timed_exits": 41,
+      "late_exits": 0,
+      "max_drawdown_r": 12.911646265207912
+    },
+    {
+      "n": 124,
+      "wins": 70,
+      "win_rate": 56.451612903225815,
+      "pf": 1.8020220964651967,
+      "mean_r": 0.3171030704529252,
+      "total_r": 39.320780736162725,
+      "target_hits": 30,
+      "timed_exits": 47,
+      "late_exits": 1,
+      "max_drawdown_r": 5.544224702717072
+    }
+  ],
+  "doubled_spread": [
+    {
+      "n": 415,
+      "wins": 149,
+      "win_rate": 35.903614457831324,
+      "pf": 0.8545166399359515,
+      "mean_r": -0.08609653448777867,
+      "total_r": -35.73006181242815,
+      "target_hits": 80,
+      "timed_exits": 105,
+      "late_exits": 0,
+      "max_drawdown_r": 41.37446056479636
+    },
+    {
+      "n": 297,
+      "wins": 110,
+      "win_rate": 37.03703703703704,
+      "pf": 0.7977874963687935,
+      "mean_r": -0.11915533299842362,
+      "total_r": -35.38913390053182,
+      "target_hits": 53,
+      "timed_exits": 77,
+      "late_exits": 1,
+      "max_drawdown_r": 44.0834899194109
+    },
+    {
+      "n": 161,
+      "wins": 62,
+      "win_rate": 38.50931677018634,
+      "pf": 0.8725600121884357,
+      "mean_r": -0.07432232901435394,
+      "total_r": -11.965894971310984,
+      "target_hits": 29,
+      "timed_exits": 42,
+      "late_exits": 0,
+      "max_drawdown_r": 16.6662728969596
+    },
+    {
+      "n": 123,
+      "wins": 66,
+      "win_rate": 53.65853658536586,
+      "pf": 1.6547194075222327,
+      "mean_r": 0.27206741399015577,
+      "total_r": 33.46429192078916,
+      "target_hits": 28,
+      "timed_exits": 46,
+      "late_exits": 1,
+      "max_drawdown_r": 6.843679843055744
+    }
+  ],
+  "baseline_previous_entry": [
+    {
+      "n": 313,
+      "wins": 142,
+      "win_rate": 45.367412140575084,
+      "pf": 0.9883190042371864,
+      "mean_r": -0.0047960198904069915,
+      "total_r": -1.5011542256973884,
+      "target_hits": 34,
+      "timed_exits": 174,
+      "late_exits": 2
+    },
+    {
+      "n": 181,
+      "wins": 81,
+      "win_rate": 44.751381215469614,
+      "pf": 0.8272028047677525,
+      "mean_r": -0.07298400431800256,
+      "total_r": -13.210104781558464,
+      "target_hits": 13,
+      "timed_exits": 104,
+      "late_exits": 0
+    },
+    {
+      "n": 84,
+      "wins": 41,
+      "win_rate": 48.80952380952381,
+      "pf": 1.4375388857398395,
+      "mean_r": 0.14881665297760993,
+      "total_r": 12.500598850119234,
+      "target_hits": 11,
+      "timed_exits": 50,
+      "late_exits": 0
+    },
+    {
+      "n": 67,
+      "wins": 28,
+      "win_rate": 41.7910447761194,
+      "pf": 0.934348188450631,
+      "mean_r": -0.026230965985215807,
+      "total_r": -1.757474721009459,
+      "target_hits": 5,
+      "timed_exits": 43,
+      "late_exits": 0
+    }
+  ],
+  "gates": [
+    false,
+    false,
+    false,
+    true
+  ],
+  "adopted": false,
+  "development_top10": [
+    {
+      "minutes": 60,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 415,
+        "wins": 161,
+        "win_rate": 38.795180722891565,
+        "pf": 0.9773912841818739,
+        "mean_r": -0.01245565502826609,
+        "total_r": -5.169096836730428,
+        "target_hits": 84,
+        "timed_exits": 117,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 296,
+        "wins": 122,
+        "win_rate": 41.21621621621622,
+        "pf": 0.968133072082949,
+        "mean_r": -0.01717410235321394,
+        "total_r": -5.083534296551327,
+        "target_hits": 56,
+        "timed_exits": 87,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 304,
+        "wins": 122,
+        "win_rate": 40.131578947368425,
+        "pf": 0.9905702896343473,
+        "mean_r": -0.005155182808438939,
+        "total_r": -1.5671755737654376,
+        "target_hits": 58,
+        "timed_exits": 92,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 273,
+        "wins": 111,
+        "win_rate": 40.65934065934066,
+        "pf": 0.9639027070155537,
+        "mean_r": -0.019660930155254986,
+        "total_r": -5.367433932384611,
+        "target_hits": 51,
+        "timed_exits": 79,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 428,
+        "wins": 205,
+        "win_rate": 47.89719626168225,
+        "pf": 0.9080635914446176,
+        "mean_r": -0.04394810908895508,
+        "total_r": -18.809790690072774,
+        "target_hits": 178,
+        "timed_exits": 55,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 315,
+        "wins": 155,
+        "win_rate": 49.2063492063492,
+        "pf": 0.93055948599695,
+        "mean_r": -0.03329895316497222,
+        "total_r": -10.48917024696625,
+        "target_hits": 130,
+        "timed_exits": 38,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 627,
+        "wins": 241,
+        "win_rate": 38.43700159489633,
+        "pf": 0.9393590475786956,
+        "mean_r": -0.034045358288392114,
+        "total_r": -21.346439646821857,
+        "target_hits": 122,
+        "timed_exits": 175,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 449,
+        "wins": 173,
+        "win_rate": 38.530066815144764,
+        "pf": 0.9011727897158834,
+        "mean_r": -0.055479533143988,
+        "total_r": -24.91031038165061,
+        "target_hits": 84,
+        "timed_exits": 125,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 908,
+        "wins": 354,
+        "win_rate": 38.986784140969164,
+        "pf": 0.9202872224294227,
+        "mean_r": -0.043748067868671574,
+        "total_r": -39.72324562475379,
+        "target_hits": 168,
+        "timed_exits": 277,
+        "late_exits": 13
+      },
+      "validation": {
+        "n": 654,
+        "wins": 245,
+        "win_rate": 37.46177370030581,
+        "pf": 0.8729945504037074,
+        "mean_r": -0.07120989173537655,
+        "total_r": -46.571269194936264,
+        "target_hits": 119,
+        "timed_exits": 187,
+        "late_exits": 14
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 830,
+        "wins": 323,
+        "win_rate": 38.915662650602414,
+        "pf": 0.8783937019720341,
+        "mean_r": -0.06709319093876981,
+        "total_r": -55.68734847917894,
+        "target_hits": 144,
+        "timed_exits": 260,
+        "late_exits": 13
+      },
+      "validation": {
+        "n": 572,
+        "wins": 216,
+        "win_rate": 37.76223776223776,
+        "pf": 0.8713328198415814,
+        "mean_r": -0.07210703974555502,
+        "total_r": -41.24522673445747,
+        "target_hits": 102,
+        "timed_exits": 166,
+        "late_exits": 13
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 739,
+        "wins": 270,
+        "win_rate": 36.53585926928282,
+        "pf": 0.9816605510425023,
+        "mean_r": -0.011331887605027378,
+        "total_r": -8.374264940115232,
+        "target_hits": 202,
+        "timed_exits": 95,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 577,
+        "wins": 198,
+        "win_rate": 34.31542461005199,
+        "pf": 0.8689257061260314,
+        "mean_r": -0.08445941550729276,
+        "total_r": -48.733082747707925,
+        "target_hits": 142,
+        "timed_exits": 72,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 840,
+        "wins": 391,
+        "win_rate": 46.54761904761905,
+        "pf": 0.8565277989339353,
+        "mean_r": -0.06979671483607913,
+        "total_r": -58.62924046230647,
+        "target_hits": 330,
+        "timed_exits": 127,
+        "late_exits": 11
+      },
+      "validation": {
+        "n": 579,
+        "wins": 267,
+        "win_rate": 46.1139896373057,
+        "pf": 0.8381102208150695,
+        "mean_r": -0.07916501194771398,
+        "total_r": -45.83654191772639,
+        "target_hits": 224,
+        "timed_exits": 85,
+        "late_exits": 12
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 648,
+        "wins": 302,
+        "win_rate": 46.60493827160494,
+        "pf": 0.8563536704417255,
+        "mean_r": -0.07087752877697857,
+        "total_r": -45.92863864748212,
+        "target_hits": 259,
+        "timed_exits": 87,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 470,
+        "wins": 219,
+        "win_rate": 46.59574468085106,
+        "pf": 0.8356277602136143,
+        "mean_r": -0.08234160352410853,
+        "total_r": -38.70055365633101,
+        "target_hits": 183,
+        "timed_exits": 61,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 422,
+        "wins": 163,
+        "win_rate": 38.62559241706161,
+        "pf": 0.8831239400496723,
+        "mean_r": -0.06541289525816373,
+        "total_r": -27.60424179894509,
+        "target_hits": 75,
+        "timed_exits": 128,
+        "late_exits": 7
+      },
+      "validation": {
+        "n": 382,
+        "wins": 141,
+        "win_rate": 36.910994764397905,
+        "pf": 0.8315377018427695,
+        "mean_r": -0.09559293664614602,
+        "total_r": -36.516501798827775,
+        "target_hits": 65,
+        "timed_exits": 112,
+        "late_exits": 6
+      }
+    }
+  ],
+  "development_candidates": [
+    {
+      "minutes": 15,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 2784,
+        "wins": 1090,
+        "win_rate": 39.15229885057471,
+        "pf": 0.6201593120837244,
+        "mean_r": -0.23067392559970407,
+        "total_r": -642.1962088695761,
+        "target_hits": 1033,
+        "timed_exits": 118,
+        "late_exits": 8
+      },
+      "validation": {
+        "n": 1934,
+        "wins": 809,
+        "win_rate": 41.830403309203724,
+        "pf": 0.7165321581900125,
+        "mean_r": -0.1611515846303033,
+        "total_r": -311.6671646750066,
+        "target_hits": 772,
+        "timed_exits": 96,
+        "late_exits": 4
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 1292,
+        "wins": 483,
+        "win_rate": 37.38390092879257,
+        "pf": 0.5808191703123358,
+        "mean_r": -0.2607698436083194,
+        "total_r": -336.9146379419486,
+        "target_hits": 460,
+        "timed_exits": 54,
+        "late_exits": 3
+      },
+      "validation": {
+        "n": 1051,
+        "wins": 435,
+        "win_rate": 41.38915318744053,
+        "pf": 0.6952103161221913,
+        "mean_r": -0.1751188921125659,
+        "total_r": -184.04995561030677,
+        "target_hits": 409,
+        "timed_exits": 57,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 2778,
+        "wins": 1087,
+        "win_rate": 39.128869690424764,
+        "pf": 0.6255867256259618,
+        "mean_r": -0.2291274992392895,
+        "total_r": -636.5161928867462,
+        "target_hits": 1049,
+        "timed_exits": 83,
+        "late_exits": 11
+      },
+      "validation": {
+        "n": 1926,
+        "wins": 811,
+        "win_rate": 42.1079958463136,
+        "pf": 0.7166740135376174,
+        "mean_r": -0.16292996458662756,
+        "total_r": -313.80311179384466,
+        "target_hits": 786,
+        "timed_exits": 62,
+        "late_exits": 6
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 1290,
+        "wins": 483,
+        "win_rate": 37.44186046511628,
+        "pf": 0.5835818746116159,
+        "mean_r": -0.2617198565623988,
+        "total_r": -337.6186149654945,
+        "target_hits": 467,
+        "timed_exits": 37,
+        "late_exits": 5
+      },
+      "validation": {
+        "n": 1045,
+        "wins": 432,
+        "win_rate": 41.33971291866029,
+        "pf": 0.6922430594968588,
+        "mean_r": -0.17945196337174432,
+        "total_r": -187.52730172347282,
+        "target_hits": 416,
+        "timed_exits": 37,
+        "late_exits": 4
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 2686,
+        "wins": 779,
+        "win_rate": 29.002233804914372,
+        "pf": 0.6687463115097658,
+        "mean_r": -0.23203523954231647,
+        "total_r": -623.246653410662,
+        "target_hits": 564,
+        "timed_exits": 314,
+        "late_exits": 9
+      },
+      "validation": {
+        "n": 1843,
+        "wins": 574,
+        "win_rate": 31.14487249050461,
+        "pf": 0.7600300724485127,
+        "mean_r": -0.1589137575413171,
+        "total_r": -292.8780551486474,
+        "target_hits": 406,
+        "timed_exits": 263,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 1245,
+        "wins": 340,
+        "win_rate": 27.309236947791167,
+        "pf": 0.6080510076114898,
+        "mean_r": -0.2800655123961266,
+        "total_r": -348.6815629331776,
+        "target_hits": 237,
+        "timed_exits": 152,
+        "late_exits": 3
+      },
+      "validation": {
+        "n": 1005,
+        "wins": 314,
+        "win_rate": 31.24378109452736,
+        "pf": 0.7447092358462294,
+        "mean_r": -0.16992667891508859,
+        "total_r": -170.77631230966404,
+        "target_hits": 214,
+        "timed_exits": 147,
+        "late_exits": 4
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 2637,
+        "wins": 727,
+        "win_rate": 27.569207432688664,
+        "pf": 0.6790741336739031,
+        "mean_r": -0.23336545659917118,
+        "total_r": -615.3847090520144,
+        "target_hits": 614,
+        "timed_exits": 172,
+        "late_exits": 17
+      },
+      "validation": {
+        "n": 1799,
+        "wins": 539,
+        "win_rate": 29.961089494163424,
+        "pf": 0.7820136070898652,
+        "mean_r": -0.1513377185063217,
+        "total_r": -272.2565555928727,
+        "target_hits": 461,
+        "timed_exits": 123,
+        "late_exits": 10
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 1220,
+        "wins": 314,
+        "win_rate": 25.73770491803279,
+        "pf": 0.6178784743599796,
+        "mean_r": -0.28489278717459915,
+        "total_r": -347.56920035301096,
+        "target_hits": 263,
+        "timed_exits": 79,
+        "late_exits": 7
+      },
+      "validation": {
+        "n": 980,
+        "wins": 290,
+        "win_rate": 29.591836734693878,
+        "pf": 0.76117334749446,
+        "mean_r": -0.16695346942863878,
+        "total_r": -163.61440004006602,
+        "target_hits": 245,
+        "timed_exits": 70,
+        "late_exits": 6
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 3171,
+        "wins": 1269,
+        "win_rate": 40.01892147587512,
+        "pf": 0.6474819569301541,
+        "mean_r": -0.21151984279079034,
+        "total_r": -670.7294214895961,
+        "target_hits": 1217,
+        "timed_exits": 114,
+        "late_exits": 8
+      },
+      "validation": {
+        "n": 2245,
+        "wins": 954,
+        "win_rate": 42.494432071269486,
+        "pf": 0.7320429520561648,
+        "mean_r": -0.15137633895525882,
+        "total_r": -339.83988095455607,
+        "target_hits": 911,
+        "timed_exits": 106,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 1465,
+        "wins": 570,
+        "win_rate": 38.907849829351534,
+        "pf": 0.6195330408886341,
+        "mean_r": -0.23286438702277415,
+        "total_r": -341.14632698836414,
+        "target_hits": 548,
+        "timed_exits": 48,
+        "late_exits": 5
+      },
+      "validation": {
+        "n": 1230,
+        "wins": 520,
+        "win_rate": 42.27642276422765,
+        "pf": 0.7230861374254716,
+        "mean_r": -0.156401418546408,
+        "total_r": -192.37374481208184,
+        "target_hits": 490,
+        "timed_exits": 69,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 3162,
+        "wins": 1267,
+        "win_rate": 40.06957621758381,
+        "pf": 0.6522181929215212,
+        "mean_r": -0.21033960572559737,
+        "total_r": -665.0938333043389,
+        "target_hits": 1234,
+        "timed_exits": 76,
+        "late_exits": 10
+      },
+      "validation": {
+        "n": 2238,
+        "wins": 958,
+        "win_rate": 42.80607685433423,
+        "pf": 0.7365557918924017,
+        "mean_r": -0.1501397327264069,
+        "total_r": -336.01272184169864,
+        "target_hits": 929,
+        "timed_exits": 68,
+        "late_exits": 6
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 1459,
+        "wins": 568,
+        "win_rate": 38.9307745030843,
+        "pf": 0.6239323004817832,
+        "mean_r": -0.23201256377774312,
+        "total_r": -338.5063305517272,
+        "target_hits": 556,
+        "timed_exits": 30,
+        "late_exits": 6
+      },
+      "validation": {
+        "n": 1224,
+        "wins": 519,
+        "win_rate": 42.40196078431372,
+        "pf": 0.7291560239283276,
+        "mean_r": -0.15475651908594834,
+        "total_r": -189.42197936120075,
+        "target_hits": 502,
+        "timed_exits": 44,
+        "late_exits": 4
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 3010,
+        "wins": 899,
+        "win_rate": 29.867109634551497,
+        "pf": 0.7200285595883881,
+        "mean_r": -0.1942102978843949,
+        "total_r": -584.5729966320287,
+        "target_hits": 684,
+        "timed_exits": 319,
+        "late_exits": 10
+      },
+      "validation": {
+        "n": 2111,
+        "wins": 665,
+        "win_rate": 31.501657981999053,
+        "pf": 0.7686798556056191,
+        "mean_r": -0.1534137519573051,
+        "total_r": -323.85643038187106,
+        "target_hits": 471,
+        "timed_exits": 295,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 1392,
+        "wins": 405,
+        "win_rate": 29.094827586206897,
+        "pf": 0.679308962487145,
+        "mean_r": -0.22551919838737183,
+        "total_r": -313.9227241552216,
+        "target_hits": 297,
+        "timed_exits": 151,
+        "late_exits": 5
+      },
+      "validation": {
+        "n": 1158,
+        "wins": 371,
+        "win_rate": 32.037996545768564,
+        "pf": 0.7879945664446663,
+        "mean_r": -0.13935258127019315,
+        "total_r": -161.37028911088368,
+        "target_hits": 261,
+        "timed_exits": 167,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 2962,
+        "wins": 843,
+        "win_rate": 28.460499662390276,
+        "pf": 0.7255604252947178,
+        "mean_r": -0.19762433694042503,
+        "total_r": -585.3632860175389,
+        "target_hits": 740,
+        "timed_exits": 162,
+        "late_exits": 16
+      },
+      "validation": {
+        "n": 2067,
+        "wins": 628,
+        "win_rate": 30.382196419932267,
+        "pf": 0.7925597966900133,
+        "mean_r": -0.14319237507452168,
+        "total_r": -295.9786392790363,
+        "target_hits": 533,
+        "timed_exits": 147,
+        "late_exits": 8
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 1365,
+        "wins": 372,
+        "win_rate": 27.252747252747252,
+        "pf": 0.6839607937764142,
+        "mean_r": -0.23177122498011152,
+        "total_r": -316.3677220978522,
+        "target_hits": 325,
+        "timed_exits": 73,
+        "late_exits": 8
+      },
+      "validation": {
+        "n": 1131,
+        "wins": 348,
+        "win_rate": 30.76923076923077,
+        "pf": 0.8148364944480758,
+        "mean_r": -0.12673823234864512,
+        "total_r": -143.34094078631762,
+        "target_hits": 298,
+        "timed_exits": 83,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 2218,
+        "wins": 875,
+        "win_rate": 39.44995491433724,
+        "pf": 0.6388767758219308,
+        "mean_r": -0.21861683990099717,
+        "total_r": -484.8921509004117,
+        "target_hits": 849,
+        "timed_exits": 70,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 1703,
+        "wins": 694,
+        "win_rate": 40.75161479741632,
+        "pf": 0.681584058665933,
+        "mean_r": -0.18681173559895828,
+        "total_r": -318.14038572502596,
+        "target_hits": 673,
+        "timed_exits": 59,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 1053,
+        "wins": 397,
+        "win_rate": 37.70180436847104,
+        "pf": 0.5953022527255444,
+        "mean_r": -0.25231790065293286,
+        "total_r": -265.6907493875383,
+        "target_hits": 388,
+        "timed_exits": 29,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 956,
+        "wins": 374,
+        "win_rate": 39.12133891213389,
+        "pf": 0.6348855342600573,
+        "mean_r": -0.2197436726346719,
+        "total_r": -210.07495103874635,
+        "target_hits": 360,
+        "timed_exits": 37,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 2218,
+        "wins": 883,
+        "win_rate": 39.81064021641118,
+        "pf": 0.6418445583395896,
+        "mean_r": -0.21830177469451356,
+        "total_r": -484.19333627243105,
+        "target_hits": 861,
+        "timed_exits": 40,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 1703,
+        "wins": 696,
+        "win_rate": 40.869054609512624,
+        "pf": 0.6864851924929783,
+        "mean_r": -0.18457698500498204,
+        "total_r": -314.3346054634844,
+        "target_hits": 685,
+        "timed_exits": 39,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 1053,
+        "wins": 401,
+        "win_rate": 38.08167141500475,
+        "pf": 0.593736243061798,
+        "mean_r": -0.25510377435120457,
+        "total_r": -268.6242743918184,
+        "target_hits": 390,
+        "timed_exits": 18,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 956,
+        "wins": 374,
+        "win_rate": 39.12133891213389,
+        "pf": 0.6377051146943229,
+        "mean_r": -0.2196784368564961,
+        "total_r": -210.01258563481028,
+        "target_hits": 368,
+        "timed_exits": 23,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 2111,
+        "wins": 640,
+        "win_rate": 30.317385125532926,
+        "pf": 0.7277104749338673,
+        "mean_r": -0.1882284778041735,
+        "total_r": -397.3503166446103,
+        "target_hits": 479,
+        "timed_exits": 224,
+        "late_exits": 3
+      },
+      "validation": {
+        "n": 1594,
+        "wins": 475,
+        "win_rate": 29.799247176913426,
+        "pf": 0.7121867857432342,
+        "mean_r": -0.19773692372540966,
+        "total_r": -315.192656418303,
+        "target_hits": 346,
+        "timed_exits": 188,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 997,
+        "wins": 295,
+        "win_rate": 29.58876629889669,
+        "pf": 0.7009979118145607,
+        "mean_r": -0.20903420380220172,
+        "total_r": -208.40710119079512,
+        "target_hits": 215,
+        "timed_exits": 110,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 886,
+        "wins": 257,
+        "win_rate": 29.006772009029348,
+        "pf": 0.6679373414737803,
+        "mean_r": -0.22919255281984546,
+        "total_r": -203.06460179838308,
+        "target_hits": 178,
+        "timed_exits": 117,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 2107,
+        "wins": 607,
+        "win_rate": 28.80873279544376,
+        "pf": 0.7374750409363345,
+        "mean_r": -0.18807523751411373,
+        "total_r": -396.27452544223763,
+        "target_hits": 535,
+        "timed_exits": 107,
+        "late_exits": 4
+      },
+      "validation": {
+        "n": 1587,
+        "wins": 455,
+        "win_rate": 28.67044738500315,
+        "pf": 0.7465120569530503,
+        "mean_r": -0.1793536316364795,
+        "total_r": -284.63421340709294,
+        "target_hits": 397,
+        "timed_exits": 95,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 996,
+        "wins": 284,
+        "win_rate": 28.514056224899598,
+        "pf": 0.7268789397407565,
+        "mean_r": -0.1971530107486811,
+        "total_r": -196.36439870568637,
+        "target_hits": 250,
+        "timed_exits": 47,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 880,
+        "wins": 247,
+        "win_rate": 28.06818181818182,
+        "pf": 0.7189819715933391,
+        "mean_r": -0.2012144237030074,
+        "total_r": -177.06869285864653,
+        "target_hits": 214,
+        "timed_exits": 53,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 1606,
+        "wins": 627,
+        "win_rate": 39.04109589041096,
+        "pf": 0.6280135078904279,
+        "mean_r": -0.2255031670825129,
+        "total_r": -362.1580863345157,
+        "target_hits": 603,
+        "timed_exits": 60,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 1274,
+        "wins": 515,
+        "win_rate": 40.42386185243328,
+        "pf": 0.6736587238984504,
+        "mean_r": -0.1911242094501853,
+        "total_r": -243.49224283953606,
+        "target_hits": 495,
+        "timed_exits": 56,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 783,
+        "wins": 291,
+        "win_rate": 37.16475095785441,
+        "pf": 0.5817935302527376,
+        "mean_r": -0.26138071584082745,
+        "total_r": -204.6611005033679,
+        "target_hits": 282,
+        "timed_exits": 26,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 719,
+        "wins": 285,
+        "win_rate": 39.63838664812239,
+        "pf": 0.6498697314178155,
+        "mean_r": -0.207996377405428,
+        "total_r": -149.54939535450274,
+        "target_hits": 273,
+        "timed_exits": 32,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 1606,
+        "wins": 635,
+        "win_rate": 39.53922789539228,
+        "pf": 0.6326698110084324,
+        "mean_r": -0.2243447043486229,
+        "total_r": -360.29759518388835,
+        "target_hits": 614,
+        "timed_exits": 37,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 1274,
+        "wins": 518,
+        "win_rate": 40.65934065934066,
+        "pf": 0.6808953702822337,
+        "mean_r": -0.18730372417003885,
+        "total_r": -238.6249445926295,
+        "target_hits": 505,
+        "timed_exits": 40,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 783,
+        "wins": 295,
+        "win_rate": 37.675606641123885,
+        "pf": 0.5831500930005598,
+        "mean_r": -0.26266357606820884,
+        "total_r": -205.66558006140752,
+        "target_hits": 285,
+        "timed_exits": 17,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 719,
+        "wins": 286,
+        "win_rate": 39.77746870653686,
+        "pf": 0.6527538262825934,
+        "mean_r": -0.2075727444604015,
+        "total_r": -149.2448032670287,
+        "target_hits": 278,
+        "timed_exits": 22,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 1531,
+        "wins": 458,
+        "win_rate": 29.91508817766166,
+        "pf": 0.7111238274124372,
+        "mean_r": -0.19951157734207345,
+        "total_r": -305.45222491071445,
+        "target_hits": 337,
+        "timed_exits": 173,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 1206,
+        "wins": 369,
+        "win_rate": 30.597014925373134,
+        "pf": 0.7426990898064086,
+        "mean_r": -0.17392006361613346,
+        "total_r": -209.74759672105696,
+        "target_hits": 270,
+        "timed_exits": 148,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 739,
+        "wins": 219,
+        "win_rate": 29.63464140730717,
+        "pf": 0.7072247557813767,
+        "mean_r": -0.20321843572819498,
+        "total_r": -150.1784240031361,
+        "target_hits": 160,
+        "timed_exits": 84,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 674,
+        "wins": 204,
+        "win_rate": 30.267062314540063,
+        "pf": 0.7102069750573863,
+        "mean_r": -0.19600604466694205,
+        "total_r": -132.10807410551894,
+        "target_hits": 142,
+        "timed_exits": 92,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 1529,
+        "wins": 439,
+        "win_rate": 28.71157619359058,
+        "pf": 0.7239666495101439,
+        "mean_r": -0.19781986240985758,
+        "total_r": -302.4665696246722,
+        "target_hits": 378,
+        "timed_exits": 87,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 1201,
+        "wins": 358,
+        "win_rate": 29.80849292256453,
+        "pf": 0.7733691304289461,
+        "mean_r": -0.15681620897476636,
+        "total_r": -188.3362669786944,
+        "target_hits": 301,
+        "timed_exits": 91,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 739,
+        "wins": 212,
+        "win_rate": 28.68741542625169,
+        "pf": 0.7245865994870384,
+        "mean_r": -0.19841924795690802,
+        "total_r": -146.63182424015503,
+        "target_hits": 184,
+        "timed_exits": 37,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 670,
+        "wins": 198,
+        "win_rate": 29.55223880597015,
+        "pf": 0.750981972808806,
+        "mean_r": -0.17358903330435208,
+        "total_r": -116.3046523139159,
+        "target_hits": 163,
+        "timed_exits": 53,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 771,
+        "wins": 282,
+        "win_rate": 36.57587548638132,
+        "pf": 0.5595293043936087,
+        "mean_r": -0.2777308755045867,
+        "total_r": -214.13050501403634,
+        "target_hits": 266,
+        "timed_exits": 34,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 620,
+        "wins": 250,
+        "win_rate": 40.32258064516129,
+        "pf": 0.6562997665128136,
+        "mean_r": -0.204518322550796,
+        "total_r": -126.80135998149352,
+        "target_hits": 239,
+        "timed_exits": 21,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 375,
+        "wins": 128,
+        "win_rate": 34.13333333333333,
+        "pf": 0.501323962685492,
+        "mean_r": -0.32704924626260806,
+        "total_r": -122.64346734847803,
+        "target_hits": 121,
+        "timed_exits": 16,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 323,
+        "wins": 129,
+        "win_rate": 39.93808049535604,
+        "pf": 0.6463395664046057,
+        "mean_r": -0.2126644597509498,
+        "total_r": -68.69062049955679,
+        "target_hits": 124,
+        "timed_exits": 10,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 770,
+        "wins": 285,
+        "win_rate": 37.01298701298701,
+        "pf": 0.5696850817509591,
+        "mean_r": -0.2742523150500457,
+        "total_r": -211.17428258853522,
+        "target_hits": 278,
+        "timed_exits": 14,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 620,
+        "wins": 251,
+        "win_rate": 40.483870967741936,
+        "pf": 0.6585962980622293,
+        "mean_r": -0.20518165104008382,
+        "total_r": -127.21262364485197,
+        "target_hits": 243,
+        "timed_exits": 12,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 375,
+        "wins": 130,
+        "win_rate": 34.66666666666667,
+        "pf": 0.5186127742474035,
+        "mean_r": -0.31600333423060234,
+        "total_r": -118.50125033647588,
+        "target_hits": 127,
+        "timed_exits": 9,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 323,
+        "wins": 129,
+        "win_rate": 39.93808049535604,
+        "pf": 0.6465118735001754,
+        "mean_r": -0.21489264076354817,
+        "total_r": -69.41032296662605,
+        "target_hits": 126,
+        "timed_exits": 5,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 767,
+        "wins": 204,
+        "win_rate": 26.597131681877446,
+        "pf": 0.5709925376453102,
+        "mean_r": -0.3102880230591523,
+        "total_r": -237.99091368636982,
+        "target_hits": 135,
+        "timed_exits": 99,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 615,
+        "wins": 187,
+        "win_rate": 30.40650406504065,
+        "pf": 0.7338116891988147,
+        "mean_r": -0.181513957770194,
+        "total_r": -111.6310840286693,
+        "target_hits": 131,
+        "timed_exits": 77,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 374,
+        "wins": 91,
+        "win_rate": 24.331550802139038,
+        "pf": 0.5150895597672999,
+        "mean_r": -0.3614509291453028,
+        "total_r": -135.18264750034325,
+        "target_hits": 63,
+        "timed_exits": 44,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 320,
+        "wins": 98,
+        "win_rate": 30.625000000000004,
+        "pf": 0.7389762661980478,
+        "mean_r": -0.17800088643325354,
+        "total_r": -56.96028365864113,
+        "target_hits": 68,
+        "timed_exits": 41,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 766,
+        "wins": 199,
+        "win_rate": 25.979112271540473,
+        "pf": 0.6266928863710278,
+        "mean_r": -0.27950850866381843,
+        "total_r": -214.10351763648492,
+        "target_hits": 170,
+        "timed_exits": 39,
+        "late_exits": 4
+      },
+      "validation": {
+        "n": 613,
+        "wins": 182,
+        "win_rate": 29.690048939641112,
+        "pf": 0.7458779124104706,
+        "mean_r": -0.17989811348060478,
+        "total_r": -110.27754356361072,
+        "target_hits": 152,
+        "timed_exits": 36,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 15,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 374,
+        "wins": 91,
+        "win_rate": 24.331550802139038,
+        "pf": 0.5770058122139725,
+        "mean_r": -0.3213974060958512,
+        "total_r": -120.20262987984836,
+        "target_hits": 78,
+        "timed_exits": 20,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 320,
+        "wins": 97,
+        "win_rate": 30.312499999999996,
+        "pf": 0.763265886741043,
+        "mean_r": -0.1664582267849215,
+        "total_r": -53.26663257117488,
+        "target_hits": 80,
+        "timed_exits": 20,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 1498,
+        "wins": 614,
+        "win_rate": 40.987983978638184,
+        "pf": 0.6672150488397876,
+        "mean_r": -0.18121784130854768,
+        "total_r": -271.46432628020443,
+        "target_hits": 513,
+        "timed_exits": 223,
+        "late_exits": 7
+      },
+      "validation": {
+        "n": 1119,
+        "wins": 475,
+        "win_rate": 42.44861483467381,
+        "pf": 0.7079226306652128,
+        "mean_r": -0.15439499850297403,
+        "total_r": -172.76800332482793,
+        "target_hits": 397,
+        "timed_exits": 166,
+        "late_exits": 4
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 699,
+        "wins": 276,
+        "win_rate": 39.48497854077253,
+        "pf": 0.6192671213365281,
+        "mean_r": -0.2138873552532182,
+        "total_r": -149.50726132199952,
+        "target_hits": 229,
+        "timed_exits": 101,
+        "late_exits": 4
+      },
+      "validation": {
+        "n": 635,
+        "wins": 260,
+        "win_rate": 40.94488188976378,
+        "pf": 0.6558652533293701,
+        "mean_r": -0.18597754188862553,
+        "total_r": -118.09573909927721,
+        "target_hits": 210,
+        "timed_exits": 105,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 1481,
+        "wins": 614,
+        "win_rate": 41.45847400405132,
+        "pf": 0.6939352587424898,
+        "mean_r": -0.1748944258009404,
+        "total_r": -259.0186446111927,
+        "target_hits": 571,
+        "timed_exits": 94,
+        "late_exits": 14
+      },
+      "validation": {
+        "n": 1092,
+        "wins": 471,
+        "win_rate": 43.13186813186813,
+        "pf": 0.7468892506548034,
+        "mean_r": -0.14017896987908088,
+        "total_r": -153.0754351079563,
+        "target_hits": 442,
+        "timed_exits": 64,
+        "late_exits": 9
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 693,
+        "wins": 275,
+        "win_rate": 39.682539682539684,
+        "pf": 0.6449868320194029,
+        "mean_r": -0.21121364285321056,
+        "total_r": -146.3710544972749,
+        "target_hits": 258,
+        "timed_exits": 36,
+        "late_exits": 7
+      },
+      "validation": {
+        "n": 617,
+        "wins": 257,
+        "win_rate": 41.65316045380875,
+        "pf": 0.7051489266759869,
+        "mean_r": -0.16783050720067516,
+        "total_r": -103.55142294281657,
+        "target_hits": 243,
+        "timed_exits": 34,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 1487,
+        "wins": 521,
+        "win_rate": 35.036987222595826,
+        "pf": 0.7067959154900568,
+        "mean_r": -0.17468791161751612,
+        "total_r": -259.76092457524646,
+        "target_hits": 215,
+        "timed_exits": 446,
+        "late_exits": 9
+      },
+      "validation": {
+        "n": 1102,
+        "wins": 383,
+        "win_rate": 34.75499092558984,
+        "pf": 0.7245532542951107,
+        "mean_r": -0.16126677964990427,
+        "total_r": -177.7159911741945,
+        "target_hits": 162,
+        "timed_exits": 340,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 695,
+        "wins": 240,
+        "win_rate": 34.53237410071942,
+        "pf": 0.6838696405601851,
+        "mean_r": -0.1906747267981656,
+        "total_r": -132.5189351247251,
+        "target_hits": 99,
+        "timed_exits": 203,
+        "late_exits": 4
+      },
+      "validation": {
+        "n": 630,
+        "wins": 216,
+        "win_rate": 34.285714285714285,
+        "pf": 0.7105191793808183,
+        "mean_r": -0.1700240013430058,
+        "total_r": -107.11512084609366,
+        "target_hits": 92,
+        "timed_exits": 197,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 1439,
+        "wins": 440,
+        "win_rate": 30.576789437109102,
+        "pf": 0.7278903504864714,
+        "mean_r": -0.18436911876137418,
+        "total_r": -265.30716189761745,
+        "target_hits": 312,
+        "timed_exits": 191,
+        "late_exits": 18
+      },
+      "validation": {
+        "n": 1053,
+        "wins": 336,
+        "win_rate": 31.908831908831907,
+        "pf": 0.7846572859075255,
+        "mean_r": -0.1421388748522685,
+        "total_r": -149.67223521943873,
+        "target_hits": 239,
+        "timed_exits": 141,
+        "late_exits": 12
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 679,
+        "wins": 200,
+        "win_rate": 29.455081001472756,
+        "pf": 0.7089817575911557,
+        "mean_r": -0.2003139867401918,
+        "total_r": -136.01319699659024,
+        "target_hits": 146,
+        "timed_exits": 82,
+        "late_exits": 8
+      },
+      "validation": {
+        "n": 600,
+        "wins": 186,
+        "win_rate": 31.0,
+        "pf": 0.7587495580754862,
+        "mean_r": -0.16118255380533864,
+        "total_r": -96.70953228320317,
+        "target_hits": 136,
+        "timed_exits": 77,
+        "late_exits": 7
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 1742,
+        "wins": 731,
+        "win_rate": 41.963260619977035,
+        "pf": 0.6974327674190023,
+        "mean_r": -0.16324839153290766,
+        "total_r": -284.3786980503251,
+        "target_hits": 622,
+        "timed_exits": 239,
+        "late_exits": 8
+      },
+      "validation": {
+        "n": 1305,
+        "wins": 576,
+        "win_rate": 44.13793103448276,
+        "pf": 0.7713010022340779,
+        "mean_r": -0.11704814219588573,
+        "total_r": -152.74782556563088,
+        "target_hits": 487,
+        "timed_exits": 189,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 824,
+        "wins": 334,
+        "win_rate": 40.53398058252427,
+        "pf": 0.6526728348043079,
+        "mean_r": -0.19232761332656265,
+        "total_r": -158.47795338108762,
+        "target_hits": 283,
+        "timed_exits": 112,
+        "late_exits": 6
+      },
+      "validation": {
+        "n": 731,
+        "wins": 320,
+        "win_rate": 43.77564979480164,
+        "pf": 0.7558040057289015,
+        "mean_r": -0.12530794419513228,
+        "total_r": -91.6001072066417,
+        "target_hits": 264,
+        "timed_exits": 115,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 1720,
+        "wins": 725,
+        "win_rate": 42.151162790697676,
+        "pf": 0.7149952096348045,
+        "mean_r": -0.16218754622336382,
+        "total_r": -278.9625795041858,
+        "target_hits": 686,
+        "timed_exits": 89,
+        "late_exits": 17
+      },
+      "validation": {
+        "n": 1276,
+        "wins": 566,
+        "win_rate": 44.357366771159874,
+        "pf": 0.7910797465449244,
+        "mean_r": -0.11290109338646792,
+        "total_r": -144.06179516113306,
+        "target_hits": 534,
+        "timed_exits": 73,
+        "late_exits": 10
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 816,
+        "wins": 333,
+        "win_rate": 40.80882352941176,
+        "pf": 0.6743895786581556,
+        "mean_r": -0.19038209035993986,
+        "total_r": -155.35178573371093,
+        "target_hits": 315,
+        "timed_exits": 40,
+        "late_exits": 10
+      },
+      "validation": {
+        "n": 712,
+        "wins": 314,
+        "win_rate": 44.10112359550562,
+        "pf": 0.7811547065012009,
+        "mean_r": -0.11904735832185419,
+        "total_r": -84.76171912516018,
+        "target_hits": 296,
+        "timed_exits": 41,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 1701,
+        "wins": 603,
+        "win_rate": 35.44973544973545,
+        "pf": 0.741824534807938,
+        "mean_r": -0.1521360105154766,
+        "total_r": -258.7833538868257,
+        "target_hits": 264,
+        "timed_exits": 502,
+        "late_exits": 10
+      },
+      "validation": {
+        "n": 1265,
+        "wins": 461,
+        "win_rate": 36.44268774703557,
+        "pf": 0.786418552926205,
+        "mean_r": -0.12156206619359038,
+        "total_r": -153.77601373489182,
+        "target_hits": 198,
+        "timed_exits": 396,
+        "late_exits": 6
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 806,
+        "wins": 276,
+        "win_rate": 34.24317617866005,
+        "pf": 0.6915063965918484,
+        "mean_r": -0.18591716063331726,
+        "total_r": -149.8492314704537,
+        "target_hits": 121,
+        "timed_exits": 230,
+        "late_exits": 6
+      },
+      "validation": {
+        "n": 713,
+        "wins": 263,
+        "win_rate": 36.886395511921464,
+        "pf": 0.7959506138862797,
+        "mean_r": -0.115526892479821,
+        "total_r": -82.37067433811237,
+        "target_hits": 110,
+        "timed_exits": 228,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 1643,
+        "wins": 507,
+        "win_rate": 30.858186244674375,
+        "pf": 0.7559510979672943,
+        "mean_r": -0.16433723816039938,
+        "total_r": -270.0060822975362,
+        "target_hits": 374,
+        "timed_exits": 205,
+        "late_exits": 19
+      },
+      "validation": {
+        "n": 1193,
+        "wins": 398,
+        "win_rate": 33.36127409891031,
+        "pf": 0.8385661234755878,
+        "mean_r": -0.10394791505775831,
+        "total_r": -124.00986266390566,
+        "target_hits": 283,
+        "timed_exits": 166,
+        "late_exits": 13
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 783,
+        "wins": 229,
+        "win_rate": 29.246487867177525,
+        "pf": 0.7118203425329787,
+        "mean_r": -0.1984090921047023,
+        "total_r": -155.3543191179819,
+        "target_hits": 173,
+        "timed_exits": 91,
+        "late_exits": 11
+      },
+      "validation": {
+        "n": 665,
+        "wins": 219,
+        "win_rate": 32.932330827067666,
+        "pf": 0.8197332538362795,
+        "mean_r": -0.11693692721147164,
+        "total_r": -77.76305659562864,
+        "target_hits": 157,
+        "timed_exits": 91,
+        "late_exits": 7
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 1323,
+        "wins": 564,
+        "win_rate": 42.63038548752834,
+        "pf": 0.7469278110609521,
+        "mean_r": -0.13306740046677837,
+        "total_r": -176.0481708175478,
+        "target_hits": 498,
+        "timed_exits": 176,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 941,
+        "wins": 426,
+        "win_rate": 45.270988310308184,
+        "pf": 0.7922451101410989,
+        "mean_r": -0.10758171332309267,
+        "total_r": -101.2343922370302,
+        "target_hits": 369,
+        "timed_exits": 106,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 646,
+        "wins": 259,
+        "win_rate": 40.092879256965944,
+        "pf": 0.6710943198659828,
+        "mean_r": -0.18056136006127768,
+        "total_r": -116.64263859958538,
+        "target_hits": 227,
+        "timed_exits": 85,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 550,
+        "wins": 235,
+        "win_rate": 42.72727272727273,
+        "pf": 0.7267323999697517,
+        "mean_r": -0.14741759775230526,
+        "total_r": -81.07967876376789,
+        "target_hits": 207,
+        "timed_exits": 58,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 1319,
+        "wins": 570,
+        "win_rate": 43.214556482183475,
+        "pf": 0.749314344238091,
+        "mean_r": -0.1398863978892482,
+        "total_r": -184.51015881591837,
+        "target_hits": 540,
+        "timed_exits": 67,
+        "late_exits": 5
+      },
+      "validation": {
+        "n": 939,
+        "wins": 425,
+        "win_rate": 45.260915867944625,
+        "pf": 0.8085969385350009,
+        "mean_r": -0.10253598072453826,
+        "total_r": -96.28128590034143,
+        "target_hits": 398,
+        "timed_exits": 51,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 644,
+        "wins": 268,
+        "win_rate": 41.61490683229814,
+        "pf": 0.6952370488615846,
+        "mean_r": -0.1761859692345654,
+        "total_r": -113.46376418706011,
+        "target_hits": 255,
+        "timed_exits": 28,
+        "late_exits": 3
+      },
+      "validation": {
+        "n": 550,
+        "wins": 236,
+        "win_rate": 42.90909090909091,
+        "pf": 0.7334443293207785,
+        "mean_r": -0.14888931866346217,
+        "total_r": -81.8891252649042,
+        "target_hits": 220,
+        "timed_exits": 31,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 1275,
+        "wins": 454,
+        "win_rate": 35.6078431372549,
+        "pf": 0.7773493763080144,
+        "mean_r": -0.1287531660384719,
+        "total_r": -164.16028669905165,
+        "target_hits": 203,
+        "timed_exits": 389,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 904,
+        "wins": 341,
+        "win_rate": 37.7212389380531,
+        "pf": 0.8078961711819179,
+        "mean_r": -0.1107296366020732,
+        "total_r": -100.09959148827417,
+        "target_hits": 155,
+        "timed_exits": 254,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 619,
+        "wins": 216,
+        "win_rate": 34.894991922455574,
+        "pf": 0.7447933468499675,
+        "mean_r": -0.14936983466827716,
+        "total_r": -92.45992765966356,
+        "target_hits": 92,
+        "timed_exits": 189,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 527,
+        "wins": 188,
+        "win_rate": 35.673624288425046,
+        "pf": 0.7084262692763761,
+        "mean_r": -0.17274494726207595,
+        "total_r": -91.03658720711402,
+        "target_hits": 73,
+        "timed_exits": 156,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 1248,
+        "wins": 402,
+        "win_rate": 32.21153846153847,
+        "pf": 0.8114206912893168,
+        "mean_r": -0.12429741122552534,
+        "total_r": -155.12316920945563,
+        "target_hits": 305,
+        "timed_exits": 150,
+        "late_exits": 6
+      },
+      "validation": {
+        "n": 885,
+        "wins": 300,
+        "win_rate": 33.89830508474576,
+        "pf": 0.8747636981341926,
+        "mean_r": -0.08057490474374195,
+        "total_r": -71.30879069821162,
+        "target_hits": 223,
+        "timed_exits": 108,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 603,
+        "wins": 194,
+        "win_rate": 32.172470978441126,
+        "pf": 0.7866362361493835,
+        "mean_r": -0.14208459143390126,
+        "total_r": -85.67700863464246,
+        "target_hits": 142,
+        "timed_exits": 73,
+        "late_exits": 4
+      },
+      "validation": {
+        "n": 515,
+        "wins": 166,
+        "win_rate": 32.23300970873787,
+        "pf": 0.7833252579982217,
+        "mean_r": -0.14362016792214308,
+        "total_r": -73.96438647990368,
+        "target_hits": 117,
+        "timed_exits": 66,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 782,
+        "wins": 351,
+        "win_rate": 44.8849104859335,
+        "pf": 0.8378983142986206,
+        "mean_r": -0.08183281957929503,
+        "total_r": -63.993264911008716,
+        "target_hits": 320,
+        "timed_exits": 94,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 605,
+        "wins": 274,
+        "win_rate": 45.289256198347104,
+        "pf": 0.7892535365609231,
+        "mean_r": -0.10998586920077348,
+        "total_r": -66.54145086646795,
+        "target_hits": 239,
+        "timed_exits": 63,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 392,
+        "wins": 176,
+        "win_rate": 44.89795918367347,
+        "pf": 0.8180140071517804,
+        "mean_r": -0.09290736727317843,
+        "total_r": -36.41968797108594,
+        "target_hits": 156,
+        "timed_exits": 46,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 370,
+        "wins": 158,
+        "win_rate": 42.7027027027027,
+        "pf": 0.7237226350822589,
+        "mean_r": -0.14981365197874114,
+        "total_r": -55.43105123213422,
+        "target_hits": 140,
+        "timed_exits": 37,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 780,
+        "wins": 364,
+        "win_rate": 46.666666666666664,
+        "pf": 0.8601608056404146,
+        "mean_r": -0.07342522968747928,
+        "total_r": -57.27167915623384,
+        "target_hits": 346,
+        "timed_exits": 36,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 605,
+        "wins": 277,
+        "win_rate": 45.78512396694215,
+        "pf": 0.8198889942650199,
+        "mean_r": -0.096028376709962,
+        "total_r": -58.09716790952701,
+        "target_hits": 259,
+        "timed_exits": 31,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 390,
+        "wins": 181,
+        "win_rate": 46.41025641025641,
+        "pf": 0.8455581375467909,
+        "mean_r": -0.0819312288012028,
+        "total_r": -31.95317923246909,
+        "target_hits": 172,
+        "timed_exits": 16,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 370,
+        "wins": 162,
+        "win_rate": 43.78378378378379,
+        "pf": 0.741780829364899,
+        "mean_r": -0.14386440550360013,
+        "total_r": -53.22983003633205,
+        "target_hits": 149,
+        "timed_exits": 20,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 751,
+        "wins": 285,
+        "win_rate": 37.949400798934754,
+        "pf": 0.9109291411186412,
+        "mean_r": -0.049436579407093534,
+        "total_r": -37.126871134727246,
+        "target_hits": 139,
+        "timed_exits": 228,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 587,
+        "wins": 218,
+        "win_rate": 37.13798977853492,
+        "pf": 0.7888081764484283,
+        "mean_r": -0.12505397257168843,
+        "total_r": -73.40668189958112,
+        "target_hits": 101,
+        "timed_exits": 153,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 376,
+        "wins": 147,
+        "win_rate": 39.09574468085106,
+        "pf": 0.9037616159948185,
+        "mean_r": -0.05291672252981516,
+        "total_r": -19.8966876712105,
+        "target_hits": 64,
+        "timed_exits": 119,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 360,
+        "wins": 126,
+        "win_rate": 35.0,
+        "pf": 0.6663993129394552,
+        "mean_r": -0.20196444806061997,
+        "total_r": -72.70720130182319,
+        "target_hits": 46,
+        "timed_exits": 104,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 739,
+        "wins": 270,
+        "win_rate": 36.53585926928282,
+        "pf": 0.9816605510425023,
+        "mean_r": -0.011331887605027378,
+        "total_r": -8.374264940115232,
+        "target_hits": 202,
+        "timed_exits": 95,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 577,
+        "wins": 198,
+        "win_rate": 34.31542461005199,
+        "pf": 0.8689257061260314,
+        "mean_r": -0.08445941550729276,
+        "total_r": -48.733082747707925,
+        "target_hits": 142,
+        "timed_exits": 72,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 366,
+        "wins": 137,
+        "win_rate": 37.43169398907104,
+        "pf": 0.9783534943756523,
+        "mean_r": -0.013335320982253792,
+        "total_r": -4.880727479504888,
+        "target_hits": 97,
+        "timed_exits": 50,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 353,
+        "wins": 118,
+        "win_rate": 33.42776203966006,
+        "pf": 0.7803584734853413,
+        "mean_r": -0.14525699328343247,
+        "total_r": -51.27571862905167,
+        "target_hits": 77,
+        "timed_exits": 48,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 486,
+        "wins": 208,
+        "win_rate": 42.79835390946502,
+        "pf": 0.7160289541943694,
+        "mean_r": -0.14997927430687086,
+        "total_r": -72.88992731313924,
+        "target_hits": 171,
+        "timed_exits": 72,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 390,
+        "wins": 172,
+        "win_rate": 44.1025641025641,
+        "pf": 0.7367250945992786,
+        "mean_r": -0.13579999213566554,
+        "total_r": -52.961996932909564,
+        "target_hits": 134,
+        "timed_exits": 66,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 224,
+        "wins": 99,
+        "win_rate": 44.19642857142857,
+        "pf": 0.7835688758448531,
+        "mean_r": -0.10889914016506527,
+        "total_r": -24.39340739697462,
+        "target_hits": 84,
+        "timed_exits": 35,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 204,
+        "wins": 89,
+        "win_rate": 43.627450980392155,
+        "pf": 0.7130056305727944,
+        "mean_r": -0.14761585162518429,
+        "total_r": -30.113633731537597,
+        "target_hits": 67,
+        "timed_exits": 37,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 484,
+        "wins": 209,
+        "win_rate": 43.18181818181818,
+        "pf": 0.7531858394030168,
+        "mean_r": -0.13610567612396055,
+        "total_r": -65.8751472439969,
+        "target_hits": 198,
+        "timed_exits": 27,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 390,
+        "wins": 172,
+        "win_rate": 44.1025641025641,
+        "pf": 0.7536636365036087,
+        "mean_r": -0.13567896107411742,
+        "total_r": -52.91479481890579,
+        "target_hits": 156,
+        "timed_exits": 24,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 224,
+        "wins": 100,
+        "win_rate": 44.642857142857146,
+        "pf": 0.8145373783495348,
+        "mean_r": -0.09698140850110247,
+        "total_r": -21.723835504246953,
+        "target_hits": 94,
+        "timed_exits": 17,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 204,
+        "wins": 87,
+        "win_rate": 42.64705882352941,
+        "pf": 0.6918965423647799,
+        "mean_r": -0.17481974682045986,
+        "total_r": -35.66322835137381,
+        "target_hits": 77,
+        "timed_exits": 14,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 485,
+        "wins": 184,
+        "win_rate": 37.93814432989691,
+        "pf": 0.6869101157705472,
+        "mean_r": -0.17867196655678233,
+        "total_r": -86.65590378003942,
+        "target_hits": 61,
+        "timed_exits": 165,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 390,
+        "wins": 147,
+        "win_rate": 37.69230769230769,
+        "pf": 0.8025126227265114,
+        "mean_r": -0.11102683768802177,
+        "total_r": -43.30046669832849,
+        "target_hits": 59,
+        "timed_exits": 126,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 224,
+        "wins": 86,
+        "win_rate": 38.392857142857146,
+        "pf": 0.75603430619919,
+        "mean_r": -0.13523411948642725,
+        "total_r": -30.292442764959706,
+        "target_hits": 30,
+        "timed_exits": 80,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 204,
+        "wins": 78,
+        "win_rate": 38.23529411764706,
+        "pf": 0.8103633664494883,
+        "mean_r": -0.10520021602674197,
+        "total_r": -21.460844069455362,
+        "target_hits": 32,
+        "timed_exits": 65,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 481,
+        "wins": 159,
+        "win_rate": 33.056133056133056,
+        "pf": 0.8179240153689824,
+        "mean_r": -0.1177582245338966,
+        "total_r": -56.64170600080426,
+        "target_hits": 111,
+        "timed_exits": 68,
+        "late_exits": 3
+      },
+      "validation": {
+        "n": 390,
+        "wins": 134,
+        "win_rate": 34.35897435897436,
+        "pf": 0.8180377764671635,
+        "mean_r": -0.11693471230272351,
+        "total_r": -45.60453779806217,
+        "target_hits": 88,
+        "timed_exits": 58,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 30,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 224,
+        "wins": 77,
+        "win_rate": 34.375,
+        "pf": 0.8453455086253413,
+        "mean_r": -0.09581033316014767,
+        "total_r": -21.46151462787308,
+        "target_hits": 50,
+        "timed_exits": 40,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 204,
+        "wins": 72,
+        "win_rate": 35.294117647058826,
+        "pf": 0.8222083614392944,
+        "mean_r": -0.11236199687734053,
+        "total_r": -22.921847362977466,
+        "target_hits": 44,
+        "timed_exits": 35,
+        "late_exits": 4
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 866,
+        "wins": 392,
+        "win_rate": 45.26558891454965,
+        "pf": 0.7866998362994051,
+        "mean_r": -0.0887123926968244,
+        "total_r": -76.82493207544994,
+        "target_hits": 229,
+        "timed_exits": 332,
+        "late_exits": 3
+      },
+      "validation": {
+        "n": 611,
+        "wins": 265,
+        "win_rate": 43.37152209492635,
+        "pf": 0.7618204545906743,
+        "mean_r": -0.09692167463306901,
+        "total_r": -59.21914320080516,
+        "target_hits": 152,
+        "timed_exits": 253,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 408,
+        "wins": 173,
+        "win_rate": 42.40196078431372,
+        "pf": 0.6960026511470652,
+        "mean_r": -0.13405004036613108,
+        "total_r": -54.692416469381484,
+        "target_hits": 101,
+        "timed_exits": 151,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 356,
+        "wins": 156,
+        "win_rate": 43.82022471910113,
+        "pf": 0.7793238394668917,
+        "mean_r": -0.08672669761805453,
+        "total_r": -30.874704352027415,
+        "target_hits": 84,
+        "timed_exits": 157,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 840,
+        "wins": 391,
+        "win_rate": 46.54761904761905,
+        "pf": 0.8565277989339353,
+        "mean_r": -0.06979671483607913,
+        "total_r": -58.62924046230647,
+        "target_hits": 330,
+        "timed_exits": 127,
+        "late_exits": 11
+      },
+      "validation": {
+        "n": 579,
+        "wins": 267,
+        "win_rate": 46.1139896373057,
+        "pf": 0.8381102208150695,
+        "mean_r": -0.07916501194771398,
+        "total_r": -45.83654191772639,
+        "target_hits": 224,
+        "timed_exits": 85,
+        "late_exits": 12
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "ema_reclaim",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 398,
+        "wins": 176,
+        "win_rate": 44.221105527638194,
+        "pf": 0.7705505988619508,
+        "mean_r": -0.11707978697657755,
+        "total_r": -46.59775521667786,
+        "target_hits": 146,
+        "timed_exits": 62,
+        "late_exits": 6
+      },
+      "validation": {
+        "n": 338,
+        "wins": 159,
+        "win_rate": 47.0414201183432,
+        "pf": 0.8640559953721441,
+        "mean_r": -0.06563915363271254,
+        "total_r": -22.18603392785684,
+        "target_hits": 132,
+        "timed_exits": 52,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 866,
+        "wins": 372,
+        "win_rate": 42.956120092378754,
+        "pf": 0.7834555982427966,
+        "mean_r": -0.09315495290279222,
+        "total_r": -80.67218921381806,
+        "target_hits": 60,
+        "timed_exits": 491,
+        "late_exits": 3
+      },
+      "validation": {
+        "n": 611,
+        "wins": 243,
+        "win_rate": 39.770867430441896,
+        "pf": 0.7790639480263379,
+        "mean_r": -0.0948096852072938,
+        "total_r": -57.92871766165651,
+        "target_hits": 46,
+        "timed_exits": 350,
+        "late_exits": 3
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 408,
+        "wins": 164,
+        "win_rate": 40.19607843137255,
+        "pf": 0.6838574286437011,
+        "mean_r": -0.1426742440039407,
+        "total_r": -58.2110915536078,
+        "target_hits": 23,
+        "timed_exits": 226,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 356,
+        "wins": 141,
+        "win_rate": 39.60674157303371,
+        "pf": 0.7846600510672422,
+        "mean_r": -0.09017071855863301,
+        "total_r": -32.10077580687335,
+        "target_hits": 27,
+        "timed_exits": 208,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 830,
+        "wins": 323,
+        "win_rate": 38.915662650602414,
+        "pf": 0.8783937019720341,
+        "mean_r": -0.06709319093876981,
+        "total_r": -55.68734847917894,
+        "target_hits": 144,
+        "timed_exits": 260,
+        "late_exits": 13
+      },
+      "validation": {
+        "n": 572,
+        "wins": 216,
+        "win_rate": 37.76223776223776,
+        "pf": 0.8713328198415814,
+        "mean_r": -0.07210703974555502,
+        "total_r": -41.24522673445747,
+        "target_hits": 102,
+        "timed_exits": 166,
+        "late_exits": 13
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "ema_reclaim",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 393,
+        "wins": 144,
+        "win_rate": 36.6412213740458,
+        "pf": 0.7559429638417604,
+        "mean_r": -0.14046740313156506,
+        "total_r": -55.20368943070507,
+        "target_hits": 59,
+        "timed_exits": 124,
+        "late_exits": 7
+      },
+      "validation": {
+        "n": 335,
+        "wins": 126,
+        "win_rate": 37.61194029850746,
+        "pf": 0.8283609640971432,
+        "mean_r": -0.0963570338137893,
+        "total_r": -32.27960632761941,
+        "target_hits": 55,
+        "timed_exits": 103,
+        "late_exits": 6
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 966,
+        "wins": 441,
+        "win_rate": 45.65217391304348,
+        "pf": 0.8088794795111641,
+        "mean_r": -0.0788215560337345,
+        "total_r": -76.14162312858753,
+        "target_hits": 266,
+        "timed_exits": 360,
+        "late_exits": 4
+      },
+      "validation": {
+        "n": 695,
+        "wins": 297,
+        "win_rate": 42.73381294964029,
+        "pf": 0.7309455660525254,
+        "mean_r": -0.1158989707644941,
+        "total_r": -80.5497846813234,
+        "target_hits": 176,
+        "timed_exits": 267,
+        "late_exits": 4
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 453,
+        "wins": 205,
+        "win_rate": 45.253863134657834,
+        "pf": 0.7609893404113927,
+        "mean_r": -0.10094279387510954,
+        "total_r": -45.72708562542462,
+        "target_hits": 118,
+        "timed_exits": 169,
+        "late_exits": 3
+      },
+      "validation": {
+        "n": 407,
+        "wins": 176,
+        "win_rate": 43.24324324324324,
+        "pf": 0.7554632947773013,
+        "mean_r": -0.10134693359662823,
+        "total_r": -41.24820197382769,
+        "target_hits": 98,
+        "timed_exits": 168,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 934,
+        "wins": 437,
+        "win_rate": 46.78800856531049,
+        "pf": 0.8678338177170061,
+        "mean_r": -0.06392836678953402,
+        "total_r": -59.70909458142478,
+        "target_hits": 371,
+        "timed_exits": 140,
+        "late_exits": 12
+      },
+      "validation": {
+        "n": 671,
+        "wins": 302,
+        "win_rate": 45.007451564828614,
+        "pf": 0.7982624408889716,
+        "mean_r": -0.10082311070016053,
+        "total_r": -67.65230727980772,
+        "target_hits": 253,
+        "timed_exits": 99,
+        "late_exits": 13
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "pullback_break",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 439,
+        "wins": 201,
+        "win_rate": 45.78587699316628,
+        "pf": 0.8280758821282269,
+        "mean_r": -0.08516567138191064,
+        "total_r": -37.38772973665877,
+        "target_hits": 169,
+        "timed_exits": 68,
+        "late_exits": 6
+      },
+      "validation": {
+        "n": 390,
+        "wins": 179,
+        "win_rate": 45.8974358974359,
+        "pf": 0.8197276438675244,
+        "mean_r": -0.08969218997480671,
+        "total_r": -34.979954090174616,
+        "target_hits": 150,
+        "timed_exits": 56,
+        "late_exits": 5
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 966,
+        "wins": 413,
+        "win_rate": 42.7536231884058,
+        "pf": 0.8139537522502254,
+        "mean_r": -0.08025320655880122,
+        "total_r": -77.52459753580197,
+        "target_hits": 73,
+        "timed_exits": 539,
+        "late_exits": 4
+      },
+      "validation": {
+        "n": 695,
+        "wins": 279,
+        "win_rate": 40.14388489208633,
+        "pf": 0.768074701884373,
+        "mean_r": -0.10461394193665499,
+        "total_r": -72.70668964597522,
+        "target_hits": 54,
+        "timed_exits": 377,
+        "late_exits": 4
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 453,
+        "wins": 193,
+        "win_rate": 42.60485651214128,
+        "pf": 0.7579185883239287,
+        "mean_r": -0.10579066229766985,
+        "total_r": -47.923170020844445,
+        "target_hits": 30,
+        "timed_exits": 253,
+        "late_exits": 3
+      },
+      "validation": {
+        "n": 407,
+        "wins": 165,
+        "win_rate": 40.54054054054054,
+        "pf": 0.7636464807880738,
+        "mean_r": -0.10357023775461302,
+        "total_r": -42.1530867661275,
+        "target_hits": 29,
+        "timed_exits": 228,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 908,
+        "wins": 354,
+        "win_rate": 38.986784140969164,
+        "pf": 0.9202872224294227,
+        "mean_r": -0.043748067868671574,
+        "total_r": -39.72324562475379,
+        "target_hits": 168,
+        "timed_exits": 277,
+        "late_exits": 13
+      },
+      "validation": {
+        "n": 654,
+        "wins": 245,
+        "win_rate": 37.46177370030581,
+        "pf": 0.8729945504037074,
+        "mean_r": -0.07120989173537655,
+        "total_r": -46.571269194936264,
+        "target_hits": 119,
+        "timed_exits": 187,
+        "late_exits": 14
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "pullback_break",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 422,
+        "wins": 163,
+        "win_rate": 38.62559241706161,
+        "pf": 0.8831239400496723,
+        "mean_r": -0.06541289525816373,
+        "total_r": -27.60424179894509,
+        "target_hits": 75,
+        "timed_exits": 128,
+        "late_exits": 7
+      },
+      "validation": {
+        "n": 382,
+        "wins": 141,
+        "win_rate": 36.910994764397905,
+        "pf": 0.8315377018427695,
+        "mean_r": -0.09559293664614602,
+        "total_r": -36.516501798827775,
+        "target_hits": 65,
+        "timed_exits": 112,
+        "late_exits": 6
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 653,
+        "wins": 288,
+        "win_rate": 44.104134762634,
+        "pf": 0.7862128418874618,
+        "mean_r": -0.09339151990124643,
+        "total_r": -60.98466249551392,
+        "target_hits": 195,
+        "timed_exits": 221,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 475,
+        "wins": 212,
+        "win_rate": 44.631578947368425,
+        "pf": 0.7576053534535336,
+        "mean_r": -0.1088629013171414,
+        "total_r": -51.70987812564216,
+        "target_hits": 136,
+        "timed_exits": 151,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 322,
+        "wins": 142,
+        "win_rate": 44.099378881987576,
+        "pf": 0.7491002633077264,
+        "mean_r": -0.11146883987579262,
+        "total_r": -35.892966440005225,
+        "target_hits": 89,
+        "timed_exits": 111,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 292,
+        "wins": 128,
+        "win_rate": 43.83561643835616,
+        "pf": 0.7161747990957072,
+        "mean_r": -0.12660869134597666,
+        "total_r": -36.96973787302519,
+        "target_hits": 74,
+        "timed_exits": 104,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 648,
+        "wins": 302,
+        "win_rate": 46.60493827160494,
+        "pf": 0.8563536704417255,
+        "mean_r": -0.07087752877697857,
+        "total_r": -45.92863864748212,
+        "target_hits": 259,
+        "timed_exits": 87,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 470,
+        "wins": 219,
+        "win_rate": 46.59574468085106,
+        "pf": 0.8356277602136143,
+        "mean_r": -0.08234160352410853,
+        "total_r": -38.70055365633101,
+        "target_hits": 183,
+        "timed_exits": 61,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 317,
+        "wins": 150,
+        "win_rate": 47.3186119873817,
+        "pf": 0.8662385581707017,
+        "mean_r": -0.06571293824511326,
+        "total_r": -20.831001423700904,
+        "target_hits": 129,
+        "timed_exits": 42,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 290,
+        "wins": 134,
+        "win_rate": 46.206896551724135,
+        "pf": 0.8039680891439028,
+        "mean_r": -0.09982898759506469,
+        "total_r": -28.95040640256876,
+        "target_hits": 109,
+        "timed_exits": 38,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 653,
+        "wins": 268,
+        "win_rate": 41.04134762633997,
+        "pf": 0.8585884475896775,
+        "mean_r": -0.06452787202504065,
+        "total_r": -42.136700432351546,
+        "target_hits": 68,
+        "timed_exits": 337,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 475,
+        "wins": 197,
+        "win_rate": 41.473684210526315,
+        "pf": 0.7773780366012907,
+        "mean_r": -0.1046358268163375,
+        "total_r": -49.702017737760315,
+        "target_hits": 40,
+        "timed_exits": 239,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 322,
+        "wins": 138,
+        "win_rate": 42.857142857142854,
+        "pf": 0.8876585854443819,
+        "mean_r": -0.05064792486006218,
+        "total_r": -16.30863180494002,
+        "target_hits": 32,
+        "timed_exits": 166,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 292,
+        "wins": 125,
+        "win_rate": 42.80821917808219,
+        "pf": 0.7713634104796516,
+        "mean_r": -0.1031353351462823,
+        "total_r": -30.11551786271443,
+        "target_hits": 21,
+        "timed_exits": 156,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 627,
+        "wins": 241,
+        "win_rate": 38.43700159489633,
+        "pf": 0.9393590475786956,
+        "mean_r": -0.034045358288392114,
+        "total_r": -21.346439646821857,
+        "target_hits": 122,
+        "timed_exits": 175,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 449,
+        "wins": 173,
+        "win_rate": 38.530066815144764,
+        "pf": 0.9011727897158834,
+        "mean_r": -0.055479533143988,
+        "total_r": -24.91031038165061,
+        "target_hits": 84,
+        "timed_exits": 125,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 304,
+        "wins": 122,
+        "win_rate": 40.131578947368425,
+        "pf": 0.9905702896343473,
+        "mean_r": -0.005155182808438939,
+        "total_r": -1.5671755737654376,
+        "target_hits": 58,
+        "timed_exits": 92,
+        "late_exits": 2
+      },
+      "validation": {
+        "n": 273,
+        "wins": 111,
+        "win_rate": 40.65934065934066,
+        "pf": 0.9639027070155537,
+        "mean_r": -0.019660930155254986,
+        "total_r": -5.367433932384611,
+        "target_hits": 51,
+        "timed_exits": 79,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 433,
+        "wins": 200,
+        "win_rate": 46.18937644341801,
+        "pf": 0.8604481193970827,
+        "mean_r": -0.05852978604951248,
+        "total_r": -25.343397359438903,
+        "target_hits": 138,
+        "timed_exits": 143,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 318,
+        "wins": 143,
+        "win_rate": 44.9685534591195,
+        "pf": 0.7904301407482353,
+        "mean_r": -0.09305306520425177,
+        "total_r": -29.590874734952063,
+        "target_hits": 94,
+        "timed_exits": 99,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 220,
+        "wins": 100,
+        "win_rate": 45.45454545454545,
+        "pf": 0.777401788439483,
+        "mean_r": -0.0981560542695886,
+        "total_r": -21.59433193930949,
+        "target_hits": 64,
+        "timed_exits": 72,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 203,
+        "wins": 88,
+        "win_rate": 43.34975369458128,
+        "pf": 0.7352704577506918,
+        "mean_r": -0.11877564473685824,
+        "total_r": -24.111455881582224,
+        "target_hits": 54,
+        "timed_exits": 69,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 428,
+        "wins": 205,
+        "win_rate": 47.89719626168225,
+        "pf": 0.9080635914446176,
+        "mean_r": -0.04394810908895508,
+        "total_r": -18.809790690072774,
+        "target_hits": 178,
+        "timed_exits": 55,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 315,
+        "wins": 155,
+        "win_rate": 49.2063492063492,
+        "pf": 0.93055948599695,
+        "mean_r": -0.03329895316497222,
+        "total_r": -10.48917024696625,
+        "target_hits": 130,
+        "timed_exits": 38,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout55",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 215,
+        "wins": 104,
+        "win_rate": 48.372093023255815,
+        "pf": 0.8995404348436848,
+        "mean_r": -0.0483019836910965,
+        "total_r": -10.384926493585747,
+        "target_hits": 89,
+        "timed_exits": 28,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 202,
+        "wins": 99,
+        "win_rate": 49.00990099009901,
+        "pf": 0.9079472337712452,
+        "mean_r": -0.044449599372879664,
+        "total_r": -8.978819073321691,
+        "target_hits": 81,
+        "timed_exits": 26,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 433,
+        "wins": 185,
+        "win_rate": 42.725173210161664,
+        "pf": 0.9119609557230655,
+        "mean_r": -0.03879314592355413,
+        "total_r": -16.797432184898938,
+        "target_hits": 45,
+        "timed_exits": 228,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 318,
+        "wins": 133,
+        "win_rate": 41.82389937106918,
+        "pf": 0.8263153591435867,
+        "mean_r": -0.0808033349446044,
+        "total_r": -25.695460512384198,
+        "target_hits": 29,
+        "timed_exits": 158,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 220,
+        "wins": 97,
+        "win_rate": 44.09090909090909,
+        "pf": 0.941595386880404,
+        "mean_r": -0.026046854825153277,
+        "total_r": -5.730308061533721,
+        "target_hits": 24,
+        "timed_exits": 111,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 203,
+        "wins": 85,
+        "win_rate": 41.87192118226601,
+        "pf": 0.8055641717866756,
+        "mean_r": -0.08863794741835114,
+        "total_r": -17.993503325925282,
+        "target_hits": 16,
+        "timed_exits": 106,
+        "late_exits": 0
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 415,
+        "wins": 161,
+        "win_rate": 38.795180722891565,
+        "pf": 0.9773912841818739,
+        "mean_r": -0.01245565502826609,
+        "total_r": -5.169096836730428,
+        "target_hits": 84,
+        "timed_exits": 117,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 296,
+        "wins": 122,
+        "win_rate": 41.21621621621622,
+        "pf": 0.968133072082949,
+        "mean_r": -0.01717410235321394,
+        "total_r": -5.083534296551327,
+        "target_hits": 56,
+        "timed_exits": 87,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "breakout55",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 207,
+        "wins": 82,
+        "win_rate": 39.61352657004831,
+        "pf": 1.0408108707034318,
+        "mean_r": 0.022017312037535194,
+        "total_r": 4.557583591769785,
+        "target_hits": 44,
+        "timed_exits": 60,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 186,
+        "wins": 81,
+        "win_rate": 43.54838709677419,
+        "pf": 1.056386741008466,
+        "mean_r": 0.029241005730745603,
+        "total_r": 5.438827065918682,
+        "target_hits": 37,
+        "timed_exits": 56,
+        "late_exits": 1
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 207,
+        "wins": 103,
+        "win_rate": 49.75845410628019,
+        "pf": 0.9494815786086762,
+        "mean_r": -0.020127908457670242,
+        "total_r": -4.16647705073774,
+        "target_hits": 66,
+        "timed_exits": 68,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 178,
+        "wins": 76,
+        "win_rate": 42.69662921348314,
+        "pf": 0.6256698025308398,
+        "mean_r": -0.17926460130395264,
+        "total_r": -31.90909903210357,
+        "target_hits": 41,
+        "timed_exits": 61,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 103,
+        "wins": 53,
+        "win_rate": 51.45631067961165,
+        "pf": 1.0551603741867037,
+        "mean_r": 0.01985050249102398,
+        "total_r": 2.04460175657547,
+        "target_hits": 32,
+        "timed_exits": 40,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 95,
+        "wins": 46,
+        "win_rate": 48.421052631578945,
+        "pf": 0.8245017101558303,
+        "mean_r": -0.07217696363561671,
+        "total_r": -6.856811545383587,
+        "target_hits": 24,
+        "timed_exits": 36,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 207,
+        "wins": 107,
+        "win_rate": 51.690821256038646,
+        "pf": 1.0569420423391074,
+        "mean_r": 0.02512342364160124,
+        "total_r": 5.200548693811457,
+        "target_hits": 91,
+        "timed_exits": 31,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 178,
+        "wins": 74,
+        "win_rate": 41.57303370786517,
+        "pf": 0.6616787270085271,
+        "mean_r": -0.18149578175683526,
+        "total_r": -32.306249152716674,
+        "target_hits": 58,
+        "timed_exits": 29,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "sweep20",
+      "target_atr": 1.5,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 103,
+        "wins": 56,
+        "win_rate": 54.36893203883495,
+        "pf": 1.2046328142331546,
+        "mean_r": 0.08283967997115939,
+        "total_r": 8.532487037029417,
+        "target_hits": 47,
+        "timed_exits": 17,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 95,
+        "wins": 47,
+        "win_rate": 49.473684210526315,
+        "pf": 0.9190065697367061,
+        "mean_r": -0.03619623164328311,
+        "total_r": -3.438642006111895,
+        "target_hits": 35,
+        "timed_exits": 20,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "both",
+      "train": {
+        "n": 207,
+        "wins": 100,
+        "win_rate": 48.309178743961354,
+        "pf": 1.1380511048394404,
+        "mean_r": 0.05644067395410205,
+        "total_r": 11.683219508499125,
+        "target_hits": 28,
+        "timed_exits": 104,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 178,
+        "wins": 70,
+        "win_rate": 39.325842696629216,
+        "pf": 0.6294052504035725,
+        "mean_r": -0.1836640297433742,
+        "total_r": -32.69219729432061,
+        "target_hits": 10,
+        "timed_exits": 90,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": 4,
+      "direction": "long",
+      "train": {
+        "n": 103,
+        "wins": 51,
+        "win_rate": 49.51456310679612,
+        "pf": 1.3148543835948472,
+        "mean_r": 0.11948909394987901,
+        "total_r": 12.307376676837539,
+        "target_hits": 17,
+        "timed_exits": 53,
+        "late_exits": 0
+      },
+      "validation": {
+        "n": 95,
+        "wins": 42,
+        "win_rate": 44.21052631578947,
+        "pf": 0.768853251664912,
+        "mean_r": -0.10087640895404909,
+        "total_r": -9.583258850634664,
+        "target_hits": 6,
+        "timed_exits": 52,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "both",
+      "train": {
+        "n": 207,
+        "wins": 95,
+        "win_rate": 45.893719806763286,
+        "pf": 1.160200941779959,
+        "mean_r": 0.07748571549506596,
+        "total_r": 16.039543107478654,
+        "target_hits": 41,
+        "timed_exits": 73,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 178,
+        "wins": 64,
+        "win_rate": 35.95505617977528,
+        "pf": 0.7517282603882047,
+        "mean_r": -0.14371869132634008,
+        "total_r": -25.58192705608853,
+        "target_hits": 24,
+        "timed_exits": 57,
+        "late_exits": 2
+      }
+    },
+    {
+      "minutes": 60,
+      "family": "sweep20",
+      "target_atr": 3,
+      "hold_hours": null,
+      "direction": "long",
+      "train": {
+        "n": 103,
+        "wins": 51,
+        "win_rate": 49.51456310679612,
+        "pf": 1.3877255116964142,
+        "mean_r": 0.1726153948227504,
+        "total_r": 17.77938566674329,
+        "target_hits": 25,
+        "timed_exits": 35,
+        "late_exits": 1
+      },
+      "validation": {
+        "n": 95,
+        "wins": 40,
+        "win_rate": 42.10526315789473,
+        "pf": 0.9271561283814853,
+        "mean_r": -0.03704734923334659,
+        "total_r": -3.5194981771679266,
+        "target_hits": 12,
+        "timed_exits": 38,
+        "late_exits": 2
+      }
+    }
+  ],
+  "logic_sha256": "c19618586dc87c9e51fec1d4dcbcb5ca11debd631602cef9f4747398e6eb2cfd"
+}

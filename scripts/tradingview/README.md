@@ -1,5 +1,14 @@
 # TradingView インジケーター
 
+## 金・55本突破＋勢い確認（1時間足）
+
+[gold_breakout55_pf_refined.pine](gold_breakout55_pf_refined.pine)は、XAUUSDの固定ルール版です。
+EMA50/200と55本高安突破に、ADX18以上・実体0.5ATR以上・終値が足の端25%以内を組み合わせます。
+確定足で準備サインを出し、次の通常足始値でEntry・TP・SLを固定します。
+SL1.5ATR、TP3ATR、基準時刻20時に全決済。価格付きアラートとコスト込み勝率・PFを表示します。
+
+[売買ロジックと設定手順](../../docs/gold_breakout55_logic.md) / [検証結果](../../docs/gold_pf_refinement_results.md)
+
 ## タートル・トレーディング（日足）
 
 `turtle_trading_strategy.pine`は、古典的なタートル・トレーディングを検証する

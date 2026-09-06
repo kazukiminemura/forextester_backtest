@@ -1,0 +1,59 @@
+{
+  "frames": [
+    30,
+    60
+  ],
+  "entry_modes": [
+    "direct",
+    "impulse",
+    "first_break",
+    "retest3",
+    "retest6"
+  ],
+  "adx_min": [
+    0,
+    18,
+    25
+  ],
+  "exit_modes": [
+    "fixed1R",
+    "fixed2R",
+    "breakeven",
+    "half1R",
+    "half1R_breakeven"
+  ],
+  "stop_atr": 1.5,
+  "entry_hours": [
+    6,
+    16
+  ],
+  "exit_hour": 20,
+  "cooldown": 5,
+  "counts": [
+    250,
+    100,
+    50,
+    50
+  ],
+  "target": "PF > 1 and positive mean R in every period",
+  "selection": "maximize minimum development PF",
+  "periods": [
+    [
+      2010,
+      2018
+    ],
+    [
+      2019,
+      2022
+    ],
+    [
+      2023,
+      2024
+    ],
+    [
+      2025,
+      2026
+    ]
+  ],
+  "prior_evaluation_inspected": true
+}
