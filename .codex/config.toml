@@ -1,0 +1,27 @@
+[agents]
+max_threads = 3
+
+# Explicit role registration for the locally installed Codex CLI 0.144.5.
+[agents.quant_director]
+description = "クオンツ研究責任者・組織統括"
+config_file = "agents/quant_director.toml"
+
+[agents.quant_data]
+description = "ローカルForex Testerデータ品質担当"
+config_file = "agents/quant_data.toml"
+
+[agents.quant_researcher]
+description = "新規ロジック仮説・Python実装担当"
+config_file = "agents/quant_researcher.toml"
+
+[agents.quant_validator]
+description = "戦略を変更しない独立検証担当"
+config_file = "agents/quant_validator.toml"
+
+[agents.quant_pine]
+description = "合格戦略のTradingView移植担当"
+config_file = "agents/quant_pine.toml"
+
+[agents.quant_auditor]
+description = "品質・再現性・移植一致の独立監査担当"
+config_file = "agents/quant_auditor.toml"

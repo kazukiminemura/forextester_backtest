@@ -1,5 +1,12 @@
 # Forex Tester History Backtester
 
+クオンツAI組織の担当・起動方法は
+[`docs/quant_organization/charter.md`](docs/quant_organization/charter.md)、
+現在の進捗は[`作業台帳`](docs/quant_organization/board.md)を参照してください。
+
+研究・検証・監査を一括実行するエージェントは
+[`docs/trading_agents.md`](docs/trading_agents.md) を参照してください。
+
 Forex Tester 6 の `History` ディレクトリを読み取り専用で参照し、バー抽出、
 時間足集約、tick 抽出、田向式「4Hダウ＋15分足押し目レンジ」のバックテストを行う
 Python ツールです。
