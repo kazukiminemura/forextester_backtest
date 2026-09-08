@@ -24,6 +24,9 @@ float roundPips = input.float(50.0, "節目の間隔（pips）", minval=0.1, ste
 float roundStep = math.max(syminfo.mintick, math.round(roundPips * pipSize / syminfo.mintick) * syminfo.mintick)
 float momentum = input.float(1.5, "勢い：True Range / 直前ATR14", minval=0.1, step=0.1, group=gf)
 int impulseBars = input.int(3, "突破後の勢いを見送る本数（0＝突破足だけ）", minval=0, maxval=20, group=gf)
+bool excludeWick = input.bool(true, "長いヒゲでのバンドタッチを見送り", group=gf)
+float wickBodyRatio = input.float(2.0, "ヒゲ長 / 実体の最小倍率（仮定）", minval=0.1, step=0.1, group=gf)
+float wickRangePct = input.float(50.0, "ヒゲが足全体に占める最小％（仮定）", minval=1, maxval=100, step=1, group=gf)
 bool manualPause = input.bool(false, "裁量見送り：候補を全停止（履歴全体にも適用）", group=gf)
 
 string gr = "検証用の追加仮定"
@@ -140,6 +143,11 @@ bool available = tradeSide == 0 and pendingSide == 0 and not exited
 bool ready = available and chartOK and not na(deviation) and deviation > 0 and not na(priorAtr) and not na(priorHigh)
 bool touchBuy = low <= lower
 bool touchSell = high >= upper
+// Use a one-tick body floor for dojis; reject only the touched side's wick.
+longWick(float wick) =>
+    excludeWick and high > low and wick >= math.max(math.abs(close - open), syminfo.mintick) * wickBodyRatio and wick >= (high - low) * wickRangePct / 100
+bool buyWick = touchBuy and longWick(math.min(open, close) - low)
+bool sellWick = touchSell and longWick(high - math.max(open, close))
 
 var int armed = 0 // +1 buy preparation, -1 sell preparation; never a position
 var int armedBar = na
@@ -157,7 +165,8 @@ if barstate.isconfirmed
         bool explained = armed == 1 ? buyExplained : sellExplained
         bool centerPassed = armed == 1 ? close >= basis : close <= basis
         bool oppositeTouch = armed == 1 ? touchSell : touchBuy
-        reason := manualPause ? "裁量停止" : explained ? "突破の勢い" : expired ? "準備期限切れ" : centerPassed ? "中央線到達済み" : oppositeTouch ? "反対側タッチ" : ""
+        bool wickBlocked = armed == 1 ? buyWick : sellWick
+        reason := manualPause ? "裁量停止" : explained ? "突破の勢い" : wickBlocked ? "長いヒゲ" : expired ? "準備期限切れ" : centerPassed ? "中央線到達済み" : oppositeTouch ? "反対側タッチ" : ""
         if reason == "" and bar_index > armedBar and (not requireReturn or (close > lower and close < upper))
             signalSide := armed
         if reason != "" or signalSide != 0
@@ -166,8 +175,9 @@ if barstate.isconfirmed
     if ready and armed == 0 and reason == "" and signalSide == 0 and (touchBuy or touchSell)
         bool both = touchBuy and touchSell
         bool explained = touchBuy ? buyExplained : sellExplained
-        if both or manualPause or explained
-            reason := both ? "両側タッチ" : manualPause ? "裁量停止" : "突破の勢い"
+        bool wickBlocked = touchBuy ? buyWick : sellWick
+        if both or manualPause or explained or wickBlocked
+            reason := both ? "両側タッチ" : manualPause ? "裁量停止" : explained ? "突破の勢い" : "長いヒゲ"
         else
             armed := touchBuy ? 1 : -1
             armedBar := bar_index

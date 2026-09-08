@@ -157,7 +157,7 @@ def test_preparation_old_new_exhaustive_reference_equivalence():
 
 
 def test_compact_structure_and_safety_guards():
-    assert len(SOURCE.splitlines()) <= 221
+    assert len(SOURCE.splitlines()) <= 235
     assert SOURCE.count('bool gap =') == 1
     assert SOURCE.count('table.cell(') == 2
     assert SOURCE.count('tableRow(notice,') == 9
@@ -178,3 +178,32 @@ def test_profit_and_entry_flag_simplification_equivalence():
                                  (False, True, 0), (True, False, 1),
                                  (True, False, -1), (True, True, 0)]:
         assert (side == 0 and not exited and not entered) == (side == 0 and not exited)
+
+
+@pytest.mark.parametrize('opening,high,low,close,tick,expected', [
+    (100, 110, 99, 101, 0.01, (False, True)),
+    (100, 101, 90, 99, 0.01, (True, False)),
+    (100, 104, 99, 103, 0.01, (False, False)),
+    (100, 102, 99, 100, 0.01, (False, True)),
+    (100, 100, 100, 100, 0.01, (False, False)),
+    (100, 100.01, 100, 100, 0.01, (False, False)),
+    (100, 104, 100, 102, 0.01, (False, False)),
+    (100, 103, 99, 101, 0.01, (False, True)),
+])
+def test_long_wick_reference(opening, high, low, close, tick, expected):
+    def blocked(wick):
+        return high > low and wick >= max(abs(close - opening), tick) * 2 and wick >= (high - low) * 0.5
+    assert (blocked(min(opening, close) - low), blocked(high - max(opening, close))) == expected
+
+
+def test_wick_guard_covers_preparation_and_retouch():
+    for token in ['excludeWick = input.bool(true',
+                  'math.max(math.abs(close - open), syminfo.mintick) * wickBodyRatio',
+                  'wick >= (high - low) * wickRangePct / 100',
+                  'buyWick = touchBuy and longWick(math.min(open, close) - low)',
+                  'sellWick = touchSell and longWick(high - math.max(open, close))',
+                  'wickBlocked = armed == 1 ? buyWick : sellWick',
+                  'wickBlocked = touchBuy ? buyWick : sellWick',
+                  'if both or manualPause or explained or wickBlocked',
+                  'wickBlocked ? "長いヒゲ"']:
+        assert token in SOURCE
