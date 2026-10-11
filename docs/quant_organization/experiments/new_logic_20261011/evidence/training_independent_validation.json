@@ -1,0 +1,13 @@
+{
+  "status": "PASS_INDEPENDENT_REPLAY",
+  "phase": "training",
+  "csv_files": 96,
+  "trade_observations": 444,
+  "prefix_checks": 9,
+  "counts": {"array_values": 16909672, "compared_items": 47585},
+  "selected": null,
+  "research_status": "REJECTED_AT_PHASE_SCREEN",
+  "validator_sha256": "f7f23fe3c22d72ec28b8f2eb11cfd36bb2394db8291e7bb1e5f173a99b69df58",
+  "result_sha256": "8b7462d063af802368d864465ef2e651a1079329669c2ac4eb64dd3bcd748cde",
+  "adoption_approved": false
+}

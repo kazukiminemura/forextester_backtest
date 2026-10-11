@@ -1,0 +1,18 @@
+{
+  "started_utc": "2026-10-11T10:19:51.944783+00:00",
+  "phase": "training",
+  "files": {
+    "docs\\quant_organization\\experiments\\new_logic_20261011\\protocol.json": "e2a0cf52e923fa9de11f5efab7a1666f3fb5d7ef76c3a7ebaf04931b5f31ddf7",
+    "docs\\quant_organization\\experiments\\new_logic_20261011\\hypothesis.md": "c8fafcf04e149d59051c5832bb28b581414dd3e97e310f632b242f407941b4f0",
+    "scripts\\research_new_logic_20261011.py": "1dfe24026447b6a9131f7e83a1620965149ffdba4889886560b0abfcc99d9c5a",
+    "tests\\test_new_logic_20261011.py": "200592df62ae06ec12d21aadc573777a27390bcbc4c7e570de859a2cd7f5a455",
+    "scripts\\research_ytt_profit_feasibility.py": "7d47206b4d2ec522559ab919774236b1a3090a7f27cf7ffda731db7af122667a"
+  },
+  "inputs": [
+    {"symbol": "USDJPY", "path": "agent_runs\\ytt_monthly5_fx_20261009\\USDJPY_execution.npz", "sha256": "7b34e08c0edd67a85adc27498734863d66d8af94e6d8c1f2cff91fa965131f68", "phase_signals": {"compression_retest": 7, "compression_direct": 44, "failed_excursion": 442, "inside_edge_bounce": 813}},
+    {"symbol": "EURUSD", "path": "agent_runs\\ytt_monthly5_fx_20261009\\EURUSD_execution.npz", "sha256": "21ee41245dcc62f8a14861405ecc0a1336ec4fbd8328f12b728554cf5353e938", "phase_signals": {"compression_retest": 14, "compression_direct": 85, "failed_excursion": 550, "inside_edge_bounce": 886}},
+    {"symbol": "GBPUSD", "path": "agent_runs\\ytt_monthly5_fx_20261009\\GBPUSD_execution.npz", "sha256": "e09cbca0ffdb39bfa822ff7a1c0530a67a621ca31b0ce5732f9088b5283a895c", "phase_signals": {"compression_retest": 23, "compression_direct": 121, "failed_excursion": 685, "inside_edge_bounce": 1047}}
+  ],
+  "completed_utc": "2026-10-11T10:20:05.244884+00:00",
+  "results_sha256": "8b7462d063af802368d864465ef2e651a1079329669c2ac4eb64dd3bcd748cde"
+}

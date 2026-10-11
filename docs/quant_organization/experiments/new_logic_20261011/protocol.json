@@ -1,0 +1,155 @@
+{
+  "experiment_id": "new_logic_20261011",
+  "status": "SPEC_FROZEN",
+  "hypothesis": "hypothesis.md: compression first-retest and failed range excursion",
+  "baseline": {
+    "compression_retest": "compression_direct",
+    "failed_excursion": "inside_edge_bounce"
+  },
+  "history_directory": "C:\\ForexTester6\\data\\History",
+  "data_manifest": "data.md; execution-cache hashes below",
+  "cache_directory": "agent_runs/ytt_monthly5_fx_20261009",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "GBPUSD"
+  ],
+  "entry_timeframe": 900,
+  "higher_timeframe_rules": "none",
+  "entry_rules": "hypothesis.md; complete continuous 26-bar prefix; next contiguous actual open; cost/risk<=0.10; risk<=2*signalATR",
+  "exit_rules": {
+    "full_exit": true,
+    "max_execution_bars": 16,
+    "daily_clear_source": "23:45 close",
+    "ambiguous_bar": "SL first",
+    "gap": "adverse open, favorable capped TP",
+    "reward_risk_ratios": [
+      1,
+      1.5,
+      2
+    ]
+  },
+  "periods": {
+    "training": [
+      "2020-01-01",
+      "2023-01-01"
+    ],
+    "validation": [
+      "2023-01-01",
+      "2025-01-01"
+    ],
+    "final_confirmation": [
+      "2025-01-01",
+      "2026-01-01"
+    ]
+  },
+  "final_period_prior_exposure": "all periods repeatedly viewed; no pristine holdout",
+  "candidate_budget": 6,
+  "control_budget": 6,
+  "search_space": [
+    {
+      "arm": "compression_retest",
+      "rr": 1
+    },
+    {
+      "arm": "compression_retest",
+      "rr": 1.5
+    },
+    {
+      "arm": "compression_retest",
+      "rr": 2
+    },
+    {
+      "arm": "failed_excursion",
+      "rr": 1
+    },
+    {
+      "arm": "failed_excursion",
+      "rr": 1.5
+    },
+    {
+      "arm": "failed_excursion",
+      "rr": 2
+    }
+  ],
+  "controls": [
+    "compression_direct",
+    "inside_edge_bounce"
+  ],
+  "parameters": {
+    "box_bars": 24,
+    "atr_bars": 20,
+    "compression_max_atr": 3.0,
+    "break_body_min_atr": 0.5,
+    "retest_bars": 6,
+    "range_min_atr": 3.0,
+    "range_max_atr": 8.0,
+    "range_max_efficiency": 0.25,
+    "inside_edge_fraction": 0.1,
+    "range_signal_cooldown": 24,
+    "minimum_risk_cost_multiple": 10.0,
+    "maximum_risk_atr": 2.0
+  },
+  "cost_and_fill_model": {
+    "round_trip_pips": {
+      "USDJPY": 1.6,
+      "EURUSD": 1.5,
+      "GBPUSD": 1.8
+    },
+    "pip": {
+      "USDJPY": 0.01,
+      "EURUSD": 0.0001,
+      "GBPUSD": 0.0001
+    },
+    "tick": {
+      "USDJPY": 0.001,
+      "EURUSD": 1e-05,
+      "GBPUSD": 1e-05
+    },
+    "cost_multipliers": [
+      1,
+      2
+    ],
+    "commission": 0,
+    "swap": "not included; broker rollover clock unverified",
+    "bid_ask_replay": false
+  },
+  "position_sizing_and_currency": {
+    "account_symbol": "USDJPY",
+    "initial_yen": 1000000,
+    "stop_equity_yen": 900000,
+    "risk_fraction": 0.005,
+    "quantity_step": 1000,
+    "notional_leverage_cap": 25,
+    "resets_within_phase": false,
+    "phase_restart": true,
+    "other_symbols": "R-unit diagnostic only",
+    "aggregate_accounts": false
+  },
+  "acceptance_gates": {
+    "aggregate_trades_min": 200,
+    "per_symbol_trades_min": 50,
+    "normal_pf_min": 1.15,
+    "normal_mean_net_r_positive": true,
+    "stress_pf_strict_min": 1.0,
+    "stress_mean_net_r_positive": true,
+    "profitable_symbols_min": 2,
+    "max_positive_symbol_contribution": 0.7,
+    "all_pass_disposition": "NEEDS_EVIDENCE, never automatic adoption",
+    "no_normal_usdjpy_halt": true,
+    "normal_mean_net_r_strictly_above_same_rr_control": true
+  },
+  "cross_symbol_rule": "all three predetermined symbols; pooled equal-risk trades are descriptive, not portfolio returns",
+  "phase_rule": "training first; passing candidate only after independent review to validation; same candidate after validation pass to final; failure stops with no retune",
+  "code_identifier": "scripts/research_new_logic_20261011.py; source/test/dependency hashes frozen before results",
+  "frozen_at": "2026-10-11T10:19:39.214304+00:00",
+  "live_trading_authorized": false,
+  "hypothesis_budget": 2,
+  "selection_rule": "at most one of six candidates: descending normal PF, mean netR, trades; lexical arm then ascending RR; same-RR control retained; failure ends experiment without fallback",
+  "phase_boundary": "fresh position/pending/cooldown; indicators may warm up; prohibit signal from before phase start",
+  "input_sha256": {
+    "USDJPY": "7b34e08c0edd67a85adc27498734863d66d8af94e6d8c1f2cff91fa965131f68",
+    "EURUSD": "21ee41245dcc62f8a14861405ecc0a1336ec4fbd8328f12b728554cf5353e938",
+    "GBPUSD": "e09cbca0ffdb39bfa822ff7a1c0530a67a621ca31b0ce5732f9088b5283a895c"
+  }
+}
