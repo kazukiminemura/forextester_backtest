@@ -9,7 +9,7 @@
 - 96 CSV（72 R診断＋24 USDJPY円口座）、444重複を含む取引観測、9 prefix、16,909,672配列値、47,585項目を照合。全件一致。
 - 独自OHLC窓計算・pending/cooldownで全イベントを再生成。約定は旧独立検証器由来の別実装に新しいRR/16本/リスク制限を適用し、研究エンジンを呼ばず再生。研究関数を呼ぶのはprefix未来遮断比較のみ。
 - 追加の固定seed=20261011乱数試験180ケース/54,000本でRR1/1.5/2・両方向・欠損・不完全足・円数量・停止の全取引/account/curve一致。これは実データの取引母数には含めない。
-- validator SHA256 `f7f23fe3c22d72ec28b8f2eb11cfd36bb2394db8291e7bb1e5f173a99b69df58`。results SHA256 `8b7462d063af802368d864465ef2e651a1079329669c2ac4eb64dd3bcd748cde`。research/spec/tests/共通coreの5 SHAはrun_manifestと一致。
+- 実走時validator SHA256 `f7f23fe3c22d72ec28b8f2eb11cfd36bb2394db8291e7bb1e5f173a99b69df58`。公開前に末尾空白だけを正規化した後のvalidator SHA256 `52f64f4844a5978da8cf8fd834283bf43fe528370fcd135b02460db91311d71b` で、同じtraining入力・結果の独立再生を再実行しexit 0を確認した。results SHA256 `8b7462d063af802368d864465ef2e651a1079329669c2ac4eb64dd3bcd748cde`。research/spec/tests/共通coreの5 SHAはrun_manifestと一致。
 
 ## 候補の集計（3通貨、2020–2022、R正規化）
 

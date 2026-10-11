@@ -8,6 +8,8 @@
   "selected": null,
   "research_status": "REJECTED_AT_PHASE_SCREEN",
   "validator_sha256": "f7f23fe3c22d72ec28b8f2eb11cfd36bb2394db8291e7bb1e5f173a99b69df58",
+  "published_validator_sha256": "52f64f4844a5978da8cf8fd834283bf43fe528370fcd135b02460db91311d71b",
+  "published_validator_change": "Trailing whitespace normalization only; independent replay rerun against the same training input and results completed with exit 0.",
   "result_sha256": "8b7462d063af802368d864465ef2e651a1079329669c2ac4eb64dd3bcd748cde",
   "adoption_approved": false
 }
