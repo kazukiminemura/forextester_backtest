@@ -1,0 +1,17 @@
+{
+  "status": "PROTOTYPE_ONLY",
+  "recorded_after_first_smoke_test": true,
+  "model": "jev-1.14.0",
+  "decision_timeframe": "15",
+  "max_age_seconds": 300,
+  "min_choice_probability": 0.8,
+  "min_choice_confidence": 0.6,
+  "min_readable_noul": 0.8,
+  "min_new_signal_noul": 0.8,
+  "budget_yen": 3,
+  "reservation_per_attempt_yen": 0.5505024,
+  "retry": false,
+  "orders": false,
+  "hypothesis": "YTT画面の最新成立と上位足一致を画像から分類できるかを確認。収益性検証ではない。",
+  "limitation": "画像内時刻や方向は確率的読取。原価格データとの決定的照合なし。"
+}
