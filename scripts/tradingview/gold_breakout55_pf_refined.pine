@@ -35,6 +35,11 @@ type GoldTrade
     int wins = 0
     float gainsR = 0
     float lossesR = 0
+    int stopLossCount = 0
+    int timeLossCount = 0
+    float stopLossR = 0
+    float timeLossR = 0
+    float exitR = na
     int late = 0
     float exitPrice = na
     string exitReason = ""
@@ -54,6 +59,7 @@ method enter(GoldTrade this, int direction, int barNumber, int barTime, int dueT
 // to retain the research's stop-first rule. The 20:00 exit uses the open immediately.
 method observe(GoldTrade this, int barTime, float barOpen, float barHigh, float barLow, bool confirmed, float costSpread) =>
     this.exitPrice := na
+    this.exitR := na
     this.exitReason := ""
     if this.side != 0
         float slip = costSpread * 0.1
@@ -80,6 +86,14 @@ method observe(GoldTrade this, int barTime, float barOpen, float barHigh, float 
                 this.exitReason := "TP"
         if not na(this.exitPrice)
             float r = this.side * (this.exitPrice - this.entry) / this.risk
+            this.exitR := r
+            if r < 0
+                if this.exitReason == "SL"
+                    this.stopLossCount += 1
+                    this.stopLossR += -r
+                else if this.exitReason == "20時決済"
+                    this.timeLossCount += 1
+                    this.timeLossR += -r
             this.count += 1
             this.wins += r > 0 ? 1 : 0
             this.gainsR += math.max(r, 0)
@@ -110,7 +124,7 @@ if adoptedBuy or adoptedSell
 // Admission precedes observation: an exit never permits another entry on the same bar.
 trade.observe(time, open, high, low, barstate.isconfirmed, spread)
 if trade.exitReason != ""
-    label.new(bar_index, trade.exitPrice, trade.exitReason + " " + str.tostring(trade.exitPrice, format.mintick), color=trade.exitReason == "TP" ? color.green : color.orange, textcolor=color.white)
+    label.new(bar_index, trade.exitPrice, trade.exitReason + " " + str.tostring(trade.exitPrice, format.mintick) + " / " + str.tostring(trade.exitR, "#.###") + "R", color=trade.exitR > 0 ? color.green : color.orange, textcolor=color.white)
 
 plot(fast, "EMA50", color=color.orange)
 plot(slow, "EMA200", color=color.blue)
@@ -135,7 +149,7 @@ alertcondition(adoptedBuy, "BUYエントリー", '{{ticker}} BUY Entry={{plot("�
 alertcondition(adoptedSell, "SELLエントリー", '{{ticker}} SELL Entry={{plot("通知Entry")}} TP={{plot("通知TP")}} SL={{plot("通知SL")}}')
 alertcondition(trade.exitReason != "", "決済判定", '{{ticker}} 決済判定 価格={{plot("通知決済価格")}}。TP/SLの集計は1時間足確定時。')
 
-var table panel = table.new(position.top_right, 2, 9, bgcolor=color.new(color.black, 15))
+var table panel = table.new(position.top_right, 2, 11, bgcolor=color.new(color.black, 15))
 if barstate.islast
     table.cell(panel, 0, 0, "Gold Confirm / 1H", text_color=color.white)
     table.cell(panel, 1, 0, trade.side == 1 ? "BUY保有" : trade.side == -1 ? "SELL保有" : prepareBuy ? "BUY準備" : prepareSell ? "SELL準備" : "待機", text_color=color.yellow)
@@ -155,3 +169,7 @@ if barstate.islast
     table.cell(panel, 1, 7, "3ATR / 1.5ATR / 20:00", text_color=color.white)
     table.cell(panel, 0, 8, "読込済み1時間足で集計", text_color=color.silver)
     table.cell(panel, 1, 8, "各期間すべてのPF>1は未達", text_color=color.silver)
+    table.cell(panel, 0, 9, "SL負け / 損失合計R", text_color=color.white)
+    table.cell(panel, 1, 9, str.tostring(trade.stopLossCount) + " / " + str.tostring(trade.stopLossR, "#.###") + "R", text_color=color.orange)
+    table.cell(panel, 0, 10, "時間決済の負け / 損失合計R", text_color=color.white)
+    table.cell(panel, 1, 10, str.tostring(trade.timeLossCount) + " / " + str.tostring(trade.timeLossR, "#.###") + "R", text_color=color.orange)

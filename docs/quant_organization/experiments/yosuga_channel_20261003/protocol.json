@@ -1,0 +1,112 @@
+{
+  "experiment_id": "yosuga_channel_20261003",
+  "status": "SPEC_FROZEN",
+  "frozen_at": "2026-10-03T21:08:11.385946+09:00",
+  "hypothesis": "The source's 2022 trend-aligned horizontal-line subset can be approximated by a completed M15 reversal and retest followed by an M5 reversal, then a confirmed higher low/lower high pullback. A second confirmation may improve net expectancy, but delay, tight stops, range whipsaw and costs can destroy it.",
+  "baseline": "immediate_turn_rr1: identical M15 reversal/retest prerequisites but enters after the M5 reversal without the subsequent pullback. Each policy consumes its own setup once. This is a policy comparison, not a causal estimate of waiting.",
+  "history_directory": "C:/ForexTester6/data/History",
+  "data_manifest": "agent_runs/bb_alternatives_2020_2025_20260925/data_manifest.json",
+  "cache_directory": "agent_runs/bb_alternatives_2020_2025_20260925",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "GBPUSD",
+    "AUDUSD",
+    "NZDUSD",
+    "AUDJPY",
+    "NZDJPY"
+  ],
+  "entry_timeframe": "M5, open timestamps in source clock; information becomes available at open+300 seconds",
+  "higher_timeframe_rules": "M15 at source-clock quarter-hour boundaries, open+900 availability. Exact consecutive three M5, each with five consecutive M1, required. M15 latest confirmed pivot strict close-cross initializes direction; only an opposite-direction later cross is a reversal. New M15 reversal is required for every setup; this is an added restrictive interpretation, not a universal source requirement.",
+  "candidate_budget": 3,
+  "arms": [
+    "pullback_rr1",
+    "pullback_line_exit",
+    "immediate_turn_rr1"
+  ],
+  "search_space": "No parameter search; exactly these three policies. No adjustment from any validation/late-period results. Pivot/expiry/lookback robustness is not tested by the three policies.",
+  "structural_rules": {
+    "pivot_left_right": 2,
+    "pivot_definition": "Strict wick extreme against both left and both right bars. Available on rightmost confirmation close. All five bars consecutive and complete M1. Ties excluded; a simultaneous high/low outside-bar pivot excludes both.",
+    "cross_definition": "Previous close <= latest confirmed high < current close (buy), mirrored sell. A pivot confirmed on this close is available for this close decision. Initial break only sets direction. A subsequent opposite break is a reversal. Same-direction breaks do not refresh setup.",
+    "gap_definition": "Non-300-second M5 gap or an incomplete-M1 M5 cancels setups and resets M5 structure. Missing/noncomplete M15 creates a gap in M15 and resets its structure. M15 historical line pool survives gaps within its lookback.",
+    "setup_expiry_m5_bars": 36,
+    "line_lookback_complete_m15_bars": 96,
+    "line_lifecycle": "Retain confirmed M15 wick-pivot levels whose pivot-origin ordinal is at least current complete-M15 ordinal minus 95. No discretion, merging, multi-touch weighting, broken-line removal or channel lines. This conflicts with later 2025 advice against reusing broken lines.",
+    "setup": "M15 reversal creates one setup per policy family at that M5 closing index. Only a later M5 candle spanning broken_level can retest. Retest is allowed through index delta 36 inclusive. Next M15 reversal replaces setup. Retest and qualifying M5 reversal may share a close.",
+    "pullback": "After retest, M5 reversal in M15 setup direction records its then-current latest opposite pivot. Then require an opposite-type pivot whose origin is strictly after this reversal, and whose value is a strict higher low for buys or lower high for sells relative to recorded pivot. Right-two confirmation establishes stop one tick outside this pivot. Subsequent wick violation of the pullback extreme cancels, equality survives. M5 opposite reversal cancels after turn. At/after pullback confirmation close, close above previous high (buy) or below previous low (sell) generates candidate and consumes setup, even if room rejects.",
+    "immediate": "At the eligible M5 reversal close, signal with SL one tick outside the latest opposite pivot, then consume its own setup even if room rejects. Does not consume pullback family's setup.",
+    "target_line": "At signal choose nearest forward known M15 pivot line relative to signal close; target is one tick inside it. Origins and confirmation indices are saved. Require positive stop distance >=tick and target room >=stop distance at signal close and actual next open; no more distant replacement if nearest fails. RR1 policies retain this room filter but replace TP with actual-fill 1R. One-tick buffers are implementation supplements, not stated source values."
+  },
+  "entry_rules": "Signal from completed M5; enter immediately following M5 open only if source timestamps differ by exactly 300 seconds. Do not look ahead at entry M1 completeness; record incomplete exposure if it becomes known later. One position per pair and arm; occupied candidates are discarded. Candidate generated at an exit bar's close may enter following open. Setup-origin and signal-open timestamps must both be inside evaluation period; indicator warmup may precede it.",
+  "exit_rules": {
+    "reward_risk_ratio": 1.0,
+    "full_exit": true,
+    "primary": "pullback_rr1 fixed structural SL and actual-fill mirrored TP, all-out RR1, no breakeven or trailing, no reversal exit",
+    "reference": "immediate_turn_rr1 uses its own turn-pivot SL and actual-fill mirrored TP, full exit",
+    "supplementary": "pullback_line_exit shares candidate signals with primary but has fixed line TP and structural SL; M5 reverse-turn close queues next available open market exit. Opening gap bracket fills precede that market exit, which precedes later intrabar bracket hits. This is an authorized non-RR1 research comparison of source-like exits, not replacement of primary. Its occupancy and actual trade population differ.",
+    "period_end": "Remaining position exits final observed M5 close, including costs; last-bar pending signal is ledgered but unfilled. Never drop open P/L.",
+    "breakeven": "None. 2022 text leaves amount undefined; 2024 distinguishes initial trades without breakeven. This does not fully reproduce all source vintages."
+  },
+  "periods": [
+    {
+      "label": "2020_2022",
+      "start": "2020-01-01",
+      "end": "2023-01-01",
+      "role": "design descriptive"
+    },
+    {
+      "label": "2023_2024",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "role": "validation descriptive"
+    },
+    {
+      "label": "2025",
+      "start": "2025-01-01",
+      "end": "2026-01-01",
+      "role": "late descriptive"
+    }
+  ],
+  "warmup": "2019-12 source data; indicators built causally across full stream; no position or setup carried across independent period starts",
+  "final_period_prior_exposure": "All periods previously viewed in other Yosuga/BB research. No true untouched holdout claim. No conditional withholding of 2025; all three periods are fixed descriptive evaluations, not optimization/selection.",
+  "cost_multipliers": [
+    1.0,
+    1.5
+  ],
+  "spread_pips": {
+    "USDJPY": 1.2,
+    "EURUSD": 1.1,
+    "GBPUSD": 1.4,
+    "AUDUSD": 1.2,
+    "NZDUSD": 1.4,
+    "AUDJPY": 1.4,
+    "NZDJPY": 1.7
+  },
+  "cost_and_fill_model": "Chart OHLC plus one round-trip deduction of saved info.dat spread pips; stress 1.5x that same cost. Commission=0 and swap=0 source settings, historical values unknown. Base slippage=0; stress extra is aggregate spread/slippage reserve. Gap stops and gap targets execute at actual observed open, not capped to 1R. Otherwise if both SL/TP hit, SL first. Missing-M1 M5 remains in exit replay; count such held bars and exposed trades. Intrabar fill time unknown, use bar-close timestamp for carry penalty; opening fills use bar open.",
+  "carry_sensitivity": "Separately subtract 1 pip times elapsed source seconds/86400 from each trade; continuous-time holding penalty, not historical rollover/swap. Report pips and initial-risk R under both cost scenarios. Not part of adoption gate.",
+  "position_sizing_and_currency": "Per-trade fixed 1 initial-risk R, no compounding; equal R across pairs, theoretical unlimited margin. Pips are descriptive heterogeneous-price units, not USD/JPY cash added together. Combined MTM R is synchronous union of source close timestamps with forward carry. DD samples observed bar closes only; no account-currency return or percent DD.",
+  "acceptance_gates": "For each later period (2023-24 and 2025), at least 100 trades, cost-adjusted PF_R>=1.10, mean net R>0, common calendar-month cluster bootstrap 95% lower bound>0, positive pairs>=4/7, every leave-one-pair aggregate netR>0, 1.5x-cost netR>0. 5000 seeded bootstrap draws (seed 20261003), month sampled jointly across currencies with all zero-trade months retained; ratio of summed netR to summed count. No multiple-testing correction. A pass is a descriptive screen for this approximation, not authorization/adoption of official method.",
+  "cross_symbol_rule": "Fixed seven symbols; do not remove losing pairs. Every leave-one-out netR must be positive in each later period.",
+  "source_evidence": "docs/quant_organization/experiments/yosuga_channel_20261003/source_rules.json and source_inventory.md; 2022 PDFs/base video are core, 2024/2025/2026 follow-up differences retained explicitly. Frozen source hashes identify the exact evidence before run.",
+  "code_identifier": "scripts/research_yosuga_channel.py and tests/test_yosuga_channel.py; exact SHA256 captured at run",
+  "limitations": [
+    "Mechanistic horizontal-line, trend-aligned subset of 2022 teaching with added M15 reversal/retest and numeric rules. Not the official complete Yosuga algorithm and not latest-2025 line management.",
+    "Discretionary salient lines, parallel channels, repeated reaction weighting, multi-timeframe resistance priority, scenario selection and all three source entry families are incomplete.",
+    "Strict 2-bar pivots, 36-M5 expiry, 96-complete-M15 lookback and tick buffers are supplements with no parameter sensitivity study.",
+    "Same candidate signals do not imply same executed trades between exit policies; occupancy changes. Policy comparisons are not causal isolated effects.",
+    "No unseen holdout; historical source-clock timezone and executable quote side remain unknown. No named market-session filters.",
+    "Signals require complete M1. Open trades still use observed incomplete-M1 M5 OHLC, and those observed incomplete-M5 exposures are flagged. Wholly absent M5 intervals, including weekend gaps, are not counted by this flag. Gap execution uses the next observed open. Unobserved prices and intrabar stop/target paths cannot be recovered.",
+    "Static spread settings, zero base slippage/swap and bar-path ambiguity limit economic inference. All outcomes require independent verification."
+  ],
+  "live_trading_authorized": false,
+  "pre_execution_review": "Director approval after validator and auditor found no material mismatch; 12 behavior tests passed; OLE boundary membership correction and explicit incomplete-M5 flag scope fixed before trade results.",
+  "frozen_identifiers": {
+    "scripts/research_yosuga_channel.py": "3cba558ad04c235e8517817eeea79c0af310bf284d1832113ae0dae0e1d915d8",
+    "tests/test_yosuga_channel.py": "3e511e3e3c28294868f3c7e80e07723decfbfad9c633bc40837b12bde0dc3ab7",
+    "docs/quant_organization/experiments/yosuga_channel_20261003/source_rules.json": "317dbf579c55a4c557996201514aff23e7f5e1d4a81eb25eaa22a94632e269f9",
+    "docs/quant_organization/experiments/yosuga_channel_20261003/source_inventory.md": "44a182a11abab58161af8a467855ba0cb14383aca1cacb161fa5b25f3276e60d",
+    "agent_runs/yosuga_channel_20261003/source/manifest.json": "2c3c4873ae35b75ca6fd50c1022a50e0dab597d7ed115f47976644164a3633bd",
+    "agent_runs/bb_alternatives_2020_2025_20260925/data_manifest.json": "188e5e8a325166924bf13b7ac2684214e24bc2f14176b843ff49d6dd37d213ed"
+  }
+}

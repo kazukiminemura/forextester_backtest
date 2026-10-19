@@ -1,0 +1,29 @@
+{
+  "experiment_id": "quant70_20260908",
+  "status": "SPEC_FROZEN",
+  "history_directory": "C:\\ForexTester6\\data\\History",
+  "symbols": ["AUDUSD", "EURUSD", "GBPUSD", "NZDUSD", "USDCHF", "USDJPY", "AUDJPY", "CHFJPY", "EURCHF", "GBPCHF", "GBPJPY"],
+  "timeframe": "15m",
+  "trend": "confirmed_4h_pivots",
+  "candidate_budget": 24,
+  "baseline": "Non-selectable comparator: every full-hour 15m bar close in confirmed 4H direction; same 208-bar warmup and fills. Report in addition to 24 candidates.",
+  "search_space": {
+    "ema_reclaim": {"ema_length": [20,40], "pullback_atr": [0.25,0.5], "max_extension_atr": [0.5,1.0], "lookback": 8, "slope_bars": 4},
+    "range_sweep": {"lookback": [16,32], "sweep_atr": [0.0,0.1], "close_location": [0.6,0.8]},
+    "compression_expansion": {"lookback": [8,16], "atr_ratio": [0.7,0.9], "buffer_atr": [0.0,0.1], "expansion_ratio": 1.25}
+  },
+  "periods": {
+    "train": ["2010-01-01", "2019-01-01"],
+    "validation": ["2019-01-01", "2023-01-01"],
+    "confirmation": ["2023-01-01", "2025-01-01"],
+    "recent_reference": ["2025-01-01", "2026-07-01"]
+  },
+  "period_semantics": "inclusive start, exclusive end; each period starts flat; last bar forced close included in net win rate",
+  "prior_exposure": "Historical periods have been inspected in earlier research. Confirmation is not certified untouched holdout.",
+  "execution": {"stop_atr": 2.0, "reward_risk_ratio": 1.0, "full_exit": true, "signal": "confirmed close", "entry": "next observed open only when gap <= 15 minutes", "stop": "signal close +/- 2 ATR; short stop includes spread", "target": "one initial risk from actual entry including entry slippage", "intrabar": "opening gap first, then adverse stop-first for dual touch", "tp_gap": "target price, no favorable improvement", "spread": "instrument metadata fixed spread", "slippage_pips_each_side": 0.1, "commission": "metadata commission per lot each side; reject nonzero until currency interpretation verified", "swap": "unmodelled; no live approval", "max_positions": "one per symbol; up to 11 aggregate", "risk": "fixed 0.25% of reference starting capital per trade, normalized R; realized-only DD"},
+  "gates": {"net_win_rate_pct": 70.0, "profit_factor": 1.5, "expectancy_r_positive": true, "min_train_trades": 400, "min_validation_trades": 200, "min_confirmation_trades": 100, "min_recent_trades": 75, "min_trades_per_month": 3.0, "min_trades_each_pair_train": 20, "min_trades_each_pair_other": 10, "min_positive_pairs": 8, "max_realized_drawdown_pct": 10.0},
+  "selection": "Only candidates meeting all train and validation gates qualify. Pick one by validation Wilson lower bound, then PF, then name. If none qualify, do not inspect confirmation/recent outcomes and do not export Pine.",
+  "stress": "Only selected candidate: spread x1.5, slippage 0.2 pips per side. Require positive expectancy and PF >=1.15 on confirmation/recent; no retuning.",
+  "data_quality": "monotonic unique aligned bars, finite OHLC consistency, every period edge within 7 days; report >7day interior gaps; abort on those gaps",
+  "live_trading_authorized": false
+}

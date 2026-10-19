@@ -1,0 +1,7 @@
+# BB opportunity diagnosis (2026-10-01)
+
+This is a descriptive diagnosis of the existing M5 BB20/3-sigma reversal-confirmation indicator, not a new strategy selection. The falsifiable explanation is that directional impulse/wick exclusions and touch-extreme cancellation remove most setups, while subsequent confirmation and breakout reduce the remaining distance to the center. Costs can then consume a material part of the fixed RR1 payoff. Counts and actual saved fills will support or contradict this explanation.
+
+Use the seven frozen 2020-2025 feature caches and the saved original-RR1, cost-1-pip trades. Rebuild current candidate transitions with exclusive cancellation reason precedence matching the Pine script, compare every emitted candidate with the original engine and saved candidates, then replay existing accounting and compare all saved trades. Warmup starts December 2019; report only events dated 2020-2025. Setups may cross the reporting boundary. No threshold change, parameter search, new market-data retrieval, Jev inference, or Pine edit is part of this diagnosis.
+
+This entire period has already been examined. Neither its results nor proposed follow-up ideas are independent evidence of profitability. Summed pips and R are equal-pip/equal-initial-risk research scores, not account-currency returns. Fixed cost is hypothetical, not historical GMO execution. Negative results remain negative. Follow-up ideas will be limited to three untested hypotheses and require a separate frozen experiment.

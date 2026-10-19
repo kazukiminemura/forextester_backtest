@@ -1,0 +1,413 @@
+- heading "Canva editor" [level=1]
+- paragraph:
+  - link "Skip navigation":
+    - /url: "#_r_0_2"
+    - generic: Skip navigation
+- paragraph:
+  - link "Skip to main content":
+    - /url: "#_r_0_3"
+    - generic: Skip to main content
+- banner:
+  - menubar "Main":
+    - group "Document controls":
+      - menuitem "Go home":
+        - generic: (opens in a new tab or window)
+      - menuitem "File":
+        - generic: File
+      - menuitem "Viewing":
+        - generic: Viewing
+    - group "Share and publish":
+      - button "Chamois (You)"
+      - menuitem "Share":
+        - generic: Share
+      - menuitem "Sign up":
+        - generic: Sign up
+- button "Canvas entry point" [disabled]
+- main "Canvas":
+  - textbox [disabled]
+  - paragraph: 7．EMA活用方法
+  - paragraph: 具体的なエントリー手順
+  - paragraph: 具体的なエントリー手順
+  - list:
+    - paragraph: M15でトレンド転換を確認
+    - paragraph: M5で更に転換 右の図
+    - paragraph: EMAを順方向にブレイク（一度トレンド方向に動く）
+    - paragraph: 逆方向にブレイク（一時的な戻し）
+    - paragraph: 再び順方向にブレイクしたらエントリー
+  - paragraph: ➡ この動きを利用し、押し目買いや戻り売りを行い、上位足のトレンドに沿ったトレードを行う。M5のトレンドブレイク＆トレンド転換、M15＆H1チャネルの上限・下限で取っていく
+  - paragraph: 損切場所
+  - list:
+    - paragraph: 転換時(三尊)は上位足ラインの奥側
+    - paragraph: トレンド継続時はM15での直近高値安値orRR1:1
+  - paragraph: ※これからの動画では順ブレ・逆ブレと略します
+  - region "Canvas content":
+    - group "Page 33":
+      - img "White、Rectangle"
+      - group "Element":
+        - paragraph: 7．EMA活用方法
+      - img "thin"
+      - img "Green、Rectangle"
+      - group "Element":
+        - paragraph: 具体的なエントリー手順
+      - group "Element":
+        - list:
+          - paragraph: M15でトレンド転換を確認
+          - paragraph: M5で更に転換 右の図
+          - paragraph: EMAを順方向にブレイク（一度トレンド方向に動く）
+          - paragraph: 逆方向にブレイク（一時的な戻し）
+          - paragraph: 再び順方向にブレイクしたらエントリー
+      - group "Element":
+        - paragraph: 損切場所
+      - group "Element":
+        - list:
+          - paragraph: 転換時(三尊)は上位足ラインの奥側
+          - paragraph: トレンド継続時はM15での直近高値安値orRR1:1
+      - group "Element":
+        - paragraph: ➡ この動きを利用し、押し目買いや戻り売りを行い、上位足のトレンドに沿ったトレードを行う。M5のトレンドブレイク＆トレンド転換、M15＆H1チャネルの上限・下限で取っていく
+      - group "Element":
+        - paragraph: ※これからの動画では順ブレ・逆ブレと略します
+      - img "White、Rectangle"
+      - img "Element"
+  - navigation "Page":
+    - heading "Page Thumbnails" [level=2]
+    - paragraph:
+      - link "Skip to end of page thumbnails":
+        - /url: "#page-navigator-end"
+        - generic: Skip to end of page thumbnails
+    - list "Pages":
+      - button "Page 1"
+      - paragraph: "1"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 2"
+      - paragraph: "2"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 3"
+      - paragraph: "3"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 4"
+      - paragraph: "4"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 5"
+      - paragraph: "5"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 6"
+      - paragraph: "6"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 7"
+      - paragraph: "7"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 8"
+      - paragraph: "8"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 9"
+      - paragraph: "9"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 10"
+      - paragraph: "10"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 11"
+      - paragraph: "11"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 12"
+      - paragraph: "12"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 13"
+      - paragraph: "13"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 14"
+      - paragraph: "14"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 15"
+      - paragraph: "15"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 16"
+      - paragraph: "16"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 17"
+      - paragraph: "17"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 18"
+      - paragraph: "18"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 19"
+      - paragraph: "19"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 20"
+      - paragraph: "20"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 21"
+      - paragraph: "21"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 22"
+      - paragraph: "22"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 23"
+      - paragraph: "23"
+      - paragraph: "-"
+      - paragraph
+      - button "Page 24":
+        - paragraph: 6．基礎編 シナリオ
+        - paragraph: 6．基礎編 シナリオ
+      - button "Page options":
+      - paragraph: "24"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 25":
+        - paragraph: 6．基礎編 シナリオ
+        - paragraph: シナリオ構築の重要性
+        - paragraph: シナリオ構築の重要性
+        - list:
+          - paragraph: トレードで継続的に勝ち続けるためには「シナリオ構築」が不可欠。
+          - paragraph: 現在の価格と過去の相場情報をもとに、未来の値動きを複数パターン考えておく。
+          - paragraph: 未来予想ではなく、「もし○○の動きが出たら、△△する」
+        - paragraph: という条件付きの戦略を立てる。
+        - list:
+          - paragraph: 事前に相場の動きを想定し、エントリー・損切りのポイントを明確にできる。
+          - paragraph: 「飛び乗りエントリー」を防ぎ、感情に左右されないトレードが可能になる。
+          - paragraph: ルールに基づいた冷静なトレードができるようになる。
+        - paragraph: シナリオ構築の効果
+        - paragraph: シナリオ構築の効果
+      - button "Page options":
+      - paragraph: "25"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 26":
+        - paragraph: 4.チャネルライン
+        - paragraph: （並行する2本のトレンドラインで形成）
+        - paragraph: 6．基礎編 シナリオ
+        - paragraph: 1.サポートライン（支持線）
+        - paragraph: ① 重要なライン・チャネルを確認する
+        - paragraph: ① 重要なライン・チャネルを確認する
+        - paragraph: 2.レジスタンスライン（抵抗線）
+        - paragraph: 3.トレンドライン（上昇 or 下降）
+        - paragraph: シナリオ構築の手順
+      - button "Page options":
+      - paragraph: "26"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 27":
+        - paragraph: 6．基礎編 シナリオ
+        - paragraph: ② 価格が動いた場合のシナリオを複数考える
+        - paragraph: ② 価格が動いた場合のシナリオを複数考える
+        - paragraph: 「上に行ったらこう、下に行ったらこう」
+        - paragraph: といった複数のシナリオを準備することが重要
+        - paragraph: 例えば：
+        - paragraph: ✅ 上昇トレンド継続のシナリオ（押し目買い）
+        - paragraph: ✅ トレンド転換のシナリオ（ブレイク後の戻り売り）
+        - paragraph: シナリオ構築の手順
+      - button "Page options":
+      - paragraph: "27"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 28":
+        - paragraph: 6．基礎編 シナリオ
+        - paragraph: シナリオ構築の手順
+        - paragraph: シナリオごとに(エントリーポイント・損切り・利確)
+        - paragraph: の目標を明確にする
+        - paragraph:
+          - text: 事前に決めた条件が満たされたときにのみエントリー
+          - text: するのが重要
+        - paragraph: ③ エントリー・損切り・利確ポイントを決める
+        - paragraph: ③ エントリー・損切り・利確ポイントを決める
+        - paragraph: ④ エントリー条件が満たされるまで待つ
+        - paragraph: ④ エントリー条件が満たされるまで待つ
+        - paragraph: （例）上昇チャネル内の押し目買いシナリオ
+        - paragraph: ・エントリー位置：チャネル下限で反発を確認したらロング（買いエントリー）
+        - paragraph: ・損切り位置：チャネル下限を明確に割ったら損切り（直近安値の少し下）
+        - paragraph: ・利確位置：チャネル上限（または過去の高値）
+        - paragraph: ・リスクリワード比は1:1以上
+      - button "Page options":
+      - paragraph: "28"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 29":
+        - paragraph: EMA活用方法
+        - paragraph: 三角持ち合い
+        - img "Forward Icon"
+        - paragraph: エントリー編
+        - paragraph: エントリー編
+        - paragraph: バリ式手法解説 エントリー編
+      - button "Page options":
+      - paragraph: "29"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 30":
+        - paragraph: 7．EMA活用方法
+        - paragraph: 7．EMA活用方法
+      - button "Page options":
+      - paragraph: "30"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 31":
+        - paragraph: 7．EMA活用方法
+        - paragraph: EMAを活用したエントリーのメリット
+        - paragraph: EMAを活用したエントリーのメリット
+        - paragraph: ✅ 上位足のトレンドを瞬時に判断できる
+        - paragraph: ✅ 押し目や戻りの位置を明確にできる
+        - paragraph: ✅ エントリー回数は少ないが、勝率が高い
+        - list:
+          - paragraph: シナリオ構築（基礎編）を完了していること
+          - paragraph: 時間足はM15の転換（15分足）を使用 環境認識はH4H1
+          - paragraph: EMAの期間は25 ※局所的に使うから効果が出る
+        - paragraph: (H1ではトレンド方向・M5でエントリートリガー部分)
+        - list:
+          - paragraph: M5（5分足）でトレンド転換を確認してからエントリー
+        - paragraph: エントリーの前提
+        - paragraph: エントリーの前提
+        - paragraph: エリオット波動を活用し、特に勝ちやすい1波・3波・5波を狙います。
+      - button "Page options":
+      - paragraph: "31"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 32":
+        - img "Forward Icon"
+        - img "Forward Icon"
+        - paragraph: 7．EMA活用方法
+        - paragraph: 時環境認識 時間足の流れ
+        - paragraph: 時環境認識 時間足の流れ
+        - paragraph: H1とH4での環境認識
+        - paragraph: 転換直後orトレンド継続か確認
+        - paragraph: M15転換後押し目のM5でIN
+      - button "Page options":
+      - paragraph: "32"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 33" [active]:
+        - paragraph: 7．EMA活用方法
+        - paragraph: 具体的なエントリー手順
+        - paragraph: 具体的なエントリー手順
+        - list:
+          - paragraph: M15でトレンド転換を確認
+          - paragraph: M5で更に転換 右の図
+          - paragraph: EMAを順方向にブレイク（一度トレンド方向に動く）
+          - paragraph: 逆方向にブレイク（一時的な戻し）
+          - paragraph: 再び順方向にブレイクしたらエントリー
+        - paragraph: ➡ この動きを利用し、押し目買いや戻り売りを行い、上位足のトレンドに沿ったトレードを行う。M5のトレンドブレイク＆トレンド転換、M15＆H1チャネルの上限・下限で取っていく
+        - paragraph: 損切場所
+        - list:
+          - paragraph: 転換時(三尊)は上位足ラインの奥側
+          - paragraph: トレンド継続時はM15での直近高値安値orRR1:1
+        - paragraph: ※これからの動画では順ブレ・逆ブレと略します
+      - button "Page options":
+      - paragraph: "33"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 34":
+        - paragraph: 7．EMA活用方法
+        - paragraph: 損切回数を減らせる
+        - paragraph: 損切回数を減らせる
+        - list:
+          - paragraph: M5での転換後どこで入っていけば
+        - paragraph: いいか分からい問題を解決
+        - list:
+          - paragraph: エントリー位置が明確
+        - paragraph: ブレイクがトリガー部分になる
+        - list:
+          - paragraph: トレンド継続時が最も効果を発揮しやすい
+      - button "Page options":
+      - paragraph: "34"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 35":
+        - paragraph: 7．EMA活用方法
+        - paragraph: 2種類のエントリーパターン
+        - paragraph: ✅ 狙う波動：エリオット波動の3波または5波
+        - paragraph: ✅ トレンドの流れに沿ったエントリー
+        - paragraph: ✅ 狙う波動：エリオット波動の1波（新しいトレンドの初動）
+        - paragraph: ✅ 逆張りではなく、トレンドが確定した後にエントリー
+        - paragraph: ① 順行型エントリー（トレンド発生時の押し目買い・戻り売り）
+        - paragraph: ① 順行型エントリー（トレンド発生時の押し目買い・戻り売り）
+        - paragraph: ② 転換型エントリー（トレンド転換時のエントリー）
+        - paragraph: ② 転換型エントリー（トレンド転換時のエントリー）
+      - button "Page options":
+      - paragraph: "35"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 36":
+        - paragraph: 8．三角持ち合い
+        - paragraph: 8．三角持ち合い
+      - button "Page options":
+      - paragraph: "36"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - button "Page 37":
+        - paragraph: 8．三角持ち合い
+        - paragraph: 8．三角持ち合い
+        - paragraph: ・EMAを使用せず、シンプルにトレンドラインを活用する
+        - paragraph: ・ トレンド転換直後 or トレンド継続中のどちらでも使える
+        - paragraph:
+          - text: ・狙うのはブレイクアウト（抜けた方向へのエントリー）
+          - text: ※H1M15ならブレイクと同時にエントリー可。
+        - paragraph: 三角持ち合いでのエントリーの特徴
+        - paragraph: 三角持ち合いでのエントリーの特徴
+      - button "Page options":
+      - paragraph: "37"
+      - paragraph: "-"
+      - textbox "Page title" [disabled]
+      - paragraph: "38"
+      - paragraph: "-"
+      - paragraph
+      - paragraph: "39"
+      - paragraph: "-"
+      - paragraph
+      - paragraph: "40"
+      - paragraph: "-"
+      - paragraph
+      - paragraph: "41"
+      - paragraph: "-"
+      - paragraph
+      - paragraph: "42"
+      - paragraph: "-"
+      - paragraph
+    - paragraph:
+      - link "Back to start of page thumbnails":
+        - /url: "#page-navigator-start"
+        - generic: Back to start of page thumbnails
+- contentinfo:
+  - button "Duration":
+    - generic: Duration
+  - slider "Zoom": "-0.748"
+  - combobox "Zoom options":
+    - generic: 47%
+  - button "Pages" [expanded]:
+    - generic: Pages
+  - button "33 / 42":
+    - generic: 33 / 42
+  - button "Grid view":
+  - button "Present full screen":
+  - button "Help":
+- generic: Canvas
+- generic: The canvas is where your design is. To navigate into the page, press Enter. To navigate into groups or elements on the page, press Enter again. Press tab to move to the next page, group, or element. To operate the toolbar, use the “Ctrl+F1” key. If an element is selected, move it using the arrow keys; rotate using the “,” key and “.” key; and resize using the arrow keys with the “Ctrl” key. All of these keys can be modified with the “Shift” key to increase increment.
+- generic: The main navigation contains buttons for document level options. To switch between buttons, use the left and right keys and to activate, press Enter. To skip to the canvas, press “Ctrl+F2”.
+- generic: Zoom
+- generic: Use left and right arrow keys to select pages. Use Home and End to jump to the first or last page.
+- generic: Hide page thumbnails
+- generic: Grid view
+- generic: Go home
+- generic: Present full screen
+- generic: Help
+- generic: Share
+- generic: This button opens the menu with all the options to share and print your design.
+- generic: Go to page

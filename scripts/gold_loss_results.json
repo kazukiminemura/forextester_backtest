@@ -1,0 +1,893 @@
+{
+  "protocol": {
+    "modes": [
+      "baseline",
+      "failed_1",
+      "failed_2",
+      "failed_3",
+      "stalled_3",
+      "stalled_6",
+      "body_max_2",
+      "body_max_3",
+      "adx_rising",
+      "adx_max_40",
+      "distance_max_4",
+      "distance_max_6"
+    ],
+    "periods": [
+      [
+        2010,
+        2018
+      ],
+      [
+        2019,
+        2022
+      ],
+      [
+        2023,
+        2024
+      ],
+      [
+        2025,
+        2026
+      ]
+    ],
+    "minimum_counts": [
+      250,
+      100,
+      50,
+      50
+    ],
+    "selection": "Maximum minimum development PF, then validation mean R; counts required",
+    "adoption": "PF > 1 and mean R > 0 every period, development PF improves in both periods, doubled spread total R improves",
+    "previously_inspected_evaluation": true,
+    "no_reselection": true,
+    "unchanged": "XAUUSD 1H, next open, 06-16, 20 exit, 5-bar cooldown, TP 3ATR SL 1.5ATR",
+    "failed": "Close back inside original 55-bar boundary within first N bars; next open exit",
+    "stalled": "Negative liquidation P/L at a close after N bars; next open exit"
+  },
+  "baseline_verified": true,
+  "bars": 78321,
+  "spread": 0.376,
+  "first_bar": "2013-05-01T00:00:00",
+  "last_bar": "2026-07-17T20:00:00",
+  "baseline": [
+    {
+      "n": 272,
+      "wins": 109,
+      "win_rate": 40.07352941176471,
+      "pf": 1.0157685378509196,
+      "mean_r": 0.008078378104423037,
+      "total_r": 2.197318844403066,
+      "target_hits": 51,
+      "timed_exits": 92,
+      "late_exits": 0,
+      "losses": 163,
+      "max_drawdown_r": 11.873325615470707
+    },
+    {
+      "n": 202,
+      "wins": 85,
+      "win_rate": 42.07920792079208,
+      "pf": 0.9765301867380917,
+      "mean_r": -0.012200552621721634,
+      "total_r": -2.4645116295877703,
+      "target_hits": 36,
+      "timed_exits": 65,
+      "late_exits": 2,
+      "losses": 117,
+      "max_drawdown_r": 19.31801405949933
+    },
+    {
+      "n": 102,
+      "wins": 43,
+      "win_rate": 42.15686274509804,
+      "pf": 1.0654411299572755,
+      "mean_r": 0.035403117661406656,
+      "total_r": 3.611118001463479,
+      "target_hits": 19,
+      "timed_exits": 30,
+      "late_exits": 0,
+      "losses": 59,
+      "max_drawdown_r": 8.661307766491056
+    },
+    {
+      "n": 91,
+      "wins": 49,
+      "win_rate": 53.84615384615385,
+      "pf": 1.6904793384279488,
+      "mean_r": 0.2741874627142326,
+      "total_r": 24.951059106995167,
+      "target_hits": 22,
+      "timed_exits": 35,
+      "late_exits": 0,
+      "losses": 42,
+      "max_drawdown_r": 6.103165985122631
+    }
+  ],
+  "baseline_total": {
+    "n": 667,
+    "wins": 286,
+    "win_rate": 42.87856071964018,
+    "pf": 1.0842932892674995,
+    "mean_r": 0.04242126585198492,
+    "total_r": 28.29498432327394,
+    "target_hits": 128,
+    "timed_exits": 222,
+    "late_exits": 2,
+    "losses": 381,
+    "max_drawdown_r": 19.318014059499333
+  },
+  "baseline_double": [
+    {
+      "n": 271,
+      "wins": 100,
+      "win_rate": 36.90036900369004,
+      "pf": 0.8450782998950556,
+      "mean_r": -0.08775889828493705,
+      "total_r": -23.78266143521794,
+      "target_hits": 49,
+      "timed_exits": 80,
+      "late_exits": 0,
+      "losses": 171,
+      "max_drawdown_r": 23.782661435217936
+    },
+    {
+      "n": 204,
+      "wins": 78,
+      "win_rate": 38.23529411764706,
+      "pf": 0.8348661899032122,
+      "mean_r": -0.09267628768086238,
+      "total_r": -18.905962686895926,
+      "target_hits": 35,
+      "timed_exits": 60,
+      "late_exits": 1,
+      "losses": 126,
+      "max_drawdown_r": 31.413636207918415
+    },
+    {
+      "n": 102,
+      "wins": 42,
+      "win_rate": 41.17647058823529,
+      "pf": 0.995562524460912,
+      "mean_r": -0.0024716050400740023,
+      "total_r": -0.2521037140875482,
+      "target_hits": 18,
+      "timed_exits": 30,
+      "late_exits": 0,
+      "losses": 60,
+      "max_drawdown_r": 9.30897548237559
+    },
+    {
+      "n": 91,
+      "wins": 47,
+      "win_rate": 51.64835164835166,
+      "pf": 1.4882222081111587,
+      "mean_r": 0.20461322806538365,
+      "total_r": 18.619803753949913,
+      "target_hits": 20,
+      "timed_exits": 35,
+      "late_exits": 0,
+      "losses": 44,
+      "max_drawdown_r": 6.535915072620309
+    }
+  ],
+  "candidates": [
+    {
+      "mode": "failed_1",
+      "development": [
+        {
+          "n": 273,
+          "wins": 103,
+          "win_rate": 37.72893772893773,
+          "pf": 1.0046785216953804,
+          "mean_r": 0.002310957305907805,
+          "total_r": 0.6308913445128308,
+          "target_hits": 50,
+          "timed_exits": 84,
+          "late_exits": 0,
+          "losses": 170,
+          "max_drawdown_r": 12.143063281806235
+        },
+        {
+          "n": 204,
+          "wins": 80,
+          "win_rate": 39.21568627450981,
+          "pf": 0.9888614094921963,
+          "mean_r": -0.005416459943053008,
+          "total_r": -1.1049578283828136,
+          "target_hits": 35,
+          "timed_exits": 59,
+          "late_exits": 2,
+          "losses": 124,
+          "max_drawdown_r": 21.557685713228008
+        }
+      ]
+    },
+    {
+      "mode": "failed_2",
+      "development": [
+        {
+          "n": 275,
+          "wins": 99,
+          "win_rate": 36.0,
+          "pf": 0.9651964854128035,
+          "mean_r": -0.017215379272769296,
+          "total_r": -4.734229300011556,
+          "target_hits": 49,
+          "timed_exits": 78,
+          "late_exits": 0,
+          "losses": 176,
+          "max_drawdown_r": 13.827186089596506
+        },
+        {
+          "n": 204,
+          "wins": 78,
+          "win_rate": 38.23529411764706,
+          "pf": 0.9891082759964909,
+          "mean_r": -0.005286234895177494,
+          "total_r": -1.0783919186162088,
+          "target_hits": 35,
+          "timed_exits": 56,
+          "late_exits": 2,
+          "losses": 126,
+          "max_drawdown_r": 21.947536227991595
+        }
+      ]
+    },
+    {
+      "mode": "failed_3",
+      "development": [
+        {
+          "n": 276,
+          "wins": 98,
+          "win_rate": 35.507246376811594,
+          "pf": 0.9697325947782592,
+          "mean_r": -0.014732227221411438,
+          "total_r": -4.066094713109557,
+          "target_hits": 49,
+          "timed_exits": 72,
+          "late_exits": 0,
+          "losses": 178,
+          "max_drawdown_r": 12.995396153092251
+        },
+        {
+          "n": 206,
+          "wins": 77,
+          "win_rate": 37.37864077669903,
+          "pf": 0.9519604606793503,
+          "mean_r": -0.023500407555725855,
+          "total_r": -4.841083956479526,
+          "target_hits": 34,
+          "timed_exits": 56,
+          "late_exits": 2,
+          "losses": 129,
+          "max_drawdown_r": 21.94753622799159
+        }
+      ]
+    },
+    {
+      "mode": "stalled_3",
+      "development": [
+        {
+          "n": 280,
+          "wins": 85,
+          "win_rate": 30.357142857142854,
+          "pf": 0.9723612225399187,
+          "mean_r": -0.012085789606537325,
+          "total_r": -3.3840210898304512,
+          "target_hits": 47,
+          "timed_exits": 41,
+          "late_exits": 0,
+          "losses": 195,
+          "max_drawdown_r": 12.29551425886176
+        },
+        {
+          "n": 210,
+          "wins": 60,
+          "win_rate": 28.57142857142857,
+          "pf": 0.7986460452252268,
+          "mean_r": -0.09713960146827506,
+          "total_r": -20.399316308337763,
+          "target_hits": 30,
+          "timed_exits": 31,
+          "late_exits": 0,
+          "losses": 150,
+          "max_drawdown_r": 26.118361796049385
+        }
+      ]
+    },
+    {
+      "mode": "stalled_6",
+      "development": [
+        {
+          "n": 273,
+          "wins": 104,
+          "win_rate": 38.095238095238095,
+          "pf": 1.040853242841726,
+          "mean_r": 0.01964909017212994,
+          "total_r": 5.3642016169914735,
+          "target_hits": 51,
+          "timed_exits": 71,
+          "late_exits": 0,
+          "losses": 169,
+          "max_drawdown_r": 11.566857100323405
+        },
+        {
+          "n": 203,
+          "wins": 73,
+          "win_rate": 35.960591133004925,
+          "pf": 0.9166113696467103,
+          "mean_r": -0.04247516332749307,
+          "total_r": -8.622458155481093,
+          "target_hits": 36,
+          "timed_exits": 50,
+          "late_exits": 1,
+          "losses": 130,
+          "max_drawdown_r": 18.870044625713142
+        }
+      ]
+    },
+    {
+      "mode": "body_max_2",
+      "development": [
+        {
+          "n": 198,
+          "wins": 72,
+          "win_rate": 36.36363636363637,
+          "pf": 0.9218890231879863,
+          "mean_r": -0.04292095283563253,
+          "total_r": -8.49834866145524,
+          "target_hits": 38,
+          "timed_exits": 59,
+          "late_exits": 0,
+          "losses": 126,
+          "max_drawdown_r": 11.64727603753455
+        },
+        {
+          "n": 157,
+          "wins": 62,
+          "win_rate": 39.490445859872615,
+          "pf": 0.9685995528317876,
+          "mean_r": -0.016690359525554026,
+          "total_r": -2.620386445511982,
+          "target_hits": 29,
+          "timed_exits": 48,
+          "late_exits": 2,
+          "losses": 95,
+          "max_drawdown_r": 15.264115603677459
+        }
+      ]
+    },
+    {
+      "mode": "body_max_3",
+      "development": [
+        {
+          "n": 255,
+          "wins": 99,
+          "win_rate": 38.82352941176471,
+          "pf": 0.9915060478584362,
+          "mean_r": -0.004434675513571749,
+          "total_r": -1.130842255960796,
+          "target_hits": 48,
+          "timed_exits": 84,
+          "late_exits": 0,
+          "losses": 156,
+          "max_drawdown_r": 10.689355945566119
+        },
+        {
+          "n": 192,
+          "wins": 81,
+          "win_rate": 42.1875,
+          "pf": 0.9973055059384013,
+          "mean_r": -0.0014029479905865265,
+          "total_r": -0.2693660141926131,
+          "target_hits": 35,
+          "timed_exits": 61,
+          "late_exits": 2,
+          "losses": 111,
+          "max_drawdown_r": 19.78756750955987
+        }
+      ]
+    },
+    {
+      "mode": "adx_rising",
+      "development": [
+        {
+          "n": 265,
+          "wins": 105,
+          "win_rate": 39.62264150943396,
+          "pf": 0.9948083408491398,
+          "mean_r": -0.0026865620974035197,
+          "total_r": -0.7119389558119327,
+          "target_hits": 50,
+          "timed_exits": 88,
+          "late_exits": 0,
+          "losses": 160,
+          "max_drawdown_r": 11.873325615470707
+        },
+        {
+          "n": 195,
+          "wins": 80,
+          "win_rate": 41.02564102564102,
+          "pf": 0.9225022583687208,
+          "mean_r": -0.040932371569374064,
+          "total_r": -7.981812456027943,
+          "target_hits": 33,
+          "timed_exits": 63,
+          "late_exits": 2,
+          "losses": 115,
+          "max_drawdown_r": 25.601256249475398
+        }
+      ]
+    },
+    {
+      "mode": "adx_max_40",
+      "development": [
+        {
+          "n": 203,
+          "wins": 82,
+          "win_rate": 40.39408866995074,
+          "pf": 1.0288447997890098,
+          "mean_r": 0.01501388746105488,
+          "total_r": 3.0478191545941407,
+          "target_hits": 42,
+          "timed_exits": 64,
+          "late_exits": 0,
+          "losses": 121,
+          "max_drawdown_r": 13.99198338534554
+        },
+        {
+          "n": 151,
+          "wins": 63,
+          "win_rate": 41.72185430463576,
+          "pf": 0.9837308771963069,
+          "mean_r": -0.008540864523717571,
+          "total_r": -1.2896705430813533,
+          "target_hits": 29,
+          "timed_exits": 46,
+          "late_exits": 2,
+          "losses": 88,
+          "max_drawdown_r": 19.3204204888691
+        }
+      ]
+    },
+    {
+      "mode": "distance_max_4",
+      "development": [
+        {
+          "n": 106,
+          "wins": 42,
+          "win_rate": 39.62264150943396,
+          "pf": 1.0347919426342511,
+          "mean_r": 0.01853182054569047,
+          "total_r": 1.9643729778431898,
+          "target_hits": 23,
+          "timed_exits": 31,
+          "late_exits": 0,
+          "losses": 64,
+          "max_drawdown_r": 6.1858374631778075
+        },
+        {
+          "n": 89,
+          "wins": 39,
+          "win_rate": 43.82022471910113,
+          "pf": 0.9759182284296292,
+          "mean_r": -0.012594158712837039,
+          "total_r": -1.1208801254424965,
+          "target_hits": 15,
+          "timed_exits": 29,
+          "late_exits": 0,
+          "losses": 50,
+          "max_drawdown_r": 8.886903864610925
+        }
+      ]
+    },
+    {
+      "mode": "distance_max_6",
+      "development": [
+        {
+          "n": 258,
+          "wins": 102,
+          "win_rate": 39.53488372093023,
+          "pf": 1.0274307909575924,
+          "mean_r": 0.014064264695809398,
+          "total_r": 3.6285802915188246,
+          "target_hits": 49,
+          "timed_exits": 87,
+          "late_exits": 0,
+          "losses": 156,
+          "max_drawdown_r": 12.263317324631943
+        },
+        {
+          "n": 190,
+          "wins": 79,
+          "win_rate": 41.578947368421055,
+          "pf": 0.9611820894753649,
+          "mean_r": -0.02056421351816726,
+          "total_r": -3.9072005684517794,
+          "target_hits": 35,
+          "timed_exits": 58,
+          "late_exits": 2,
+          "losses": 111,
+          "max_drawdown_r": 18.446442672424435
+        }
+      ]
+    }
+  ],
+  "selected": {
+    "mode": "body_max_3",
+    "development": [
+      {
+        "n": 255,
+        "wins": 99,
+        "win_rate": 38.82352941176471,
+        "pf": 0.9915060478584362,
+        "mean_r": -0.004434675513571749,
+        "total_r": -1.130842255960796,
+        "target_hits": 48,
+        "timed_exits": 84,
+        "late_exits": 0,
+        "losses": 156,
+        "max_drawdown_r": 10.689355945566119
+      },
+      {
+        "n": 192,
+        "wins": 81,
+        "win_rate": 42.1875,
+        "pf": 0.9973055059384013,
+        "mean_r": -0.0014029479905865265,
+        "total_r": -0.2693660141926131,
+        "target_hits": 35,
+        "timed_exits": 61,
+        "late_exits": 2,
+        "losses": 111,
+        "max_drawdown_r": 19.78756750955987
+      }
+    ]
+  },
+  "result": [
+    {
+      "n": 255,
+      "wins": 99,
+      "win_rate": 38.82352941176471,
+      "pf": 0.9915060478584362,
+      "mean_r": -0.004434675513571749,
+      "total_r": -1.130842255960796,
+      "target_hits": 48,
+      "timed_exits": 84,
+      "late_exits": 0,
+      "losses": 156,
+      "max_drawdown_r": 10.689355945566119
+    },
+    {
+      "n": 192,
+      "wins": 81,
+      "win_rate": 42.1875,
+      "pf": 0.9973055059384013,
+      "mean_r": -0.0014029479905865265,
+      "total_r": -0.2693660141926131,
+      "target_hits": 35,
+      "timed_exits": 61,
+      "late_exits": 2,
+      "losses": 111,
+      "max_drawdown_r": 19.78756750955987
+    },
+    {
+      "n": 96,
+      "wins": 41,
+      "win_rate": 42.70833333333333,
+      "pf": 1.0737607139942051,
+      "mean_r": 0.03909218339698792,
+      "total_r": 3.75284960611084,
+      "target_hits": 17,
+      "timed_exits": 30,
+      "late_exits": 0,
+      "losses": 55,
+      "max_drawdown_r": 8.038777230581035
+    },
+    {
+      "n": 91,
+      "wins": 49,
+      "win_rate": 53.84615384615385,
+      "pf": 1.6751047297688413,
+      "mean_r": 0.2680822475342061,
+      "total_r": 24.395484525612755,
+      "target_hits": 21,
+      "timed_exits": 36,
+      "late_exits": 0,
+      "losses": 42,
+      "max_drawdown_r": 6.103165985122631
+    }
+  ],
+  "result_total": {
+    "n": 634,
+    "wins": 270,
+    "win_rate": 42.586750788643535,
+    "pf": 1.0835569249033636,
+    "mean_r": 0.04218947296777633,
+    "total_r": 26.748125861570195,
+    "target_hits": 121,
+    "timed_exits": 211,
+    "late_exits": 2,
+    "losses": 364,
+    "max_drawdown_r": 19.787567509559867
+  },
+  "doubled_spread": [
+    {
+      "n": 254,
+      "wins": 92,
+      "win_rate": 36.22047244094488,
+      "pf": 0.831703026055942,
+      "mean_r": -0.09685961673477989,
+      "total_r": -24.602342650634093,
+      "target_hits": 46,
+      "timed_exits": 73,
+      "late_exits": 0,
+      "losses": 162,
+      "max_drawdown_r": 24.602342650634082
+    },
+    {
+      "n": 194,
+      "wins": 75,
+      "win_rate": 38.659793814432994,
+      "pf": 0.8494504717111302,
+      "mean_r": -0.08484349242395386,
+      "total_r": -16.45963753024705,
+      "target_hits": 34,
+      "timed_exits": 56,
+      "late_exits": 1,
+      "losses": 119,
+      "max_drawdown_r": 29.039061801811552
+    },
+    {
+      "n": 96,
+      "wins": 40,
+      "win_rate": 41.66666666666667,
+      "pf": 0.9994331151888763,
+      "mean_r": -0.0003097337954688778,
+      "total_r": -0.02973444436501227,
+      "target_hits": 16,
+      "timed_exits": 30,
+      "late_exits": 0,
+      "losses": 56,
+      "max_drawdown_r": 8.35252154486783
+    },
+    {
+      "n": 91,
+      "wins": 47,
+      "win_rate": 51.64835164835166,
+      "pf": 1.473288861646165,
+      "mean_r": 0.19835468395317998,
+      "total_r": 18.05027623973938,
+      "target_hits": 19,
+      "timed_exits": 36,
+      "late_exits": 0,
+      "losses": 44,
+      "max_drawdown_r": 6.535915072620309
+    }
+  ],
+  "gates": [
+    false,
+    false,
+    true,
+    true
+  ],
+  "development_improved": false,
+  "doubled_spread_improved": true,
+  "adopted": false,
+  "groups": {
+    "side": {
+      "BUY": {
+        "n": 400,
+        "wins": 174,
+        "win_rate": 43.5,
+        "pf": 1.129736577567909,
+        "mean_r": 0.06505645966467069,
+        "total_r": 26.022583865868278,
+        "target_hits": 80,
+        "timed_exits": 130,
+        "late_exits": 1,
+        "losses": 226,
+        "max_drawdown_r": 19.186077003061104
+      },
+      "SELL": {
+        "n": 267,
+        "wins": 112,
+        "win_rate": 41.947565543071164,
+        "pf": 1.0168210239784783,
+        "mean_r": 0.008510863136350815,
+        "total_r": 2.2724004574056678,
+        "target_hits": 48,
+        "timed_exits": 92,
+        "late_exits": 1,
+        "losses": 155,
+        "max_drawdown_r": 14.452933821891115
+      }
+    },
+    "reason": {
+      "stop": {
+        "n": 317,
+        "wins": 0,
+        "win_rate": 0.0,
+        "pf": 0.0,
+        "mean_r": -1.0070939418773261,
+        "total_r": -319.2487795751124,
+        "target_hits": 0,
+        "timed_exits": 0,
+        "late_exits": 0,
+        "losses": 317,
+        "max_drawdown_r": 319.2487795751125
+      },
+      "target": {
+        "n": 128,
+        "wins": 128,
+        "win_rate": 100.0,
+        "pf": null,
+        "mean_r": 1.9999999999999982,
+        "total_r": 255.99999999999977,
+        "target_hits": 128,
+        "timed_exits": 0,
+        "late_exits": 0,
+        "losses": 0,
+        "max_drawdown_r": 0.0
+      },
+      "time": {
+        "n": 222,
+        "wins": 158,
+        "win_rate": 71.17117117117117,
+        "pf": 6.573693048988588,
+        "mean_r": 0.4123592968395792,
+        "total_r": 91.54376389838659,
+        "target_hits": 0,
+        "timed_exits": 222,
+        "late_exits": 2,
+        "losses": 64,
+        "max_drawdown_r": 1.0719434095138745
+      }
+    },
+    "hour": {
+      "6": {
+        "n": 57,
+        "wins": 24,
+        "win_rate": 42.10526315789473,
+        "pf": 1.1492432774137071,
+        "mean_r": 0.08511501887020682,
+        "total_r": 4.851556075601789,
+        "target_hits": 15,
+        "timed_exits": 10,
+        "late_exits": 0,
+        "losses": 33,
+        "max_drawdown_r": 6.275958473230619
+      },
+      "7": {
+        "n": 73,
+        "wins": 31,
+        "win_rate": 42.465753424657535,
+        "pf": 1.2154578150974245,
+        "mean_r": 0.12353704224980219,
+        "total_r": 9.01820408423556,
+        "target_hits": 22,
+        "timed_exits": 10,
+        "late_exits": 0,
+        "losses": 42,
+        "max_drawdown_r": 9.85534615704354
+      },
+      "8": {
+        "n": 57,
+        "wins": 22,
+        "win_rate": 38.59649122807017,
+        "pf": 1.0081622320431898,
+        "mean_r": 0.004971131885501347,
+        "total_r": 0.28335451747357676,
+        "target_hits": 14,
+        "timed_exits": 9,
+        "late_exits": 0,
+        "losses": 35,
+        "max_drawdown_r": 12.082463838006612
+      },
+      "9": {
+        "n": 59,
+        "wins": 20,
+        "win_rate": 33.89830508474576,
+        "pf": 0.8845067068264041,
+        "mean_r": -0.06666740035879805,
+        "total_r": -3.933376621169085,
+        "target_hits": 10,
+        "timed_exits": 17,
+        "late_exits": 1,
+        "losses": 39,
+        "max_drawdown_r": 7.925272194891688
+      },
+      "10": {
+        "n": 40,
+        "wins": 19,
+        "win_rate": 47.5,
+        "pf": 1.6663886117611124,
+        "mean_r": 0.33673329677158154,
+        "total_r": 13.469331870863261,
+        "target_hits": 16,
+        "timed_exits": 5,
+        "late_exits": 0,
+        "losses": 21,
+        "max_drawdown_r": 4.036187352242346
+      },
+      "11": {
+        "n": 33,
+        "wins": 10,
+        "win_rate": 30.303030303030305,
+        "pf": 0.5982794482647972,
+        "mean_r": -0.25966461508389027,
+        "total_r": -8.568932297768379,
+        "target_hits": 4,
+        "timed_exits": 8,
+        "late_exits": 0,
+        "losses": 23,
+        "max_drawdown_r": 13.27753301269621
+      },
+      "12": {
+        "n": 41,
+        "wins": 16,
+        "win_rate": 39.02439024390244,
+        "pf": 0.9425483233645101,
+        "mean_r": -0.03132187844545951,
+        "total_r": -1.2841970162638399,
+        "target_hits": 8,
+        "timed_exits": 12,
+        "late_exits": 0,
+        "losses": 25,
+        "max_drawdown_r": 8.35770292105293
+      },
+      "13": {
+        "n": 104,
+        "wins": 41,
+        "win_rate": 39.42307692307692,
+        "pf": 0.9459764748292275,
+        "mean_r": -0.02935695778601162,
+        "total_r": -3.0531236097452084,
+        "target_hits": 19,
+        "timed_exits": 32,
+        "late_exits": 1,
+        "losses": 63,
+        "max_drawdown_r": 16.024155138875063
+      },
+      "14": {
+        "n": 96,
+        "wins": 47,
+        "win_rate": 48.95833333333333,
+        "pf": 1.4159488725179366,
+        "mean_r": 0.16035349056205275,
+        "total_r": 15.393935093957065,
+        "target_hits": 16,
+        "timed_exits": 47,
+        "late_exits": 0,
+        "losses": 49,
+        "max_drawdown_r": 4.188939939733217
+      },
+      "15": {
+        "n": 107,
+        "wins": 56,
+        "win_rate": 52.336448598130836,
+        "pf": 1.060318841767773,
+        "mean_r": 0.019796562860646738,
+        "total_r": 2.118232226089201,
+        "target_hits": 4,
+        "timed_exits": 72,
+        "late_exits": 0,
+        "losses": 51,
+        "max_drawdown_r": 5.303861889637392
+      }
+    }
+  },
+  "loss_reasons": {
+    "stop": {
+      "n": 317,
+      "loss_r": 319.2487795751125
+    },
+    "time": {
+      "n": 64,
+      "loss_r": 16.424256429944283
+    }
+  },
+  "source_sha256": "64d7b63c5d59635f7e0c3cc281ebf20558301c058e17c216c1fb85a0c84a8e22"
+}

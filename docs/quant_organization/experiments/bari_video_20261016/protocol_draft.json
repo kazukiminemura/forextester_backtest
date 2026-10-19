@@ -1,0 +1,119 @@
+{
+  "experiment_id": "bari_video_20261016",
+  "status": "DRAFT",
+  "source": "source.md",
+  "hypothesis": "hypothesis.md",
+  "cache_directory": "agent_runs/fxspace_proxy_20261011",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "GBPUSD"
+  ],
+  "warmup_start": "2019-12-01",
+  "periods": {
+    "2020_2022": [
+      "2020-01-01",
+      "2023-01-01"
+    ],
+    "2023_2024": [
+      "2023-01-01",
+      "2025-01-01"
+    ],
+    "2025": [
+      "2025-01-01",
+      "2026-01-01"
+    ]
+  },
+  "continuous_period": [
+    "2020-01-01",
+    "2026-01-01"
+  ],
+  "prior_exposure": "All periods previously viewed; fixed descriptive study without pristine holdout or later optimization",
+  "arms": [
+    "ema3",
+    "direct"
+  ],
+  "reward_risk": [
+    1.0,
+    1.5,
+    2.0
+  ],
+  "candidate_count": 6,
+  "primary": {
+    "arm": "ema3",
+    "rr": 1.0
+  },
+  "entry_seconds": 300,
+  "context_seconds": [
+    900,
+    3600,
+    14400
+  ],
+  "parameters": {
+    "pivot_left": 2,
+    "pivot_right": 2,
+    "ema_length": 25,
+    "episode_expiry_bars": 96,
+    "max_hold_bars": 48
+  },
+  "direction": "Strict 2left/2right pivots; close break of pivots known before current bar closes; update direction then register new pivots; equal extremes rejected; simultaneous up/down break sets zero; zero initialization not reversal",
+  "h1_agreement": "H1 pivot direction plus strict close-vs-EMA25 side plus strict EMA25 slope in same direction; H4 recorded only",
+  "ema": "SMA25 seed from first 25 complete observed closes then alpha2/26 on complete bars only; preserve EMA value across gaps without synthetic updates; cross and H1 slope require adjacent complete contiguous bars",
+  "scenario": "M15 -d to d at close while H1 agrees; subsequent M5 -d to d must close strictly later. H1 disagreement/M15 direction unequal including zero/gap loses scenario until new M15 reversal",
+  "episode": "Fix latest known M15 opposite pivot plus 1tick outward SL at M5 reversal; creation bar must not touch stop. If reversal bar has true directional EMA cross, count phase1 (video 15:31-15:40). Otherwise phase0 even if already on directional side. Reverse and final forward crosses require separate later bars. Strict <=to> / >=to< crossings.",
+  "cancel": "H1/M15/M5 direction unequal to episode direction (including zero)/SL touch/frame gap/or age>96; no same-bar rearm after cancellation",
+  "gap_state": "Each frame clears only pivot rolling window on invalid or discontinuous bar, retaining known pivots/direction/EMA; M5/M15/H1 gaps clear scenario and episode; no trigger on discontinuity; H4 only diagnostic",
+  "signal_use": "Each episode each arm once; per symbol arm RR one open trade; ignore signals while position open; exit-bar-close signal may enter next open",
+  "execution": "Signal complete known bar; next contiguous M5 entry requires starts_at_open only, never future complete flag. Risk>0. Actual-entry RR full exit, adverse observed-open gap/favorable cap TP, SL first. Process OHLC hits on incomplete bar; otherwise schedule gap liquidation for next actual observed open. Time exit at 48th complete held bar close, or queue next actual open if incomplete. At period/data end without next executable observation use OPEN_MARK at last observed close, exclude from closed-trade win rate/PF, disclose separately. No historical rewind. Held position with starts_at_open false exits at first observed open after stop/TP gap priority. Annual classification uses actual open time unchanged, bar-close/intrabar labels minus 1second.",
+  "phase_boundary": "Reset scenarios/episodes/positions at phase start; indicators warmup; continuous account generated separately with no phase resets",
+  "round_trip_pips": {
+    "USDJPY": 1.6,
+    "EURUSD": 1.5,
+    "GBPUSD": 1.8
+  },
+  "pip": {
+    "USDJPY": 0.01,
+    "EURUSD": 0.0001,
+    "GBPUSD": 0.0001
+  },
+  "tick": {
+    "USDJPY": 0.001,
+    "EURUSD": 1e-05,
+    "GBPUSD": 1e-05
+  },
+  "cost_multipliers": [
+    0,
+    1,
+    2
+  ],
+  "cost_limits": "Fixed round-trip friction deducted once; no bid/ask replay, broker-specific commissions or swap. No old FXSpace cost/risk filter or daily clear",
+  "account": {
+    "symbol": "USDJPY",
+    "initial_yen": 1000000,
+    "stop_equity_yen": 900000,
+    "risk_fraction": 0.005,
+    "quantity_step": 1000,
+    "max_leverage": 25,
+    "stop_rule": "Deduct entire round-trip cost at entry; riskbudget=min(.005equity,equity-900000); floor price from fixed quantity/equity, tighter of strategy SL and floor stop; floor-trigger or gap-through floor stops account permanently. Gap can overshoot. Account exit path separate from R-study execution."
+  },
+  "gate": {
+    "every_period_pooled_trades_min": 100,
+    "every_period_symbol_trades_min": 20,
+    "normal_pf_min": 1.15,
+    "normal_mean_net_r_min_exclusive": 0,
+    "stress_pf_min_exclusive": 1,
+    "stress_mean_net_r_min_exclusive": 0,
+    "profitable_symbols_min": 2,
+    "normal_mean_r_above_direct": true,
+    "continuous_usdjpy_normal_no_halt": true,
+    "pass_meaning": "Research criteria only; no adoption approval",
+    "zero_loss_pf": "profits>0 losses0 -> positive infinity for comparisons; JSON PF null with pf_infinite true. Zero trades never passes.",
+    "every_period_primary_pooled_max_closed_dd_r": 20
+  },
+  "input_sha256": {
+    "USDJPY": "76274aed9f0dc45c8d743e21f1678ba4ca98d37bcc3af6e947f99f1e2e795a58",
+    "EURUSD": "28037e993217cd35e9576eeb04e844100ae3d05b53d559a713c0306d05fd5703",
+    "GBPUSD": "861656a577d392e6e14f1ab00bf6752cc2a3103177b00d7ae0da9afaf1f1f5b7"
+  },
+  "output": "Signal arrays, trades CSV, annual/phase/symbol/pooled stats including zero trades, Wilson95, PF, meanR, realized win/loss size ratio, closed cumulativeR maxDD, continuous account, input/output/code SHA, UTC start/end, no overwrite"
+}

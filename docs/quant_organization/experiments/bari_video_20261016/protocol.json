@@ -1,0 +1,215 @@
+{
+  "experiment_id": "bari_video_20261016",
+  "status": "SPEC_FROZEN",
+  "hypothesis": "hypothesis.md",
+  "baseline": "direct: same H1/M15/M5 episode, EMA wait omitted",
+  "history_directory": "C:\\ForexTester6\\data\\History",
+  "data_manifest": "data.md",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "GBPUSD"
+  ],
+  "entry_timeframe": 300,
+  "higher_timeframe_rules": "H1 pivot direction plus strict close-vs-EMA25 side plus strict EMA25 slope in same direction; H4 recorded only",
+  "entry_rules": {
+    "scenario": "M15 -d to d at close while H1 agrees; subsequent M5 -d to d must close strictly later. H1 disagreement/M15 direction unequal including zero/gap loses scenario until new M15 reversal",
+    "episode": "Fix latest known M15 opposite pivot plus 1tick outward SL at M5 reversal; creation bar must not touch stop. If reversal bar has true directional EMA cross, count phase1 (video 15:31-15:40). Otherwise phase0 even if already on directional side. Reverse and final forward crosses require separate later bars. Strict <=to> / >=to< crossings.",
+    "creation_bar_stop_touch_cancels": true,
+    "cancel": "H1/M15/M5 direction unequal to episode direction (including zero)/SL touch/frame gap/or age>96; no same-bar rearm after cancellation",
+    "signal_use": "Each episode each arm once; per symbol arm RR one open trade; ignore signals while position open; exit-bar-close signal may enter next open"
+  },
+  "exit_rules": {
+    "reward_risk_ratios": [
+      1.0,
+      1.5,
+      2.0
+    ],
+    "full_exit": true,
+    "execution": "Signal complete known bar; next contiguous M5 entry requires starts_at_open only, never future complete flag. Risk>0. Actual-entry RR full exit, adverse observed-open gap/favorable cap TP, SL first. Process OHLC hits on incomplete bar; otherwise schedule gap liquidation for next actual observed open. Time exit at 48th complete held bar close, or queue next actual open if incomplete. At period/data end without next executable observation use OPEN_MARK at last observed close, exclude from closed-trade win rate/PF, disclose separately. No historical rewind. Held position with starts_at_open false exits at first observed open after stop/TP gap priority. Annual classification uses actual open time unchanged, bar-close/intrabar labels minus 1second.",
+    "open_mark_not_closed_trade": true
+  },
+  "periods": {
+    "2020_2022": [
+      "2020-01-01",
+      "2023-01-01"
+    ],
+    "2023_2024": [
+      "2023-01-01",
+      "2025-01-01"
+    ],
+    "2025": [
+      "2025-01-01",
+      "2026-01-01"
+    ]
+  },
+  "final_period_prior_exposure": "All periods previously viewed; fixed descriptive study without pristine holdout or later optimization",
+  "candidate_budget": 6,
+  "search_space": {
+    "arms": [
+      "ema3",
+      "direct"
+    ],
+    "rr": [
+      1.0,
+      1.5,
+      2.0
+    ],
+    "post_selection": false
+  },
+  "cost_and_fill_model": {
+    "round_trip_pips": {
+      "USDJPY": 1.6,
+      "EURUSD": 1.5,
+      "GBPUSD": 1.8
+    },
+    "cost_multipliers": [
+      0,
+      1,
+      2
+    ],
+    "limits": "Fixed round-trip friction deducted once; no bid/ask replay, broker-specific commissions or swap. No old FXSpace cost/risk filter or daily clear",
+    "execution": "Signal complete known bar; next contiguous M5 entry requires starts_at_open only, never future complete flag. Risk>0. Actual-entry RR full exit, adverse observed-open gap/favorable cap TP, SL first. Process OHLC hits on incomplete bar; otherwise schedule gap liquidation for next actual observed open. Time exit at 48th complete held bar close, or queue next actual open if incomplete. At period/data end without next executable observation use OPEN_MARK at last observed close, exclude from closed-trade win rate/PF, disclose separately. No historical rewind. Held position with starts_at_open false exits at first observed open after stop/TP gap priority. Annual classification uses actual open time unchanged, bar-close/intrabar labels minus 1second."
+  },
+  "position_sizing_and_currency": {
+    "symbol": "USDJPY",
+    "initial_yen": 1000000,
+    "stop_equity_yen": 900000,
+    "risk_fraction": 0.005,
+    "quantity_step": 1000,
+    "max_leverage": 25,
+    "stop_rule": "Deduct entire round-trip cost at entry; riskbudget=min(.005equity,equity-900000); floor price from fixed quantity/equity, tighter of strategy SL and floor stop; floor-trigger or gap-through floor stops account permanently. Gap can overshoot. Account exit path separate from R-study execution."
+  },
+  "acceptance_gates": {
+    "every_period_pooled_trades_min": 100,
+    "every_period_symbol_trades_min": 20,
+    "normal_pf_min": 1.15,
+    "normal_mean_net_r_min_exclusive": 0,
+    "stress_pf_min_exclusive": 1,
+    "stress_mean_net_r_min_exclusive": 0,
+    "profitable_symbols_min": 2,
+    "normal_mean_r_above_direct": true,
+    "continuous_usdjpy_normal_no_halt": true,
+    "pass_meaning": "Research criteria only; no adoption approval",
+    "zero_loss_pf": "profits>0 losses0 -> positive infinity for comparisons; JSON PF null with pf_infinite true. Zero trades never passes.",
+    "every_period_primary_pooled_max_closed_dd_r": 20
+  },
+  "cross_symbol_rule": "equal initial-risk R diagnostics; not a currency-account portfolio; yen account USDJPY only",
+  "code_identifier": {
+    "research": "085fddb427e4eb4da8606064bfbedbc2d48204304148a27e1b6b9dde1432dc7c",
+    "validator": "4cf846ec5be82b16ad205cb5d9e9b677e84efba8efe8c0358fb74843ca90ed3a"
+  },
+  "frozen_at": "2026-10-15T23:59:44.438278+00:00",
+  "live_trading_authorized": false,
+  "source": "source.md",
+  "cache_directory": "agent_runs/fxspace_proxy_20261011",
+  "warmup_start": "2019-12-01",
+  "continuous_period": [
+    "2020-01-01",
+    "2026-01-01"
+  ],
+  "prior_exposure": "All periods previously viewed; fixed descriptive study without pristine holdout or later optimization",
+  "arms": [
+    "ema3",
+    "direct"
+  ],
+  "reward_risk": [
+    1.0,
+    1.5,
+    2.0
+  ],
+  "candidate_count": 6,
+  "primary": {
+    "arm": "ema3",
+    "rr": 1.0
+  },
+  "entry_seconds": 300,
+  "context_seconds": [
+    900,
+    3600,
+    14400
+  ],
+  "parameters": {
+    "pivot_left": 2,
+    "pivot_right": 2,
+    "ema_length": 25,
+    "episode_expiry_bars": 96,
+    "max_hold_bars": 48
+  },
+  "direction": "Strict 2left/2right pivots; close break of pivots known before current bar closes; update direction then register new pivots; equal extremes rejected; simultaneous up/down break sets zero; zero initialization not reversal",
+  "h1_agreement": "H1 pivot direction plus strict close-vs-EMA25 side plus strict EMA25 slope in same direction; H4 recorded only",
+  "ema": "SMA25 seed from first 25 complete observed closes then alpha2/26 on complete bars only; preserve EMA value across gaps without synthetic updates; cross and H1 slope require adjacent complete contiguous bars",
+  "scenario": "M15 -d to d at close while H1 agrees; subsequent M5 -d to d must close strictly later. H1 disagreement/M15 direction unequal including zero/gap loses scenario until new M15 reversal",
+  "episode": "Fix latest known M15 opposite pivot plus 1tick outward SL at M5 reversal; creation bar must not touch stop. If reversal bar has true directional EMA cross, count phase1 (video 15:31-15:40). Otherwise phase0 even if already on directional side. Reverse and final forward crosses require separate later bars. Strict <=to> / >=to< crossings.",
+  "cancel": "H1/M15/M5 direction unequal to episode direction (including zero)/SL touch/frame gap/or age>96; no same-bar rearm after cancellation",
+  "gap_state": "Each frame clears only pivot rolling window on invalid or discontinuous bar, retaining known pivots/direction/EMA; M5/M15/H1 gaps clear scenario and episode; no trigger on discontinuity; H4 only diagnostic",
+  "signal_use": "Each episode each arm once; per symbol arm RR one open trade; ignore signals while position open; exit-bar-close signal may enter next open",
+  "execution": "Signal complete known bar; next contiguous M5 entry requires starts_at_open only, never future complete flag. Risk>0. Actual-entry RR full exit, adverse observed-open gap/favorable cap TP, SL first. Process OHLC hits on incomplete bar; otherwise schedule gap liquidation for next actual observed open. Time exit at 48th complete held bar close, or queue next actual open if incomplete. At period/data end without next executable observation use OPEN_MARK at last observed close, exclude from closed-trade win rate/PF, disclose separately. No historical rewind. Held position with starts_at_open false exits at first observed open after stop/TP gap priority. Annual classification uses actual open time unchanged, bar-close/intrabar labels minus 1second.",
+  "phase_boundary": "Reset scenarios/episodes/positions at phase start; indicators warmup; continuous account generated separately with no phase resets",
+  "round_trip_pips": {
+    "USDJPY": 1.6,
+    "EURUSD": 1.5,
+    "GBPUSD": 1.8
+  },
+  "pip": {
+    "USDJPY": 0.01,
+    "EURUSD": 0.0001,
+    "GBPUSD": 0.0001
+  },
+  "tick": {
+    "USDJPY": 0.001,
+    "EURUSD": 1e-05,
+    "GBPUSD": 1e-05
+  },
+  "cost_multipliers": [
+    0,
+    1,
+    2
+  ],
+  "cost_limits": "Fixed round-trip friction deducted once; no bid/ask replay, broker-specific commissions or swap. No old FXSpace cost/risk filter or daily clear",
+  "account": {
+    "symbol": "USDJPY",
+    "initial_yen": 1000000,
+    "stop_equity_yen": 900000,
+    "risk_fraction": 0.005,
+    "quantity_step": 1000,
+    "max_leverage": 25,
+    "stop_rule": "Deduct entire round-trip cost at entry; riskbudget=min(.005equity,equity-900000); floor price from fixed quantity/equity, tighter of strategy SL and floor stop; floor-trigger or gap-through floor stops account permanently. Gap can overshoot. Account exit path separate from R-study execution."
+  },
+  "gate": {
+    "every_period_pooled_trades_min": 100,
+    "every_period_symbol_trades_min": 20,
+    "normal_pf_min": 1.15,
+    "normal_mean_net_r_min_exclusive": 0,
+    "stress_pf_min_exclusive": 1,
+    "stress_mean_net_r_min_exclusive": 0,
+    "profitable_symbols_min": 2,
+    "normal_mean_r_above_direct": true,
+    "continuous_usdjpy_normal_no_halt": true,
+    "pass_meaning": "Research criteria only; no adoption approval",
+    "zero_loss_pf": "profits>0 losses0 -> positive infinity for comparisons; JSON PF null with pf_infinite true. Zero trades never passes.",
+    "every_period_primary_pooled_max_closed_dd_r": 20
+  },
+  "input_sha256": {
+    "USDJPY": "76274aed9f0dc45c8d743e21f1678ba4ca98d37bcc3af6e947f99f1e2e795a58",
+    "EURUSD": "28037e993217cd35e9576eeb04e844100ae3d05b53d559a713c0306d05fd5703",
+    "GBPUSD": "861656a577d392e6e14f1ab00bf6752cc2a3103177b00d7ae0da9afaf1f1f5b7"
+  },
+  "output": "Signal arrays, trades CSV, annual/phase/symbol/pooled stats including zero trades, Wilson95, PF, meanR, realized win/loss size ratio, closed cumulativeR maxDD, continuous account, input/output/code SHA, UTC start/end, no overwrite",
+  "frozen_file_sha256": {
+    "docs/quant_organization/experiments/bari_video_20261016/source.md": "1a6e791b441784d6076f5489ccaeee023e2a0892cadca473f884bf0d257da1aa",
+    "docs/quant_organization/experiments/bari_video_20261016/source_transcript_ja_auto.txt": "2706770ad77a5d0388e8b45c66f887aea25fe11e96196c5e592ef999a2d83e7c",
+    "docs/quant_organization/experiments/bari_video_20261016/source_canva_p33_dom.txt": "4e96247614546fda05f553f10a8118424f56525829c79e19fe042998fe9ce826",
+    "docs/quant_organization/experiments/bari_video_20261016/source_canva_p33.png": "0ea650742d25f22fdf10efb597b26665ce32aa71348b25afa9f243438487aee8",
+    "docs/quant_organization/experiments/bari_video_20261016/data.md": "c1c716bbf9540534c2aa66c765aac7a09bd1e242d0aeed9326cd38d53343b9c8",
+    "docs/quant_organization/experiments/bari_video_20261016/hypothesis.md": "18cde36fbcd7d99daac9e6e70927da3432f5be4aae715a53307e5b27aae899ba",
+    "docs/quant_organization/experiments/bari_video_20261016/protocol_draft.json": "dbf886033109578b44bb42659dd407a1155257dcf89c76152a30528f3547e183",
+    "scripts/research_bari_video_20261016.py": "085fddb427e4eb4da8606064bfbedbc2d48204304148a27e1b6b9dde1432dc7c",
+    "tests/test_bari_video_20261016.py": "13edea16a3cb7f9e98dc453ac475f80965cef9647ba367ce9e68ae26c2c7e5ce",
+    "scripts/validate_bari_video_20261016.py": "4cf846ec5be82b16ad205cb5d9e9b677e84efba8efe8c0358fb74843ca90ed3a",
+    "tests/test_bari_independent_20261016.py": "099687c2b8a418d68660490ef5e8c2daab093daa92c2984aa821d4ad317ad9a8",
+    "scripts/research_fxspace_proxy_20261011.py": "87bfc2c5f60fbd72c328403021bfdcf4d113f6feb9307e0ec72870067fb0ea61",
+    "scripts/research_new_logic_20261011.py": "1dfe24026447b6a9131f7e83a1620965149ffdba4889886560b0abfcc99d9c5a",
+    "scripts/research_ytt_profit_feasibility.py": "7d47206b4d2ec522559ab919774236b1a3090a7f27cf7ffda731db7af122667a"
+  }
+}

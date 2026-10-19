@@ -1,5 +1,6 @@
 __pycache__/
 agent_runs/
+data/stocks/yahoo/
 *.py[cod]
 *.egg-info/
 .pytest_cache/

@@ -1,0 +1,721 @@
+Loading XAUUSD...
+Loading EURUSD...
+Loading GBPUSD...
+Loading USDJPY...
+Loading AUDUSD...
+Loading EURJPY...
+Loading GBPJPY...
+Loading NZDJPY...
+Loading NZDUSD...
+Loading AUDJPY...
+Loading USDCHF...
+Loading EURCHF...
+Loading GBPCHF...
+Loading EURGBP...
+{
+  "candidate": {
+    "pivot_bars": 5,
+    "break_buffer_atr": 0.1,
+    "retest_window_bars": 8,
+    "retest_tolerance_atr": 0.2,
+    "stop_mode": "atr",
+    "friday_cutoff_hour": 9
+  },
+  "periods": {
+    "train_2010_2018": {
+      "trades": 1679,
+      "wins": 812,
+      "losses": 867,
+      "win_rate": 48.36212030970816,
+      "profit_factor": 0.936562860438293,
+      "expectancy_r": -0.03275759380583681,
+      "trades_per_month": 15.546296296296296,
+      "ambiguous_bars": 3,
+      "average_hold_bars": 18.409172126265634
+    },
+    "validation_2019_2022": {
+      "trades": 711,
+      "wins": 342,
+      "losses": 369,
+      "win_rate": 48.10126582278481,
+      "profit_factor": 0.926829268292683,
+      "expectancy_r": -0.0379746835443038,
+      "trades_per_month": 14.8125,
+      "ambiguous_bars": 0,
+      "average_hold_bars": 17.662447257383967
+    },
+    "holdout_2023_2024": {
+      "trades": 391,
+      "wins": 171,
+      "losses": 220,
+      "win_rate": 43.73401534526854,
+      "profit_factor": 0.7772727272727272,
+      "expectancy_r": -0.12531969309462915,
+      "trades_per_month": 16.291666666666668,
+      "ambiguous_bars": 3,
+      "average_hold_bars": 15.654731457800512
+    },
+    "true_oos_2025_2026": {
+      "trades": 272,
+      "wins": 119,
+      "losses": 153,
+      "win_rate": 43.75,
+      "profit_factor": 0.7777777777777778,
+      "expectancy_r": -0.125,
+      "trades_per_month": 14.31578947368421,
+      "ambiguous_bars": 1,
+      "average_hold_bars": 18.27573529411765
+    }
+  },
+  "per_symbol": {
+    "XAUUSD": {
+      "train_2010_2018": {
+        "trades": 82,
+        "wins": 44,
+        "losses": 38,
+        "win_rate": 53.65853658536586,
+        "profit_factor": 1.1578947368421053,
+        "expectancy_r": 0.07317073170731707,
+        "trades_per_month": 0.7592592592592593,
+        "ambiguous_bars": 1,
+        "average_hold_bars": 19.853658536585368
+      },
+      "validation_2019_2022": {
+        "trades": 48,
+        "wins": 20,
+        "losses": 28,
+        "win_rate": 41.66666666666667,
+        "profit_factor": 0.7142857142857143,
+        "expectancy_r": -0.16666666666666666,
+        "trades_per_month": 1.0,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 21.1875
+      },
+      "holdout_2023_2024": {
+        "trades": 30,
+        "wins": 19,
+        "losses": 11,
+        "win_rate": 63.33333333333333,
+        "profit_factor": 1.7272727272727273,
+        "expectancy_r": 0.26666666666666666,
+        "trades_per_month": 1.25,
+        "ambiguous_bars": 1,
+        "average_hold_bars": 13.366666666666667
+      },
+      "true_oos_2025_2026": {
+        "trades": 26,
+        "wins": 14,
+        "losses": 12,
+        "win_rate": 53.84615384615385,
+        "profit_factor": 1.1666666666666667,
+        "expectancy_r": 0.07692307692307693,
+        "trades_per_month": 1.368421052631579,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 16.96153846153846
+      }
+    },
+    "EURUSD": {
+      "train_2010_2018": {
+        "trades": 136,
+        "wins": 66,
+        "losses": 70,
+        "win_rate": 48.529411764705884,
+        "profit_factor": 0.9428571428571428,
+        "expectancy_r": -0.029411764705882353,
+        "trades_per_month": 1.2592592592592593,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 18.220588235294116
+      },
+      "validation_2019_2022": {
+        "trades": 63,
+        "wins": 27,
+        "losses": 36,
+        "win_rate": 42.857142857142854,
+        "profit_factor": 0.75,
+        "expectancy_r": -0.14285714285714285,
+        "trades_per_month": 1.3125,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 25.77777777777778
+      },
+      "holdout_2023_2024": {
+        "trades": 35,
+        "wins": 14,
+        "losses": 21,
+        "win_rate": 40.0,
+        "profit_factor": 0.6666666666666666,
+        "expectancy_r": -0.2,
+        "trades_per_month": 1.4583333333333333,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 12.942857142857143
+      },
+      "true_oos_2025_2026": {
+        "trades": 19,
+        "wins": 8,
+        "losses": 11,
+        "win_rate": 42.10526315789473,
+        "profit_factor": 0.7272727272727273,
+        "expectancy_r": -0.15789473684210525,
+        "trades_per_month": 1.0,
+        "ambiguous_bars": 1,
+        "average_hold_bars": 20.42105263157895
+      }
+    },
+    "GBPUSD": {
+      "train_2010_2018": {
+        "trades": 191,
+        "wins": 96,
+        "losses": 95,
+        "win_rate": 50.26178010471204,
+        "profit_factor": 1.0105263157894737,
+        "expectancy_r": 0.005235602094240838,
+        "trades_per_month": 1.7685185185185186,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 20.418848167539267
+      },
+      "validation_2019_2022": {
+        "trades": 63,
+        "wins": 39,
+        "losses": 24,
+        "win_rate": 61.904761904761905,
+        "profit_factor": 1.625,
+        "expectancy_r": 0.23809523809523808,
+        "trades_per_month": 1.3125,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 20.158730158730158
+      },
+      "holdout_2023_2024": {
+        "trades": 38,
+        "wins": 20,
+        "losses": 18,
+        "win_rate": 52.63157894736842,
+        "profit_factor": 1.1111111111111112,
+        "expectancy_r": 0.05263157894736842,
+        "trades_per_month": 1.5833333333333333,
+        "ambiguous_bars": 1,
+        "average_hold_bars": 33.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 28,
+        "wins": 14,
+        "losses": 14,
+        "win_rate": 50.0,
+        "profit_factor": 1.0,
+        "expectancy_r": 0.0,
+        "trades_per_month": 1.4736842105263157,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 28.142857142857142
+      }
+    },
+    "USDJPY": {
+      "train_2010_2018": {
+        "trades": 156,
+        "wins": 72,
+        "losses": 84,
+        "win_rate": 46.15384615384615,
+        "profit_factor": 0.8571428571428571,
+        "expectancy_r": -0.07692307692307693,
+        "trades_per_month": 1.4444444444444444,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 14.506410256410257
+      },
+      "validation_2019_2022": {
+        "trades": 66,
+        "wins": 38,
+        "losses": 28,
+        "win_rate": 57.57575757575758,
+        "profit_factor": 1.3571428571428572,
+        "expectancy_r": 0.15151515151515152,
+        "trades_per_month": 1.375,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 14.075757575757576
+      },
+      "holdout_2023_2024": {
+        "trades": 42,
+        "wins": 20,
+        "losses": 22,
+        "win_rate": 47.61904761904761,
+        "profit_factor": 0.9090909090909091,
+        "expectancy_r": -0.047619047619047616,
+        "trades_per_month": 1.75,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 15.738095238095237
+      },
+      "true_oos_2025_2026": {
+        "trades": 21,
+        "wins": 11,
+        "losses": 10,
+        "win_rate": 52.38095238095239,
+        "profit_factor": 1.1,
+        "expectancy_r": 0.047619047619047616,
+        "trades_per_month": 1.105263157894737,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 8.047619047619047
+      }
+    },
+    "AUDUSD": {
+      "train_2010_2018": {
+        "trades": 162,
+        "wins": 77,
+        "losses": 85,
+        "win_rate": 47.53086419753087,
+        "profit_factor": 0.9058823529411765,
+        "expectancy_r": -0.04938271604938271,
+        "trades_per_month": 1.5,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 14.932098765432098
+      },
+      "validation_2019_2022": {
+        "trades": 52,
+        "wins": 26,
+        "losses": 26,
+        "win_rate": 50.0,
+        "profit_factor": 1.0,
+        "expectancy_r": 0.0,
+        "trades_per_month": 1.0833333333333333,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 15.884615384615385
+      },
+      "holdout_2023_2024": {
+        "trades": 33,
+        "wins": 15,
+        "losses": 18,
+        "win_rate": 45.45454545454545,
+        "profit_factor": 0.8333333333333334,
+        "expectancy_r": -0.09090909090909091,
+        "trades_per_month": 1.375,
+        "ambiguous_bars": 1,
+        "average_hold_bars": 15.333333333333334
+      },
+      "true_oos_2025_2026": {
+        "trades": 34,
+        "wins": 11,
+        "losses": 23,
+        "win_rate": 32.35294117647059,
+        "profit_factor": 0.4782608695652174,
+        "expectancy_r": -0.35294117647058826,
+        "trades_per_month": 1.7894736842105263,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 14.588235294117647
+      }
+    },
+    "EURJPY": {
+      "train_2010_2018": {
+        "trades": 109,
+        "wins": 49,
+        "losses": 60,
+        "win_rate": 44.95412844036697,
+        "profit_factor": 0.8166666666666667,
+        "expectancy_r": -0.10091743119266056,
+        "trades_per_month": 1.0092592592592593,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 14.688073394495413
+      },
+      "validation_2019_2022": {
+        "trades": 53,
+        "wins": 24,
+        "losses": 29,
+        "win_rate": 45.28301886792453,
+        "profit_factor": 0.8275862068965517,
+        "expectancy_r": -0.09433962264150944,
+        "trades_per_month": 1.1041666666666667,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 12.81132075471698
+      },
+      "holdout_2023_2024": {
+        "trades": 22,
+        "wins": 10,
+        "losses": 12,
+        "win_rate": 45.45454545454545,
+        "profit_factor": 0.8333333333333334,
+        "expectancy_r": -0.09090909090909091,
+        "trades_per_month": 0.9166666666666666,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 11.090909090909092
+      },
+      "true_oos_2025_2026": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 0.0
+      }
+    },
+    "GBPJPY": {
+      "train_2010_2018": {
+        "trades": 128,
+        "wins": 63,
+        "losses": 65,
+        "win_rate": 49.21875,
+        "profit_factor": 0.9692307692307692,
+        "expectancy_r": -0.015625,
+        "trades_per_month": 1.1851851851851851,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 15.1015625
+      },
+      "validation_2019_2022": {
+        "trades": 60,
+        "wins": 28,
+        "losses": 32,
+        "win_rate": 46.666666666666664,
+        "profit_factor": 0.875,
+        "expectancy_r": -0.06666666666666667,
+        "trades_per_month": 1.25,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 16.4
+      },
+      "holdout_2023_2024": {
+        "trades": 28,
+        "wins": 15,
+        "losses": 13,
+        "win_rate": 53.57142857142857,
+        "profit_factor": 1.1538461538461537,
+        "expectancy_r": 0.07142857142857142,
+        "trades_per_month": 1.1666666666666667,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 9.571428571428571
+      },
+      "true_oos_2025_2026": {
+        "trades": 20,
+        "wins": 8,
+        "losses": 12,
+        "win_rate": 40.0,
+        "profit_factor": 0.6666666666666666,
+        "expectancy_r": -0.2,
+        "trades_per_month": 1.0526315789473684,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 15.95
+      }
+    },
+    "NZDJPY": {
+      "train_2010_2018": {
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "win_rate": 66.66666666666666,
+        "profit_factor": 2.0,
+        "expectancy_r": 0.3333333333333333,
+        "trades_per_month": 0.027777777777777776,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 29.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 0.0
+      }
+    },
+    "NZDUSD": {
+      "train_2010_2018": {
+        "trades": 165,
+        "wins": 78,
+        "losses": 87,
+        "win_rate": 47.27272727272727,
+        "profit_factor": 0.896551724137931,
+        "expectancy_r": -0.05454545454545454,
+        "trades_per_month": 1.5277777777777777,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 16.793939393939393
+      },
+      "validation_2019_2022": {
+        "trades": 74,
+        "wins": 37,
+        "losses": 37,
+        "win_rate": 50.0,
+        "profit_factor": 1.0,
+        "expectancy_r": 0.0,
+        "trades_per_month": 1.5416666666666667,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 18.445945945945947
+      },
+      "holdout_2023_2024": {
+        "trades": 44,
+        "wins": 16,
+        "losses": 28,
+        "win_rate": 36.36363636363637,
+        "profit_factor": 0.5714285714285714,
+        "expectancy_r": -0.2727272727272727,
+        "trades_per_month": 1.8333333333333333,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 15.886363636363637
+      },
+      "true_oos_2025_2026": {
+        "trades": 26,
+        "wins": 6,
+        "losses": 20,
+        "win_rate": 23.076923076923077,
+        "profit_factor": 0.3,
+        "expectancy_r": -0.5384615384615384,
+        "trades_per_month": 1.368421052631579,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 14.0
+      }
+    },
+    "AUDJPY": {
+      "train_2010_2018": {
+        "trades": 166,
+        "wins": 86,
+        "losses": 80,
+        "win_rate": 51.80722891566265,
+        "profit_factor": 1.075,
+        "expectancy_r": 0.03614457831325301,
+        "trades_per_month": 1.537037037037037,
+        "ambiguous_bars": 1,
+        "average_hold_bars": 16.626506024096386
+      },
+      "validation_2019_2022": {
+        "trades": 60,
+        "wins": 28,
+        "losses": 32,
+        "win_rate": 46.666666666666664,
+        "profit_factor": 0.875,
+        "expectancy_r": -0.06666666666666667,
+        "trades_per_month": 1.25,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 16.633333333333333
+      },
+      "holdout_2023_2024": {
+        "trades": 28,
+        "wins": 11,
+        "losses": 17,
+        "win_rate": 39.285714285714285,
+        "profit_factor": 0.6470588235294118,
+        "expectancy_r": -0.21428571428571427,
+        "trades_per_month": 1.1666666666666667,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 11.178571428571429
+      },
+      "true_oos_2025_2026": {
+        "trades": 29,
+        "wins": 15,
+        "losses": 14,
+        "win_rate": 51.724137931034484,
+        "profit_factor": 1.0714285714285714,
+        "expectancy_r": 0.034482758620689655,
+        "trades_per_month": 1.5263157894736843,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 15.517241379310345
+      }
+    },
+    "USDCHF": {
+      "train_2010_2018": {
+        "trades": 111,
+        "wins": 55,
+        "losses": 56,
+        "win_rate": 49.549549549549546,
+        "profit_factor": 0.9821428571428571,
+        "expectancy_r": -0.009009009009009009,
+        "trades_per_month": 1.0277777777777777,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 20.65765765765766
+      },
+      "validation_2019_2022": {
+        "trades": 45,
+        "wins": 24,
+        "losses": 21,
+        "win_rate": 53.333333333333336,
+        "profit_factor": 1.1428571428571428,
+        "expectancy_r": 0.06666666666666667,
+        "trades_per_month": 0.9375,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 15.266666666666667
+      },
+      "holdout_2023_2024": {
+        "trades": 23,
+        "wins": 13,
+        "losses": 10,
+        "win_rate": 56.52173913043478,
+        "profit_factor": 1.3,
+        "expectancy_r": 0.13043478260869565,
+        "trades_per_month": 0.9583333333333334,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 13.478260869565217
+      },
+      "true_oos_2025_2026": {
+        "trades": 22,
+        "wins": 12,
+        "losses": 10,
+        "win_rate": 54.54545454545454,
+        "profit_factor": 1.2,
+        "expectancy_r": 0.09090909090909091,
+        "trades_per_month": 1.1578947368421053,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 18.59090909090909
+      }
+    },
+    "EURCHF": {
+      "train_2010_2018": {
+        "trades": 121,
+        "wins": 54,
+        "losses": 67,
+        "win_rate": 44.62809917355372,
+        "profit_factor": 0.8059701492537313,
+        "expectancy_r": -0.10743801652892562,
+        "trades_per_month": 1.1203703703703705,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 32.67768595041322
+      },
+      "validation_2019_2022": {
+        "trades": 62,
+        "wins": 19,
+        "losses": 43,
+        "win_rate": 30.64516129032258,
+        "profit_factor": 0.4418604651162791,
+        "expectancy_r": -0.3870967741935484,
+        "trades_per_month": 1.2916666666666667,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 19.403225806451612
+      },
+      "holdout_2023_2024": {
+        "trades": 38,
+        "wins": 10,
+        "losses": 28,
+        "win_rate": 26.31578947368421,
+        "profit_factor": 0.35714285714285715,
+        "expectancy_r": -0.47368421052631576,
+        "trades_per_month": 1.5833333333333333,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 13.526315789473685
+      },
+      "true_oos_2025_2026": {
+        "trades": 25,
+        "wins": 10,
+        "losses": 15,
+        "win_rate": 40.0,
+        "profit_factor": 0.6666666666666666,
+        "expectancy_r": -0.2,
+        "trades_per_month": 1.3157894736842106,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 29.6
+      }
+    },
+    "GBPCHF": {
+      "train_2010_2018": {
+        "trades": 148,
+        "wins": 70,
+        "losses": 78,
+        "win_rate": 47.2972972972973,
+        "profit_factor": 0.8974358974358975,
+        "expectancy_r": -0.05405405405405406,
+        "trades_per_month": 1.3703703703703705,
+        "ambiguous_bars": 1,
+        "average_hold_bars": 18.95945945945946
+      },
+      "validation_2019_2022": {
+        "trades": 65,
+        "wins": 32,
+        "losses": 33,
+        "win_rate": 49.23076923076923,
+        "profit_factor": 0.9696969696969697,
+        "expectancy_r": -0.015384615384615385,
+        "trades_per_month": 1.3541666666666667,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 15.015384615384615
+      },
+      "holdout_2023_2024": {
+        "trades": 30,
+        "wins": 8,
+        "losses": 22,
+        "win_rate": 26.666666666666668,
+        "profit_factor": 0.36363636363636365,
+        "expectancy_r": -0.4666666666666667,
+        "trades_per_month": 1.25,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 16.6
+      },
+      "true_oos_2025_2026": {
+        "trades": 22,
+        "wins": 10,
+        "losses": 12,
+        "win_rate": 45.45454545454545,
+        "profit_factor": 0.8333333333333334,
+        "expectancy_r": -0.09090909090909091,
+        "trades_per_month": 1.1578947368421053,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 18.5
+      }
+    },
+    "EURGBP": {
+      "train_2010_2018": {
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "profit_factor": 0.0,
+        "expectancy_r": -1.0,
+        "trades_per_month": 0.009259259259259259,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 16.0
+      },
+      "validation_2019_2022": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 0.0
+      },
+      "holdout_2023_2024": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 0.0
+      },
+      "true_oos_2025_2026": {
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "win_rate": 0.0,
+        "profit_factor": null,
+        "expectancy_r": 0.0,
+        "trades_per_month": 0.0,
+        "ambiguous_bars": 0,
+        "average_hold_bars": 0.0
+      }
+    }
+  },
+  "train_pass": false,
+  "validation_pass": false,
+  "holdout_pass": false,
+  "true_oos_pass": false
+WROTE scripts\4h_wall_retest_friday_results.json
+}

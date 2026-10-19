@@ -1,0 +1,46 @@
+{
+  "experiment_id": "bb_confirm_rr_extend_20261008",
+  "status": "SPEC_FROZEN_BEFORE_OUTCOMES",
+  "hypothesis": "After the current BB confirmation/breakout entry, extending TP from a fixed entry-anchored risk distance at gross RR 1.0 to 1.25 or 1.5 may capture further favorable movement. It fails if the farther TP reduces hit rate enough that cost-adjusted PF/expectancy or drawdown worsens. No profitability is presumed.",
+  "baseline": "Current FX BB reversal confirmation/breakout signal rules, next available bar open, fixed stop distance equal to the absolute actual entry-to-signal-center distance rounded outward to one native tick, and fixed target at RR 1.0 from entry; this is an explicitly new bracketed research contract, not the existing Pine moving-center/no-stop ledger.",
+  "data_manifest": "agent_runs/bb3_context_timing_20260909/completed/data_manifest.json",
+  "cache_directory": "agent_runs/bb3_context_timing_20260909/completed",
+  "symbols": ["USDJPY", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDCAD", "EURJPY", "GBPJPY"],
+  "entry_timeframe": "M5",
+  "higher_timeframe_rules": "None. Source timezone is unknown; timestamps are used as stored, not labeled UTC/JST.",
+  "indicator_and_signal_rules": "Reuse current FX BB confirmation state machine exactly from scripts/research_bb3_context_timing.py features() and its baseline preparation/exclusion/cancel rules: BB20 close SMA +/-3 population sigma, ATR/context features and round-number impulse/wick exclusions; preparation at band wick touch; cancel priority gap/explained impulse/wick/expiry/center/opposite touch; directional inside-band confirmation then strict later preparation-extreme breakout. Candidate signal is known only after the closed breakout bar. Source feature caches and runner/code hashes must match recorded manifest before any outcomes; baseline signal decisions are not retuned.",
+  "entry_rules": "Use the current strategy's own state machine with mode=0 and expiry=3 exactly as defined in scripts/research_bb3_context_timing.py, including next AVAILABLE M5 open even across gaps, not only contiguous bars. The current center-at-breakout and >=3-pip candidate reference room rule applies as a signal eligibility check, but is not the TP. The historical runner applies an execution-time center room check at next open too; it is applied before any RR variant, identically across arms: center must remain favorable and >=3 pips from actual open. If a position is open, ignore signals and do not queue. No exit-bar reuse or same-bar reentry. At entry, freeze risk distance to signal-time center and round stop risk outward to native tick. This explicitly differs from the Pine RR1 ledger's moving-center/no-stop exit and from the older RR1 experiment's contiguous-entry rule.",
+  "exit_rules": {
+    "full_exit": true,
+    "gross_rr_candidates": [1.0, 1.25, 1.5],
+    "risk_anchor": "At actual next-bar entry, freeze risk distance R as the absolute price distance from actual entry open to the tick-rounded signal-close SMA20. The signal must pass both the original >=3-pip candidate-reference room and the historical execution-time >=3-pip actual open-to-center room checks, identically for all RR arms. Then outward-rounded stop risk is also >=3 pips. This risk anchor remains fixed during holding.",
+    "stop": "Fixed at actual entry minus side*R_ticks*tick where R_ticks=max(1,ceil(abs(entry-center)/tick)); actual risk is this outward-rounded distance and is the denominator for requested gross RR.",
+    "target": "Fixed at actual entry plus side*ceil(RR*risk_ticks)*tick; target never follows or reverts to SMA20. Actual gross RR is at least requested and < one target tick above, before gaps/costs.",
+    "signal_entry_room": "The next-open center room eligibility uses the same frozen execution gate across all RR arms and must be at least 3 pips; the initial candidate reference-room gate is also at least 3 pips.",
+    "fill_order": "At each bar open first resolve gaps for an existing position: stop gap before target gap if malformed overlap, otherwise actual open. Then intrabar existing-position stop before target (conservative OHLC path). New entry is opened at current bar open and its bracket is active during that entry bar; if both stop/target are touched, stop first. Costs subtracted once on closed or open mark.",
+    "period_end": "No forced close. Report open position mark at last close separately; closed PF excludes open mark. Each period begins flat with causal feature warmup."
+  },
+  "periods": {
+    "training": ["2023-09-08", "2024-09-08"],
+    "validation": ["2024-09-08", "2025-09-08"],
+    "final_descriptive": ["2025-09-08", "2026-09-08"],
+    "continuous_descriptive": ["2023-09-08", "2026-09-08"]
+  },
+  "data_exposure": "All specified calendar periods were repeatedly viewed in prior BB work. The final period is descriptive, not a virgin holdout. This is one bounded exploratory experiment; no candidate can be called validated for live trading.",
+  "candidate_budget": 3,
+  "search_space": "Exactly three RR choices [1.0, 1.25, 1.5], same signal and entry logic, fixed risk anchor, both directions. All arms and periods reported; no parameter/strategy selection and no rerun after outcome inspection. RR1 is the comparator.",
+  "cost_and_fill_model": {
+    "cost_cases_pips_round_trip": [1.0, 1.2],
+    "cost_description": "Fixed hypothetical round-trip subtraction once per trade. It is not historical GMO spread/slippage or swap; no additional commissions, variable spread, slippage or financing modeled.",
+    "price_source": "Saved Forex Tester M5 chart OHLC; no bid/ask execution replay.",
+    "gaps_and_ambiguous_bars": "Gaps fill at open, same-bar dual touch resolves stop-first. Keep gap and ambiguous counts."
+  },
+  "position_sizing_and_currency": "One fixed-unit position per symbol, no account sizing. Report per-pair pips and equal-initial-risk R; cross-currency aggregation is descriptive, not account-currency profit.",
+  "primary_metrics": ["closed trades", "cost-after win rate", "PF_R", "average net R", "net+open R", "close-MTM drawdown R", "per-pair outcomes", "gap/dual-touch/period-end open counts", "entry eligible count and entries rejected because actual signal-center risk was nonpositive or below one tick"],
+  "acceptance_gates": "No adoption or Pine update. Research-screen comparison only: for each RR>1 arm, report differences against RR1, but improvement can only be claimed descriptively if both 2023-24 training and 2024-25 validation have average net R>RR1, PF_R>=RR1, net+open R>0 at 1.2 pip stress, and at least 5 of 9 pairs have net+open R>=RR1 within that period; additionally >=100 closed trades per period. 2025-26 and continuous results are report-only. Failure => reject; no selection or fallback.",
+  "cross_symbol_rule": "All nine symbols reported. No symbol-specific selection. Report each symbol separately; aggregate R/pips are descriptive.",
+  "code_identifier": "Dedicated immutable runner and tests for this experiment; record protocol/source/test/Pine/cache hashes before backtest outputs. Existing experiments/Pine remain untouched.",
+  "live_trading_authorized": false,
+  "api_calls": 0,
+  "frozen_at": "2026-10-08 JST, before running this experiment"
+}

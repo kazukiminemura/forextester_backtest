@@ -1,0 +1,451 @@
+//@version=6
+indicator("BB ±3σ 反転確認・候補表示【研究用・未検証】", overlay=true, max_labels_count=500)
+
+// Research candidates plus a hypothetical chart-only RR1 ledger, not actual execution.
+// TV_UNVERIFIED. A candidate is reported AFTER its breakout bar closes.
+string gb = "BB・反転確認"
+int length = input.int(20, "BB期間", minval=2, group=gb)
+float sigma = input.float(3.0, "標準偏差倍率", minval=0.5, step=0.1, group=gb)
+int expiry = input.int(12, "準備の有効本数（次足から・0＝無期限）", minval=0, maxval=200, group=gb)
+float minCenterPips = input.float(3.0, "候補参考価格から前足中央線までの最低幅 pips", minval=0, step=0.1, group=gb)
+bool restrictChart = input.bool(true, "5分足に限定", group=gb)
+bool autoPip = input.bool(true, "FXのpip幅を自動設定（JPY＝0.01・その他＝0.0001）", group=gb)
+float manualPip = input.float(0.01, "手動pip幅（自動OFF時）", minval=0.00000001, group=gb)
+float pipSize = autoPip ? (syminfo.currency == "JPY" ? 0.01 : 0.0001) : manualPip
+bool chartOK = (not autoPip or syminfo.type == "forex") and (not restrictChart or timeframe.in_seconds() == 300)
+
+// Same directional context proxies as the original BB indicator; not news detection.
+string gf = "元ロジックの見送り条件"
+bool excludeBreak = input.bool(true, "直近高安を勢いよく突破したら見送り", group=gf)
+int lookback = input.int(12, "高安参照本数（現在足を除く）", minval=2, group=gf)
+bool excludeRound = input.bool(true, "節目を勢いよく突破したら見送り", group=gf)
+float roundPips = input.float(50.0, "節目の間隔 pips", minval=0.1, step=1.0, group=gf)
+float momentum = input.float(1.5, "勢い：True Range / 直前ATR14", minval=0.1, step=0.1, group=gf)
+int impulseBars = input.int(3, "突破後の見送り本数（0＝突破足だけ）", minval=0, maxval=20, group=gf)
+bool excludeWick = input.bool(true, "長いヒゲでのバンドタッチを見送り", group=gf)
+float wickBodyRatio = input.float(2.0, "ヒゲ長 / 実体の最小倍率", minval=0.1, step=0.1, group=gf)
+float wickRangePct = input.float(50.0, "ヒゲが足全体に占める最小％", minval=1, maxval=100, group=gf)
+bool manualPause = input.bool(false, "裁量停止（履歴全体にも適用）", group=gf)
+bool showReasons = input.bool(true, "見送り・取消理由を表示", group="表示")
+string gw = "勝率・仮想RR1集計（現在の通貨だけ）"
+bool showWinStats = input.bool(true, "右下に勝率を表示", group=gw)
+float statsCostPips = input.float(1.0, "仮定の往復コスト pips（GMO実測ではない）", minval=0, step=0.1, group=gw)
+
+float basis = ta.sma(close, length)
+float deviation = ta.stdev(close, length, true)
+float upper = basis + sigma * deviation
+float lower = basis - sigma * deviation
+float priorHigh = ta.highest(high[1], lookback)
+float priorLow = ta.lowest(low[1], lookback)
+float priorAtr = ta.atr(14)[1]
+float roundStep = math.max(syminfo.mintick, math.round(roundPips * pipSize / syminfo.mintick) * syminfo.mintick)
+float nextRound = (math.floor(close[1] / roundStep) + 1) * roundStep
+float priorRound = (math.ceil(close[1] / roundStep) - 1) * roundStep
+bool impulsive = ta.tr(true) >= priorAtr * momentum
+bool gap = not na(time[1]) and time - time[1] > timeframe.in_seconds() * 1000
+
+recentImpulse(bool triggered, float brokenLevel, bool upward) =>
+    var int started = na
+    var float level = na
+    if barstate.isconfirmed
+        bool reclaimed = not na(level) and (upward ? close <= level : close >= level)
+        if gap or reclaimed or (not na(started) and bar_index - started > impulseBars)
+            started := na
+            level := na
+        if triggered
+            started := bar_index
+            level := brokenLevel
+    not na(started) and bar_index - started <= impulseBars
+
+// Separate unconditional calls keep all four memories independent.
+bool recentHighBreak = recentImpulse(close > priorHigh and impulsive, priorHigh, true)
+bool recentLowBreak = recentImpulse(close < priorLow and impulsive, priorLow, false)
+bool recentRoundUp = recentImpulse(high >= nextRound and close > nextRound and impulsive, nextRound, true)
+bool recentRoundDown = recentImpulse(low <= priorRound and close < priorRound and impulsive, priorRound, false)
+bool buyExplained = (excludeBreak and recentLowBreak) or (excludeRound and recentRoundDown)
+bool sellExplained = (excludeBreak and recentHighBreak) or (excludeRound and recentRoundUp)
+bool touchBuy = low <= lower
+bool touchSell = high >= upper
+longWick(float wick) =>
+    excludeWick and high > low and wick >= math.max(math.abs(close - open), syminfo.mintick) * wickBodyRatio and wick >= (high - low) * wickRangePct / 100
+bool buyWick = touchBuy and longWick(math.min(open, close) - low)
+bool sellWick = touchSell and longWick(high - math.max(open, close))
+bool ready = chartOK and not na(deviation) and deviation > 0 and not na(priorAtr) and not na(priorHigh)
+
+// Shared original candidate rule: intrabar strict break, reported only at bar close.
+candidateCheck(int direction, float trigger, float center, float unit) =>
+    float reference = direction == 1 ? math.max(open, trigger + syminfo.mintick) : math.min(open, trigger - syminfo.mintick)
+    float room = direction * (center - reference) / unit
+    string rejection = na(room) or room + 1e-9 < minCenterPips ? "中央線までの幅不足" : ""
+    [reference, rejection]
+
+var int side = 0 // +1 BUY preparation, -1 SELL preparation; never a position.
+var int preparedBar = na
+var int confirmedBar = na
+var float threshold = na
+var float cancelLevel = na // Fixed touch-bar extreme; NOT an actual position stop.
+int prepSide = 0
+int reversalSide = 0
+int candidateSide = 0
+float candidatePrice = na
+float candidateCenter = na
+string reason = ""
+// Capture levels before consuming a setup, preserving its historical endpoint.
+float thresholdHistory = threshold
+float cancelHistory = cancelLevel
+
+if barstate.isconfirmed
+    if side != 0
+        bool invalidated = side == 1 ? low < cancelLevel : high > cancelLevel
+        bool explained = side == 1 ? buyExplained : sellExplained
+        bool wickBlocked = side == 1 ? buyWick : sellWick
+        bool oppositeTouch = side == 1 ? touchSell : touchBuy
+        bool expired = expiry > 0 and bar_index - preparedBar > expiry
+        // Cancellation always wins if this bar crosses BOTH levels, including gaps.
+        reason := not ready ? "銘柄・足・データ条件外" : gap ? "時間欠損" : manualPause ? "裁量停止" : invalidated ? "準備後の高安更新" : explained ? "突破の勢い" : wickBlocked ? "長いヒゲ" : oppositeTouch ? "反対側タッチ" : expired ? "準備期限切れ" : ""
+        if reason == ""
+            if not na(confirmedBar) and bar_index > confirmedBar
+                bool broken = side == 1 ? high > threshold : low < threshold
+                if broken
+                    candidateCenter := basis[1]
+                    [reference, rejection] = candidateCheck(side, threshold, candidateCenter, pipSize)
+                    candidatePrice := reference
+                    reason := rejection
+                    candidateSide := reason == "" ? side : 0
+            else if na(confirmedBar) and bar_index > preparedBar
+                bool reversal = side == 1 ? close > open : close < open
+                if reversal and close > lower and close < upper
+                    confirmedBar := bar_index
+                    threshold := side == 1 ? high : low
+                    thresholdHistory := threshold
+                    reversalSide := side
+        if reason != "" or candidateSide != 0
+            side := 0
+            preparedBar := na
+            confirmedBar := na
+            threshold := na
+            cancelLevel := na
+    // A cancelled/rejected/candidate bar cannot immediately prepare a new setup.
+    if side == 0 and reason == "" and candidateSide == 0 and ready and (touchBuy or touchSell)
+        bool both = touchBuy and touchSell
+        bool explained = touchBuy ? buyExplained : sellExplained
+        bool wickBlocked = touchBuy ? buyWick : sellWick
+        reason := both ? "両側タッチ" : manualPause ? "裁量停止" : explained ? "突破の勢い" : wickBlocked ? "長いヒゲ" : ""
+        if reason == ""
+            side := touchBuy ? 1 : -1
+            preparedBar := bar_index
+            cancelLevel := side == 1 ? low : high
+            cancelHistory := cancelLevel
+            prepSide := side
+
+// Chart-only constant-memory ledger; candidates/alerts/scanner remain independent.
+var int statsSide = 0
+var float statsEntry = na
+var float statsTarget = na
+var float statsStop = na
+var int statsPendingSide = 0
+var float statsPendingTarget = na
+var int statsPendingTime = na
+var int statsClosed = 0
+var int statsWins = 0
+float statsExitPrice = na
+float statsNetPips = na
+bool statsEntered = false
+float statsEntryHistory = statsEntry
+float statsTargetHistory = statsTarget
+float statsStopHistory = statsStop
+if barstate.isconfirmed
+    // Only the immediately following open can fill a queued candidate; no gap entry.
+    if statsSide == 0 and statsPendingSide != 0
+        float reward = statsPendingSide * (statsPendingTarget - open)
+        if time == statsPendingTime and reward > 0 and reward / pipSize + 1e-9 >= minCenterPips
+            statsSide := statsPendingSide
+            statsEntry := open
+            statsTarget := statsPendingTarget
+            statsStop := 2 * statsEntry - statsTarget
+            statsEntryHistory := statsEntry
+            statsTargetHistory := statsTarget
+            statsStopHistory := statsStop
+            statsEntered := true
+        statsPendingSide := 0
+        statsPendingTarget := na
+        statsPendingTime := na
+    if statsSide != 0
+        bool stopAtOpen = statsSide * (open - statsStop) <= 0
+        bool targetAtOpen = statsSide * (open - statsTarget) >= 0
+        bool stopTouched = statsSide == 1 ? low <= statsStop : high >= statsStop
+        bool targetTouched = statsSide == 1 ? high >= statsTarget : low <= statsTarget
+        // ponytail: OHLC cannot resolve intrabar order; SL first, tick replay if needed.
+        statsExitPrice := stopAtOpen or targetAtOpen ? open : stopTouched ? statsStop : targetTouched ? statsTarget : na
+        if not na(statsExitPrice)
+            statsNetPips := statsSide * (statsExitPrice - statsEntry) / pipSize - statsCostPips
+            statsClosed += 1
+            statsWins += statsNetPips > 1e-9 ? 1 : 0 // Ignore floating-point noise at breakeven.
+            statsSide := 0
+            statsEntry := na
+            statsTarget := na
+            statsStop := na
+    // Current close is known only now. Freeze its BB center for next-open RR1.
+    if statsSide == 0 and candidateSide != 0
+        statsPendingSide := candidateSide
+        statsPendingTarget := math.round_to_mintick(basis)
+        statsPendingTime := time_close
+float statsWinRate = statsClosed > 0 ? 100.0 * statsWins / statsClosed : na
+float statsOpenPips = statsSide == 0 ? 0 : statsSide * ((barstate.isconfirmed ? close : close[1]) - statsEntry) / pipSize - statsCostPips
+
+plot(statsEntryHistory, "仮想Entry（次足始値）", color=color.aqua, style=plot.style_linebr)
+plot(statsTargetHistory, "仮想TP（固定中央線）", color=color.lime, style=plot.style_linebr)
+plot(statsStopHistory, "仮想SL（固定1R）", color=color.red, style=plot.style_linebr)
+if statsEntered
+    label.new(bar_index, statsEntryHistory, "仮想RR1・次足始値\nEntry " + str.tostring(statsEntryHistory, format.mintick) + "\nTP " + str.tostring(statsTargetHistory, format.mintick) + "\nSL " + str.tostring(statsStopHistory, format.mintick), style=label.style_label_left, color=color.new(color.blue, 25), textcolor=color.white, size=size.normal)
+
+plot(basis, "BB中央線（現在足・参考）", color=color.orange, linewidth=2)
+u = plot(upper, "+3σ", color=color.new(color.blue, 15))
+l = plot(lower, "−3σ", color=color.new(color.blue, 15))
+fill(u, l, color=color.new(color.blue, 95))
+plot(thresholdHistory, "反転足の高安：突破基準（約定価格ではない）", color=color.aqua, linewidth=2, style=plot.style_linebr)
+plot(cancelHistory, "準備取消水準（ポジションの損切りではない）", color=prepSide != 0 ? na : color.red, linewidth=2, style=plot.style_linebr)
+plot(candidateSide != 0 ? candidatePrice : na, "候補参考Entry（足確定後に表示・約定保証なし）", color=color.aqua, linewidth=3, style=plot.style_circles)
+plot(candidateSide != 0 ? candidateCenter : na, "候補判定に使った前足中央線（TP設定ではない）", color=color.orange, linewidth=2, style=plot.style_circles)
+plotshape(prepSide == 1, "BUY準備", shape.circle, location.belowbar, color.yellow, text="準備", textcolor=color.yellow, size=size.tiny)
+plotshape(prepSide == -1, "SELL準備", shape.circle, location.abovebar, color.yellow, text="準備", textcolor=color.yellow, size=size.tiny)
+plotshape(reversalSide == 1, "陽線回帰確定", shape.triangleup, location.belowbar, color.aqua, text="陽線確認", textcolor=color.aqua, size=size.tiny)
+plotshape(reversalSide == -1, "陰線回帰確定", shape.triangledown, location.abovebar, color.aqua, text="陰線確認", textcolor=color.aqua, size=size.tiny)
+if prepSide != 0
+    label.new(bar_index, cancelHistory, "準備取消水準 " + str.tostring(cancelHistory, format.mintick) + "\nポジションSLではない", style=prepSide == 1 ? label.style_label_up : label.style_label_down, color=color.new(color.gray, 30), textcolor=color.white, size=size.normal)
+if reversalSide != 0
+    label.new(bar_index, thresholdHistory, "突破基準 " + str.tostring(thresholdHistory, format.mintick) + "\n次足以降の厳密な突破を待つ", style=reversalSide == 1 ? label.style_label_down : label.style_label_up, color=color.new(color.blue, 20), textcolor=color.white, size=size.normal)
+if candidateSide != 0
+    label.new(bar_index, candidatePrice, (candidateSide == 1 ? "BUY候補" : "SELL候補") + "（足確定後）\n参考Entry " + str.tostring(candidatePrice, format.mintick) + "\n前足中央線 " + str.tostring(candidateCenter, format.mintick) + "\n実約定・TP/SLではない", style=candidateSide == 1 ? label.style_label_up : label.style_label_down, color=candidateSide == 1 ? color.teal : color.red, textcolor=color.white, size=size.normal)
+if showReasons and reason != ""
+    label.new(bar_index, high, "見送り・取消\n" + reason, style=label.style_label_down, color=color.new(color.gray, 35), textcolor=color.white, size=size.normal)
+
+// Only active setup labels extend right; consumed setups retain history, not stale guides.
+priceTag(float price, string title, color ink) =>
+    var label tag = na
+    if barstate.islast
+        if not na(price)
+            if na(tag)
+                tag := label.new(bar_index + 3, price, "", style=label.style_label_left, color=ink, textcolor=color.white, size=size.normal)
+            label.set_xy(tag, bar_index + 3, price)
+            label.set_text(tag, title + " " + str.tostring(price, format.mintick))
+        else
+            label.delete(tag)
+            tag := na
+    0
+priceTag(threshold, (side == 1 ? "BUY上抜け基準" : "SELL下抜け基準"), color.blue)
+priceTag(cancelLevel, "準備取消（SLではない）", color.red)
+
+var table winStats = table.new(position.bottom_right, 2, 7, bgcolor=color.new(color.black, 15))
+if barstate.islast
+    if showWinStats
+        table.cell(winStats, 0, 0, "仮想RR1・研究用", text_color=color.yellow, text_size=size.small)
+        table.cell(winStats, 1, 0, syminfo.ticker + " / " + timeframe.period, text_color=color.yellow, text_size=size.small)
+        table.cell(winStats, 0, 1, "勝率（コスト後）", text_color=color.white, text_size=size.small)
+        table.cell(winStats, 1, 1, na(statsWinRate) ? "—" : str.tostring(statsWinRate, "#.##") + "%", text_color=color.white, text_size=size.small)
+        table.cell(winStats, 0, 2, "決済件数 / 勝ち", text_color=color.white, text_size=size.small)
+        table.cell(winStats, 1, 2, str.tostring(statsClosed) + " / " + str.tostring(statsWins), text_color=color.white, text_size=size.small)
+        table.cell(winStats, 0, 3, "未決済 pips（確定足）", text_color=color.white, text_size=size.small)
+        table.cell(winStats, 1, 3, str.tostring(statsOpenPips, "#.##") + (statsSide != 0 ? " / 保有1" : statsPendingSide != 0 ? " / 次足待ち" : " / 保有0"), text_color=color.white, text_size=size.small)
+        table.cell(winStats, 0, 4, "仮定の往復コスト", text_color=color.yellow, text_size=size.small)
+        table.cell(winStats, 1, 4, str.tostring(statsCostPips, "#.##") + " pips", text_color=color.yellow, text_size=size.small)
+        table.cell(winStats, 0, 5, "TP/SL固定・全決済", text_color=color.white, text_size=size.small)
+        table.cell(winStats, 1, 5, "RR 1:1（コスト前）", text_color=color.white, text_size=size.small)
+        table.cell(winStats, 0, 6, "読込済み履歴のみ", text_color=color.yellow, text_size=size.small)
+        table.cell(winStats, 1, 6, "TV_UNVERIFIED", text_color=color.yellow, text_size=size.small)
+    else
+        table.clear(winStats, 0, 0, 1, 6)
+
+alertcondition(barstate.isconfirmed and candidateSide == 1, "BUYエントリー条件成立", "{{exchange}}:{{ticker}} / {{interval}} BUYエントリー条件成立｜確定終値 {{close}}｜研究用・約定通知ではありません。")
+alertcondition(barstate.isconfirmed and candidateSide == -1, "SELLエントリー条件成立", "{{exchange}}:{{ticker}} / {{interval}} SELLエントリー条件成立｜確定終値 {{close}}｜研究用・約定通知ではありません。")
+// Select "Any alert() function call" for both directions in one chart alert.
+if barstate.isconfirmed and candidateSide != 0
+    alert(syminfo.tickerid + " / " + timeframe.period + (candidateSide == 1 ? " BUY" : " SELL") + "エントリー条件成立｜確定終値 " + str.tostring(close, format.mintick) + "｜足終了 " + str.format_time(time_close, "MM-dd HH:mm", "Asia/Tokyo") + " JST｜研究用・約定通知ではありません。", alert.freq_once_per_bar_close)
+
+// Multi-symbol reversal scanner
+string gs = "反転確認・チャンス通貨一覧（研究用）"
+bool showScanner = input.bool(true, "通貨一覧を表示", group=gs)
+string scannerPosition = input.string("左下", "一覧の位置", options=["左下", "左上"], group=gs)
+string scan01 = input.symbol("OANDA:USDJPY", "01", group=gs)
+string scan02 = input.symbol("OANDA:EURUSD", "02", group=gs)
+string scan03 = input.symbol("OANDA:GBPUSD", "03", group=gs)
+string scan04 = input.symbol("OANDA:AUDUSD", "04", group=gs)
+string scan05 = input.symbol("OANDA:NZDUSD", "05", group=gs)
+string scan06 = input.symbol("OANDA:USDCAD", "06", group=gs)
+string scan07 = input.symbol("OANDA:USDCHF", "07", group=gs)
+string scan08 = input.symbol("OANDA:EURJPY", "08", group=gs)
+string scan09 = input.symbol("OANDA:GBPJPY", "09", group=gs)
+string scan10 = input.symbol("OANDA:AUDJPY", "10", group=gs)
+string scan11 = input.symbol("OANDA:NZDJPY", "11", group=gs)
+
+scannerImpulse(bool triggered, float brokenLevel, bool upward, bool sourceGap) =>
+    var int started = na
+    var float level = na
+    bool reclaimed = not na(level) and (upward ? close <= level : close >= level)
+    if sourceGap or reclaimed or (not na(started) and bar_index - started > impulseBars)
+        started := na
+        level := na
+    if triggered
+        started := bar_index
+        level := brokenLevel
+    not na(started) and bar_index - started <= impulseBars
+
+// All calculations/state belong to the requested symbol. No drawing or bar-state gate.
+// Pine rollback handles unfinished source bars; every exported field is offset by one.
+scannerSnapshot() =>
+    float unit = autoPip ? (syminfo.currency == "JPY" ? 0.01 : 0.0001) : manualPip
+    bool valid = (not autoPip or syminfo.type == "forex") and (not restrictChart or timeframe.in_seconds() == 300)
+    float center = ta.sma(close, length)
+    float dev = ta.stdev(close, length, true)
+    float top = center + sigma * dev
+    float bottom = center - sigma * dev
+    float hi = ta.highest(high[1], lookback)
+    float lo = ta.lowest(low[1], lookback)
+    float atr = ta.atr(14)[1]
+    float step = math.max(syminfo.mintick, math.round(roundPips * unit / syminfo.mintick) * syminfo.mintick)
+    float roundHi = (math.floor(close[1] / step) + 1) * step
+    float roundLo = (math.ceil(close[1] / step) - 1) * step
+    bool strong = ta.tr(true) >= atr * momentum
+    bool sourceGap = not na(time[1]) and time - time[1] > timeframe.in_seconds() * 1000
+    bool highBreak = scannerImpulse(close > hi and strong, hi, true, sourceGap)
+    bool lowBreak = scannerImpulse(close < lo and strong, lo, false, sourceGap)
+    bool roundBreakUp = scannerImpulse(high >= roundHi and close > roundHi and strong, roundHi, true, sourceGap)
+    bool roundBreakDown = scannerImpulse(low <= roundLo and close < roundLo and strong, roundLo, false, sourceGap)
+    bool buyBlocked = (excludeBreak and lowBreak) or (excludeRound and roundBreakDown)
+    bool sellBlocked = (excludeBreak and highBreak) or (excludeRound and roundBreakUp)
+    bool buyTouch = low <= bottom
+    bool sellTouch = high >= top
+    bool badBuyWick = buyTouch and longWick(math.min(open, close) - low)
+    bool badSellWick = sellTouch and longWick(high - math.max(open, close))
+    bool dataReady = valid and not na(dev) and dev > 0 and not na(atr) and not na(hi)
+    var int setupSide = 0
+    var int prepared = na
+    var int confirmed = na
+    var float trigger = na
+    var float invalidation = na
+    int signal = 0
+    string skip = ""
+    float shownTrigger = trigger
+    float shownInvalidation = invalidation
+    float distance = na
+    if setupSide != 0
+        bool invalidated = setupSide == 1 ? low < invalidation : high > invalidation
+        bool explained = setupSide == 1 ? buyBlocked : sellBlocked
+        bool wick = setupSide == 1 ? badBuyWick : badSellWick
+        bool opposite = setupSide == 1 ? sellTouch : buyTouch
+        bool expired = expiry > 0 and bar_index - prepared > expiry
+        skip := not dataReady ? "銘柄・足・データ条件外" : sourceGap ? "時間欠損" : manualPause ? "裁量停止" : invalidated ? "準備後の高安更新" : explained ? "突破の勢い" : wick ? "長いヒゲ" : opposite ? "反対側タッチ" : expired ? "準備期限切れ" : ""
+        if skip == ""
+            if not na(confirmed) and bar_index > confirmed
+                bool broken = setupSide == 1 ? high > trigger : low < trigger
+                if broken
+                    [reference, rejection] = candidateCheck(setupSide, trigger, center[1], unit)
+                    distance := setupSide * (center[1] - reference) / unit
+                    skip := rejection
+                    signal := skip == "" ? setupSide : 0
+            else if na(confirmed) and bar_index > prepared
+                bool reversal = setupSide == 1 ? close > open : close < open
+                if reversal and close > bottom and close < top
+                    confirmed := bar_index
+                    trigger := setupSide == 1 ? high : low
+                    shownTrigger := trigger
+        if skip != "" or signal != 0
+            setupSide := 0
+            prepared := na
+            confirmed := na
+            trigger := na
+            invalidation := na
+    if setupSide == 0 and skip == "" and signal == 0 and dataReady and (buyTouch or sellTouch)
+        bool both = buyTouch and sellTouch
+        bool explained = buyTouch ? buyBlocked : sellBlocked
+        bool wick = buyTouch ? badBuyWick : badSellWick
+        skip := both ? "両側タッチ" : manualPause ? "裁量停止" : explained ? "突破の勢い" : wick ? "長いヒゲ" : ""
+        if skip == ""
+            setupSide := buyTouch ? 1 : -1
+            prepared := bar_index
+            invalidation := setupSide == 1 ? low : high
+            shownInvalidation := invalidation
+    if setupSide != 0 and not na(trigger)
+        // Waiting-state estimate uses the current confirmed center, available NEXT bar.
+        distance := setupSide * (center - (trigger + setupSide * syminfo.mintick)) / unit
+    int state = not dataReady ? 5 : signal != 0 ? signal * 3 : setupSide != 0 ? setupSide * (na(confirmed) ? 1 : 2) : skip != "" or manualPause ? 4 : 0
+    string triggerText = na(shownTrigger) ? "—" : str.tostring(shownTrigger, format.mintick)
+    string invalidationText = na(shownInvalidation) ? "—" : str.tostring(shownInvalidation, format.mintick)
+    [state[1], triggerText[1], invalidationText[1], distance[1], time_close[1], skip[1]]
+
+scannerName(int state) =>
+    state == 3 ? "BUY候補（直前足）" : state == -3 ? "SELL候補（直前足）" : state == 2 ? "買い・高値突破待ち" : state == -2 ? "売り・安値突破待ち" : state == 1 ? "買い・陽線回帰待ち" : state == -1 ? "売り・陰線回帰待ち" : state == 4 ? "見送り・取消" : state == 5 ? "対象外/計算待ち" : state == 6 ? "データなし" : state == 7 ? "更新待ち（古い）" : "待機"
+
+scannerRank(int state) =>
+    math.abs(state) == 3 ? 0 : math.abs(state) == 2 ? 1 : math.abs(state) == 1 ? 2 : state == 4 ? 3 : state == 0 ? 4 : 5
+
+var table scanner = table.new(scannerPosition == "左上" ? position.top_left : position.bottom_left, 6, 13)
+var array<string> scannerSymbols = array.from(scan01, scan02, scan03, scan04, scan05, scan06, scan07, scan08, scan09, scan10, scan11)
+var array<int> scannerStates = array.new_int(11, 6)
+var array<string> scannerTriggers = array.new_string(11, "—")
+var array<string> scannerInvalidations = array.new_string(11, "—")
+var array<float> scannerDistances = array.new_float(11, na)
+var array<int> scannerTimes = array.new_int(11, na)
+var array<string> scannerReasons = array.new_string(11, "")
+var array<int> scannerIndices = array.new_int()
+var array<int> scannerOrder = array.new_int()
+// Inputs are constant for this run: normalize and deduplicate only once.
+if barstate.isfirst
+    for i = 0 to 10
+        string symbol = array.get(scannerSymbols, i)
+        symbol := symbol == "" ? syminfo.tickerid : symbol
+        array.set(scannerSymbols, i, symbol)
+        bool duplicate = array.indexof(scannerSymbols, symbol) < i
+        if not duplicate
+            array.push(scannerIndices, i)
+if showScanner
+    if barstate.islast
+        array.clear(scannerOrder)
+    // Keep full source history/state evaluation; only discard unused historical UI work.
+    for i in scannerIndices
+        string symbol = array.get(scannerSymbols, i)
+        [state, triggerText, invalidationText, distance, stamp, skip] = request.security(symbol, timeframe.period, scannerSnapshot(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on, ignore_invalid_symbol=true)
+        if barstate.islast
+            bool stale = not na(stamp) and (timenow - stamp > timeframe.in_seconds() * 2000 or stamp > timenow)
+            state := na(state) or na(stamp) ? 6 : stale ? 7 : state
+            array.set(scannerStates, i, state)
+            array.set(scannerTriggers, i, triggerText)
+            array.set(scannerInvalidations, i, invalidationText)
+            array.set(scannerDistances, i, distance)
+            array.set(scannerTimes, i, stamp)
+            array.set(scannerReasons, i, skip)
+            array.push(scannerOrder, i)
+if barstate.islast
+    if not showScanner
+        table.clear(scanner, 0, 0, 5, 12)
+    if showScanner
+        // Stable order within each class, so ties do not shuffle on chart updates.
+        int count = array.size(scannerOrder)
+        if count > 1
+            for i = 1 to count - 1
+                int item = array.get(scannerOrder, i)
+                int j = i - 1
+                while j >= 0
+                    if scannerRank(array.get(scannerStates, array.get(scannerOrder, j))) <= scannerRank(array.get(scannerStates, item))
+                        break
+                    array.set(scannerOrder, j + 1, array.get(scannerOrder, j))
+                    j -= 1
+                array.set(scannerOrder, j + 1, item)
+        var array<string> notes = array.from("研究用・収益未検証", "反転確認 / " + timeframe.period, "候補≠約定", "取消≠SL", "次足更新時に反映", "TV_UNVERIFIED")
+        var array<string> headers = array.from("通貨（配信元）", "状態", "突破基準", "取消水準", "中央線幅 pips", "確認足終了 JST")
+        for col = 0 to 5
+            table.cell(scanner, col, 0, array.get(notes, col), text_color=color.yellow, bgcolor=color.black, text_size=size.small)
+            table.cell(scanner, col, 1, array.get(headers, col), text_color=color.white, bgcolor=color.gray, text_size=size.small)
+        for row = 0 to count - 1
+            int i = array.get(scannerOrder, row)
+            int state = array.get(scannerStates, i)
+            int stamp = array.get(scannerTimes, i)
+            float distance = array.get(scannerDistances, i)
+            color ink = math.abs(state) == 3 ? color.white : math.abs(state) == 2 ? color.yellow : color.silver
+            color bg = state == 3 ? color.new(color.teal, 15) : state == -3 ? color.new(color.red, 15) : color.new(color.black, 15)
+            table.cell(scanner, 0, row + 2, array.get(scannerSymbols, i), text_color=ink, bgcolor=bg, text_size=size.small)
+            table.cell(scanner, 1, row + 2, scannerName(state), text_color=ink, bgcolor=bg, text_size=size.small, tooltip=state == 4 ? array.get(scannerReasons, i) : "直前確定足の状態。新しい反転確認ロジックのみ。古い信号は強調しません。現在チャートの更新がない間は一覧も更新しません。")
+            table.cell(scanner, 2, row + 2, state >= 5 ? "—" : array.get(scannerTriggers, i), text_color=ink, bgcolor=bg, text_size=size.small, tooltip="反転確認足の高値/安値。厳密な突破が必要です。候補参考価格や約定価格ではありません。")
+            table.cell(scanner, 3, row + 2, state >= 5 ? "—" : array.get(scannerInvalidations, i), text_color=ink, bgcolor=bg, text_size=size.small, tooltip="準備足の固定安値/高値。更新すると準備取消。ポジションの損切りではありません。")
+            table.cell(scanner, 4, row + 2, state >= 5 or na(distance) ? "—" : str.tostring(distance, "#.##"), text_color=ink, bgcolor=bg, text_size=size.small, tooltip="突破待ち：確定中央線から基準±1tickまでの見込み幅。候補：前足中央線からギャップ調整した参考価格までの幅（現在価格ではない）。終値での突破維持・残り幅は要求しません。コスト控除前・TP設定ではありません。")
+            table.cell(scanner, 5, row + 2, na(stamp) ? "—" : str.format_time(stamp, "MM-dd HH:mm", "Asia/Tokyo"), text_color=ink, bgcolor=bg, text_size=size.small, tooltip="直前確定足の終了時刻。2本超の古いデータ/未来時刻は更新待ち扱い。休場中・リプレイでは現在時刻との差に注意。")

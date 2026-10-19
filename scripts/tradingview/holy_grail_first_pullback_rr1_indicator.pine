@@ -1,0 +1,296 @@
+//@version=6
+// RESEARCH ONLY / REJECTED_TRAINING_ONLY / TV_UNVERIFIED.
+// Frozen experiment: holy_grail_first_pullback_20260913. Indicator OHLC simulation.
+// All state/events commit on confirmed bars; alerts report close-time observations.
+// No external order routing. See indicator_mapping.md for execution/data differences.
+indicator("聖杯 First Pullback RR1 Indicator [研究用・不採用 / TV_UNVERIFIED]", overlay = true, max_lines_count = 500, max_labels_count = 500)
+
+// Declare one unconditional global output immediately. TradingView requires an
+// indicator output even before it reaches the later plots and alert conditions.
+plot(close, "Compiler output heartbeat", display = display.none)
+
+int startTime = input.time(timestamp("01 Jan 2010 00:00 +0000"), "研究開始 (UTC)")
+int endTime = input.time(timestamp("01 Jan 2099 00:00 +0000"), "研究終了・新規停止 (UTC)")
+float roundtripPips = input.float(1.8, "補助集計: 往復費用 pips", minval = 0)
+float carryPips = input.float(0.2, "補助集計: 保有費用 pips / 暦日", minval = 0)
+float pipOverride = input.float(0.0, "1 pip価格 (0 = FX自動)", minval = 0)
+int keepLevels = input.int(100, "履歴を残す注文数 (最大120)", minval = 1, maxval = 120)
+float pipSize = pipOverride > 0 ? pipOverride : syminfo.currency == "JPY" ? 0.01 : 0.0001
+
+// Pure OHLC functions. Entry action: -1 cancel, 0 wait, 1 fill.
+f_entry(int d, float trigger, float stop, float op, float hi, float lo) =>
+    int action = 0
+    float price = na
+    bool atOpen = false
+    if d * (op - stop) <= 0
+        action := -1
+        atOpen := true
+    else if d * (op - trigger) >= 0
+        action := 1
+        price := op
+        atOpen := true
+    else if (d == 1 and hi >= trigger) or (d == -1 and lo <= trigger)
+        action := 1
+        price := trigger
+    [action, price, atOpen]
+
+// Exit reason: -2 stop gap, -1 SL (both -> SL), 0 hold, 1 TP, 2 TP gap cap.
+// Fresh entries deliberately use full-bar SL before TP, regardless of path.
+f_exit(int d, float stop, float target, float op, float hi, float lo, bool fresh) =>
+    int reason = 0
+    float price = na
+    bool atOpen = false
+    if not fresh and d * (op - stop) <= 0
+        reason := -2
+        price := op
+        atOpen := true
+    else if not fresh and d * (op - target) >= 0
+        reason := 2
+        price := target
+        atOpen := true
+    else if (d == 1 and lo <= stop) or (d == -1 and hi >= stop)
+        reason := -1
+        price := stop
+    else if (d == 1 and hi >= target) or (d == -1 and lo <= target)
+        reason := 1
+        price := target
+    [reason, price, atOpen]
+
+// Python seeds: EMA first close; Wilder TR/DM indices 1..14; DX14..27 ADX seed.
+float ema20 = ta.ema(close, 20)
+float upMove = high - high[1]
+float downMove = low[1] - low
+float trueRange = na(close[1]) ? na : math.max(high - low, math.max(math.abs(high - close[1]), math.abs(low - close[1])))
+float plusDM = na(close[1]) ? na : upMove > downMove and upMove > 0 ? upMove : 0.0
+float minusDM = na(close[1]) ? na : downMove > upMove and downMove > 0 ? downMove : 0.0
+float smoothTR = ta.rma(trueRange, 14)
+float smoothPlus = ta.rma(plusDM, 14)
+float smoothMinus = ta.rma(minusDM, 14)
+float plusDI = na(smoothTR) ? na : smoothTR == 0 ? 0 : 100 * smoothPlus / smoothTR
+float minusDI = na(smoothTR) ? na : smoothTR == 0 ? 0 : 100 * smoothMinus / smoothTR
+float dx = na(plusDI) ? na : plusDI + minusDI == 0 ? 0 : 100 * math.abs(plusDI - minusDI) / (plusDI + minusDI)
+float adx14 = ta.rma(dx, 14)
+int dominance = plusDI > minusDI ? 1 : minusDI > plusDI ? -1 : 0
+bool strengthCross = adx14[1] <= 30 and adx14 > 30
+bool inWindow = time >= startTime and time < endTime
+
+var int direction = 0
+var int armBar = -1
+var bool spent = false
+var float anchorExtreme = na
+var float pullbackExtreme = na
+var bool pending = false
+var bool active = false
+var int pendingBar = -1
+var int tradeDirection = 0
+var float triggerPrice = na
+var float stopPrice = na
+var float entryPrice = na
+var float targetPrice = na
+var float riskPrice = na
+var int entryTime = na
+var int lastExitBar = -1
+var int lastOrderEventBar = -1
+var bool orderWasFilled = false
+var string orderStatus = "待機"
+var int accountedTrades = 0
+var int netWins = 0
+var float netR = 0.0
+var float profitR = 0.0
+var float lossR = 0.0
+var array<line> historyLines = array.new<line>()
+var array<label> historyLabels = array.new<label>()
+var array<int> historyCounts = array.new<int>()
+var line candidateLine = na
+var line entryLine = na
+var line stopLine = na
+var line targetLine = na
+var label candidateLabel = na
+var label entryLabel = na
+var label stopLabel = na
+var label targetLabel = na
+
+bool armSignal = false
+bool firstTouch = false
+bool setupSignal = false
+bool entrySignal = false
+bool tpSignal = false
+bool slSignal = false
+int setupDirection = 0
+float exitEventPrice = na
+float exitEventNetR = na
+int exitEventReason = 0
+
+if barstate.isconfirmed
+    bool fresh = false
+    // Period boundary blocks new fills. Existing positions continue to TP/SL.
+    if pending and not inWindow
+        pending := false
+        orderStatus := "期間終了・取消"
+        lastOrderEventBar := bar_index
+    // This runs before close-time episode decisions and 3rd-bar expiry.
+    if pending and bar_index > pendingBar
+        [entryAction, simulatedEntry, entryAtOpen] = f_entry(tradeDirection, triggerPrice, stopPrice, open, high, low)
+        if entryAction == -1
+            pending := false
+            orderStatus := "SL側始値・取消"
+            lastOrderEventBar := bar_index
+        else if entryAction == 1
+            pending := false
+            active := true
+            fresh := true
+            orderWasFilled := true
+            entrySignal := true
+            entryPrice := simulatedEntry
+            riskPrice := tradeDirection * (entryPrice - stopPrice)
+            targetPrice := entryPrice + tradeDirection * riskPrice
+            entryTime := time
+            orderStatus := entryAtOpen ? "模擬約定・始値" : "模擬約定・足内"
+            lastOrderEventBar := bar_index
+            // Preserve the candidate entry at its original price and end it here.
+            line.set_x2(candidateLine, bar_index)
+            label.set_xy(candidateLabel, bar_index, triggerPrice)
+            entryLine := line.new(bar_index, entryPrice, bar_index + 1, entryPrice, color = color.blue, width = 2)
+            entryLabel := label.new(bar_index, entryPrice, "", style = label.style_label_left, color = color.blue, textcolor = color.white, size = size.small)
+            array.push(historyLines, entryLine)
+            array.push(historyLabels, entryLabel)
+            array.set(historyCounts, array.size(historyCounts) - 1, 4)
+        else if bar_index - pendingBar >= 3
+            pending := false
+            orderStatus := "3本期限切れ"
+            lastOrderEventBar := bar_index
+
+    if active
+        [exitReason, simulatedExit, exitAtOpen] = f_exit(tradeDirection, stopPrice, targetPrice, open, high, low, fresh)
+        if exitReason != 0
+            int exposureTime = exitAtOpen ? time : time_close
+            float chargedDays = math.max(0, math.ceil((exposureTime - entryTime) / 86400000.0))
+            float tradeNetR = (tradeDirection * (simulatedExit - entryPrice) - (roundtripPips + carryPips * chargedDays) * pipSize) / riskPrice
+            netR += tradeNetR
+            profitR += math.max(tradeNetR, 0)
+            lossR += math.max(-tradeNetR, 0)
+            netWins += tradeNetR > 0 ? 1 : 0
+            accountedTrades += 1
+            active := false
+            lastExitBar := bar_index
+            lastOrderEventBar := bar_index
+            tpSignal := exitReason > 0
+            slSignal := exitReason < 0
+            exitEventPrice := simulatedExit
+            exitEventNetR := tradeNetR
+            exitEventReason := exitReason
+            orderStatus := tpSignal ? "TP決済" : "SL決済"
+
+    if not inWindow
+        direction := 0
+    else if bar_index >= 249
+        if direction != 0 and (adx14 < 25 or dominance != direction)
+            direction := 0
+            if pending
+                pending := false
+                orderStatus := "episode解除・取消"
+                lastOrderEventBar := bar_index
+        if direction == 0
+            if strengthCross and dominance != 0 and dominance * (close - ema20) > 0
+                direction := dominance
+                armBar := bar_index
+                anchorExtreme := direction == 1 ? high : low
+                pullbackExtreme := na
+                spent := false
+                armSignal := true
+        else if bar_index > armBar
+            float thisExtreme = direction == 1 ? low : high
+            pullbackExtreme := na(pullbackExtreme) ? thisExtreme : direction == 1 ? math.min(pullbackExtreme, thisExtreme) : math.max(pullbackExtreme, thisExtreme)
+            bool touch = low <= ema20 and ema20 <= high
+            bool away = direction == 1 ? low[1] > ema20[1] : high[1] < ema20[1]
+            if touch and not spent
+                firstTouch := true
+                spent := true
+                if away and direction * (close - ema20) > 0
+                    setupDirection := direction
+                    if not active and not pending and lastExitBar != bar_index
+                        tradeDirection := direction
+                        pendingBar := bar_index
+                        triggerPrice := direction == 1 ? high + syminfo.mintick : low - syminfo.mintick
+                        stopPrice := pullbackExtreme - direction * syminfo.mintick
+                        entryPrice := na
+                        riskPrice := na
+                        targetPrice := triggerPrice + direction * (direction * (triggerPrice - stopPrice))
+                        pending := true
+                        setupSignal := true
+                        orderWasFilled := false
+                        orderStatus := "待機"
+                        lastOrderEventBar := bar_index
+                        entryLine := na
+                        entryLabel := na
+                        candidateLine := line.new(bar_index, triggerPrice, bar_index + 1, triggerPrice, color = color.aqua, style = line.style_dashed)
+                        stopLine := line.new(bar_index, stopPrice, bar_index + 1, stopPrice, color = color.red)
+                        targetLine := line.new(bar_index, targetPrice, bar_index + 1, targetPrice, color = color.green)
+                        candidateLabel := label.new(bar_index, triggerPrice, "", style = label.style_label_left, color = color.teal, textcolor = color.white, size = size.small)
+                        stopLabel := label.new(bar_index, stopPrice, "", style = label.style_label_left, color = color.red, textcolor = color.white, size = size.small)
+                        targetLabel := label.new(bar_index, targetPrice, "", style = label.style_label_left, color = color.green, textcolor = color.white, size = size.small)
+                        array.push(historyLines, candidateLine)
+                        array.push(historyLines, stopLine)
+                        array.push(historyLines, targetLine)
+                        array.push(historyLabels, candidateLabel)
+                        array.push(historyLabels, stopLabel)
+                        array.push(historyLabels, targetLabel)
+                        array.push(historyCounts, 3)
+            // Equal extremes select the latest anchor AFTER the touch evaluation.
+            if (direction == 1 and high >= anchorExtreme) or (direction == -1 and low <= anchorExtreme)
+                anchorExtreme := direction == 1 ? high : low
+                pullbackExtreme := na
+
+    // Four objects per filled order, three per canceled order; bounded history.
+    while array.size(historyCounts) > keepLevels
+        int oldestCount = array.shift(historyCounts)
+        for objectIndex = 1 to oldestCount
+            line.delete(array.shift(historyLines))
+            label.delete(array.shift(historyLabels))
+
+    if not na(candidateLine) and (pending or active or lastOrderEventBar == bar_index)
+        int endBar = pending or active ? bar_index + 1 : bar_index
+        if not orderWasFilled
+            line.set_x2(candidateLine, endBar)
+            label.set_xy(candidateLabel, endBar, triggerPrice)
+        label.set_text(candidateLabel, "Entry候補 " + str.tostring(triggerPrice, format.mintick) + (orderWasFilled ? " [約定済]" : " [" + orderStatus + "]"))
+        line.set_x2(stopLine, endBar)
+        line.set_xy2(targetLine, endBar, targetPrice)
+        line.set_y1(targetLine, targetPrice)
+        label.set_xy(stopLabel, endBar, stopPrice)
+        label.set_xy(targetLabel, endBar, targetPrice)
+        label.set_text(stopLabel, "SL " + str.tostring(stopPrice, format.mintick))
+        label.set_text(targetLabel, (orderWasFilled ? "TP 1R " : "TP仮1R ") + str.tostring(targetPrice, format.mintick))
+        if orderWasFilled
+            line.set_x2(entryLine, endBar)
+            label.set_xy(entryLabel, endBar, entryPrice)
+            label.set_text(entryLabel, "Entry約定 " + str.tostring(entryPrice, format.mintick) + " [" + orderStatus + "]")
+
+plot(ema20, "EMA20", color = color.orange, linewidth = 2)
+plot(adx14, "ADX14", display = display.data_window)
+plot(plusDI, "+DI14", display = display.data_window)
+plot(minusDI, "-DI14", display = display.data_window)
+plot(setupDirection, "Setup direction (fill-independent)", display = display.data_window)
+plot(entrySignal ? entryPrice : na, "Simulated entry", display = display.data_window)
+plot(exitEventPrice, "Simulated exit", display = display.data_window)
+plot(exitEventNetR, "Exit net R", display = display.data_window)
+plot(exitEventReason, "Exit reason (-2 gap SL, -1 SL, 1 TP, 2 gap TP)", display = display.data_window)
+plotshape(armSignal, "ADX episode arm", shape.circle, location.abovebar, color = color.orange, size = size.tiny, text = "ARM")
+plotshape(firstTouch, "First touch consumed", shape.diamond, location.belowbar, color = color.purple, size = size.tiny, text = "1st")
+plotshape(entrySignal and tradeDirection == 1, "Long entry", shape.triangleup, location.belowbar, color = color.blue, size = size.small, text = "Entry L")
+plotshape(entrySignal and tradeDirection == -1, "Short entry", shape.triangledown, location.abovebar, color = color.blue, size = size.small, text = "Entry S")
+plotshape(tpSignal, "TP exit", shape.circle, location.abovebar, color = color.green, size = size.tiny, text = "TP")
+plotshape(slSignal, "SL exit", shape.xcross, location.belowbar, color = color.red, size = size.tiny, text = "SL")
+
+alertcondition(setupSignal, "Holy Grail setup", "聖杯: 最初の押し目候補確定。研究用・発注連携なし。")
+alertcondition(entrySignal, "Holy Grail entry", "聖杯: OHLC模擬Entryを終値時に確認。研究用・発注連携なし。")
+alertcondition(tpSignal, "Holy Grail TP", "聖杯: OHLC模擬TPを終値時に確認。研究用・発注連携なし。")
+alertcondition(slSignal, "Holy Grail SL", "聖杯: OHLC模擬SLを終値時に確認。研究用・発注連携なし。")
+
+var table status = table.new(position.top_right, 1, 5)
+if barstate.islast
+    table.cell(status, 0, 0, "聖杯 Indicator 研究用・不採用 / TV_UNVERIFIED", bgcolor = color.maroon, text_color = color.white)
+    table.cell(status, 0, 1, "EMA20 / ADX14 >30 / first only / 全決済1R\n通常足 H1・H4 / 確定足通知 / 発注連携なし", text_color = color.white, bgcolor = color.new(color.black, 15))
+    table.cell(status, 0, 2, "Indicator: Strategy Tester非対応\nOHLC模擬・同足SL優先 / 期間後も保有決済を継続", text_color = color.yellow, bgcolor = color.new(color.black, 15))
+    table.cell(status, 0, 3, "模擬決済の補助費用後R (保有中は集計外)\n件数 " + str.tostring(accountedTrades) + " / 合計 " + str.tostring(netR, "#.##") + "R\nPF " + (lossR > 0 ? str.tostring(profitR / lossR, "#.###") : "—") + " / 勝率 " + (accountedTrades > 0 ? str.tostring(100.0 * netWins / accountedTrades, "#.##") : "—") + "%", text_color = color.white, bgcolor = color.new(color.black, 15))
+    table.cell(status, 0, 4, "ADX " + str.tostring(adx14, "#.##") + " / " + (direction == 1 ? "上昇" : direction == -1 ? "下降" : "待機") + (spent and direction != 0 ? " / 初回消費済" : "") + "\n" + (active ? "保有中" : pending ? "逆指値候補待機" : orderStatus), text_color = color.white, bgcolor = color.new(color.black, 15))

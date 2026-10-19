@@ -1,0 +1,115 @@
+{
+  "status": "PASS_FOR_DESCRIPTIVE_VIDEO",
+  "verified_at_jst": "2026-10-10T13:43:06.125020+09:00",
+  "scope": "Read-only source, ledger, price, timing and encoded-video checks; no strategy adoption or TradingView verification",
+  "chapters": [
+    {
+      "date": "2023-01-13",
+      "matched_m15_bars": 88,
+      "ytt_entries": 2,
+      "bb_entries": 1
+    },
+    {
+      "date": "2023-01-23",
+      "matched_m15_bars": 94,
+      "ytt_entries": 3,
+      "bb_entries": 1
+    },
+    {
+      "date": "2023-02-01",
+      "matched_m15_bars": 90,
+      "ytt_entries": 6,
+      "bb_entries": 1
+    }
+  ],
+  "input_hashes_match": true,
+  "bb_normal_exit_delay_seconds": 300,
+  "ytt_exit_times_unchanged": true,
+  "gap_exit_boundary_check": "PASS",
+  "actual_panel_boundary_checks": [
+    {
+      "date": "2023-01-13",
+      "now": 1673643299,
+      "closed": false
+    },
+    {
+      "date": "2023-01-13",
+      "now": 1673643300,
+      "closed": true
+    },
+    {
+      "date": "2023-01-23",
+      "now": 1674515399,
+      "closed": false
+    },
+    {
+      "date": "2023-01-23",
+      "now": 1674515400,
+      "closed": true
+    },
+    {
+      "date": "2023-02-01",
+      "now": 1675255199,
+      "closed": false
+    },
+    {
+      "date": "2023-02-01",
+      "now": 1675255200,
+      "closed": true
+    }
+  ],
+  "all_decoded_frames": 1671,
+  "width": 1600,
+  "height": 1000,
+  "fps": 12.0,
+  "duration_seconds": 139.25,
+  "encoded_boundary_source_comparisons": [
+    {
+      "chapter": 2,
+      "source_time": 1674515100,
+      "frame_index": 891,
+      "mean_absolute_rgb_error": 1.724489375
+    },
+    {
+      "chapter": 2,
+      "source_time": 1674515400,
+      "frame_index": 911,
+      "mean_absolute_rgb_error": 1.7392685416666667
+    },
+    {
+      "chapter": 3,
+      "source_time": 1675254900,
+      "frame_index": 1242,
+      "mean_absolute_rgb_error": 1.5395741666666667
+    },
+    {
+      "chapter": 3,
+      "source_time": 1675255200,
+      "frame_index": 1262,
+      "mean_absolute_rgb_error": 1.5533808333333334
+    }
+  ],
+  "sha256": {
+    "scripts\\render_logic_comparison_video.py": "6bb90a7b454c07efe11b5851e7715b6b286bee0d6366ff592d37d178d5219be6",
+    "artifacts\\logic_comparison_20261010\\manifest.json": "bee8dae8ddfa996ca5fd24e1bf6065fb060892f0f6ec8b1348b1d1c90a6e8e42",
+    "artifacts\\logic_comparison_20261010\\ytt_vs_bb3_usdjpy.mp4": "629388aaf5beddbf1ed55c552f1352bab55ada2448be698a95966e3596721f1b",
+    "artifacts\\logic_comparison_20261010\\preview.png": "77cc1ea3dc2697a00ce371b7e278ad5b7458506be27ad5bb59b7da55c02bad3c"
+  },
+  "resolved_findings": [
+    {
+      "severity": "high",
+      "issue": "BB bar-open exit timestamps previously exposed intrabar outcome before closing bar was visible",
+      "resolution": "Stored exit_time preserved; exit_display_time gates status, lines, markers and event holds; executable and encoded boundary checks passed"
+    }
+  ],
+  "remaining_limitations": [
+    "Three preselected shared-entry days only; no profitability inference",
+    "Different original timeframes and costs; no cash-account result",
+    "Source timezone unverified; no intrabar path reconstruction",
+    "Full-day fixed axes use full-day ranges for explanatory comparison"
+  ],
+  "no_api": true,
+  "files_written": [
+    "artifacts/logic_comparison_20261010/verification.json"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "status": "TV_VERIFIED_HISTORY_DISPLAY",
+  "source_sha256": "9702a3ba33134cf29610d4002c9b80275d473d06de946b6baf8f440ac930ec4b",
+  "chart": "FX:USDCHF",
+  "chart_timeframe": "15",
+  "entry_reference": "Previous confirmed chart-bar candidate, next contiguous chart-bar open; not actual fills",
+  "default_keep": 50,
+  "configurable_keep": [
+    10,
+    100
+  ],
+  "simple_mode_history": true,
+  "local_checks": "19 related pytest passed; structural only",
+  "live_checks": [
+    "Saved private script and added to chart without compile error",
+    "Buy Entry reference labels 0.83079 and 0.83151 visually confirmed",
+    "Old instance removed; one updated instance remains",
+    "Layout save clicked; temporary viewport reset"
+  ],
+  "limitations": [
+    "No actual order/position history",
+    "Chart timeframe governs historical entry markers, separate from configurable scanner timeframe",
+    "Preserved within loaded chart history and label platform limits"
+  ],
+  "screenshot": "artifacts/ytt_entry_history_20261010/chart.png"
+}

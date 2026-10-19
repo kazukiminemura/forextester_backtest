@@ -1,5 +1,5 @@
 //@version=6
-indicator("BB ±3σ 文脈フィルター・PFインジケーター", overlay=true, max_labels_count=500)
+indicator("BB ±3σ 文脈フィルター・PFインジケーター", overlay=true, max_labels_count=500, max_lines_count=10)
 
 // User-described proxy, not authenticated WEMOF or broker-emulator results.
 // Fixed-size pips simulation: confirmed signals enter at the next available open.
@@ -8,6 +8,7 @@ int length = input.int(20, "BB期間", minval=2, group=gb)
 float sigma = input.float(3.0, "標準偏差倍率", minval=0.5, step=0.1, group=gb)
 int expiry = input.int(3, "準備の有効本数（タッチの次足から）", minval=1, maxval=20, group=gb)
 bool requireReturn = input.bool(true, "候補化にはバンド内への終値回帰を要求（補助仮定）", group=gb)
+float minCenterPips = input.float(3.0, "候補終値から中央線までの最低幅（pips・コスト控除前）", minval=0, step=0.1, group=gb)
 bool restrictChart = input.bool(true, "5分足に限定（通貨ペア制限なし）", group=gb)
 
 string gu = "銘柄別の価格単位"
@@ -168,7 +169,8 @@ if barstate.isconfirmed
         bool wickBlocked = armed == 1 ? buyWick : sellWick
         reason := manualPause ? "裁量停止" : explained ? "突破の勢い" : wickBlocked ? "長いヒゲ" : expired ? "準備期限切れ" : centerPassed ? "中央線到達済み" : oppositeTouch ? "反対側タッチ" : ""
         if reason == "" and bar_index > armedBar and (not requireReturn or (close > lower and close < upper))
-            signalSide := armed
+            reason := armed * (basis - close) / pipSize + 1e-9 < minCenterPips ? "中央線までの幅不足" : ""
+            signalSide := reason == "" ? armed : 0
         if reason != "" or signalSide != 0
             armed := 0
             armedBar := na
@@ -189,9 +191,9 @@ if barstate.isconfirmed and signalSide != 0
     pendingBar := bar_index
     pendingTarget := basis
 
-plot(barEntry, "仮想Entry価格（コスト控除前）", color=color.white, style=plot.style_linebr)
-plot(barTarget, "当該足の中央線決済価格", color=color.teal, style=plot.style_linebr)
-plot(barStop, "SL価格", color=color.red, style=plot.style_linebr)
+plot(barEntry, "仮想Entry価格（コスト控除前）", color=color.aqua, linewidth=2, style=plot.style_linebr)
+plot(barTarget, "当該足の中央線決済価格", color=color.lime, linewidth=2, style=plot.style_linebr)
+plot(barStop, "SL価格", color=color.red, linewidth=2, style=plot.style_linebr)
 
 plot(basis, "BB中央線：次足以降の決済指値", color=color.orange, linewidth=2)
 u = plot(upper, "+3σ", color=color.new(color.blue, 15))
@@ -214,8 +216,9 @@ tableRow(table panel, int row, string title, string value, color titleColor = co
     table.cell(panel, 0, row, title, text_color=titleColor, bgcolor=color.black)
     table.cell(panel, 1, row, value, text_color=valueColor, bgcolor=color.black)
 
+bool showMainPanel = input.bool(false, "メイン銘柄のPF集計を表示", group="表示")
 var table notice = table.new(position.top_right, 2, 9)
-if barstate.islast
+if barstate.islast and showMainPanel
     tableRow(notice, 0, "仮想集計・裁量未再現", not unitOK ? "FX以外：pip幅を手動設定" : chartOK ? syminfo.ticker + " / " + timeframe.period : "5分足へ変更", color.yellow, color.yellow)
     tableRow(notice, 1, "PF（仮想・コスト控除後）", pfText)
     tableRow(notice, 2, "決済数 / 勝率", str.tostring(closedCount) + " / " + (na(winRate) ? "—" : str.tostring(winRate, "#.##") + "%"))
@@ -229,3 +232,247 @@ if barstate.islast
 alertcondition(signalSide == 1 and barstate.isconfirmed, "買い候補確定", "{{ticker}} BB買い候補。仮想売買では次足始値でエントリー。相場背景を手動確認。")
 alertcondition(signalSide == -1 and barstate.isconfirmed, "売り候補確定", "{{ticker}} BB売り候補。仮想売買では次足始値でエントリー。相場背景を手動確認。")
 alertcondition(exited and barstate.isconfirmed, "仮想決済確定", "{{ticker}} BB仮想決済を足確定時に集計。実注文の約定通知ではありません。")
+
+// Latest trade price guides (display only; historical price plots remain above).
+bool showPriceGuides = input.bool(true, "Entry・利確・損切りの価格ラインを表示", group="表示")
+priceGuide(float price, string title, color ink) =>
+    var line guide = na
+    var label tag = na
+    if barstate.islast
+        if showPriceGuides and not na(price)
+            if na(guide)
+                guide := line.new(bar_index, price, bar_index + 5, price, color=ink, width=2)
+            if na(tag)
+                tag := label.new(bar_index + 5, price, "", style=label.style_label_left, color=ink, textcolor=color.black, size=size.small)
+            line.set_xy1(guide, bar_index, price)
+            line.set_xy2(guide, bar_index + 5, price)
+            line.set_color(guide, ink)
+            label.set_xy(tag, bar_index + 5, price)
+            label.set_color(tag, ink)
+            label.set_text(tag, title + " " + str.tostring(price, format.mintick))
+        else
+            line.delete(guide)
+            label.delete(tag)
+            guide := na
+            tag := na
+    0
+
+// Show this position/order only; never attach a settled trade to a new signal.
+bool guidePending = tradeSide == 0 and pendingSide != 0
+int guideSide = tradeSide != 0 ? tradeSide : pendingSide
+float guideEntry = tradeSide != 0 ? entryPrice : guidePending ? (bar_index > pendingBar ? open : close) : na
+float guideTarget = tradeSide != 0 ? targetPrice : guidePending ? pendingTarget : na
+float guideStop = tradeSide != 0 ? stopPrice : guidePending and useStop ? guideEntry - guideSide * stopTicks * syminfo.mintick : na
+string guidePhase = tradeSide != 0 ? "（仮想保有中）" : guidePending ? (bar_index > pendingBar ? "（仮表示・次足始値）" : "（予定・信号終値基準）") : ""
+string guideDirection = guideSide == 1 ? "BUY " : "SELL "
+bool lossTarget = not na(guideEntry) and guideSide * (guideTarget - guideEntry) <= 0
+priceGuide(guideEntry, guideDirection + "Entry" + guidePhase, color.aqua)
+priceGuide(guideTarget, guideDirection + (lossTarget ? "中央線決済・利益側ではない" : "利確・中央線") + guidePhase, lossTarget ? color.orange : color.lime)
+priceGuide(guideStop, guideDirection + "損切り" + guidePhase, color.red)
+
+// Multi-symbol opportunity scanner
+// Reference-only: the existing chart signals, fills and PF above are unchanged.
+string gs = "チャンス通貨一覧（参考・未検証）"
+bool showScanner = input.bool(true, "通貨一覧を表示", group=gs)
+string scannerPosition = input.string("左下", "一覧の位置", options=["左上", "左下"], group=gs)
+bool scannerAlerts = input.bool(false, "一覧の確定BUY/SELL信号を通知（参考）", group=gs)
+string scan01 = input.symbol("OANDA:USDJPY", "01", group=gs)
+string scan02 = input.symbol("OANDA:EURUSD", "02", group=gs)
+string scan03 = input.symbol("OANDA:GBPUSD", "03", group=gs)
+string scan04 = input.symbol("OANDA:AUDUSD", "04", group=gs)
+string scan05 = input.symbol("OANDA:NZDUSD", "05", group=gs)
+string scan06 = input.symbol("OANDA:USDCAD", "06", group=gs)
+string scan07 = input.symbol("OANDA:USDCHF", "07", group=gs)
+string scan08 = input.symbol("OANDA:EURJPY", "08", group=gs)
+string scan09 = input.symbol("OANDA:GBPJPY", "09", group=gs)
+string scan10 = input.symbol("OANDA:AUDJPY", "10", group=gs)
+string scan11 = input.symbol("OANDA:NZDJPY", "11", group=gs)
+
+// Separate call-site memories in each requested symbol. Never use isconfirmed in security.
+scannerImpulse(bool triggered, float brokenLevel, bool upward, bool sourceGap) =>
+    var int started = na
+    var float level = na
+    if sourceGap or (not na(level) and (upward ? close <= level : close >= level)) or (not na(started) and bar_index - started > impulseBars)
+        started := na
+        level := na
+    if triggered
+        started := bar_index
+        level := brokenLevel
+    not na(started) and bar_index - started <= impulseBars
+
+// Per-symbol preparation, occupancy and closed-trade statistics; no chart drawings or alerts.
+// All returned fields are offset together; current source-bar calculations never escape.
+scannerSnapshot() =>
+    float unit = autoPip ? (syminfo.currency == "JPY" ? 0.01 : 0.0001) : manualPip
+    bool valid = (not autoPip or syminfo.type == "forex") and (not restrictChart or timeframe.in_seconds() == 300)
+    float step = math.max(syminfo.mintick, math.round(roundPips * unit / syminfo.mintick) * syminfo.mintick)
+    float center = ta.sma(close, length)
+    float dev = ta.stdev(close, length, true)
+    float top = center + sigma * dev
+    float bottom = center - sigma * dev
+    float hi = ta.highest(high[1], lookback)
+    float lo = ta.lowest(low[1], lookback)
+    float atr = ta.atr(14)[1]
+    bool strong = ta.tr(true) >= atr * momentum
+    bool sourceGap = not na(time[1]) and time - time[1] > timeframe.in_seconds() * 1000
+    float upLevel = (math.floor(close[1] / step) + 1) * step
+    float downLevel = (math.ceil(close[1] / step) - 1) * step
+    bool highBreak = scannerImpulse(close > hi and strong, hi, true, sourceGap)
+    bool lowBreak = scannerImpulse(close < lo and strong, lo, false, sourceGap)
+    bool upBreak = scannerImpulse(high >= upLevel and close > upLevel and strong, upLevel, true, sourceGap)
+    bool downBreak = scannerImpulse(low <= downLevel and close < downLevel and strong, downLevel, false, sourceGap)
+    bool buyBlocked = (excludeBreak and lowBreak) or (excludeRound and downBreak)
+    bool sellBlocked = (excludeBreak and highBreak) or (excludeRound and upBreak)
+    bool buyTouch = low <= bottom
+    bool sellTouch = high >= top
+    bool badBuyWick = buyTouch and longWick(math.min(open, close) - low)
+    bool badSellWick = sellTouch and longWick(high - math.max(open, close))
+    var int positionSide = 0
+    var float filledEntry = na
+    var int closedTrades = 0
+    var int winningTrades = 0
+    var int queuedSide = 0
+    var int queuedBar = na
+    var float target = na
+    var float stop = na
+    var int preparation = 0
+    var int preparationBar = na
+    bool closed = false
+    if positionSide == 0 and queuedSide != 0 and bar_index > queuedBar
+        positionSide := queuedSide
+        filledEntry := open
+        int ticks = int(math.max(1, math.round(slPips * unit / syminfo.mintick)))
+        stop := useStop ? open - positionSide * ticks * syminfo.mintick : na
+        queuedSide := 0
+        queuedBar := na
+    if positionSide != 0
+        [price, stopped] = exitFill(positionSide, open, high, low, target, stop)
+        if not na(price)
+            closedTrades += 1
+            winningTrades += tradePips(positionSide, filledEntry, price, unit, costPips) > 0 ? 1 : 0
+            filledEntry := na
+            closed := true
+            positionSide := 0
+            target := na
+            stop := na
+        else
+            target := center
+    bool canPrepare = positionSide == 0 and queuedSide == 0 and not closed and valid and not na(dev) and dev > 0 and not na(atr) and not na(hi)
+    int signal = 0
+    string skip = ""
+    if not canPrepare or sourceGap
+        preparation := 0
+        preparationBar := na
+    if canPrepare and preparation != 0
+        bool explained = preparation == 1 ? buyBlocked : sellBlocked
+        bool wick = preparation == 1 ? badBuyWick : badSellWick
+        bool passed = preparation == 1 ? close >= center : close <= center
+        bool opposite = preparation == 1 ? sellTouch : buyTouch
+        skip := manualPause ? "裁量停止" : explained ? "突破の勢い" : wick ? "長いヒゲ" : bar_index - preparationBar > expiry ? "準備期限切れ" : passed ? "中央線到達済み" : opposite ? "反対側タッチ" : ""
+        if skip == "" and bar_index > preparationBar and (not requireReturn or (close > bottom and close < top))
+            skip := preparation * (center - close) / unit + 1e-9 < minCenterPips ? "中央線までの幅不足" : ""
+            signal := skip == "" ? preparation : 0
+        if skip != "" or signal != 0
+            preparation := 0
+            preparationBar := na
+    if canPrepare and preparation == 0 and skip == "" and signal == 0 and (buyTouch or sellTouch)
+        bool both = buyTouch and sellTouch
+        bool explained = buyTouch ? buyBlocked : sellBlocked
+        bool wick = buyTouch ? badBuyWick : badSellWick
+        if both or manualPause or explained or wick
+            skip := both ? "両側タッチ" : manualPause ? "裁量停止" : explained ? "突破の勢い" : "長いヒゲ"
+        else
+            preparation := buyTouch ? 1 : -1
+            preparationBar := bar_index
+    if signal != 0
+        queuedSide := signal
+        queuedBar := bar_index
+        target := center
+    bool dataReady = valid and not na(dev) and not na(atr) and not na(hi)
+    int state = not dataReady ? 5 : signal != 0 ? signal * 3 : positionSide != 0 ? positionSide : preparation != 0 ? preparation * 2 : skip != "" or manualPause ? 4 : 0
+    float distance = math.abs(center - close) / unit
+    [state[1], distance[1], time_close[1], skip[1], winningTrades[1], closedTrades[1]]
+
+scannerName(int state) =>
+    state == 3 ? "BUY信号" : state == -3 ? "SELL信号" : state == 2 ? "買い準備" : state == -2 ? "売り準備" : state == 1 ? "仮想BUY保有" : state == -1 ? "仮想SELL保有" : state == 4 ? "見送り" : state == 5 ? "対象外/計算待ち" : state == 6 ? "データなし" : state == 7 ? "更新待ち（古い）" : "待機"
+
+scannerRank(int state) =>
+    math.abs(state) == 3 ? 0 : math.abs(state) == 2 ? 1 : math.abs(state) == 1 ? 2 : state == 4 ? 3 : state == 0 ? 4 : 5
+
+var table scanner = table.new(scannerPosition == "左上" ? position.top_left : position.bottom_left, 6, 13)
+varip array<int> scannerNotified = array.new_int(11, 0)
+array<string> scannerSymbols = array.from(scan01, scan02, scan03, scan04, scan05, scan06, scan07, scan08, scan09, scan10, scan11)
+array<int> scannerStates = array.new_int(11, 6)
+array<float> scannerDistances = array.new_float(11, na)
+array<int> scannerTimes = array.new_int(11, na)
+array<int> scannerWins = array.new_int(11, na)
+array<int> scannerClosed = array.new_int(11, na)
+array<string> scannerReasons = array.new_string(11, "")
+array<int> scannerOrder = array.new_int()
+string scannerMessage = ""
+if showScanner or scannerAlerts
+    for i = 0 to 10
+        string symbol = array.get(scannerSymbols, i)
+        // Empty inputs use the chart symbol; normalize before checking duplicates.
+        symbol := symbol == "" ? syminfo.tickerid : symbol
+        array.set(scannerSymbols, i, symbol)
+        bool duplicate = array.indexof(scannerSymbols, symbol) < i
+        if not duplicate
+            [state, distance, stamp, skip, wins, trades] = request.security(symbol, timeframe.period, scannerSnapshot(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on, ignore_invalid_symbol=true)
+            bool stale = not na(stamp) and (timenow - stamp > timeframe.in_seconds() * 2000 or stamp > timenow)
+            state := na(state) or na(stamp) ? 6 : stale ? 7 : state
+            array.set(scannerStates, i, state)
+            array.set(scannerDistances, i, distance)
+            array.set(scannerTimes, i, stamp)
+            array.set(scannerWins, i, wins)
+            array.set(scannerClosed, i, trades)
+            array.set(scannerReasons, i, skip)
+            array.push(scannerOrder, i)
+            bool seed = barstate.isrealtime and not na(stamp) and array.get(scannerNotified, i) == 0
+            if seed
+                array.set(scannerNotified, i, stamp)
+            if scannerAlerts and barstate.isrealtime and not seed and math.abs(state) == 3 and stamp != array.get(scannerNotified, i)
+                scannerMessage += symbol + " " + scannerName(state) + " / 中央線まで " + str.tostring(distance, "#.##") + " pips / " + str.format_time(stamp, "MM-dd HH:mm", "Asia/Tokyo") + " JST\n"
+                array.set(scannerNotified, i, stamp)
+if scannerMessage != ""
+    alert("BB参考信号・実注文なし\n" + scannerMessage, alert.freq_all)
+if barstate.islast
+    table.clear(scanner, 0, 0, 5, 12)
+    if showScanner
+        // Stable insertion sort keeps input order within each opportunity class.
+        int count = array.size(scannerOrder)
+        if count > 1
+            for i = 1 to count - 1
+                int item = array.get(scannerOrder, i)
+                int j = i - 1
+                while j >= 0
+                    if scannerRank(array.get(scannerStates, array.get(scannerOrder, j))) <= scannerRank(array.get(scannerStates, item))
+                        break
+                    array.set(scannerOrder, j + 1, array.get(scannerOrder, j))
+                    j -= 1
+                array.set(scannerOrder, j + 1, item)
+        table.cell(scanner, 0, 0, "参考・未検証", text_color=color.yellow, bgcolor=color.black, text_size=size.small)
+        table.cell(scanner, 1, 0, restrictChart and timeframe.in_seconds() != 300 ? "5分足へ変更" : "確定足 / " + timeframe.period, text_color=color.yellow, bgcolor=color.black, text_size=size.small)
+        table.cell(scanner, 2, 0, "信号≠約定", text_color=color.yellow, bgcolor=color.black, text_size=size.small)
+        table.cell(scanner, 3, 0, "次足更新時 / 停止中は更新なし", text_color=color.yellow, bgcolor=color.black, text_size=size.small, tooltip="現在時刻を基準に2本超の古いデータを除外。休場中は次のチャート更新まで表示も停止します。リプレイの過去足はチャンス通知対象外です。")
+        table.cell(scanner, 4, 0, "仮想・コスト控除後", text_color=color.yellow, bgcolor=color.black, text_size=size.small)
+        table.cell(scanner, 5, 0, "読込済み履歴", text_color=color.yellow, bgcolor=color.black, text_size=size.small)
+        array<string> headers = array.from("通貨（配信元）", "状態", "中央線幅 pips", "確認足終値 JST", "勝率", "決済数")
+        for col = 0 to 5
+            table.cell(scanner, col, 1, array.get(headers, col), text_color=color.white, bgcolor=color.gray, text_size=size.small)
+        for row = 0 to count - 1
+            int i = array.get(scannerOrder, row)
+            int state = array.get(scannerStates, i)
+            int stamp = array.get(scannerTimes, i)
+            int trades = array.get(scannerClosed, i)
+            int wins = array.get(scannerWins, i)
+            bool statsReady = not na(stamp) and state != 5 and state != 6 and not na(trades)
+            string rate = statsReady and trades > 0 ? str.tostring(100.0 * wins / trades, "#.##") + "%" : "—"
+            color ink = math.abs(state) == 3 ? color.white : math.abs(state) == 2 ? color.yellow : color.silver
+            color bg = state == 3 ? color.new(color.teal, 15) : state == -3 ? color.new(color.red, 15) : color.new(color.black, 15)
+            table.cell(scanner, 0, row + 2, array.get(scannerSymbols, i), text_color=ink, bgcolor=bg, text_size=size.small)
+            table.cell(scanner, 1, row + 2, scannerName(state), text_color=ink, bgcolor=bg, text_size=size.small, tooltip=state == 4 ? array.get(scannerReasons, i) : "直前確定足の状態。準備はエントリーではありません。保有は仮想記録です。")
+            table.cell(scanner, 2, row + 2, state >= 5 ? "—" : str.tostring(array.get(scannerDistances, i), "#.##"), text_color=ink, bgcolor=bg, text_size=size.small, tooltip="確定終値と中央線の絶対距離・コスト控除前。約定時の利幅ではありません。")
+            table.cell(scanner, 3, row + 2, na(stamp) ? "—" : str.format_time(stamp, "MM-dd HH:mm", "Asia/Tokyo"), text_color=ink, bgcolor=bg, text_size=size.small)
+            table.cell(scanner, 4, row + 2, rate, text_color=ink, bgcolor=bg, text_size=size.small, tooltip="確認足時点の仮想集計。往復コスト控除後の損益が正の決済数 ÷ 全決済数。未決済は除外。将来の成功確率ではありません。")
+            table.cell(scanner, 5, row + 2, statsReady ? str.tostring(trades) : "—", text_color=ink, bgcolor=bg, text_size=size.small, tooltip="各通貨の読込済み履歴のみ。期間は配信元・履歴量に依存し、全通貨に同じコスト設定を使用します。更新待ちの行は表示時刻までの過去集計です。")

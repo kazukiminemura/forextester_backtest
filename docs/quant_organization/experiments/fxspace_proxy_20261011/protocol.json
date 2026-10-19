@@ -1,0 +1,147 @@
+{
+  "experiment_id": "fxspace_proxy_20261011",
+  "status": "SPEC_FROZEN",
+  "hypothesis": "hypothesis.md: H1/M15 horizontal scenario; M5 reversal then pullback",
+  "baseline": {
+    "pullback": "direct"
+  },
+  "history_directory": "C:\\ForexTester6\\data\\History",
+  "data_manifest": "data.md",
+  "cache_directory": "agent_runs/fxspace_proxy_20261011",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "GBPUSD"
+  ],
+  "entry_timeframe": 300,
+  "higher_timeframe_rules": "H1/M15 confirmed 2-left/2-right HH-HL or LH-LL; see hypothesis.md",
+  "entry_rules": "Frozen support SL and nearest obstacle TP; M5 reversal then first two-counter-candle recovery; next contiguous actual open, minimum gross RR 1.5/2 and normal cost/risk<=0.20",
+  "exit_rules": {
+    "full_exit": true,
+    "target": "fixed nearest M15/H1 obstacle minus entry-side offset",
+    "minimum_reward_risk_ratios": [
+      1.5,
+      2
+    ],
+    "max_execution_bars": 48,
+    "daily_clear_source": "23:55 bar close; no entry at 23:55 open",
+    "ambiguous_bar": "SL first",
+    "gap": "adverse observed open; favorable capped TP"
+  },
+  "periods": {
+    "training": [
+      "2020-01-01",
+      "2023-01-01"
+    ],
+    "validation": [
+      "2023-01-01",
+      "2025-01-01"
+    ],
+    "final_confirmation": [
+      "2025-01-01",
+      "2026-01-01"
+    ],
+    "continuous_diagnostic": [
+      "2020-01-01",
+      "2026-01-01"
+    ]
+  },
+  "final_period_prior_exposure": "all periods repeatedly viewed; no pristine holdout",
+  "candidate_budget": 2,
+  "control_budget": 2,
+  "search_space": [
+    {
+      "arm": "pullback",
+      "rr": 1.5
+    },
+    {
+      "arm": "pullback",
+      "rr": 2
+    }
+  ],
+  "controls": [
+    "direct"
+  ],
+  "parameters": {
+    "pivot_left": 2,
+    "pivot_right": 2,
+    "atr_bars": 20,
+    "band_atr": 0.1,
+    "line_expiry_calendar_days": 8,
+    "line_capacity_per_side_timeframe": 64,
+    "scenario_expiry_m5": 24,
+    "post_reversal_expiry_m5": 12,
+    "counter_candles": 2,
+    "max_cost_over_risk": 0.2,
+    "no_channel_or_early_entry": true
+  },
+  "cost_and_fill_model": {
+    "round_trip_pips": {
+      "USDJPY": 1.6,
+      "EURUSD": 1.5,
+      "GBPUSD": 1.8
+    },
+    "pip": {
+      "USDJPY": 0.01,
+      "EURUSD": 0.0001,
+      "GBPUSD": 0.0001
+    },
+    "tick": {
+      "USDJPY": 0.001,
+      "EURUSD": 1e-05,
+      "GBPUSD": 1e-05
+    },
+    "cost_multipliers": [
+      1,
+      2
+    ],
+    "commission": 0,
+    "swap": "not included; broker rollover clock unverified",
+    "bid_ask_replay": false
+  },
+  "position_sizing_and_currency": {
+    "account_symbol": "USDJPY",
+    "initial_yen": 1000000,
+    "stop_equity_yen": 900000,
+    "risk_fraction": 0.005,
+    "quantity_step": 1000,
+    "notional_leverage_cap": 25,
+    "resets_within_phase": false,
+    "phase_restart": "standalone diagnostics only; continuous_diagnostic after final pass never resets 2020-2025",
+    "other_symbols": "R-unit diagnostic only",
+    "aggregate_accounts": false
+  },
+  "acceptance_gates": {
+    "aggregate_trades_min": 200,
+    "per_symbol_trades_min": 50,
+    "normal_pf_min": 1.15,
+    "normal_mean_net_r_positive": true,
+    "stress_pf_strict_min": 1.0,
+    "stress_mean_net_r_positive": true,
+    "profitable_symbols_min": 2,
+    "max_positive_symbol_contribution": 0.7,
+    "all_pass_disposition": "NEEDS_EVIDENCE, never automatic adoption",
+    "no_normal_usdjpy_halt": true,
+    "normal_mean_net_r_strictly_above_same_rr_control": true
+  },
+  "cross_symbol_rule": "all three predetermined symbols; pooled equal-risk trades are descriptive, not portfolio returns",
+  "phase_rule": "training first; maximum one pullback candidate after independent approval; validation then final; failure stops; continuous_diagnostic only after final passes",
+  "code_identifier": "scripts/research_fxspace_proxy_20261011.py; tests and reused fill/metrics modules frozen before results",
+  "frozen_at": "2026-10-11T11:03:48.164983+00:00",
+  "live_trading_authorized": false,
+  "hypothesis_budget": 1,
+  "selection_rule": "At most one of two pullback candidates by normal PF, mean netR, trades descending, RR ascending; direct controls never selected; failure stops without retune",
+  "phase_boundary": "Fresh scenarios/used supports/positions at phase start; indicators warmup allowed; no pre-phase signals; phase account resets are standalone diagnostics, never within phase",
+  "input_sha256": {
+    "USDJPY": "76274aed9f0dc45c8d743e21f1678ba4ca98d37bcc3af6e947f99f1e2e795a58",
+    "EURUSD": "28037e993217cd35e9576eeb04e844100ae3d05b53d559a713c0306d05fd5703",
+    "GBPUSD": "861656a577d392e6e14f1ab00bf6752cc2a3103177b00d7ae0da9afaf1f1f5b7"
+  },
+  "frozen_file_sha256": {
+    "docs/quant_organization/experiments/fxspace_proxy_20261011/hypothesis.md": "fdc2844054eb05b647167472269c1e4305a195b5f21feb2d41436de8c79aa6d0",
+    "scripts/research_fxspace_proxy_20261011.py": "87bfc2c5f60fbd72c328403021bfdcf4d113f6feb9307e0ec72870067fb0ea61",
+    "tests/test_fxspace_proxy_20261011.py": "9c5633ba7c7be6abd9e4e023e3579477714b8a2bd0b462a6d2dd2a1df6ac0c70",
+    "scripts/research_new_logic_20261011.py": "1dfe24026447b6a9131f7e83a1620965149ffdba4889886560b0abfcc99d9c5a",
+    "scripts/research_ytt_profit_feasibility.py": "7d47206b4d2ec522559ab919774236b1a3090a7f27cf7ffda731db7af122667a"
+  }
+}

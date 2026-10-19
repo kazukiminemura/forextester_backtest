@@ -1,0 +1,8 @@
+// Append only for UI smoke testing, then restore the production script.
+if barstate.isfirst
+    bool bandSmoke = f_bandStatus(1, 1000, 1000, 1000, 5000, 100, 101, 100.5, 100.5) == 0 and f_bandStatus(3, 1000, 1000, 1000, 5000, 100, 101, 100.5, 100.5) == 1 and f_bandStatus(4, 1000, 1000, 5999, 5000, 99, 100, 99.5, 99.5) == 1
+    bandSmoke := bandSmoke and f_bandStatus(3, 1000, 1000, 6000, 5000, 100, 101, 100.5, 100.5) == 2 and f_bandStatus(3, 1000, 1000, 1000, 5000, 100, 101, 102, 100.5) == 3
+    bandSmoke := bandSmoke and f_bandStatus(3, 1000, 1000, 1000, 5000, 100, 101, 100.5, 100) == 3 and f_bandStatus(4, 1000, 1000, 1000, 5000, 99, 100, 99.5, 100) == 3
+    bandSmoke := bandSmoke and f_bandStatus(3, 1000, 2000, 1000, 5000, 100, 101, 100.5, 100.5) == 4 and f_bandStatus(3, 1000, 1000, 999, 5000, 100, 101, 100.5, 100.5) == 4 and f_bandStatus(6, 1000, 1000, 1000, 5000, 100, 101, 100.5, 100.5) == 4
+    if not bandSmoke
+        runtime.error("Entry-band boundary smoke failed")

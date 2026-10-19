@@ -1,0 +1,129 @@
+//@version=6
+// RESEARCH DRAFT ONLY / NOT ADOPTED / TV_UNVERIFIED.
+// Frozen source: scripts/research_tamukai_stocks_jev.py candidate_signals(..., "no_dow").
+// User-requested reference port, NOT a promotion of the rejected research candidate.
+// No alerts or external order-routing integration. See docs/tamukai_stocks_no_dow_pine.md.
+strategy("日本株 no_dow 押し目 RR1 [研究下書き / TV_UNVERIFIED]", overlay = true,
+     initial_capital = 100000, currency = currency.JPY, pyramiding = 0,
+     default_qty_type = strategy.percent_of_equity, default_qty_value = 100 / 1.001,
+     commission_type = strategy.commission.percent, commission_value = 0.1,
+     slippage = 0, margin_long = 100, margin_short = 100,
+     calc_on_order_fills = true, calc_on_every_tick = false,
+     process_orders_on_close = false, use_bar_magnifier = false,
+     max_lines_count = 500, max_labels_count = 500)
+
+int startTime = input.time(timestamp("01 Jan 2017 00:00 +0900"), "新規シグナル開始 (JST)")
+int endTime = input.time(timestamp("01 Jan 2099 00:00 +0900"), "新規シグナル終了・未満 (JST)")
+if not timeframe.isdaily or timeframe.multiplier != 1 or not chart.is_standard
+    runtime.error("標準ローソク足の1日足で使用してください。")
+if startTime >= endTime
+    runtime.error("開始日時は終了日時より前にしてください。")
+
+float sma21 = ta.sma(close, 21)
+float priorHigh = ta.highest(high[1], 3)
+float priorLow = ta.lowest(low[1], 3)
+bool touched = low[1] <= sma21[1] or low[2] <= sma21[2] or low[3] <= sma21[3]
+bool setup = bar_index >= 23 and close > sma21 and sma21 > sma21[2] and touched and close > priorHigh
+
+// Historical fill callbacks also report barstate.isconfirmed: that alone is NOT
+// a close-only guard. Track actual fills with rollback-safe primitive state.
+varip float seenPosition = 0.0
+varip int seenClosed = 0
+bool fillExecution = strategy.position_size != seenPosition or strategy.closedtrades != seenClosed
+seenPosition := strategy.position_size
+seenClosed := strategy.closedtrades
+varip int lastDecisionBar = -1
+varip bool pending = false
+varip int pendingBar = -1
+varip float stopPrice = na
+varip float entryPrice = na
+varip float targetPrice = na
+varip int invalidGaps = 0
+varip array<float> tradeStops = array.new<float>()
+
+// This callback reads only the actual fill and the stop frozen at signal close.
+// No current-bar high/low/close is used to place or revise a trade here.
+if strategy.position_size > 0 and na(entryPrice)
+    pending := false
+    entryPrice := strategy.position_avg_price
+    targetPrice := entryPrice + (entryPrice - stopPrice)
+    array.push(tradeStops, stopPrice)
+    if entryPrice <= stopPrice
+        // Python skips this entry. A submitted TV market order has already filled.
+        // Flatten the invalid trade, count it, and never pretend this was a skip.
+        invalidGaps += 1
+        strategy.close("Long", comment = "INVALID GAP: Python skips", immediately = true, disable_alert = true)
+
+if strategy.position_size > 0 and entryPrice > stopPrice
+    strategy.exit("RR1", from_entry = "Long", stop = stopPrice, limit = targetPrice,
+         qty_percent = 100, comment_profit = "TP 1R", comment_loss = "SL", disable_alert = true)
+
+if strategy.position_size == 0 and not na(entryPrice)
+    entryPrice := na
+    targetPrice := na
+
+bool closedDecision = barstate.isconfirmed and not fillExecution and lastDecisionBar != bar_index
+bool submitted = false
+if closedDecision
+    lastDecisionBar := bar_index
+    // A market entry should fill at the next open. If the emulator rejects it
+    // (e.g. insufficient capital / quantity), do not leave stale pending state.
+    if pending and bar_index > pendingBar
+        strategy.cancel("Long")
+        pending := false
+    if strategy.position_size == 0 and not pending and time >= startTime and time < endTime and setup
+        stopPrice := priorLow
+        pending := true
+        pendingBar := bar_index
+        submitted := true
+        strategy.entry("Long", strategy.long, comment = "翌始値 Entry", disable_alert = true)
+
+plot(sma21, "SMA21", color = color.orange, linewidth = 2)
+plotshape(submitted, title = "確定シグナル", text = "BUY\n翌始値", style = shape.labelup,
+     location = location.belowbar, color = color.blue, textcolor = color.white, size = size.tiny)
+plot(strategy.position_size > 0 ? entryPrice : na, "Entry price", color.blue, style = plot.style_linebr)
+plot(strategy.position_size > 0 and entryPrice > stopPrice ? targetPrice : na, "TP price", color.green, style = plot.style_linebr)
+plot(strategy.position_size > 0 ? stopPrice : na, "SL price", color.red, style = plot.style_linebr)
+plot(pending ? stopPrice : na, "Pending frozen SL", color.new(color.red, 40), style = plot.style_circles)
+
+drawLevel(int firstBar, int lastBar, float price, string name, color ink, string pattern) =>
+    line.new(firstBar, price, math.max(firstBar + 1, lastBar), price, color = ink, style = pattern)
+    label.new(firstBar, price, name + " " + str.tostring(price, format.mintick),
+         style = label.style_label_left, color = color.new(ink, 15), textcolor = color.white, size = size.tiny)
+
+// Draw completed trades at the next ordinary close execution, not a fill callback:
+// this avoids losing same-day entry/exit annotations to realtime rollback.
+var int drawnTrades = 0
+if closedDecision and strategy.closedtrades > drawnTrades
+    for number = drawnTrades to strategy.closedtrades - 1
+        int firstBar = strategy.closedtrades.entry_bar_index(number)
+        int lastBar = strategy.closedtrades.exit_bar_index(number)
+        float entry = strategy.closedtrades.entry_price(number)
+        float stop = array.get(tradeStops, number)
+        drawLevel(firstBar, lastBar, entry, "Entry", color.blue, line.style_solid)
+        drawLevel(firstBar, lastBar, stop, "SL", color.red, line.style_dashed)
+        if entry > stop
+            drawLevel(firstBar, lastBar, entry + (entry - stop), "TP 1R", color.green, line.style_dotted)
+        else
+            label.new(firstBar, entry, "INVALID GAP\nPythonでは取引なし", style = label.style_label_down,
+                 color = color.orange, textcolor = color.black, size = size.tiny)
+    drawnTrades := strategy.closedtrades
+
+// Current-position labels are recreated after rollback; historical drawings above remain.
+var label activeEntry = na
+var label activeStop = na
+var label activeTarget = na
+if barstate.islast
+    label.delete(activeEntry)
+    label.delete(activeStop)
+    label.delete(activeTarget)
+    if strategy.position_size > 0
+        activeEntry := label.new(bar_index, entryPrice, "Entry " + str.tostring(entryPrice, format.mintick), color = color.blue, textcolor = color.white, style = label.style_label_left)
+        activeStop := label.new(bar_index, stopPrice, "SL " + str.tostring(stopPrice, format.mintick), color = color.red, textcolor = color.white, style = label.style_label_left)
+        if entryPrice > stopPrice
+            activeTarget := label.new(bar_index, targetPrice, "TP 1R " + str.tostring(targetPrice, format.mintick), color = color.green, textcolor = color.white, style = label.style_label_left)
+
+var table status = table.new(position.top_right, 1, 2)
+if barstate.islast
+    table.cell(status, 0, 0, "研究下書き・採用不合格\nTV_UNVERIFIED", text_color = color.white, bgcolor = color.new(color.red, 25))
+    table.cell(status, 0, 1, "Pythonと異なる始値<=SL: " + str.tostring(invalidGaps) + "件\n1銘柄・1日足 / 片道0.1%", bgcolor = color.new(color.gray, 80))

@@ -67,6 +67,9 @@ def test_unconfirmed_touch_waits_for_stop_first_accounting():
     assert trade.exitReason == "SL" and trade.lossesR == 1
     observe(trade, 9, 100, 104, 98, True, 0)
     assert trade.count == 1 and trade.exitReason == ""
+    assert trade.stopLossCount == 1 and trade.stopLossR == 1
+    assert trade.timeLossCount == 0
+    assert is_na(trade.exitR)
 
 
 def test_deadline_uses_open_even_before_bar_is_confirmed():
@@ -131,3 +134,6 @@ def test_missing_deadline_bar_records_late_exit_and_keeps_loss_costs():
     observe(trade, 32, 100, 100, 100, False, .376)
     assert trade.late == 1 and trade.count == 1
     assert trade.wins == 0 and trade.lossesR > 0
+    assert trade.timeLossCount == 1
+    assert trade.timeLossR == pytest.approx(trade.lossesR)
+    assert trade.stopLossCount == 0

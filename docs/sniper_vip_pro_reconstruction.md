@@ -128,6 +128,8 @@ python scripts/research_sniper_timeframes.py
 
 ## デイトレードの改善検証
 
+[負けトレードの分析と対策検証](sniper_loss_analysis.md)：元の15分足の負けを分類し、1時間足のコスト込み執行条件で入口27条件・紫色限定・TP1防御3方式を比較した。各期間で一貫した改善を確認できなかったため、標準のPine売買条件は変更していない。
+
 勝率約70%を目標に、5分〜1時間足で324通りの条件を検証した。次足の約定、スプレッド、スリッページ、4時間決済を加えた評価では採用基準に届かなかったため、Pineの売買条件は変更していない。
 
 [改善検証の結果](sniper_daytrade_results.md) / [検証条件](sniper_daytrade_protocol.md)

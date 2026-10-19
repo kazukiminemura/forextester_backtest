@@ -1,0 +1,32 @@
+{
+  "experiment_id": "bb_alternatives_20260925",
+  "status": "SPEC_FROZEN",
+  "hypothesis": "Two fixed alternatives: BB2 close reentry tests exhaustion without late confirmation; W/M tests weakening of a second price extreme before neckline breakout. Neither is assumed profitable.",
+  "baseline": "Unchanged original BB3 reversal engine, next contiguous open, fixed signal-center TP and symmetric RR1 SL",
+  "history_directory": "C:/ForexTester6/data/History",
+  "data_manifest": "agent_runs/bb3_gmo_2023_2025/data_manifest.json",
+  "symbols": ["USDJPY", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "AUDJPY", "NZDJPY"],
+  "entry_timeframe": "M5",
+  "higher_timeframe_rules": "None",
+  "indicator": "SMA20 and population standard deviation20 of close, includes current closed bar; +/-2sigma recomputed from cached OHLC. Require 20 observations. Original baseline uses original cached features unchanged.",
+  "entry_rules": {
+    "bb2_reentry": "Buy previous close strictly below its lower2band then current close strictly between its current lower2/upper2 bands; sell mirrors above upper2band. Bars must be contiguous. No candle direction or other filter. Next contiguous open, fixed tick-rounded signal center target, actual reward>=3pips.",
+    "wm": "Separate buy/sell states. Strict close local pivot left2/right2, unique versus all4 neighbors, known at pivot+2 close. First pivot close outside corresponding2band. Second pivot close strictly lower(buy)/higher(sell) than first but inside BOTH current2bands. At least one intervening close reaches own SMA20 in rebound direction. Neckline maxhigh/minlow of strictly intervening bars. Second-pivot confirmation close or subsequent close must strictly break neckline. Entry nextcontiguousopen. Expire when currentindex-firstpivotindex>60. Any low/high after secondpivot breaches secondpivot candlelow/high cancels BEFORE breakout, including confirmationbars and breakoutbar. First breakout consumes pattern even if fill fails. A newer outside qualifying firstpivot replaces earlier first only if no validsecond forms. Opposite simultaneous signals skipped and both consumed. Gap resets states and pivotwindow. No extra trend/candle conditions.",
+    "warmup": "Candidates generated over full cached warmup history beginning2022-12. Prior-year setup may produce a currentyear signal. Independent annual books start flat and do not carry prior-year pending orders or positions; continuous3year book separate.",
+    "execution": "Oneposition/pair; signals while occupied ignored, notqueued. Buy andsell mirrored. All inputs available at signalclose except actualnextopen used only by execution fill pricing. No Jev or AI data in trade path."
+  },
+  "exit_rules": {"reward_risk_ratio": 1.0, "full_exit": true, "bb2_reentry": "Signalcenter tickrounded fixedTP, stop=2entry-target", "wm": "Fixedstop secondpivot low minus1tick(buy), high plus1tick(sell), outward tickrounded. Actualentry risk>=3pips; TP=2entry-stop; no center exit. All exits full; no timeexit, breakeven or trailing."},
+  "periods": {"training": "2023", "validation": "2024", "final_confirmation": "2025", "boundary": "Independent flat annual books with year-end open MTM, plus separate2023-2025continuousbook"},
+  "final_period_prior_exposure": "All3years repeatedly explored. Descriptive reused-data study, not virgin holdout. No result-driven changes or selection.",
+  "candidate_budget": 2,
+  "search_space": "Exactly2 new alternatives and1 originalRR1baseline; costs1.0/1.2;7pairs;4books=168simulations. One boundedpass, no threshold search.",
+  "cost_and_fill_model": "Hypothetical combinedroundtrip1pip plusstress1.2pip, NOT historical GMOspreads. ChartOHLC notbidask. Gaps exitatopen; samebar SLfirst. No extra swap or slippage beyond combinedcost. Pending entry requires exactly300seconds nextbar. Openpositions markedtobarclose with fullcost charged once in equity.",
+  "position_sizing_and_currency": "Equal initial riskR pertrade, max1position/pair. CombinedportfolioMTM uses lastavailable pairclose nofutureinterpolation. DD is barclose notintrabar. Pips are equalpip descriptive score, not accountcurrency.",
+  "acceptance_gates": "Each alternative BOTH2024and2025: >=100closed, RPF>=1.2, averageR>0, stressnetPlusOpenR>0, >=4of7pairspositive netPlusOpenR. Its3yearcontinuous combinedMTMDD<=1.2originalbaselineDD. Completeness and independent replay required. Numericalpass only permits futureforwardtest, no selfadoption.",
+  "cross_symbol_rule": "All7pairs disclosed;4of7positive in each evaluationyear",
+  "code_identifier": "run_manifest.json hashes frozenprotocol,runner,originalengine,sharedaggregation,sourcecache,Pine before outcomes",
+  "frozen_at": "2026-09-25 before historical alternative profitability computation; main confirmed exact pattern ambiguities",
+  "sources": ["https://bollingerbands.us/help-screening.php", "https://www.bollingerbands.com/bollinger-band-rules"],
+  "source_limit": "Public screening descriptions inspire these explicitly mechanical research adaptations; not claimed official complete trade specifications.",
+  "live_trading_authorized": false
+}

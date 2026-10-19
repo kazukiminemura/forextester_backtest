@@ -1,0 +1,17 @@
+{
+  "source_sha256": "82e483ac065982a356f8e7c2c69f3dc3c6ac7d09c243aac899e55ecff9cf6f13",
+  "timeframe": "15m",
+  "execution": "Original Pine signal-close reference, no costs, no time exit",
+  "counts": {
+    "signals": 145937,
+    "win": 47066,
+    "loss": 98866,
+    "tp1_won_on_prior_bar": 37556,
+    "pending": 5
+  },
+  "loss_duration": {
+    "within1h": 40279,
+    "over4h": 20650,
+    "1to4h": 37937
+  }
+}

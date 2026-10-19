@@ -1,0 +1,88 @@
+{
+  "experiment_id": "bb3_context_dinapoli_deceleration_20260910",
+  "status": "SPEC_FROZEN_BEFORE_OUTCOMES",
+  "frozen_at": "2026-09-10_before_first_deceleration_execution",
+  "hypothesis": "hypothesis.md",
+  "baseline": "current Pine minCenterPips3, no DMA, no stop, moving SMA20 full exit",
+  "pine_source": "scripts/tradingview/bb3_context_pf_indicator.pine",
+  "dma_definition": "DMA[i]=mean(close[i-5:i-2]), Python exclusive upper bound; Pine ta.sma(close,3)[3]. First finite index5. DMAprev=i-1, no future prices",
+  "definition_source": "https://www.luxalgo.com/library/indicator/displaced-ma/",
+  "history_directory": "C:\\ForexTester6\\data\\History",
+  "data_manifest": "agent_runs/bb3_context_timing_20260909/completed/data_manifest.json",
+  "data_inputs": "recheck raw Bars.dat stats, cache/manifest hashes, truncate ALL symbols before 2026-08-31 before features used in simulation; no source mutation",
+  "data_quality_scope": "known GBPJPY 2026-08-31 source price-scale anomaly and all subsequent bars excluded by common end boundary, not corrected",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "GBPUSD",
+    "AUDUSD",
+    "NZDUSD",
+    "USDCHF",
+    "USDCAD",
+    "EURJPY",
+    "GBPJPY"
+  ],
+  "entry_timeframe": "5m",
+  "higher_timeframe_rules": "none",
+  "entry_rules": "existing confirmed BB20 population3sigma preparation, expiry3, return inside bands, impulse/wick exclusions, min center3pips +1e-9pips tolerance. Then DMA gate on first eligible candidate only; if false cancel preparation and do not rearm samebar. Successful signal enters next available open including gaps",
+  "exit_rules": {
+    "reward_risk_ratio": "user existing dynamic centralSMA full exit, not fixed RR",
+    "full_exit": true,
+    "stop": "disabled",
+    "target_update": "after current-bar fill evaluation, next bar uses newly confirmed SMA20"
+  },
+  "periods": {
+    "segment1": [
+      "2023-09-08",
+      "2024-09-08"
+    ],
+    "segment2": [
+      "2024-09-08",
+      "2025-09-08"
+    ],
+    "segment3_partial": [
+      "2025-09-08",
+      "2026-08-31"
+    ],
+    "continuous": [
+      "2023-09-08",
+      "2026-08-31"
+    ]
+  },
+  "period_semantics": "inclusive start/exclusive end; independent flat segmented portfolios and separate continuous; no forced end exit in PF; cost-adjusted open mark separately reported",
+  "prior_exposure": "all periods previously viewed, NOT untouched holdout",
+  "candidate_budget": 3,
+  "search_space": [
+    {
+      "id": "baseline",
+      "dma_mode": 0
+    },
+    {
+      "id": "deceleration",
+      "dma_mode": 1
+    },
+    {
+      "id": "no_adverse_acceleration",
+      "dma_mode": 2
+    }
+  ],
+  "mode_definitions": {
+    "0": "no DMA filter",
+    "1": "side*((DMA[i]-DMA[i-1])-(DMA[i-1]-DMA[i-2]))>0",
+    "2": "side*(DMA[i]-DMA[i-1])>=0 OR mode1"
+  },
+  "cost_and_fill_model": "fixed1.4 and metadata spread/pip+0.2 pips; raw OHLC and one full cost at exit; no swaps/variable spreads/liquidity/margin; no fake monetary win relabeling",
+  "position_sizing_and_currency": "one fixed-unit position per symbol; equal-pip research score NOT account-currency money",
+  "training_improvement_gates": "BOTH costs, segment1: aggregate winrate strictly higher; PF and average net not lower (numerical tolerance1e-12 for ratios,1e-9pips for average); trades>=30 and >=25% baseline; at least6/9 pairs strictly higher winrate with nonzero counts",
+  "training_selection": "eligible DMA candidates ranked by minimum across cost cases of aggregate winrate uplift descending, then minimum PF uplift descending, then ID ascending; one selected maximum; save selection BEFORE later simulations; no fallback",
+  "evaluation_access": "All three segment1; only baseline + preselected candidate later; no selected => baseline-only later; no fallback.",
+  "later_improvement_gates": "selected must meet same BOTH-cost winrate/PF/mean/sample-retention/6-pair gates in segment2, segment3_partial and continuous; count>=30 each segment, >=100 continuous, and >=25% matching baseline count everywhere",
+  "profit_requirement": "separate from winrate improvement, clarified BEFORE outcomes: all evaluated segments and continuous closed net>0 AND net+open>0 in BOTH costs are necessary for future adoption consideration, not automatic live approval",
+  "report_fields": "pair/period/cost trades wins winrate PF mean net closed/open/net+open, individual MTM/realized DD, baseline deltas, distance and DMA cancellations, complete improvement checks",
+  "cross_symbol_rule": "same single filter across nine; no winning-symbol postselection",
+  "code_identifier": "save hashes of current Pine, source, old baseline, protocol, manifest and safe-prefix inputs before outcomes",
+  "stop_rule": "Exactly three cases, no additional thresholds, candidates or post-result tuning.",
+  "live_trading_authorized": false,
+  "numeric_boundary": "Raw IEEE64 strict >0 acceleration and inclusive >=0 velocity; no epsilon threshold or smoothing. All three DMA observations must be finite for either nonbaseline mode; first fully defined at index7. Explicit difference-of-differences evaluation order.",
+  "hypothesis_basis": "Separate bounded hypothesis after failed immediate-side and waiting families: directionally favorable acceleration may detect weakening adverse momentum without entry delay. No claim that the original DiNapoli system uses this added filter."
+}

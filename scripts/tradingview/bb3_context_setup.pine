@@ -1,0 +1,144 @@
+//@version=6
+indicator("BB ±3σ 準備・見送り・裁量候補", overlay=true, max_labels_count=200)
+
+// User-described model, not an authenticated implementation of WEMOF.
+// No orders, news feed, automatic discretionary judgement, or performance claims.
+string gb = "BBと候補化"
+int length = input.int(20, "BB期間", minval=2, group=gb)
+float sigma = input.float(3.0, "標準偏差倍率", minval=0.5, step=0.1, group=gb)
+int expiry = input.int(3, "準備の有効本数（タッチの次足から）", minval=1, maxval=20, group=gb)
+bool requireReturn = input.bool(true, "候補化にはバンド内への終値回帰を要求（補助仮定）", group=gb)
+bool restrictChart = input.bool(true, "USDJPY・5分足に限定", group=gb)
+
+string gf = "説明可能な動きの代理フィルター"
+bool excludeBreak = input.bool(true, "直近高安を勢いよく突破したら見送り", group=gf)
+int lookback = input.int(12, "高安参照本数（現在足を除く）", minval=2, group=gf)
+bool excludeRound = input.bool(true, "節目を勢いよく突破したら見送り", group=gf)
+float roundStep = input.float(0.5, "節目の価格間隔（USDJPY 0.5円）", minval=0.001, step=0.1, group=gf)
+float momentum = input.float(1.5, "勢い：True Range / 直前ATR14", minval=0.1, step=0.1, group=gf)
+int impulseBars = input.int(3, "突破後の勢いを見送る本数（0＝突破足だけ）", minval=0, maxval=20, group=gf)
+
+string gn = "指標日時を手動登録（自動取得ではありません）"
+int beforeMinutes = input.int(15, "発表前の除外分数（仮定）", minval=0, group=gn)
+int afterMinutes = input.int(30, "発表後の除外分数（仮定）", minval=0, group=gn)
+bool event1On = input.bool(false, "指標1を有効", group=gn)
+int event1 = input.time(timestamp("08 Sep 2026 00:00 +0000"), "指標1の日時", group=gn)
+bool event2On = input.bool(false, "指標2を有効", group=gn)
+int event2 = input.time(timestamp("08 Sep 2026 00:00 +0000"), "指標2の日時", group=gn)
+bool event3On = input.bool(false, "指標3を有効", group=gn)
+int event3 = input.time(timestamp("08 Sep 2026 00:00 +0000"), "指標3の日時", group=gn)
+bool manualPause = input.bool(false, "裁量見送り：候補を全停止（履歴全体にも適用）", group=gn)
+
+inEvent(bool enabled, int stamp) =>
+    enabled and time <= stamp + afterMinutes * 60000 and time_close >= stamp - beforeMinutes * 60000
+
+// Each of the four written calls below has its own persistent state.
+// Keep a confirmed breakout until it expires, reclaims the level, or hits a gap.
+recentImpulse(bool triggered, float brokenLevel, bool upward) =>
+    var int started = na
+    var float level = na
+    if barstate.isconfirmed
+        bool gap = not na(time[1]) and time - time[1] > timeframe.in_seconds() * 1000
+        bool reclaimed = not na(level) and (upward ? close <= level : close >= level)
+        bool expired = not na(started) and bar_index - started > impulseBars
+        if gap or reclaimed or expired
+            started := na
+            level := na
+        if triggered
+            started := bar_index
+            level := brokenLevel
+    not na(started) and bar_index - started <= impulseBars
+
+float basis = ta.sma(close, length)
+float deviation = ta.stdev(close, length, true)
+float upper = basis + sigma * deviation
+float lower = basis - sigma * deviation
+float priorHigh = ta.highest(high[1], lookback)
+float priorLow = ta.lowest(low[1], lookback)
+float priorAtr = ta.atr(14)[1]
+bool impulsive = ta.tr(true) >= priorAtr * momentum
+bool breakUp = close > priorHigh and impulsive
+bool breakDown = close < priorLow and impulsive
+float nextRound = (math.floor(close[1] / roundStep) + 1) * roundStep
+float priorRound = (math.ceil(close[1] / roundStep) - 1) * roundStep
+bool roundUp = high >= nextRound and close > nextRound and impulsive
+bool roundDown = low <= priorRound and close < priorRound and impulsive
+bool recentHighBreak = recentImpulse(breakUp, priorHigh, true)
+bool recentLowBreak = recentImpulse(breakDown, priorLow, false)
+bool recentRoundUp = recentImpulse(roundUp, nextRound, true)
+bool recentRoundDown = recentImpulse(roundDown, priorRound, false)
+bool newsBlocked = inEvent(event1On, event1) or inEvent(event2On, event2) or inEvent(event3On, event3)
+bool buyExplained = (excludeBreak and recentLowBreak) or (excludeRound and recentRoundDown)
+bool sellExplained = (excludeBreak and recentHighBreak) or (excludeRound and recentRoundUp)
+bool chartOK = not restrictChart or (syminfo.basecurrency == "USD" and syminfo.currency == "JPY" and timeframe.in_seconds() == 300)
+bool ready = chartOK and not na(deviation) and deviation > 0 and not na(priorAtr) and not na(priorHigh)
+bool touchBuy = low <= lower
+bool touchSell = high >= upper
+
+var int armed = 0 // +1 buy preparation, -1 sell preparation; never a position
+var int armedBar = na
+bool prepBuy = false
+bool prepSell = false
+bool candidateBuy = false
+bool candidateSell = false
+bool skipped = false
+string reason = ""
+
+if barstate.isconfirmed
+    // Discard a preparation across missing bars, including weekend gaps.
+    bool gap = not na(time[1]) and time - time[1] > timeframe.in_seconds() * 1000
+    if not ready or gap
+        armed := 0
+        armedBar := na
+    bool handled = false
+    if ready and armed != 0
+        bool expired = bar_index - armedBar > expiry
+        bool explained = armed == 1 ? buyExplained : sellExplained
+        bool centerPassed = armed == 1 ? close >= basis : close <= basis
+        bool oppositeTouch = armed == 1 ? touchSell : touchBuy
+        if newsBlocked or manualPause or explained or expired or centerPassed or oppositeTouch
+            skipped := true
+            reason := newsBlocked ? "指標時間" : manualPause ? "裁量停止" : explained ? "突破の勢い" : expired ? "準備期限切れ" : centerPassed ? "中央線到達済み" : "反対側タッチ"
+            armed := 0
+            armedBar := na
+            handled := true
+        else if bar_index > armedBar
+            bool returned = close > lower and close < upper
+            if not requireReturn or returned
+                candidateBuy := armed == 1
+                candidateSell := armed == -1
+                armed := 0
+                armedBar := na
+                handled := true
+    if ready and armed == 0 and not handled and (touchBuy or touchSell)
+        bool both = touchBuy and touchSell
+        bool explained = touchBuy ? buyExplained : sellExplained
+        if both or newsBlocked or manualPause or explained
+            skipped := true
+            reason := both ? "両側タッチ" : newsBlocked ? "指標時間" : manualPause ? "裁量停止" : "突破の勢い"
+        else
+            armed := touchBuy ? 1 : -1
+            armedBar := bar_index
+            prepBuy := armed == 1
+            prepSell := armed == -1
+
+plot(basis, "BB中央線：決済判断の目安（動く線）", color=color.orange, linewidth=2)
+u = plot(upper, "+3σ", color=color.new(color.blue, 15))
+l = plot(lower, "−3σ", color=color.new(color.blue, 15))
+fill(u, l, color=color.new(color.blue, 95))
+plotshape(prepBuy, "買い準備", shape.circle, location.belowbar, color=color.yellow, text="準備", textcolor=color.yellow, size=size.tiny)
+plotshape(prepSell, "売り準備", shape.circle, location.abovebar, color=color.yellow, text="準備", textcolor=color.yellow, size=size.tiny)
+plotshape(candidateBuy, "買い候補：裁量確認必須", shape.labelup, location.belowbar, color=color.teal, text="BUY候補", textcolor=color.white, size=size.tiny)
+plotshape(candidateSell, "売り候補：裁量確認必須", shape.labeldown, location.abovebar, color=color.red, text="SELL候補", textcolor=color.white, size=size.tiny)
+if skipped and barstate.isconfirmed
+    label.new(bar_index, high, "見送り\n" + reason, style=label.style_label_down, color=color.new(color.gray, 30), textcolor=color.white, size=size.tiny)
+bgcolor(newsBlocked ? color.new(color.red, 88) : na, title="手動登録指標の除外時間")
+
+alertcondition(prepBuy or prepSell, "BBタッチ・準備", "BB ±3σタッチ。準備段階でありエントリーではありません。")
+alertcondition(candidateBuy, "買い候補・要裁量確認", "USDJPY BB買い候補。指標・相場背景を手動確認。自動エントリーではありません。")
+alertcondition(candidateSell, "売り候補・要裁量確認", "USDJPY BB売り候補。指標・相場背景を手動確認。自動エントリーではありません。")
+
+var table notice = table.new(position.top_right, 1, 2)
+if barstate.islast
+    table.cell(notice, 0, 0, chartOK ? "準備 → 除外 → 裁量候補" : "USDJPY・5分足へ変更してください", text_color=color.white, bgcolor=color.new(color.black, 20))
+    table.cell(notice, 0, 1, "ニュース自動取得なし／売買・成績計算なし", text_color=color.yellow, bgcolor=color.new(color.black, 20))

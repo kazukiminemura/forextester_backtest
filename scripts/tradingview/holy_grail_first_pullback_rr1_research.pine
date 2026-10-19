@@ -1,0 +1,229 @@
+//@version=6
+// RESEARCH ONLY / REJECTED_TRAINING_ONLY / TV_UNVERIFIED.
+// Frozen experiment: holy_grail_first_pullback_20260913. No order-routing integration.
+// Chart OHLC only. See pine_mapping.md for emulator, timezone and cost differences.
+strategy("聖杯 First Pullback RR1 [研究用・不採用 / TV_UNVERIFIED]", overlay = true,
+     pyramiding = 0, initial_capital = 100000, default_qty_type = strategy.fixed,
+     default_qty_value = 1, commission_type = strategy.commission.cash_per_order,
+     commission_value = 0, slippage = 0, margin_long = 0, margin_short = 0,
+     calc_on_order_fills = true, calc_on_every_tick = false,
+     process_orders_on_close = false, use_bar_magnifier = false,
+     max_lines_count = 500, max_labels_count = 500)
+
+int startTime = input.time(timestamp("01 Jan 2010 00:00 +0000"), "研究開始 (UTC)")
+int endTime = input.time(timestamp("01 Jan 2099 00:00 +0000"), "研究終了・新規停止 (UTC)")
+float roundtripPips = input.float(1.8, "補助集計: 往復費用 pips", minval = 0)
+float carryPips = input.float(0.2, "補助集計: 保有費用 pips / 暦日", minval = 0)
+float pipOverride = input.float(0.0, "1 pip価格 (0 = FX自動)", minval = 0)
+int keepLevels = input.int(120, "履歴を残す注文数 (最大150)", minval = 1, maxval = 150)
+float pipSize = pipOverride > 0 ? pipOverride : syminfo.currency == "JPY" ? 0.01 : 0.0001
+
+// Match Python seeds: EMA first close; Wilder TR/DM indices 1..14;
+// DX starts at 14; ADX seed is mean DX[14..27]. No ta.dmi seed assumption.
+float ema20 = ta.ema(close, 20)
+float upMove = high - high[1]
+float downMove = low[1] - low
+float trueRange = na(close[1]) ? na : math.max(high - low, math.max(math.abs(high - close[1]), math.abs(low - close[1])))
+float plusDM = na(close[1]) ? na : upMove > downMove and upMove > 0 ? upMove : 0.0
+float minusDM = na(close[1]) ? na : downMove > upMove and downMove > 0 ? downMove : 0.0
+float smoothTR = ta.rma(trueRange, 14)
+float smoothPlus = ta.rma(plusDM, 14)
+float smoothMinus = ta.rma(minusDM, 14)
+float plusDI = na(smoothTR) ? na : smoothTR == 0 ? 0 : 100 * smoothPlus / smoothTR
+float minusDI = na(smoothTR) ? na : smoothTR == 0 ? 0 : 100 * smoothMinus / smoothTR
+float dx = na(plusDI) ? na : plusDI + minusDI == 0 ? 0 : 100 * math.abs(plusDI - minusDI) / (plusDI + minusDI)
+float adx14 = ta.rma(dx, 14)
+int dominance = plusDI > minusDI ? 1 : minusDI > plusDI ? -1 : 0
+bool strengthCross = adx14[1] <= 30 and adx14 > 30
+
+// varip primitives survive realtime fill callbacks. Fill callbacks NEVER advance
+// the signal state, even though historical barstate.isconfirmed can be true.
+varip float seenPosition = 0.0
+varip int seenClosed = 0
+bool fillExecution = strategy.position_size != seenPosition or strategy.closedtrades != seenClosed
+seenPosition := strategy.position_size
+seenClosed := strategy.closedtrades
+varip int lastDecisionBar = -1
+varip int direction = 0
+varip int armBar = -1
+varip bool spent = false
+varip float anchorExtreme = na
+varip float pullbackExtreme = na
+varip bool pending = false
+varip int pendingBar = -1
+varip int tradeDirection = 0
+varip float triggerPrice = na
+varip float stopPrice = na
+varip float entryPrice = na
+varip float targetPrice = na
+varip float riskPrice = na
+varip int entryTime = na
+varip int lastExitBar = -1
+varip int accountedTrades = 0
+varip float netR = 0.0
+varip float profitR = 0.0
+varip float lossR = 0.0
+varip int netWins = 0
+varip bool orderWasFilled = false
+varip string orderStatus = ""
+varip int lastOrderEventBar = -1
+
+var array<line> historyLines = array.new<line>()
+var array<label> historyLabels = array.new<label>()
+var line entryLine = na
+var line stopLine = na
+var line targetLine = na
+var label entryLabel = na
+var label stopLabel = na
+var label targetLabel = na
+
+// The only fill callback action is managing this already-submitted trade.
+if strategy.position_size != 0 and na(entryPrice)
+    pending := false
+    orderWasFilled := true
+    orderStatus := "約定"
+    lastOrderEventBar := bar_index
+    entryPrice := strategy.position_avg_price
+    riskPrice := tradeDirection * (entryPrice - stopPrice)
+    targetPrice := entryPrice + tradeDirection * riskPrice
+    entryTime := strategy.opentrades.entry_time(0)
+if strategy.position_size != 0 and not na(entryPrice)
+    strategy.exit("RR1", from_entry = "HG", stop = stopPrice, limit = targetPrice,
+         qty_percent = 100, comment_profit = "TP 1R", comment_loss = "SL", disable_alert = true)
+
+if strategy.closedtrades > accountedTrades
+    int tradeIndex = strategy.closedtrades - 1
+    float exitPrice = strategy.closedtrades.exit_price(tradeIndex)
+    // Conservative close-time exposure proxy; Python uses open on gap exits.
+    float chargedDays = math.max(0, math.ceil((time_close - entryTime) / 86400000.0))
+    float tradeNetR = (tradeDirection * (exitPrice - entryPrice) - (roundtripPips + carryPips * chargedDays) * pipSize) / riskPrice
+    netR += tradeNetR
+    profitR += math.max(tradeNetR, 0)
+    lossR += math.max(-tradeNetR, 0)
+    netWins += tradeNetR > 0 ? 1 : 0
+    accountedTrades := strategy.closedtrades
+    lastExitBar := bar_index
+    orderStatus := "決済済"
+
+bool closedDecision = barstate.isconfirmed and not fillExecution and lastDecisionBar != bar_index
+// Keep this expression outside the nested decision scope so pasted copies do
+// not leave the following conditional attached to an empty local declaration.
+bool inWindow = time >= startTime and time < endTime
+bool armSignal = false
+bool firstTouch = false
+int setupDirection = 0
+if closedDecision
+    lastDecisionBar := bar_index
+    // All three following observed bars get a fill opportunity BEFORE expiry.
+    if pending and bar_index - pendingBar >= 3
+        strategy.cancel("HG")
+        pending := false
+        orderStatus := "期限切れ"
+        lastOrderEventBar := bar_index
+    if pending and tradeDirection * (open - stopPrice) <= 0
+        // Close-only cancellation cannot undo a fill earlier in this bar.
+        strategy.cancel("HG")
+        pending := false
+        orderStatus := "SL側始値・終値時取消"
+        lastOrderEventBar := bar_index
+
+    if not inWindow
+        direction := 0
+        if pending
+            strategy.cancel("HG")
+            pending := false
+            orderStatus := "期間終了"
+            lastOrderEventBar := bar_index
+    else if bar_index >= 249
+        if direction != 0 and (adx14 < 25 or dominance != direction)
+            direction := 0
+            if pending
+                strategy.cancel("HG")
+                pending := false
+                orderStatus := "episode解除"
+                lastOrderEventBar := bar_index
+        if direction == 0
+            if strengthCross and dominance != 0 and dominance * (close - ema20) > 0
+                direction := dominance
+                armBar := bar_index
+                anchorExtreme := direction == 1 ? high : low
+                pullbackExtreme := na
+                spent := false
+                armSignal := true
+        else if bar_index > armBar
+            // Incremental range starts AFTER the latest directional anchor.
+            float thisExtreme = direction == 1 ? low : high
+            pullbackExtreme := na(pullbackExtreme) ? thisExtreme : direction == 1 ? math.min(pullbackExtreme, thisExtreme) : math.max(pullbackExtreme, thisExtreme)
+            bool touch = low <= ema20 and ema20 <= high
+            bool away = direction == 1 ? low[1] > ema20[1] : high[1] < ema20[1]
+            if touch and not spent
+                firstTouch := true
+                spent := true
+                if away and direction * (close - ema20) > 0
+                    setupDirection := direction
+                    if strategy.position_size == 0 and not pending and lastExitBar != bar_index
+                        tradeDirection := direction
+                        pendingBar := bar_index
+                        triggerPrice := direction == 1 ? high + syminfo.mintick : low - syminfo.mintick
+                        stopPrice := pullbackExtreme - direction * syminfo.mintick
+                        entryPrice := na
+                        riskPrice := na
+                        targetPrice := triggerPrice + direction * (direction * (triggerPrice - stopPrice))
+                        pending := true
+                        orderWasFilled := false
+                        orderStatus := "待機"
+                        lastOrderEventBar := bar_index
+                        strategy.entry("HG", direction == 1 ? strategy.long : strategy.short,
+                             stop = triggerPrice, comment = "First EMA20 pullback", disable_alert = true)
+                        entryLine := line.new(bar_index, triggerPrice, bar_index + 1, triggerPrice, color = color.blue)
+                        stopLine := line.new(bar_index, stopPrice, bar_index + 1, stopPrice, color = color.red)
+                        targetLine := line.new(bar_index, targetPrice, bar_index + 1, targetPrice, color = color.green)
+                        entryLabel := label.new(bar_index, triggerPrice, "", style = label.style_label_left, color = color.blue, textcolor = color.white, size = size.small)
+                        stopLabel := label.new(bar_index, stopPrice, "", style = label.style_label_left, color = color.red, textcolor = color.white, size = size.small)
+                        targetLabel := label.new(bar_index, targetPrice, "", style = label.style_label_left, color = color.green, textcolor = color.white, size = size.small)
+                        array.push(historyLines, entryLine)
+                        array.push(historyLines, stopLine)
+                        array.push(historyLines, targetLine)
+                        array.push(historyLabels, entryLabel)
+                        array.push(historyLabels, stopLabel)
+                        array.push(historyLabels, targetLabel)
+                        while array.size(historyLines) > keepLevels * 3
+                            line.delete(array.shift(historyLines))
+                            label.delete(array.shift(historyLabels))
+            // Equal extremes choose latest anchor; update AFTER evaluating touch.
+            if (direction == 1 and high >= anchorExtreme) or (direction == -1 and low <= anchorExtreme)
+                anchorExtreme := direction == 1 ? high : low
+                pullbackExtreme := na
+
+// Rendering is independent of closedDecision: a gap fill callback immediately
+// replaces provisional Entry/TP prices, without advancing the episode state.
+// Reapply setters on every execution to survive realtime drawing rollback.
+if not na(entryLine) and (pending or strategy.position_size != 0 or lastExitBar == bar_index or lastOrderEventBar == bar_index)
+    float displayEntry = orderWasFilled ? entryPrice : triggerPrice
+    int endBar = pending or strategy.position_size != 0 ? bar_index + 1 : bar_index
+    line.set_xy2(entryLine, endBar, displayEntry)
+    line.set_y1(entryLine, displayEntry)
+    line.set_x2(stopLine, endBar)
+    line.set_xy2(targetLine, endBar, targetPrice)
+    line.set_y1(targetLine, targetPrice)
+    label.set_xy(entryLabel, endBar, displayEntry)
+    label.set_xy(stopLabel, endBar, stopPrice)
+    label.set_xy(targetLabel, endBar, targetPrice)
+    label.set_text(entryLabel, "Entry " + str.tostring(displayEntry, format.mintick) + " [" + orderStatus + "]")
+    label.set_text(stopLabel, "SL " + str.tostring(stopPrice, format.mintick))
+    label.set_text(targetLabel, (orderWasFilled ? "TP 1R " : "TP仮1R ") + str.tostring(targetPrice, format.mintick))
+
+plot(ema20, "EMA20", color = color.orange, linewidth = 2)
+plot(adx14, "ADX14", display = display.data_window)
+plot(plusDI, "+DI14", display = display.data_window)
+plot(minusDI, "-DI14", display = display.data_window)
+plot(setupDirection, "Setup direction (fill-independent)", display = display.data_window)
+plotshape(armSignal, "ADX episode arm", shape.circle, location.abovebar, color = color.orange, size = size.tiny, text = "ARM")
+plotshape(firstTouch, "First touch consumed", shape.diamond, location.belowbar, color = color.purple, size = size.tiny, text = "1st")
+var table status = table.new(position.top_right, 1, 5)
+if barstate.islast
+    table.cell(status, 0, 0, "聖杯 研究用・不採用 / TV_UNVERIFIED", bgcolor = color.maroon, text_color = color.white)
+    table.cell(status, 0, 1, "EMA20 / ADX14 >30 / first only / 全決済1R\n推奨: 通常足 H1・H4 / 発注連携なし", text_color = color.white, bgcolor = color.new(color.black, 15))
+    table.cell(status, 0, 2, "Strategy Tester = コストなし\nPythonと約定順・gap・足配信が異なる", text_color = color.yellow, bgcolor = color.new(color.black, 15))
+    table.cell(status, 0, 3, "TV約定の補助費用後R (保有日数は近似)\n件数 " + str.tostring(accountedTrades) + " / 合計 " + str.tostring(netR, "#.##") + "R\nPF " + (lossR > 0 ? str.tostring(profitR / lossR, "#.###") : "—") + " / 勝率 " + (accountedTrades > 0 ? str.tostring(100.0 * netWins / accountedTrades, "#.##") : "—") + "%", text_color = color.white, bgcolor = color.new(color.black, 15))
+    table.cell(status, 0, 4, "ADX " + str.tostring(adx14, "#.##") + " / " + (direction == 1 ? "上昇" : direction == -1 ? "下降" : "待機") + (spent and direction != 0 ? " / 初回消費済" : ""), text_color = color.white, bgcolor = color.new(color.black, 15))

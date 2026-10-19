@@ -1,0 +1,201 @@
+//@version=6
+strategy("BB ±3σ 文脈フィルター・PF検証", overlay=true, max_labels_count=200,
+     pyramiding=0, initial_capital=1000000, currency=currency.JPY,
+     default_qty_type=strategy.fixed, default_qty_value=1000,
+     commission_type=strategy.commission.percent, commission_value=0.0, slippage=1,
+     margin_long=100, margin_short=100,
+     calc_on_every_tick=false, calc_on_order_fills=false, process_orders_on_close=false)
+
+// User-described model, not an authenticated implementation of WEMOF.
+// Simulation only: candidate-to-entry is an added mechanical assumption.
+// No automatic news feed or discretionary judgement; costs must be configured.
+string gb = "BBと候補化"
+int length = input.int(20, "BB期間", minval=2, group=gb)
+float sigma = input.float(3.0, "標準偏差倍率", minval=0.5, step=0.1, group=gb)
+int expiry = input.int(3, "準備の有効本数（タッチの次足から）", minval=1, maxval=20, group=gb)
+bool requireReturn = input.bool(true, "候補化にはバンド内への終値回帰を要求（補助仮定）", group=gb)
+bool restrictChart = input.bool(true, "5分足に限定（通貨ペア制限なし）", group=gb)
+
+string gu = "銘柄別の価格単位"
+bool autoPip = input.bool(true, "FXのpip幅を自動設定（JPY決済通貨＝0.01、その他＝0.0001）", group=gu)
+float manualPip = input.float(0.01, "手動：1 pipの価格幅（自動OFF時）", minval=0.00000001, group=gu)
+bool unitOK = not autoPip or syminfo.type == "forex"
+float pipSize = autoPip ? (syminfo.currency == "JPY" ? 0.01 : 0.0001) : manualPip
+
+string gf = "説明可能な動きの代理フィルター"
+bool excludeBreak = input.bool(true, "直近高安を勢いよく突破したら見送り", group=gf)
+int lookback = input.int(12, "高安参照本数（現在足を除く）", minval=2, group=gf)
+bool excludeRound = input.bool(true, "節目を勢いよく突破したら見送り", group=gf)
+float roundPips = input.float(50.0, "節目の間隔（pips）", minval=0.1, step=1.0, group=gf)
+float roundStep = math.max(syminfo.mintick, math.round(roundPips * pipSize / syminfo.mintick) * syminfo.mintick)
+float momentum = input.float(1.5, "勢い：True Range / 直前ATR14", minval=0.1, step=0.1, group=gf)
+int impulseBars = input.int(3, "突破後の勢いを見送る本数（0＝突破足だけ）", minval=0, maxval=20, group=gf)
+
+string gn = "指標日時を手動登録（自動取得ではありません）"
+int beforeMinutes = input.int(15, "発表前の除外分数（仮定）", minval=0, group=gn)
+int afterMinutes = input.int(30, "発表後の除外分数（仮定）", minval=0, group=gn)
+bool event1On = input.bool(false, "指標1を有効", group=gn)
+int event1 = input.time(timestamp("08 Sep 2026 00:00 +0000"), "指標1の日時", group=gn)
+bool event2On = input.bool(false, "指標2を有効", group=gn)
+int event2 = input.time(timestamp("08 Sep 2026 00:00 +0000"), "指標2の日時", group=gn)
+bool event3On = input.bool(false, "指標3を有効", group=gn)
+int event3 = input.time(timestamp("08 Sep 2026 00:00 +0000"), "指標3の日時", group=gn)
+bool manualPause = input.bool(false, "裁量見送り：候補を全停止（履歴全体にも適用）", group=gn)
+
+string gr = "検証用の追加仮定"
+bool useStop = input.bool(false, "固定損切りを使う（既定OFF・原条件に指定なし）", group=gr)
+float slPips = input.float(10.0, "損切り幅 pips", minval=0.1, step=0.1, group=gr)
+int stopTicks = useStop ? int(math.max(1, math.round(slPips * pipSize / syminfo.mintick))) : na
+
+inEvent(bool enabled, int stamp) =>
+    enabled and time <= stamp + afterMinutes * 60000 and time_close >= stamp - beforeMinutes * 60000
+
+// Each of the four written calls below has its own persistent state.
+// Keep a confirmed breakout until it expires, reclaims the level, or hits a gap.
+recentImpulse(bool triggered, float brokenLevel, bool upward) =>
+    var int started = na
+    var float level = na
+    if barstate.isconfirmed
+        bool gap = not na(time[1]) and time - time[1] > timeframe.in_seconds() * 1000
+        bool reclaimed = not na(level) and (upward ? close <= level : close >= level)
+        bool expired = not na(started) and bar_index - started > impulseBars
+        if gap or reclaimed or expired
+            started := na
+            level := na
+        if triggered
+            started := bar_index
+            level := brokenLevel
+    not na(started) and bar_index - started <= impulseBars
+
+float basis = ta.sma(close, length)
+float deviation = ta.stdev(close, length, true)
+float upper = basis + sigma * deviation
+float lower = basis - sigma * deviation
+float priorHigh = ta.highest(high[1], lookback)
+float priorLow = ta.lowest(low[1], lookback)
+float priorAtr = ta.atr(14)[1]
+bool impulsive = ta.tr(true) >= priorAtr * momentum
+bool breakUp = close > priorHigh and impulsive
+bool breakDown = close < priorLow and impulsive
+float nextRound = (math.floor(close[1] / roundStep) + 1) * roundStep
+float priorRound = (math.ceil(close[1] / roundStep) - 1) * roundStep
+bool roundUp = high >= nextRound and close > nextRound and impulsive
+bool roundDown = low <= priorRound and close < priorRound and impulsive
+bool recentHighBreak = recentImpulse(breakUp, priorHigh, true)
+bool recentLowBreak = recentImpulse(breakDown, priorLow, false)
+bool recentRoundUp = recentImpulse(roundUp, nextRound, true)
+bool recentRoundDown = recentImpulse(roundDown, priorRound, false)
+bool newsBlocked = inEvent(event1On, event1) or inEvent(event2On, event2) or inEvent(event3On, event3)
+bool buyExplained = (excludeBreak and recentLowBreak) or (excludeRound and recentRoundDown)
+bool sellExplained = (excludeBreak and recentHighBreak) or (excludeRound and recentRoundUp)
+bool chartOK = unitOK and (not restrictChart or timeframe.in_seconds() == 300)
+bool available = strategy.position_size == 0 and strategy.closedtrades == nz(strategy.closedtrades[1])
+bool ready = available and chartOK and not na(deviation) and deviation > 0 and not na(priorAtr) and not na(priorHigh)
+bool touchBuy = low <= lower
+bool touchSell = high >= upper
+
+var int armed = 0 // +1 buy preparation, -1 sell preparation; never a position
+var int armedBar = na
+bool prepBuy = false
+bool prepSell = false
+bool candidateBuy = false
+bool candidateSell = false
+bool skipped = false
+string reason = ""
+
+if barstate.isconfirmed
+    // Discard a preparation across missing bars, including weekend gaps.
+    bool gap = not na(time[1]) and time - time[1] > timeframe.in_seconds() * 1000
+    if not ready or gap
+        armed := 0
+        armedBar := na
+    bool handled = false
+    if ready and armed != 0
+        bool expired = bar_index - armedBar > expiry
+        bool explained = armed == 1 ? buyExplained : sellExplained
+        bool centerPassed = armed == 1 ? close >= basis : close <= basis
+        bool oppositeTouch = armed == 1 ? touchSell : touchBuy
+        if newsBlocked or manualPause or explained or expired or centerPassed or oppositeTouch
+            skipped := true
+            reason := newsBlocked ? "指標時間" : manualPause ? "裁量停止" : explained ? "突破の勢い" : expired ? "準備期限切れ" : centerPassed ? "中央線到達済み" : "反対側タッチ"
+            armed := 0
+            armedBar := na
+            handled := true
+        else if bar_index > armedBar
+            bool returned = close > lower and close < upper
+            if not requireReturn or returned
+                candidateBuy := armed == 1
+                candidateSell := armed == -1
+                armed := 0
+                armedBar := na
+                handled := true
+    if ready and armed == 0 and not handled and (touchBuy or touchSell)
+        bool both = touchBuy and touchSell
+        bool explained = touchBuy ? buyExplained : sellExplained
+        if both or newsBlocked or manualPause or explained
+            skipped := true
+            reason := both ? "両側タッチ" : newsBlocked ? "指標時間" : manualPause ? "裁量停止" : "突破の勢い"
+        else
+            armed := touchBuy ? 1 : -1
+            armedBar := bar_index
+            prepBuy := armed == 1
+            prepSell := armed == -1
+
+// Submit the bracket together with the entry: it is active on the entry bar.
+// Relative loss is measured from the emulator fill, not from the signal close.
+// Confirmed-bar orders fill no earlier than the next available tick (normally next open).
+if candidateBuy
+    strategy.entry("Long", strategy.long)
+    strategy.exit("Long exit", "Long", limit=basis, loss=stopTicks)
+if candidateSell
+    strategy.entry("Short", strategy.short)
+    strategy.exit("Short exit", "Short", limit=basis, loss=stopTicks)
+
+// Update the central-line limit only after a bar is confirmed; no future SMA.
+if strategy.position_size > 0
+    strategy.exit("Long exit", "Long", limit=basis, loss=stopTicks)
+if strategy.position_size < 0
+    strategy.exit("Short exit", "Short", limit=basis, loss=stopTicks)
+
+float activeStop = useStop and strategy.position_size != 0 ? strategy.position_avg_price - math.sign(strategy.position_size) * stopTicks * syminfo.mintick : na
+plot(strategy.position_size != 0 ? strategy.position_avg_price : na, "Entry価格", color=color.white, style=plot.style_linebr)
+plot(activeStop, "SL価格", color=color.red, style=plot.style_linebr)
+
+plot(basis, "BB中央線：次足以降の決済指値", color=color.orange, linewidth=2)
+u = plot(upper, "+3σ", color=color.new(color.blue, 15))
+l = plot(lower, "−3σ", color=color.new(color.blue, 15))
+fill(u, l, color=color.new(color.blue, 95))
+plotshape(prepBuy, "買い準備", shape.circle, location.belowbar, color=color.yellow, text="準備", textcolor=color.yellow, size=size.tiny)
+plotshape(prepSell, "売り準備", shape.circle, location.abovebar, color=color.yellow, text="準備", textcolor=color.yellow, size=size.tiny)
+plotshape(candidateBuy, "買い候補：検証用エントリー信号", shape.labelup, location.belowbar, color=color.teal, text="BUY信号", textcolor=color.white, size=size.tiny)
+plotshape(candidateSell, "売り候補：検証用エントリー信号", shape.labeldown, location.abovebar, color=color.red, text="SELL信号", textcolor=color.white, size=size.tiny)
+if skipped and barstate.isconfirmed
+    label.new(bar_index, high, "見送り\n" + reason, style=label.style_label_down, color=color.new(color.gray, 30), textcolor=color.white, size=size.tiny)
+bgcolor(newsBlocked ? color.new(color.red, 88) : na, title="手動登録指標の除外時間")
+
+// PF uses closed trades only. Open losses are shown separately, never hidden in PF.
+float grossLoss = math.abs(strategy.grossloss)
+float pf = grossLoss > 0 ? strategy.grossprofit / grossLoss : na
+string pfText = strategy.closedtrades == 0 ? "—（決済なし）" : grossLoss > 0 ? str.tostring(pf, "#.###") : strategy.grossprofit > 0 ? "算出不能（損失なし）" : "—（損益ゼロ）"
+float winRate = strategy.closedtrades > 0 ? 100.0 * strategy.wintrades / strategy.closedtrades : na
+
+var table notice = table.new(position.top_right, 2, 9)
+if barstate.islast
+    table.cell(notice, 0, 0, "検証用・裁量未再現", text_color=color.yellow, bgcolor=color.black)
+    table.cell(notice, 1, 0, not unitOK ? "FX以外：pip幅を手動設定" : chartOK ? syminfo.ticker + " / " + timeframe.period : "5分足へ変更", text_color=color.yellow, bgcolor=color.black)
+    table.cell(notice, 0, 1, "PF（決済済み）", text_color=color.white, bgcolor=color.black)
+    table.cell(notice, 1, 1, pfText, text_color=color.white, bgcolor=color.black)
+    table.cell(notice, 0, 2, "決済数 / 勝率", text_color=color.white, bgcolor=color.black)
+    table.cell(notice, 1, 2, str.tostring(strategy.closedtrades) + " / " + (na(winRate) ? "—" : str.tostring(winRate, "#.##") + "%"), text_color=color.white, bgcolor=color.black)
+    table.cell(notice, 0, 3, "純損益（口座通貨）", text_color=color.white, bgcolor=color.black)
+    table.cell(notice, 1, 3, str.tostring(strategy.netprofit, "#.##"), text_color=color.white, bgcolor=color.black)
+    table.cell(notice, 0, 4, "含み損益（PF対象外）", text_color=color.white, bgcolor=color.black)
+    table.cell(notice, 1, 4, str.tostring(strategy.openprofit, "#.##"), text_color=color.white, bgcolor=color.black)
+    table.cell(notice, 0, 5, "損切り", text_color=color.white, bgcolor=color.black)
+    table.cell(notice, 1, 5, useStop ? str.tostring(stopTicks * syminfo.mintick / pipSize, "#.##") + " pips" : "なし・含み損に注意", text_color=color.yellow, bgcolor=color.black)
+    table.cell(notice, 0, 6, "コスト設定", text_color=color.yellow, bgcolor=color.black)
+    table.cell(notice, 1, 6, "プロパティを確認（手数料既定0）", text_color=color.yellow, bgcolor=color.black)
+    table.cell(notice, 0, 7, "ニュース自動取得なし", text_color=color.yellow, bgcolor=color.black)
+    table.cell(notice, 1, 7, "読込済み履歴のみ検証", text_color=color.yellow, bgcolor=color.black)
+    table.cell(notice, 0, 8, "pip幅 / 節目幅（価格）", text_color=color.white, bgcolor=color.black)
+    table.cell(notice, 1, 8, str.tostring(pipSize, "#.########") + " / " + str.tostring(roundStep, format.mintick), text_color=color.white, bgcolor=color.black)

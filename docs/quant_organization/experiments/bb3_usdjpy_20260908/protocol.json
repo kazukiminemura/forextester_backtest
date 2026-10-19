@@ -1,0 +1,23 @@
+{
+  "model": "User-provided BB mean reversion; not verified official WEMOF",
+  "symbol": "USDJPY",
+  "timeframe": "5m",
+  "period": [
+    "2023-09-08T00:00:00",
+    "2026-09-08T00:00:00"
+  ],
+  "bands": "close SMA20 +/- 3 population standard deviations; touch evaluated after bar closes",
+  "entry": "next adjacent 5m open; both-band touches skipped; skip if current executable center is not profitable relative to entry",
+  "exit": "moving center based on previous completed 5m close; next-bar update, bid chart touch, short pays ask spread; gap executes actual open; SL first for dual touch",
+  "stops_pips": [
+    null,
+    5,
+    10
+  ],
+  "slippage_pips_each_side": 0.1,
+  "positions": "one, no averaging, no exit-bar reuse",
+  "risk": "No position sizing or margin model. Report pips, close-based MTM drawdown and high/low MAE upper bound; not live risk certification.",
+  "limits": "Unspecified original rules made explicit; no swaps, variable spread, tick execution. 3 years previously viewed. Baseline has no stop; final position forcibly closed.",
+  "subagents_used": false,
+  "live_approved": false
+}

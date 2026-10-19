@@ -1,0 +1,13 @@
+{
+  "frozen_at": "2026-10-07T11:09:42.567642+00:00",
+  "result_computation_started": false,
+  "files": {
+    "scripts/research_btc_spot_rr1.py": "c70d85b607796a3d93f68281c59a72c2272ebdce4ef48ecd1cffacb46ae1940a",
+    "tests/test_btc_spot_rr1.py": "3d4d85fb96e72b5ece3fdbf796f71e544bd45ecf78363c64694aead3b0976e16",
+    "docs/quant_organization/experiments/btc_spot_rr1_20261007/protocol.json": "10546232de83002c9bac9a6f2fca3394d7147558ebfdc27e6f53ef0d4f793003",
+    "docs/quant_organization/experiments/btc_spot_rr1_20261007/hypothesis.md": "5dbe79b244637aedbef8400f25214b9a6bbce989173ae2f0176bebccdbbed58b",
+    "docs/quant_organization/experiments/btc_spot_rr1_20261007/data_inventory.md": "5cd160ce26c6c5aeee98bcad0ec869d61a017cf7e7f800f34b7e3d3475ed10c9",
+    "agent_runs/btc_spot_rr1_20261007/input_manifest.json": "1a90013989dc2a34549a5aa6942e6af707d49ea2124b54671363b10dddafe88c",
+    "agent_runs/btc_spot_rr1_20261007/btc_m1.npz": "c085f3ae069fc12e06313f86b53cc75e0a813fd7c2688e58cedf86cca6e2d7e6"
+  }
+}

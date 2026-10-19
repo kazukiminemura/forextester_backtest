@@ -1,5 +1,12 @@
 # TradingView インジケーター
 
+## よすが式 分析補助（YTT公開機能の近似）
+
+[yosuga_ytt_assistant.pine](yosuga_ytt_assistant.pine) は、確定高安の水平線・平行チャネル、
+時間足別方向、手動Entry/TP/SL、入力した換算係数による理論数量を表示する分析補助です。
+公式YTTの内部仕様の完全再現ではありません。自動注文や収益検証済みシグナルは含みません。
+設定と検証状態は [導入ガイド](../../docs/yosuga_ytt_assistant.md) を参照してください。
+
 ## 金・55本突破＋勢い確認（1時間足）
 
 [gold_breakout55_pf_refined.pine](gold_breakout55_pf_refined.pine)は、XAUUSDの固定ルール版です。

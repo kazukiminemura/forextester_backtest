@@ -1,0 +1,171 @@
+//@version=6
+// YTT public-feature approximation: analysis utility, not a validated profitable strategy.
+// Compile/display verification is recorded separately; local text checks are not Pine compilation.
+indicator("よすが式 FX候補一覧（YTT近似・分析補助）", overlay=false, dynamic_requests=true)
+
+string gRules = "判定条件"
+string entryTf = input.timeframe("15", "突破を判定する足", group=gRules)
+string contextTf1 = input.timeframe("1D", "合意する上位足1", group=gRules)
+string contextTf2 = input.timeframe("1W", "合意する上位足2", group=gRules)
+int leftBars = input.int(2, "左側ピボット本数", minval=1, maxval=20, group=gRules)
+int rightBars = input.int(2, "右側確定本数", minval=1, maxval=20, group=gRules)
+bool alertsEnabled = input.bool(false, "新しい候補成立を通知対象にする", group=gRules,
+     tooltip="ONにした後、TradingViewでこのスクリプトの『Any alert() function call』を選びアラートを作成してください。追加直後の既存候補は通知しません。")
+string gSymbols = "監視する通貨（同じ配信元を推奨）"
+string symbol1 = input.symbol("OANDA:USDJPY", "通貨1", group=gSymbols)
+string symbol2 = input.symbol("OANDA:EURUSD", "通貨2", group=gSymbols)
+string symbol3 = input.symbol("OANDA:GBPUSD", "通貨3", group=gSymbols)
+string symbol4 = input.symbol("OANDA:AUDUSD", "通貨4", group=gSymbols)
+string symbol5 = input.symbol("OANDA:EURJPY", "通貨5", group=gSymbols)
+string symbol6 = input.symbol("OANDA:GBPJPY", "通貨6", group=gSymbols)
+string symbol7 = input.symbol("OANDA:AUDJPY", "通貨7", group=gSymbols)
+string symbol8 = input.symbol("OANDA:USDCHF", "通貨8", group=gSymbols)
+
+// One object per currency avoids the aggregate request tuple-element limit.
+type Snapshot
+    int status
+    string priceText
+    int direction1
+    int direction2
+    int closedAt
+
+// Identical direction/pivot ordering to yosuga_ytt_assistant.f_state().
+f_state() =>
+    float ph = ta.pivothigh(high, leftBars, rightBars)
+    float pl = ta.pivotlow(low, leftBars, rightBars)
+    var float lastHigh = na
+    var float lastLow = na
+    var int direction = 0
+    bool upBreak = not na(lastHigh) and close > lastHigh and close[1] <= lastHigh
+    bool downBreak = not na(lastLow) and close < lastLow and close[1] >= lastLow
+    if upBreak and not downBreak
+        direction := 1
+    else if downBreak and not upBreak
+        direction := -1
+    if not na(ph)
+        lastHigh := ph
+    if not na(pl)
+        lastLow := pl
+    [direction, lastHigh, lastLow]
+
+f_previousState() =>
+    [d, h, l] = f_state()
+    [d[1], h[1], l[1]]
+
+f_previousSnapshot() =>
+    // Empty ticker inherits this outer request's currency, never the chart currency.
+    // Both HTF states are those available at the evaluated entry bar's opening.
+    [d1, h1, l1] = request.security("", contextTf1, f_previousState(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+    [d2, h2, l2] = request.security("", contextTf2, f_previousState(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+    [d, h, l] = f_state()
+    float ph = ta.pivothigh(high, leftBars, rightBars)
+    float pl = ta.pivotlow(low, leftBars, rightBars)
+    float priorHigh = h[1]
+    float priorLow = l[1]
+    bool ready = not na(d1) and not na(d2) and not na(h1) and not na(l1) and not na(h2) and not na(l2)
+    bool buyAligned = ready and d1 == 1 and d2 == 1
+    bool sellAligned = ready and d1 == -1 and d2 == -1
+    var bool highBroken = false
+    var bool lowBroken = false
+    bool buyEvent = buyAligned and not highBroken and not na(priorHigh) and close > priorHigh and close[1] <= priorHigh
+    bool sellEvent = sellAligned and not lowBroken and not na(priorLow) and close < priorLow and close[1] >= priorLow
+    highBroken := highBroken or (not na(priorHigh) and close > priorHigh)
+    lowBroken := lowBroken or (not na(priorLow) and close < priorLow)
+    // Every newly confirmed pivot re-arms the level, including equal-price pivots.
+    if not na(ph)
+        highBroken := close > h
+    if not na(pl)
+        lowBroken := close < l
+    float candidate = buyAligned ? h : sellAligned ? l : na
+    bool broken = buyAligned ? highBroken : sellAligned ? lowBroken : false
+    // 0=data missing, 1/2=waiting, 3/4=new event, 5/6=consumed, 7=no agreement.
+    int status = not ready ? 0 : not buyAligned and not sellAligned ? 7 : na(candidate) ? 0 : buyEvent ? 3 : sellEvent ? 4 : broken ? (buyAligned ? 5 : 6) : buyAligned ? 1 : 2
+    float displayedPrice = buyEvent ? priorHigh : sellEvent ? priorLow : candidate
+    // Format in the requested symbol context (JPY and non-JPY precision differ).
+    string priceText = na(displayedPrice) ? "—" : str.tostring(displayedPrice, format.mintick)
+    // ALL fields are offset. No developing entry bar or HTF value can escape.
+    Snapshot.new(status[1], priceText[1], d1[1], d2[1], time_close[1])
+
+f_direction(int d) =>
+    na(d) ? "不足" : d == 1 ? "上昇" : d == -1 ? "下降" : "未判定"
+
+f_tfName(string tf) =>
+    switch tf
+        "1D" => "日足"
+        "1W" => "週足"
+        "1M" => "月足"
+        => na(str.tonumber(tf)) ? tf : tf + "分"
+
+f_status(int s) =>
+    switch s
+        1 => "買い待ち"
+        2 => "売り待ち"
+        3 => "買い候補成立"
+        4 => "売り候補成立"
+        5 => "買い突破済"
+        6 => "売り突破済"
+        7 => "見送り"
+        => "データ不足"
+
+float entrySeconds = timeframe.in_seconds(entryTf)
+float chartSeconds = timeframe.in_seconds()
+bool valid = chart.is_standard and not na(chartSeconds) and chartSeconds <= entrySeconds and
+     timeframe.in_seconds(contextTf1) > entrySeconds and timeframe.in_seconds(contextTf2) > entrySeconds and
+     timeframe.in_seconds(contextTf1) != timeframe.in_seconds(contextTf2)
+array<string> symbols = array.from(symbol1, symbol2, symbol3, symbol4, symbol5, symbol6, symbol7, symbol8)
+var table panel = table.new(position.top_center, 6, 12, bgcolor=color.rgb(25, 29, 39), border_width=1)
+varip array<int> lastSeen = array.new_int(8, na)
+varip bool realtimeInitialized = false
+
+if barstate.isfirst
+    table.merge_cells(panel, 0, 0, 5, 0)
+    table.merge_cells(panel, 0, 1, 5, 1)
+    table.merge_cells(panel, 0, 11, 5, 11)
+    table.cell(panel, 0, 0, "", height=4, bgcolor=color.new(color.black, 100))
+
+if barstate.islast
+    table.cell(panel, 0, 1, "FX候補一覧  " + f_tfName(entryTf) + " / 上位 " + f_tfName(contextTf1) + "・" + f_tfName(contextTf2) + "  （分析補助）", text_color=color.white, text_size=size.small)
+    table.cell(panel, 0, 2, "通貨", text_color=color.white, text_size=size.small)
+    table.cell(panel, 1, 2, "状態", text_color=color.white, text_size=size.small)
+    table.cell(panel, 2, 2, "突破価格", text_color=color.white, text_size=size.small)
+    table.cell(panel, 3, 2, "上位1 / 上位2", text_color=color.white, text_size=size.small)
+    table.cell(panel, 4, 2, "判定足の確定 JST", text_color=color.white, text_size=size.small)
+    table.cell(panel, 5, 2, "鮮度", text_color=color.white, text_size=size.small)
+    string note = valid ? "待ち＝終値で突破を待つ｜成立＝直近確定足のみ｜突破済＝次の高安待ち｜利益保証なし" : "設定不正：標準時間足を使用し、チャート足≦判定足＜異なる上位2足に設定"
+    table.cell(panel, 0, 11, note, text_color=valid ? color.silver : color.orange, text_size=size.small)
+
+// Execute on every bar so all currencies and nested contexts are warmed historically.
+for i = 0 to 7
+    string symbol = array.get(symbols, i)
+    Snapshot data = na
+    if valid
+        data := request.security(symbol, entryTf, f_previousSnapshot(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on, ignore_invalid_symbol=true)
+    bool available = not na(data)
+    int stamp = available ? data.closedAt : na
+    int state = available ? data.status : 0
+    float ageMinutes = na(stamp) ? na : math.max(0, (timenow - stamp) / 60000.0)
+    bool stale = not na(ageMinutes) and ageMinutes > entrySeconds / 60 * 2
+    bool eventNow = state == 3 or state == 4
+    int previousStamp = array.get(lastSeen, i)
+    bool newClose = not na(stamp) and not na(previousStamp) and stamp > previousStamp
+    if alertsEnabled and barstate.isrealtime and realtimeInitialized and newClose and eventNow and not stale
+        alert(symbol + " " + f_tfName(entryTf) + " " + f_status(state) + " / 突破価格 " + data.priceText + " / 確定 " + str.format_time(stamp, "MM/dd HH:mm", "Asia/Tokyo") + " JST（分析候補）", alert.freq_all)
+    if not na(stamp)
+        array.set(lastSeen, i, stamp)
+    if barstate.islast
+        int row = i + 3
+        bool waiting = state == 1 or state == 2
+        color ink = not valid or stale ? color.silver : eventNow ? color.yellow : state == 1 ? color.lime : state == 2 ? color.orange : color.silver
+        color bg = not stale and valid and (waiting or eventNow) ? color.rgb(38, 49, 60) : color.rgb(25, 29, 39)
+        string caption = not valid ? "設定不正" : stale ? "更新待ち" : f_status(state)
+        string freshness = not valid or na(stamp) ? "—" : stale ? "古い " + str.tostring(math.floor(ageMinutes)) + "分前" : str.tostring(math.floor(ageMinutes)) + "分前"
+        string context = available and valid ? f_direction(data.direction1) + " / " + f_direction(data.direction2) : "—"
+        table.cell(panel, 0, row, str.replace_all(symbol, "OANDA:", ""), text_color=color.white, bgcolor=bg, text_size=size.small)
+        table.cell(panel, 1, row, caption, text_color=ink, bgcolor=bg, text_size=size.small, tooltip=stale ? "最終データの状態：" + f_status(state) + "。休場・配信・チャート更新を確認してください。" : "終値確定で判定します。成立後いつでもエントリーできる意味ではありません。")
+        table.cell(panel, 2, row, available and valid ? data.priceText : "—", text_color=ink, bgcolor=bg, text_size=size.small)
+        table.cell(panel, 3, row, context, text_color=color.silver, bgcolor=bg, text_size=size.small)
+        table.cell(panel, 4, row, na(stamp) ? "—" : str.format_time(stamp, "MM/dd HH:mm", "Asia/Tokyo"), text_color=color.silver, bgcolor=bg, text_size=size.small)
+        table.cell(panel, 5, row, freshness, text_color=stale ? color.orange : color.silver, bgcolor=bg, text_size=size.small)
+
+if barstate.isrealtime
+    realtimeInitialized := true

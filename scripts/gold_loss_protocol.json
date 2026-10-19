@@ -1,0 +1,47 @@
+{
+  "modes": [
+    "baseline",
+    "failed_1",
+    "failed_2",
+    "failed_3",
+    "stalled_3",
+    "stalled_6",
+    "body_max_2",
+    "body_max_3",
+    "adx_rising",
+    "adx_max_40",
+    "distance_max_4",
+    "distance_max_6"
+  ],
+  "periods": [
+    [
+      2010,
+      2018
+    ],
+    [
+      2019,
+      2022
+    ],
+    [
+      2023,
+      2024
+    ],
+    [
+      2025,
+      2026
+    ]
+  ],
+  "minimum_counts": [
+    250,
+    100,
+    50,
+    50
+  ],
+  "selection": "Maximum minimum development PF, then validation mean R; counts required",
+  "adoption": "PF > 1 and mean R > 0 every period, development PF improves in both periods, doubled spread total R improves",
+  "previously_inspected_evaluation": true,
+  "no_reselection": true,
+  "unchanged": "XAUUSD 1H, next open, 06-16, 20 exit, 5-bar cooldown, TP 3ATR SL 1.5ATR",
+  "failed": "Close back inside original 55-bar boundary within first N bars; next open exit",
+  "stalled": "Negative liquidation P/L at a close after N bars; next open exit"
+}

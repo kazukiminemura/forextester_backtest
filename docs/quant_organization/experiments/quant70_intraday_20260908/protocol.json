@@ -1,0 +1,119 @@
+{
+  "experiment_id": "quant70_intraday_20260908",
+  "status": "SPEC_FROZEN",
+  "history_directory": "C:\\ForexTester6\\data\\History",
+  "symbols": [
+    "AUDUSD",
+    "EURUSD",
+    "GBPUSD",
+    "NZDUSD",
+    "USDCHF",
+    "USDJPY",
+    "AUDJPY",
+    "CHFJPY",
+    "EURCHF",
+    "GBPCHF",
+    "GBPJPY"
+  ],
+  "timeframe": "15m",
+  "trend": "confirmed_4h_pivots",
+  "candidate_budget": 12,
+  "baseline": "Non-selectable comparator: every full-hour 15m bar close in confirmed 4H direction; same 208-bar warmup and fills. Report in addition to 12 candidates and 12 matched controls.",
+  "search_space": {
+    "day_pullback": {
+      "min_displacement_adr": [
+        0.2,
+        0.4
+      ],
+      "max_consumed_adr": [
+        0.7,
+        0.9
+      ],
+      "trigger": "EMA20 recross"
+    },
+    "previous_day_failed_break": {
+      "penetration_atr": [
+        0,
+        0.1
+      ],
+      "max_consumed_adr": [
+        0.7,
+        0.9
+      ],
+      "trigger": "prior complete calendar day extreme sweep/reclaim, CLV70%, opposite-day progress>=0.2ADR and open not recovered"
+    },
+    "opening_range_retest": {
+      "tolerance_atr": [
+        0,
+        0.1
+      ],
+      "max_consumed_adr": [
+        0.7,
+        0.9
+      ],
+      "trigger": "00:00-04:00 complete opening range, close breakout then retest 1-4 bars later"
+    }
+  },
+  "periods": {
+    "train": [
+      "2010-01-01",
+      "2019-01-01"
+    ],
+    "validation": [
+      "2019-01-01",
+      "2023-01-01"
+    ],
+    "confirmation": [
+      "2023-01-01",
+      "2025-01-01"
+    ],
+    "recent_reference": [
+      "2025-01-01",
+      "2026-07-01"
+    ]
+  },
+  "period_semantics": "inclusive start, exclusive end; each period starts flat; last bar forced close included in net win rate",
+  "prior_exposure": "All 2010-2022 periods were evaluated in the previous rejected quant70 experiment; this is a new user-requested hypothesis iteration, not untouched out-of-sample evidence. Later periods also seen in older research; never certify untouched holdout.",
+  "execution": {
+    "stop_atr": 2,
+    "reward_risk_ratio": 1,
+    "full_exit": true,
+    "signal": "confirmed close",
+    "entry": "next observed open only when gap <= 15 minutes",
+    "stop": "signal close +/- 2 ATR; short stop includes spread",
+    "target": "one initial risk from actual entry including entry slippage",
+    "intrabar": "opening gap first, then adverse stop-first for dual touch",
+    "tp_gap": "target price, no favorable improvement",
+    "spread": "instrument metadata fixed spread",
+    "slippage_pips_each_side": 0.1,
+    "commission": "metadata commission per lot each side; reject nonzero until currency interpretation verified",
+    "swap": "unmodelled; no live approval",
+    "max_positions": "one per symbol; up to 11 aggregate",
+    "risk": "fixed 0.25% of reference starting capital per trade, normalized R; realized-only DD"
+  },
+  "gates": {
+    "net_win_rate_pct": 70,
+    "profit_factor": 1.5,
+    "expectancy_r_positive": true,
+    "min_train_trades": 400,
+    "min_validation_trades": 200,
+    "min_confirmation_trades": 100,
+    "min_recent_trades": 75,
+    "min_trades_per_month": 3,
+    "min_trades_each_pair_train": 20,
+    "min_trades_each_pair_other": 10,
+    "min_positive_pairs": 8,
+    "max_realized_drawdown_pct": 10
+  },
+  "selection": "Only candidates meeting all train and validation gates qualify. Pick one by validation Wilson lower bound, then PF, then name. If none qualify, do not inspect confirmation/recent outcomes and do not export Pine. Additionally require strictly higher net win rate and expectancy than the matched comparator in BOTH train and validation; otherwise reject. These are descriptive improvements, not a statistical significance guarantee.",
+  "stress": "Only selected candidate: spread x1.5, slippage 0.2 pips per side. Require positive expectancy and PF >=1.15 on confirmation/recent; no retuning.",
+  "data_quality": "monotonic unique aligned bars, finite OHLC consistency, every period edge within 7 days; report >7day interior gaps; abort on those gaps",
+  "live_trading_authorized": false,
+  "comparator_budget": 12,
+  "hypothesis": "Condition entries on causally observed intraday direction, prior-day levels, opening-range sequence and consumed historical daily range; test benefit against matched state-gate ablations.",
+  "day_definition": "Source-naive calendar date 00:00; broker timezone/DST unverified. Never label these as JST/UTC/New York trading days. Current day needs a 00:00 bar and consecutive 15m bars through signal. Prior-day levels require previous calendar date with all 96 bars. ADR20 uses 20 completed 96-bar days, excludes today. Initial range uses completed 00:00-04:00 only. Signal times 02:00<=bar time<20:00; opening-range entries after 04:00.",
+  "comparison": "One non-selectable matched ablation per candidate removes only intraday direction/progress/consumed-range gates. Structural entry triggers, previous-day levels, opening range sequence, time and data-quality gates remain unchanged. Duplicate ablation behavior across parameter variants is allowed and disclosed.",
+  "frozen_at": "2026-09-08 before this experiment performance evaluation",
+  "data_manifest": "agent_runs/quant70_intraday_20260908/data_manifest.json",
+  "code_identifier": "agent_runs/quant70_intraday_20260908/code_hashes.json"
+}

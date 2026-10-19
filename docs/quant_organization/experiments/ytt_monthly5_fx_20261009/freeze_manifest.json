@@ -1,0 +1,21 @@
+{
+  "experiment_id": "ytt_monthly5_fx_20261009",
+  "frozen_at": "2026-10-09T18:30:44.544151+09:00",
+  "pre_run_tests": "26 passed, exit0; director/validator/auditor",
+  "files": {
+    "docs/quant_organization/experiments/ytt_monthly5_fx_20261009/protocol.json": "51fc8fc38fe54e58b9d3bfef38f1e430b9fe3916cac4ba1163f12a5170597282",
+    "docs/quant_organization/experiments/ytt_monthly5_fx_20261009/hypothesis.md": "9880a097785f26d518a4495d33994b86e25d9c529aff7234b3921d9bcf1eb679",
+    "docs/quant_organization/experiments/ytt_monthly5_fx_20261009/data_inventory.md": "ed36911cdf63161f6494683edad95d191c420e4ef1de81316741fbbceac86fb5",
+    "docs/quant_organization/experiments/ytt_monthly5_fx_20261009/plan.md": "ae32a2679829ce8aa0be820325587be66755427b7c968081cb9416c7a81dce81",
+    "scripts/research_ytt_monthly5_fx.py": "3a3aa5546e31cd304e48cfd46026f5bbb2c4c03be816c8c984a9c87266aa156f",
+    "tests/test_ytt_monthly5_fx.py": "f46edff7b9e4eae8e7cc3a887a074faf45b037d4aa8fe6a2cf17371bf3868c07"
+  },
+  "reference_inputs": {
+    "core_code": "scripts/research_ytt_profit_feasibility.py",
+    "core_sha256": "7d47206b4d2ec522559ab919774236b1a3090a7f27cf7ffda731db7af122667a",
+    "baseline_result": "agent_runs/ytt_profit_feasibility_20261009/results.json",
+    "baseline_result_sha256": "11326baf75067e89c9a027bce57613b0d055575a9f9cb6b7a8b6d10f7116c2a5",
+    "baseline_manifest": "agent_runs/ytt_profit_feasibility_20261009/run_manifest.json",
+    "baseline_manifest_sha256": "7ea844440746a5fd4f91c7c7f5caf016ceaa0fa09706d87a8b08d307496e2914"
+  }
+}

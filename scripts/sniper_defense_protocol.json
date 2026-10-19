@@ -1,0 +1,15 @@
+{
+  "modes": [
+    "breakeven_tp1",
+    "half_tp1",
+    "half_tp1_breakeven"
+  ],
+  "tp1_atr": 1,
+  "tp3_atr": 3,
+  "stop_atr": 1.5,
+  "deadline_hours": 4,
+  "stop_change": "Next bar only; stop first if ambiguous",
+  "selection": "Choose maximum minimum PF on 2010-2018 and 2019-2022 only; no entry filtering",
+  "baseline_audit": "Reconstruct each original cost-aware trade and require equality before testing exits",
+  "limitations": "Hypotheses motivated by original loss diagnostics; later periods repeatedly viewed; not untouched holdout"
+}

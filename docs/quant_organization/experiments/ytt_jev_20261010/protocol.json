@@ -1,0 +1,105 @@
+{
+  "experiment_id": "ytt_jev_20261010",
+  "status": "SPEC_FROZEN",
+  "hypothesis": "hypothesis.md",
+  "baseline": "AIなし・同じ1本待機、同SL、同RR。元即時RR1は参考",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "GBPUSD"
+  ],
+  "source_directory": "agent_runs/ytt_monthly5_fx_20261009",
+  "entry_timeframe": "M15",
+  "higher_timeframe_rules": "元dw_m15機械近似。保存時計D/W確定方向合意、シグナル時の方向を1本待機中に再評価しない",
+  "entry_rules": "元確定高安終値突破、stop距離が確定価格から正でない8候補はdeterministic_invalidとしてAIとdelay_controlから除外。reference originalは元候補を保持",
+  "exit_rules": {
+    "reward_risk_ratios": [
+      1,
+      1.5,
+      2
+    ],
+    "same_stop_for_all_rr": true,
+    "tp_extended": true,
+    "full_exit": true,
+    "max_bars": 96,
+    "daily_clear_source": "23:45 source close",
+    "fill": "core fill_bar、SL優先、gap/欠損を保存"
+  },
+  "periods": {
+    "training": [
+      "2020-01-01",
+      "2023-01-01"
+    ],
+    "validation": [
+      "2023-01-01",
+      "2025-01-01"
+    ],
+    "final_confirmation": "NOT_PERFORMED_NO_PRISTINE_HOLDOUT",
+    "latest_descriptive": [
+      "2025-01-01",
+      "2026-01-01"
+    ]
+  },
+  "prior_exposure": "全期間既閲覧、真holdoutなし",
+  "candidate_budget": 3,
+  "search_space": "固定Jev閾値0.5とRR3値。既存BB応答流用/結果後閾値探索なし",
+  "api": {
+    "endpoint": "https://api.typesafe.ai/v1/systemone",
+    "model": "jev-1.13.0",
+    "question": "runner内QUESTION・freeze.jsonへ全文固定",
+    "allowlist": "24本確定OHLCをMTR正規化、D/W方向、gap、突破価格、SL距離。銘柄名/日付/口座/未来値/損益は送らない",
+    "delay_bars": 1,
+    "latency_limit_seconds": 900,
+    "authorized_yen": 100,
+    "operational_cap_yen": 90,
+    "usd_per_million_input": 0.042,
+    "safety_yen_per_usd": 200,
+    "max_token_reservation": 65536,
+    "success_settlement": "validated response usageのみ。失敗/不明/timeoutは全予約保持",
+    "stop_after_cumulative_failures": 3,
+    "no_retries": true,
+    "fixed_live_output": "agent_runs/ytt_jev_20261010",
+    "max_calls_per_command": 10000,
+    "execution_order": "結果非依存: 各通貨の時刻中点を再帰分割して分散、通貨round-robin",
+    "calls_initial_smoke": 25
+  },
+  "cost_and_fill_model": {
+    "spread_pips": {
+      "USDJPY": 1.2,
+      "EURUSD": 1.1,
+      "GBPUSD": 1.4
+    },
+    "slippage_each_side_pips": 0.2,
+    "cost_multipliers": [
+      1,
+      2
+    ],
+    "commission": 0,
+    "swap": "NOT_INCLUDED",
+    "bid_ask_replay": false,
+    "api_fees_in_trading_pnl": "EXCLUDED_REPORTED_SEPARATELY; adoption cash gate requires subsequent deduction"
+  },
+  "position_sizing_and_currency": {
+    "usdjpy_only_yen_account": true,
+    "initial_yen": 1000000,
+    "stop_equity_yen": 900000,
+    "risk_fraction": 0.005,
+    "quantity_step": 1000,
+    "leverage_cap": 25,
+    "resets": false,
+    "other_symbols": "R diagnostic only, no JPY portfolio claim"
+  },
+  "acceptance_gates": {
+    "required": "全母候補応答有効/後期selectionhash照合/fees控除口座/独立CI・監査",
+    "each_later": "100決済以上、3通貨中2通貨で各100件PF>=1.2平均R>0、費用2倍合算正",
+    "improvement": "同待機対照との元候補当たり期待値差月block95%CI下限>0。勝率/payoff比は別評価",
+    "no_stop": "100万円から90万円に停止しない",
+    "training_screen": "all covered、合算PF>=1.2平均R>0、2倍費用合算>0、2/3通貨黒字、同RR同待機対照より改善"
+  },
+  "incomplete_disposition": "NEEDS_EVIDENCE、partial vs covered_controlは記述診断のみ",
+  "all_pass_disposition": "FURTHER_FRESH_VALIDATION_REQUIRED; no live trading approval",
+  "code_identifier": "scripts/research_ytt_jev.py",
+  "live_trading_authorized": false,
+  "frozen_at": "2026-10-10T10:29:18.328708+09:00",
+  "code_sha256": "3d9e0f34507019e30265e5aa723f5f672cd3dbbac7785419be037c9d3d1c591a"
+}

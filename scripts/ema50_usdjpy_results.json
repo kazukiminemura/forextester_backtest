@@ -1,0 +1,298 @@
+{
+  "symbol": "USDJPY",
+  "timeframe": "15m",
+  "ema_period": 50,
+  "rule": "Close crosses EMA50; buy above/sell below; reverse next available bar open; final position closed at final close",
+  "warmup_bars": 250,
+  "spread_pips": 1.2,
+  "commission_per_lot_per_side": 0.0,
+  "swap_included": false,
+  "slippage_included": false,
+  "start": "2003-05-06 00:00:00",
+  "end": "2026-07-17 20:45:00",
+  "bars": 576229,
+  "overall": {
+    "trades": 50119,
+    "wins": 8370,
+    "losses": 41682,
+    "breakevens": 67,
+    "win_rate_pct": 16.70025339691534,
+    "profit_factor": 0.7745792423076896,
+    "net_pips": -69659.50000000242,
+    "mean_pips": -1.3898820806481058
+  },
+  "by_direction": {
+    "long": {
+      "trades": 25060,
+      "wins": 4268,
+      "losses": 20757,
+      "breakevens": 35,
+      "win_rate_pct": 17.031125299281722,
+      "profit_factor": 0.7887518652088644,
+      "net_pips": -32533.10000000121,
+      "mean_pips": -1.2982083000798568
+    },
+    "short": {
+      "trades": 25059,
+      "wins": 4102,
+      "losses": 20925,
+      "breakevens": 32,
+      "win_rate_pct": 16.369368290833634,
+      "profit_factor": 0.7604990978333099,
+      "net_pips": -37126.40000000121,
+      "mean_pips": -1.4815595195339482
+    }
+  },
+  "yearly_by_exit": {
+    "2003": {
+      "trades": 1620,
+      "wins": 284,
+      "losses": 1333,
+      "breakevens": 3,
+      "win_rate_pct": 17.530864197530864,
+      "profit_factor": 0.6752448648346054,
+      "net_pips": -2901.2000000000767,
+      "mean_pips": -1.7908641975309114
+    },
+    "2004": {
+      "trades": 2495,
+      "wins": 454,
+      "losses": 2035,
+      "breakevens": 6,
+      "win_rate_pct": 18.196392785571142,
+      "profit_factor": 0.7393131741062664,
+      "net_pips": -3888.9000000001643,
+      "mean_pips": -1.5586773547094848
+    },
+    "2005": {
+      "trades": 2384,
+      "wins": 424,
+      "losses": 1951,
+      "breakevens": 9,
+      "win_rate_pct": 17.78523489932886,
+      "profit_factor": 0.6651466299246681,
+      "net_pips": -4787.700000000119,
+      "mean_pips": -2.0082634228188416
+    },
+    "2006": {
+      "trades": 2367,
+      "wins": 358,
+      "losses": 2006,
+      "breakevens": 3,
+      "win_rate_pct": 15.124630333755809,
+      "profit_factor": 0.6668291803300561,
+      "net_pips": -4988.600000000058,
+      "mean_pips": -2.107562315166902
+    },
+    "2007": {
+      "trades": 2109,
+      "wins": 363,
+      "losses": 1745,
+      "breakevens": 1,
+      "win_rate_pct": 17.21194879089616,
+      "profit_factor": 0.7533811963774961,
+      "net_pips": -3311.4000000000983,
+      "mean_pips": -1.5701280227596484
+    },
+    "2008": {
+      "trades": 1947,
+      "wins": 363,
+      "losses": 1584,
+      "breakevens": 0,
+      "win_rate_pct": 18.64406779661017,
+      "profit_factor": 0.8106116552478777,
+      "net_pips": -3513.400000000053,
+      "mean_pips": -1.8045197740113266
+    },
+    "2009": {
+      "trades": 2000,
+      "wins": 353,
+      "losses": 1647,
+      "breakevens": 0,
+      "win_rate_pct": 17.65,
+      "profit_factor": 0.8858400455953073,
+      "net_pips": -1662.500000000108,
+      "mean_pips": -0.831250000000054
+    },
+    "2010": {
+      "trades": 2169,
+      "wins": 366,
+      "losses": 1803,
+      "breakevens": 0,
+      "win_rate_pct": 16.874135546334717,
+      "profit_factor": 0.6338396680448947,
+      "net_pips": -4968.1000000000895,
+      "mean_pips": -2.2905025357307927
+    },
+    "2011": {
+      "trades": 2414,
+      "wins": 357,
+      "losses": 2054,
+      "breakevens": 3,
+      "win_rate_pct": 14.788732394366198,
+      "profit_factor": 0.5231299393493798,
+      "net_pips": -5189.300000000082,
+      "mean_pips": -2.149668599834334
+    },
+    "2012": {
+      "trades": 2055,
+      "wins": 313,
+      "losses": 1739,
+      "breakevens": 3,
+      "win_rate_pct": 15.231143552311435,
+      "profit_factor": 0.7226347038189237,
+      "net_pips": -2237.7000000000903,
+      "mean_pips": -1.0889051094890951
+    },
+    "2013": {
+      "trades": 1954,
+      "wins": 341,
+      "losses": 1612,
+      "breakevens": 1,
+      "win_rate_pct": 17.45138178096213,
+      "profit_factor": 0.9895247411755059,
+      "net_pips": -128.50000000006918,
+      "mean_pips": -0.06576253838283991
+    },
+    "2014": {
+      "trades": 2171,
+      "wins": 339,
+      "losses": 1830,
+      "breakevens": 2,
+      "win_rate_pct": 15.614923998157531,
+      "profit_factor": 0.8080528013019437,
+      "net_pips": -1910.7000000000737,
+      "mean_pips": -0.8801013357899925
+    },
+    "2015": {
+      "trades": 2106,
+      "wins": 357,
+      "losses": 1745,
+      "breakevens": 4,
+      "win_rate_pct": 16.951566951566953,
+      "profit_factor": 0.7338083694507657,
+      "net_pips": -3261.300000000065,
+      "mean_pips": -1.5485754985755296
+    },
+    "2016": {
+      "trades": 1987,
+      "wins": 357,
+      "losses": 1629,
+      "breakevens": 1,
+      "win_rate_pct": 17.966784096628082,
+      "profit_factor": 0.963578621116194,
+      "net_pips": -524.1000000000826,
+      "mean_pips": -0.26376446904885886
+    },
+    "2017": {
+      "trades": 2066,
+      "wins": 333,
+      "losses": 1730,
+      "breakevens": 3,
+      "win_rate_pct": 16.11810261374637,
+      "profit_factor": 0.8117792586089844,
+      "net_pips": -2358.5000000001473,
+      "mean_pips": -1.1415779283640597
+    },
+    "2018": {
+      "trades": 2193,
+      "wins": 353,
+      "losses": 1836,
+      "breakevens": 4,
+      "win_rate_pct": 16.096671226630185,
+      "profit_factor": 0.6524200978594344,
+      "net_pips": -3885.7000000000326,
+      "mean_pips": -1.7718650250798142
+    },
+    "2019": {
+      "trades": 2287,
+      "wins": 314,
+      "losses": 1968,
+      "breakevens": 5,
+      "win_rate_pct": 13.729777000437254,
+      "profit_factor": 0.5708443564836255,
+      "net_pips": -4250.100000000097,
+      "mean_pips": -1.8583734149541307
+    },
+    "2020": {
+      "trades": 2228,
+      "wins": 352,
+      "losses": 1874,
+      "breakevens": 2,
+      "win_rate_pct": 15.798922800718133,
+      "profit_factor": 0.7880184792608192,
+      "net_pips": -2119.9000000001247,
+      "mean_pips": -0.9514811490126233
+    },
+    "2021": {
+      "trades": 2055,
+      "wins": 337,
+      "losses": 1713,
+      "breakevens": 5,
+      "win_rate_pct": 16.399026763990268,
+      "profit_factor": 0.705399602936418,
+      "net_pips": -2552.300000000068,
+      "mean_pips": -1.2419951338199844
+    },
+    "2022": {
+      "trades": 1994,
+      "wins": 364,
+      "losses": 1626,
+      "breakevens": 4,
+      "win_rate_pct": 18.254764292878637,
+      "profit_factor": 0.926695447702695,
+      "net_pips": -1178.4000000001029,
+      "mean_pips": -0.5909729187563204
+    },
+    "2023": {
+      "trades": 2060,
+      "wins": 356,
+      "losses": 1702,
+      "breakevens": 2,
+      "win_rate_pct": 17.281553398058254,
+      "profit_factor": 0.8515610036391403,
+      "net_pips": -2402.500000000171,
+      "mean_pips": -1.166262135922413
+    },
+    "2024": {
+      "trades": 2039,
+      "wins": 357,
+      "losses": 1680,
+      "breakevens": 2,
+      "win_rate_pct": 17.508582638548308,
+      "profit_factor": 0.8693069306930612,
+      "net_pips": -2290.2000000001663,
+      "mean_pips": -1.1231976459049369
+    },
+    "2025": {
+      "trades": 2115,
+      "wins": 385,
+      "losses": 1727,
+      "breakevens": 3,
+      "win_rate_pct": 18.203309692671393,
+      "profit_factor": 0.8747097634428284,
+      "net_pips": -2180.00000000018,
+      "mean_pips": -1.0307328605201798
+    },
+    "2026": {
+      "trades": 1304,
+      "wins": 190,
+      "losses": 1113,
+      "breakevens": 1,
+      "win_rate_pct": 14.570552147239264,
+      "profit_factor": 0.6278744744321437,
+      "net_pips": -3168.5000000000996,
+      "mean_pips": -2.429831288343635
+    }
+  },
+  "recent_2023_onward_by_exit": {
+    "trades": 7518,
+    "wins": 1288,
+    "losses": 6222,
+    "breakevens": 8,
+    "win_rate_pct": 17.13221601489758,
+    "profit_factor": 0.8315879160321131,
+    "net_pips": -10041.200000000617,
+    "mean_pips": -1.3356211758447216
+  }
+}

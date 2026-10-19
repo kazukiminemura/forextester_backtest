@@ -6,7 +6,9 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = (ROOT / 'scripts/tradingview/bb3_context_pf_indicator.pine').read_text(encoding='utf-8')
+# Original chart/PF contracts remain scoped to the unchanged chart implementation.
+# The additive scanner has separate contracts in test_bb3_context_scanner.py.
+SOURCE = (ROOT / 'scripts/tradingview/bb3_context_pf_indicator.pine').read_text(encoding='utf-8').split('// Multi-symbol opportunity scanner')[0].rstrip()
 
 
 def reference_fill(side, opening, high, low, target, stop):
@@ -157,7 +159,7 @@ def test_preparation_old_new_exhaustive_reference_equivalence():
 
 
 def test_compact_structure_and_safety_guards():
-    assert len(SOURCE.splitlines()) <= 235
+    assert len(SOURCE.split('// Latest trade price guides')[0].rstrip().splitlines()) <= 235
     assert SOURCE.count('bool gap =') == 1
     assert SOURCE.count('table.cell(') == 2
     assert SOURCE.count('tableRow(notice,') == 9
@@ -207,3 +209,80 @@ def test_wick_guard_covers_preparation_and_retouch():
                   'if both or manualPause or explained or wickBlocked',
                   'wickBlocked ? "長いヒゲ"']:
         assert token in SOURCE
+
+
+@pytest.mark.parametrize('side,pip,price', [(1, .01, 150.), (-1, .01, 150.),
+                                          (1, .0001, 1.1), (-1, .0001, 1.1)])
+@pytest.mark.parametrize('distance,allowed', [(2.9, False), (3., True), (3.1, True),
+                                            (-5., False), (0., False)])
+def test_center_distance_boundary_reference(side, pip, price, distance, allowed):
+    basis = price + side * distance * pip
+    rejected = side * (basis - price) / pip + 1e-9 < 3.
+    assert (not rejected) == allowed
+    # A rejected candidate consumes preparation and cannot queue an entry.
+    reason = 'distance' if rejected else ''
+    signal = side if not reason else 0
+    armed = 0 if reason or signal else side
+    assert armed == 0
+    assert signal == (side if allowed else 0)
+
+
+def test_center_distance_guard_precedes_signal_and_clears_preparation():
+    assert 'minCenterPips = input.float(3.0,' in SOURCE
+    guard = 'reason := armed * (basis - close) / pipSize + 1e-9 < minCenterPips ? "中央線までの幅不足" : ""'
+    signal = 'signalSide := reason == "" ? armed : 0'
+    reset = 'if reason != "" or signalSide != 0\n            armed := 0\n            armedBar := na'
+    assert guard in SOURCE and signal in SOURCE and reset in SOURCE
+    assert SOURCE.index(guard) < SOURCE.index(signal) < SOURCE.index(reset)
+    assert SOURCE.index(reset) < SOURCE.index('if barstate.isconfirmed and signalSide != 0')
+
+
+def test_main_pf_panel_hidden_by_default_without_disabling_accounting():
+    assert 'showMainPanel = input.bool(false, "メイン銘柄のPF集計を表示", group="表示")' in SOURCE
+    assert 'if barstate.islast and showMainPanel\n    tableRow(notice, 0,' in SOURCE
+    # Visibility must gate drawing only, not fills, totals or chart signals.
+    assert SOURCE.count('showMainPanel') == 2
+    assert SOURCE.index('grossProfit +=') < SOURCE.index('bool showMainPanel')
+    assert SOURCE.index('pendingSide := signalSide') < SOURCE.index('bool showMainPanel')
+
+
+def test_price_guides_are_labeled_display_only_and_keep_historical_plots():
+    guides = SOURCE.split('// Latest trade price guides', 1)[1]
+    assert 'showPriceGuides = input.bool(true' in guides
+    assert guides.count('priceGuide(guide') == 3
+    for token in ['guideDirection + "Entry" + guidePhase, color.aqua',
+                  '"中央線決済・利益側ではない" : "利確・中央線"',
+                  'guideDirection + "損切り" + guidePhase, color.red',
+                  'str.tostring(price, format.mintick)',
+                  'if showPriceGuides and not na(price)',
+                  'tradeSide != 0 ? targetPrice : guidePending ? pendingTarget : na',
+                  'tradeSide != 0 ? stopPrice : guidePending and useStop',
+                  '（予定・信号終値基準）', '（仮表示・次足始値）', '（仮想保有中）']:
+        assert token in guides
+    assert 'latestEntry' not in guides and '直近決済済み' not in guides
+    assert 'guideSide == 1 ? "BUY " : "SELL "' in guides
+    assert 'bar_index > pendingBar ? open : close' in guides
+    assert 'guideSide * (guideTarget - guideEntry) <= 0' in guides
+    assert 'line.set_color(guide, ink)' in guides
+    assert 'label.set_color(tag, ink)' in guides
+    for forbidden in ['entryPrice :=', 'targetPrice :=', 'stopPrice :=',
+                      'pendingSide :=', 'grossProfit +=', 'grossLoss +=']:
+        assert forbidden not in guides
+    assert SOURCE.count('style=plot.style_linebr') == 3
+    assert 'max_lines_count=10' in SOURCE
+
+
+@pytest.mark.parametrize('side', [1, -1])
+def test_guides_follow_current_order_not_last_closed_trade_reference(side):
+    def levels(position, pending, later, use_stop=True):
+        entry = 100. if position else (101. if later else 99.) if pending else None
+        target = 100. + side * 5 if position or pending else None
+        stop = entry - side * 2 if entry is not None and use_stop else None
+        return entry, target, stop
+    assert levels(0, 0, False) == (None, None, None)  # No settled-trade carryover.
+    assert levels(0, side, False)[0] == 99.  # Signal close is an explicit estimate.
+    assert levels(0, side, True)[0] == 101.  # Next actual open, not old entry.
+    assert levels(side, 0, True)[0] == 100.  # Recorded position overrides estimates.
+    assert levels(0, side, True, False)[2] is None
+    entry, target, stop = levels(0, side, True)
+    assert side * (target - entry) > 0 and side * (entry - stop) > 0

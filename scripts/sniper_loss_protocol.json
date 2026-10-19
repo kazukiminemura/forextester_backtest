@@ -1,0 +1,64 @@
+{
+  "timeframe_minutes": 60,
+  "symbols": [
+    "AUDUSD",
+    "EURUSD",
+    "GBPUSD",
+    "NZDUSD",
+    "USDCHF",
+    "USDJPY",
+    "AUDJPY",
+    "CHFJPY",
+    "EURCHF",
+    "GBPCHF",
+    "GBPJPY",
+    "XAUUSD"
+  ],
+  "periods": [
+    [
+      2010,
+      2018
+    ],
+    [
+      2019,
+      2022
+    ],
+    [
+      2023,
+      2024
+    ],
+    [
+      2025,
+      2026
+    ]
+  ],
+  "max_spread_atr": [
+    100,
+    0.1,
+    0.05
+  ],
+  "min_ema_distance_atr": [
+    0,
+    1,
+    2
+  ],
+  "min_directional_rsi": [
+    52,
+    55,
+    60
+  ],
+  "candidates": 27,
+  "baseline": "Original Pine setup edges, next open, SL1.5ATR TP3ATR, 4h exit, 06-16h, cooldown5",
+  "selection": "Development only: min PF, then min mean R; prefer candidates improving loss rate/PF/meanR in both periods",
+  "counts": [
+    500,
+    200,
+    100,
+    100
+  ],
+  "min_retention": 0.3,
+  "min_development_symbol_coverage": 6,
+  "success": "Every period: PF and meanR above baseline; loss rate below baseline; count and retention gates",
+  "profitable": "Separate flag: PF>1 in every period",
+  "limitations": "Later aggregate periods previously inspected; not untouched holdout. Constant spread and assumed slippage; broker time zone unknown."
+}

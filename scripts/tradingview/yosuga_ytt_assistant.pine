@@ -1,0 +1,365 @@
+//@version=6
+// Public-feature approximation; no orders or performance claims. Runtime verification is documented separately.
+indicator("よすが式 分析補助（YTT公開機能の近似）", overlay=true, max_lines_count=150, max_labels_count=150, dynamic_requests=true)
+
+string gAuto = "確定高安・オートライン（近似）"
+int leftBars = input.int(2, "左側ピボット本数", minval=1, maxval=20, group=gAuto)
+int rightBars = input.int(2, "右側確定本数", minval=1, maxval=20, group=gAuto)
+int keepLevels = input.int(12, "水平線の最大保持件数", minval=5, maxval=120, group=gAuto)
+bool deleteBroken = input.bool(false, "終値で突破した水平線を削除", group=gAuto)
+bool showChannel = input.bool(true, "直近の平行チャネル（近似）", group=gAuto)
+
+string gCandidate = "上位足合意の突破候補（分析補助）"
+bool dailyAutoContext = input.bool(true, "日足では週足＋月足を自動使用", group=gCandidate, tooltip="日足チャートでは確定週足と確定月足を使用します。下の手動設定を使う場合はOFFにしてください。")
+string candidateTf1 = input.timeframe("1D", "合意する上位足1", group=gCandidate, tooltip="既定は日足＋週足。形成中の上位足は使いません。")
+string candidateTf2 = input.timeframe("1W", "合意する上位足2", group=gCandidate)
+string effectiveCandidateTf1 = timeframe.isdaily and dailyAutoContext ? "1W" : candidateTf1
+string effectiveCandidateTf2 = timeframe.isdaily and dailyAutoContext ? "1M" : candidateTf2
+
+string gManual = "手動シナリオ（注文ではありません）"
+bool manualEnabled = input.bool(false, "手動シナリオを表示", group=gManual)
+string manualSide = input.string("Long", "手動方向", options=["Long", "Short"], group=gManual)
+float entryInput = input.price(0, "Entry", confirm=true, inline="entry", group=gManual)
+int scenarioTime = input.time(0, "起点", confirm=true, inline="entry", group=gManual)
+float stopInput = input.price(0, "SL", confirm=true, group=gManual)
+float rewardRatio = input.float(1, "TP距離 / SL距離（RR）", minval=0.1, maxval=10, step=0.1, group=gManual)
+float capital = input.float(0, "口座資金（口座通貨）", minval=0, group=gManual)
+float riskPct = input.float(1, "許容損失（資金の%）", minval=0.01, maxval=100, group=gManual)
+float valuePerPrice = input.float(0, "1数量・価格1変動の損益（口座通貨）", minval=0, group=gManual,
+     tooltip="契約仕様と通貨換算を反映した手入力係数。0では数量を計算しません。FXロットとの暗黙換算はありません。")
+float quantityStep = input.float(1, "数量刻み", minval=0.00000001, group=gManual)
+
+f_price(float value) =>
+    na(value) ? "—" : str.tostring(value, format.mintick)
+
+f_direction(int value) =>
+    value == 1 ? "上昇" : value == -1 ? "下降" : "未判定"
+
+// Updates in the requested context. Consumers expose only confirmed states.
+f_state() =>
+    float ph = ta.pivothigh(high, leftBars, rightBars)
+    float pl = ta.pivotlow(low, leftBars, rightBars)
+    var float lastHigh = na
+    var float priorHigh = na
+    var float lastLow = na
+    var float priorLow = na
+    var int direction = 0
+    bool upBreak = not na(lastHigh) and close > lastHigh and close[1] <= lastHigh
+    bool downBreak = not na(lastLow) and close < lastLow and close[1] >= lastLow
+    if upBreak and not downBreak
+        direction := 1
+    else if downBreak and not upBreak
+        direction := -1
+    if not na(ph)
+        priorHigh := lastHigh
+        lastHigh := ph
+    if not na(pl)
+        priorLow := lastLow
+        lastLow := pl
+    string highText = na(priorHigh) ? "H?" : lastHigh > priorHigh ? "HH" : lastHigh < priorHigh ? "LH" : "EH"
+    string lowText = na(priorLow) ? "L?" : lastLow > priorLow ? "HL" : lastLow < priorLow ? "LL" : "EL"
+    [direction, lastHigh, lastLow, highText + "/" + lowText]
+
+f_previousState() =>
+    [d, h, l, s] = f_state()
+    // Every tuple component is offset. lookahead_on never reads a developing HTF bar.
+    [d[1], h[1], l[1], s[1]]
+
+[currentDirection, currentHigh, currentLow, currentStructure] = f_state()
+var int confirmedDirection = 0
+var float confirmedHigh = na
+var float confirmedLow = na
+var string confirmedStructure = "H?/L?"
+bool directionChanged = barstate.isconfirmed and currentDirection != confirmedDirection
+float candidatePriorHigh = confirmedHigh
+float candidatePriorLow = confirmedLow
+if barstate.isconfirmed
+    confirmedDirection := currentDirection
+    confirmedHigh := currentHigh
+    confirmedLow := currentLow
+    confirmedStructure := currentStructure
+
+// Refuse non-time-based charts. Smaller requested rows are disabled, never sampled as LTF.
+if barstate.isfirst and (not chart.is_standard or na(timeframe.in_seconds()))
+    runtime.error("標準の時間足ローソク足で使用してください。推奨は15分足以下です。")
+
+f_context(string tf) =>
+    int d = na
+    float h = na
+    float l = na
+    string s = "下位足は対象外"
+    if timeframe.in_seconds(tf) > timeframe.in_seconds()
+        [rd, rh, rl, rs] = request.security(syminfo.tickerid, tf, f_previousState(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on)
+        d := rd
+        h := rh
+        l := rl
+        s := rs
+    else if timeframe.in_seconds(tf) == timeframe.in_seconds()
+        d := confirmedDirection
+        h := confirmedHigh
+        l := confirmedLow
+        s := confirmedStructure
+    [d, h, l, s]
+
+[dM, hM, lM, sM] = f_context("1M")
+[dW, hW, lW, sW] = f_context("1W")
+[dD, hD, lD, sD] = f_context("1D")
+[d4, h4, l4, s4] = f_context("240")
+[d1, h1, l1, s1] = f_context("60")
+[d15, h15, l15, s15] = f_context("15")
+
+var array<line> levels = array.new<line>()
+var array<label> levelLabels = array.new<label>()
+var array<int> levelSides = array.new<int>()
+var array<bool> levelActive = array.new<bool>()
+
+f_addLevel(float price, int pivotTime, int side) =>
+    color c = side == 1 ? color.red : color.teal
+    string caption = (side == 1 ? "高値 " : "安値 ") + f_price(price)
+    // Start at detection, not pivot time: no line is actionable before confirmation.
+    // Always use the candles' price scale, including when the indicator is pinned elsewhere.
+    // Separate bar positions also work when a daily/weekly session has already closed.
+    array.push(levels, line.new(bar_index, price, bar_index + 1, price, xloc=xloc.bar_index, extend=extend.right, color=c, width=2, force_overlay=true))
+    array.push(levelLabels, label.new(bar_index, price, caption, xloc=xloc.bar_index,
+         style=label.style_label_left, color=color.new(c, 35), textcolor=color.white, size=size.tiny, force_overlay=true,
+         tooltip="極値時刻: " + str.format_time(pivotTime, "yyyy-MM-dd HH:mm", syminfo.timezone) + "\n検出確定: " + str.format_time(time_close, "yyyy-MM-dd HH:mm", syminfo.timezone)))
+    array.push(levelSides, side)
+    array.push(levelActive, true)
+    if array.size(levels) > keepLevels
+        line.delete(array.shift(levels))
+        label.delete(array.shift(levelLabels))
+        array.shift(levelSides)
+        array.shift(levelActive)
+
+float pivotHigh = ta.pivothigh(high, leftBars, rightBars)
+float pivotLow = ta.pivotlow(low, leftBars, rightBars)
+bool touchedLevel = false
+if barstate.isconfirmed
+    int i = array.size(levels) - 1
+    while i >= 0
+        if array.get(levelActive, i)
+            line level = array.get(levels, i)
+            float p = line.get_y1(level)
+            int side = array.get(levelSides, i)
+            touchedLevel := touchedLevel or (low <= p and high >= p)
+            bool broken = side == 1 ? close > p : close < p
+            if broken
+                if deleteBroken
+                    line.delete(array.remove(levels, i))
+                    label.delete(array.remove(levelLabels, i))
+                    array.remove(levelSides, i)
+                    array.remove(levelActive, i)
+                else
+                    array.set(levelActive, i, false)
+                    line.set_extend(level, extend.none)
+                    line.set_x2(level, bar_index + 1)
+                    line.set_style(level, line.style_dotted)
+                    label.set_text(array.get(levelLabels, i), "突破済 " + (side == 1 ? "高値 " : "安値 ") + f_price(p))
+        i -= 1
+    if not na(pivotHigh)
+        f_addLevel(pivotHigh, time[rightBars], 1)
+    if not na(pivotLow)
+        f_addLevel(pivotLow, time[rightBars], -1)
+
+// Latest channel only. Distinct pivot timestamps anchor its historical segment.
+// Anchor prices use elapsed time, including market gaps.
+var float high1 = na
+var float high2 = na
+var float low1 = na
+var float low2 = na
+var int highTime1 = na
+var int highTime2 = na
+var int lowTime1 = na
+var int lowTime2 = na
+var line channelBase = na
+var line channelParallel = na
+var label channelLabel = na
+if barstate.isconfirmed
+    if not na(pivotHigh)
+        high2 := high1
+        highTime2 := highTime1
+        high1 := pivotHigh
+        highTime1 := time[rightBars]
+    if not na(pivotLow)
+        low2 := low1
+        lowTime2 := lowTime1
+        low1 := pivotLow
+        lowTime1 := time[rightBars]
+    if showChannel and (not na(pivotHigh) or not na(pivotLow) or directionChanged)
+        // Do not erase the last valid construction while the next one is incomplete.
+        // Mark it as reference only; it does not change direction or entry conditions.
+        if not na(channelBase)
+            line.set_color(channelBase, color.gray)
+            line.set_color(channelParallel, color.gray)
+            line.set_style(channelBase, line.style_dotted)
+            line.set_style(channelParallel, line.style_dotted)
+            label.set_text(channelLabel, "前回チャネル（参考）\n現在のチャネル条件は未成立")
+            label.set_color(channelLabel, color.new(color.gray, 35))
+            label.set_textcolor(channelLabel, color.white)
+        bool rising = confirmedDirection == 1
+        float p1 = rising ? low2 : high2
+        float p2 = rising ? low1 : high1
+        int t1 = rising ? lowTime2 : highTime2
+        int t2 = rising ? lowTime1 : highTime1
+        float opposite = rising ? high1 : low1
+        int oppositeTime = rising ? highTime1 : lowTime1
+        bool ready = confirmedDirection != 0 and not na(t1) and not na(t2) and not na(oppositeTime)
+        if ready and t2 > t1 and oppositeTime >= t1 and oppositeTime <= t2
+            float slope = (p2 - p1) / (t2 - t1)
+            float width = opposite - (p1 + slope * (oppositeTime - t1))
+            // Compare prices: a price/ms slope can round to zero in Pine comparisons.
+            if (rising and p2 > p1 and width > 0) or (not rising and p2 < p1 and width < 0)
+                line.delete(channelBase)
+                line.delete(channelParallel)
+                label.delete(channelLabel)
+                float nowBase = p2 + slope * (time_close - t2)
+                // Two distinct confirmed pivot timestamps give a visible historical
+                // segment even with no right margin, including daily/weekly charts.
+                // The entire channel becomes known only at this construction bar.
+                channelBase := line.new(t1, p1, t2, p2,
+                     xloc=xloc.bar_time, extend=extend.right, color=color.orange, width=2, force_overlay=true)
+                channelParallel := line.new(t1, p1 + width, t2, p2 + width,
+                     xloc=xloc.bar_time, extend=extend.right, color=color.orange, width=2, style=line.style_dashed, force_overlay=true)
+                channelLabel := label.new(bar_index + 1, nowBase, (rising ? "上昇" : "下降") + "チャネル（近似）\n基準 " + f_price(nowBase) + " / 平行 " + f_price(nowBase + width),
+                     xloc=xloc.bar_index, style=label.style_label_left, color=color.new(color.orange, 80), textcolor=color.orange, size=size.tiny, force_overlay=true,
+                     tooltip="確定した2つの極値を時刻で接続。過去に伸びる部分も、チャネル作成時に初めて判明した参考線です。")
+
+float entry = math.round_to_mintick(entryInput)
+float stop = math.round_to_mintick(stopInput)
+bool longScenario = manualSide == "Long"
+// Recover the integer tick distance before sizing to avoid asymmetric subtraction drift.
+float distance = math.round(math.abs(entry - stop) / syminfo.mintick) * syminfo.mintick
+float target = math.round_to_mintick(entry + (longScenario ? 1 : -1) * distance * rewardRatio)
+bool validScenario = manualEnabled and scenarioTime > 0 and entry > 0 and stop > 0 and target > 0 and distance >= syminfo.mintick and
+     (longScenario ? stop < entry and target > entry : stop > entry and target < entry)
+float riskBudget = capital * riskPct / 100
+float lossPerQty = distance * valuePerPrice
+float quantity = validScenario and capital > 0 and valuePerPrice > 0 ? math.floor(riskBudget / lossPerQty / quantityStep) * quantityStep : na
+bool quantityTooSmall = not na(quantity) and quantity < quantityStep
+float plannedLoss = na(quantity) or quantityTooSmall ? na : quantity * lossPerQty
+var array<line> manualLines = array.new<line>()
+var array<label> manualLabels = array.new<label>()
+if barstate.islast
+    while array.size(manualLines) > 0
+        line.delete(array.pop(manualLines))
+        label.delete(array.pop(manualLabels))
+    if validScenario
+        array<float> prices = array.from(entry, target, stop)
+        array<string> names = array.from("Entry", "TP", "SL")
+        array<color> colors = array.from(color.blue, color.green, color.red)
+        for j = 0 to 2
+            float p = array.get(prices, j)
+            color c = array.get(colors, j)
+            int labelTime = math.max(scenarioTime, time_close)
+            array.push(manualLines, line.new(scenarioTime, p, math.max(scenarioTime + 1, time_close), p,
+                 xloc=xloc.bar_time, extend=extend.right, color=c, width=2, force_overlay=true))
+            array.push(manualLabels, label.new(labelTime, p, "手動 " + array.get(names, j) + " " + f_price(p),
+                 xloc=xloc.bar_time, style=label.style_label_left, color=c, textcolor=color.white, force_overlay=true))
+
+var table panel = table.new(position.bottom_left, 4, 12, bgcolor=color.new(color.black, 15), border_width=1)
+f_row(int row, string name, int direction, float h, float l, string structure) =>
+    color c = na(direction) ? color.gray : direction == 1 ? color.lime : direction == -1 ? color.red : color.silver
+    table.cell(panel, 0, row, name, text_color=color.white, text_size=size.small)
+    table.cell(panel, 1, row, na(direction) ? "—" : f_direction(direction), text_color=c, text_size=size.small)
+    table.cell(panel, 2, row, structure, text_color=color.white, text_size=size.small)
+    table.cell(panel, 3, row, f_price(h) + " / " + f_price(l), text_color=color.white, text_size=size.small)
+
+if barstate.islast
+    table.cell(panel, 0, 0, "確定足", text_color=color.white, text_size=size.small)
+    table.cell(panel, 1, 0, "終値突破方向", text_color=color.white, text_size=size.small)
+    table.cell(panel, 2, 0, "高安構造", text_color=color.white, text_size=size.small)
+    table.cell(panel, 3, 0, "直近高値 / 安値", text_color=color.white, text_size=size.small)
+    f_row(1, "月足", dM, hM, lM, sM)
+    f_row(2, "W", dW, hW, lW, sW)
+    f_row(3, "D", dD, hD, lD, sD)
+    f_row(4, "H4", d4, h4, l4, s4)
+    f_row(5, "H1", d1, h1, l1, s1)
+    f_row(6, "M15", d15, h15, l15, s15)
+    f_row(7, "現足", confirmedDirection, confirmedHigh, confirmedLow, confirmedStructure)
+    string status = not manualEnabled ? "手動シナリオ OFF" : not validScenario ? "Entry / SL / 起点を確認" : "手動 " + manualSide + " RR " + str.tostring((target - entry) / (entry - stop), "#.###")
+    table.cell(panel, 0, 8, "シナリオ", text_color=color.white, text_size=size.small)
+    table.cell(panel, 1, 8, status, text_color=manualEnabled and not validScenario ? color.orange : color.white, text_size=size.small)
+    table.cell(panel, 0, 9, "理論数量", text_color=color.white, text_size=size.small)
+    string quantityText = not manualEnabled ? "—" : not validScenario ? "価格・起点が不正" : na(quantity) ? "資金・換算係数が必要" : quantityTooSmall ? "最小数量未満・算定不可" : str.tostring(quantity, "#.########")
+    table.cell(panel, 1, 9, quantityText, text_color=color.white, text_size=size.small)
+    table.cell(panel, 2, 9, "SL損失 / 予算", text_color=color.white, text_size=size.small)
+    table.cell(panel, 3, 9, na(plannedLoss) ? "—" : str.tostring(plannedLoss, "#.##") + " / " + str.tostring(riskBudget, "#.##"), text_color=color.white, text_size=size.small)
+    table.cell(panel, 0, 10, "手動価格", text_color=color.white, text_size=size.small)
+    table.cell(panel, 1, 10, validScenario ? "Entry " + f_price(entry) : "—", text_color=color.white, text_size=size.small)
+    table.cell(panel, 2, 10, validScenario ? "TP " + f_price(target) : "—", text_color=color.white, text_size=size.small)
+    table.cell(panel, 3, 10, validScenario ? "SL " + f_price(stop) : "—", text_color=color.white, text_size=size.small)
+    table.cell(panel, 0, 11, "公開機能の近似", text_color=color.orange, text_size=size.small)
+    table.cell(panel, 1, 11, "分析補助", text_color=color.orange, text_size=size.small)
+    table.cell(panel, 2, 11, "費用なし理論値", text_color=color.silver, text_size=size.small)
+    table.cell(panel, 3, 11, "売買注文なし", text_color=color.silver, text_size=size.small)
+
+alertcondition(barstate.isconfirmed and touchedLevel, "確定足の水平線接触", "よすが式分析補助: {{ticker}} {{interval}} の確定足が既存水平線に接触。売買シグナルではありません。")
+alertcondition(directionChanged, "確定足の方向変化", "よすが式分析補助: {{ticker}} {{interval}} の終値突破方向が変化。売買シグナルではありません。")
+
+// User-selected analysis filter, not a validated trading strategy or YTT entry rule.
+[candidateDirection1, candidateHigh1, candidateLow1, candidateStructure1] = f_context(effectiveCandidateTf1)
+[candidateDirection2, candidateHigh2, candidateLow2, candidateStructure2] = f_context(effectiveCandidateTf2)
+bool candidateTfValid = timeframe.in_seconds(effectiveCandidateTf1) > timeframe.in_seconds() and timeframe.in_seconds(effectiveCandidateTf2) > timeframe.in_seconds() and timeframe.in_seconds(effectiveCandidateTf1) != timeframe.in_seconds(effectiveCandidateTf2)
+bool candidateDataReady = not na(candidateDirection1) and not na(candidateDirection2) and not na(candidateHigh1) and not na(candidateLow1) and not na(candidateHigh2) and not na(candidateLow2)
+bool candidateBuyAligned = candidateTfValid and candidateDataReady and candidateDirection1 == 1 and candidateDirection2 == 1
+bool candidateSellAligned = candidateTfValid and candidateDataReady and candidateDirection1 == -1 and candidateDirection2 == -1
+var bool candidateHighBroken = false
+var bool candidateLowBroken = false
+// The threshold and consumed flag are those known BEFORE this bar's pivot update.
+bool candidateBuyEvent = barstate.isconfirmed and candidateBuyAligned and not candidateHighBroken and not na(candidatePriorHigh) and close > candidatePriorHigh and close[1] <= candidatePriorHigh
+bool candidateSellEvent = barstate.isconfirmed and candidateSellAligned and not candidateLowBroken and not na(candidatePriorLow) and close < candidatePriorLow and close[1] >= candidatePriorLow
+if barstate.isconfirmed
+    candidateHighBroken := candidateHighBroken or (not na(candidatePriorHigh) and close > candidatePriorHigh)
+    candidateLowBroken := candidateLowBroken or (not na(candidatePriorLow) and close < candidatePriorLow)
+    // A new confirmed pivot is a new threshold, even when its price equals the old one.
+    if not na(pivotHigh)
+        candidateHighBroken := close > confirmedHigh
+    if not na(pivotLow)
+        candidateLowBroken := close < confirmedLow
+
+var array<label> candidateEvents = array.new<label>()
+if candidateBuyEvent or candidateSellEvent
+    float eventPrice = candidateBuyEvent ? candidatePriorHigh : candidatePriorLow
+    array.push(candidateEvents, label.new(time_close, eventPrice, (candidateBuyEvent ? "買い候補成立 " : "売り候補成立 ") + f_price(eventPrice), xloc=xloc.bar_time,
+         style=candidateBuyEvent ? label.style_label_up : label.style_label_down, color=candidateBuyEvent ? color.green : color.red, textcolor=color.white, size=size.small, force_overlay=true))
+    if array.size(candidateEvents) > 20
+        label.delete(array.shift(candidateEvents))
+
+float candidatePrice = candidateBuyAligned ? confirmedHigh : candidateSellAligned ? confirmedLow : na
+bool candidateAlreadyBroken = candidateBuyAligned ? candidateHighBroken : candidateSellAligned ? candidateLowBroken : false
+bool candidateWaiting = candidateTfValid and candidateDataReady and not na(candidatePrice) and not candidateAlreadyBroken
+string candidateState = not candidateTfValid ? "時間足設定を確認" : not candidateDataReady ? "データ不足" : not candidateBuyAligned and not candidateSellAligned ? "見送り" : na(candidatePrice) ? "データ不足" : candidateBuyEvent or candidateSellEvent ? "成立" : candidateAlreadyBroken ? "突破済" : candidateBuyAligned ? "買い待ち" : "売り待ち"
+string candidateReason = not candidateTfValid ? "異なる2足を現足より上位に設定" : not candidateDataReady ? "上位足の確定高安データ不足" : candidateAlreadyBroken ? (candidateBuyAligned ? "突破済・次の高値待ち" : "突破済・次の安値待ち") : candidateBuyAligned ? "上位2足が上昇で合意" : candidateSellAligned ? "上位2足が下降で合意" : "上位2足の方向合意を待つ"
+color candidateColor = candidateBuyAligned ? color.lime : candidateSellAligned ? color.red : color.silver
+f_tfName(string tf) =>
+    // Unitless strings are minutes; preserve explicit W/M/D/S units as entered.
+    float minutes = str.tonumber(tf)
+    tf == "1M" or tf == "M" ? "月足" : na(minutes) ? tf : minutes < 60 ? "M" + str.tostring(minutes) : minutes < 1440 and minutes % 60 == 0 ? "H" + str.tostring(minutes / 60) : tf
+
+var line candidateLine = na
+var label candidateLabel = na
+var table candidatePanel = table.new(position.bottom_right, 2, 6, bgcolor=color.new(color.black, 10), border_width=1)
+if barstate.islast
+    line.delete(candidateLine)
+    label.delete(candidateLabel)
+    if candidateWaiting
+        int candidateNow = bar_index + 1
+        string caption = candidateBuyAligned ? "買い候補: 終値で" + f_price(candidatePrice) + "超え" : "売り候補: 終値で" + f_price(candidatePrice) + "割れ"
+        candidateLine := line.new(candidateNow, candidatePrice, candidateNow + 1, candidatePrice, xloc=xloc.bar_index, extend=extend.right, color=candidateColor, width=3, force_overlay=true)
+        candidateLabel := label.new(candidateNow, candidatePrice, caption, xloc=xloc.bar_index, style=label.style_label_left, color=candidateBuyAligned ? color.green : color.red, textcolor=color.white, size=size.normal, force_overlay=true)
+    float displayedCandidatePrice = candidateBuyEvent ? candidatePriorHigh : candidateSellEvent ? candidatePriorLow : candidatePrice
+    table.cell(candidatePanel, 0, 0, "突破候補", text_color=color.white, text_size=size.small)
+    table.cell(candidatePanel, 1, 0, f_tfName(effectiveCandidateTf1) + " / " + f_tfName(effectiveCandidateTf2), text_color=color.white, text_size=size.small)
+    table.cell(candidatePanel, 0, 1, "状態", text_color=color.white, text_size=size.small)
+    table.cell(candidatePanel, 1, 1, candidateState, text_color=candidateColor, text_size=size.small)
+    table.cell(candidatePanel, 0, 2, "突破価格", text_color=color.white, text_size=size.small)
+    table.cell(candidatePanel, 1, 2, f_price(displayedCandidatePrice), text_color=candidateColor, text_size=size.small)
+    table.cell(candidatePanel, 0, 3, "判定", text_color=color.white, text_size=size.small)
+    table.cell(candidatePanel, 1, 3, "現足の終値確定", text_color=color.white, text_size=size.small)
+    table.cell(candidatePanel, 0, 4, "条件", text_color=color.white, text_size=size.small)
+    table.cell(candidatePanel, 1, 4, candidateReason, text_color=color.white, text_size=size.small)
+    table.cell(candidatePanel, 0, 5, "用途", text_color=color.silver, text_size=size.small)
+    table.cell(candidatePanel, 1, 5, "分析候補・自動注文なし", text_color=color.silver, text_size=size.small)
+
+alertcondition(candidateBuyEvent, "上位足合意・買い候補成立", "{{ticker}} {{interval}}: 上位2足が上昇で合意し、現足終値が事前の確定高値を突破。分析候補の成立です。")
+alertcondition(candidateSellEvent, "上位足合意・売り候補成立", "{{ticker}} {{interval}}: 上位2足が下降で合意し、現足終値が事前の確定安値を突破。分析候補の成立です。")

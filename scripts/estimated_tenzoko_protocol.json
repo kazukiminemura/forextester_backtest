@@ -1,0 +1,22 @@
+{
+  "identity": "Estimated Tenzoko Himo proxy; not a reproduction of the proprietary indicator",
+  "symbol": "USDJPY",
+  "timeframe": "15m",
+  "lookback": 20,
+  "breakout": "Close above prior 20 highs or below prior 20 lows",
+  "anchor_f": "Lowest prior-20 close for upward breakout; highest close for downward breakout; first occurrence on ties",
+  "x": "Breakout bar close, frozen for the lifetime of the setup",
+  "purity": "direction*(current close-f) / sum(abs(close change)) from anchor to current bar",
+  "level": "x + direction*abs(x-f)/purity; updated at close for use starting NEXT bar",
+  "primary_min_purity": 0.3,
+  "sensitivity_min_purity": [
+    0.2,
+    0.4
+  ],
+  "setup": "One active setup; expires after 96 bars or purity below threshold. Touch uses prior-bar level before current-close invalidation. No same-bar initial touch.",
+  "entry": "Touch prior known upper level with Bid high -> short next open; touch lower level with Bid low -> long next open; no EMA filter",
+  "exit": "Full exit at TP or SL 1:1, distance 1.5*Wilder ATR14 known at signal close; no time exit; final open position forcibly closed",
+  "execution": "Bid OHLC. Long entry Ask, exit Bid; short entry Bid, exit Ask. Fixed metadata spread. SL first if both touched. Gap stop at open, gap TP conservatively at limit price.",
+  "costs": "No swap or slippage; metadata commission must be zero",
+  "evaluation": "All predeclared thresholds reported. Chronological slices are descriptive, not a fresh holdout. No optimization or candidate selection."
+}

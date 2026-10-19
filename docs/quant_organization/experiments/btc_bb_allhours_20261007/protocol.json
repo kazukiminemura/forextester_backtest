@@ -1,0 +1,103 @@
+{
+  "experiment_id": "btc_bb_allhours_20261007",
+  "status": "SPEC_FROZEN",
+  "hypothesis": "Contrast BB mean reversion with a prior low-directional-efficiency restriction and confirmed H1 trend-aligned M5 recross. Exactly two new candidates, no tuning.",
+  "baseline": "baseline_bb_reversal: both-direction BB20 +/-3 population SD, subsequent reversal close inside the bands, next scheduled M5 open",
+  "history_directory": "C:/ForexTester6/data/History",
+  "data_manifest": {
+    "cache": "agent_runs/btc_spot_rr1_20261007/btc_m1.npz",
+    "cache_sha256": "c085f3ae069fc12e06313f86b53cc75e0a813fd7c2688e58cedf86cca6e2d7e6",
+    "evidence": "agent_runs/btc_bb_allhours_20261007/data_evidence.json",
+    "clock": "UNKNOWN source storage clock; no JST/UTC conversion; all hours/all seven weekdays",
+    "price": "CONDITIONAL full-history bid OHLC proxy, not verified broker CFD prices",
+    "aggregation": "Use all saved pre-2020 observations for warmup. Complete aligned five consecutive M1 bars form one M5; incomplete buckets are omitted, never imputed.",
+    "missing": "BB20 and Wilder ATR14 advance across observed complete M5 bars, including gap jumps. Origin-to-confirmation and prior-efficiency windows require consecutive M5 timestamps. H1 windows require 25 consecutive complete hours. Trades hold across unavailable M1 and next observed open applies the gap rule; unobserved extremes cannot be recovered."
+  },
+  "symbols": ["BTCUSD"],
+  "direction": "User confirmed GMO Coin crypto FX, both long and short. BTCUSD CFD-proxy with fractional BTC units, not actual GMO BTCJPY replay or spot coin purchase accounting.",
+  "superseded_assumption": "Before results, user confirmed CFD-like long/short; provisional spot long-only was withdrawn.",
+  "entry_timeframe": "M5",
+  "higher_timeframe_rules": {
+    "aggregation": "H1 has all twelve adjacent complete M5 bars, aligned to integer source hours.",
+    "availability": "Latest calendar H1 whose end <= M5 signal close time. If latest hour invalid/missing, direction zero; never search backward for an older valid hour.",
+    "warmup": "25 consecutive complete H1 closes; SMA20 at latest hour and SMA20 five calendar hours earlier.",
+    "direction": "+1 if H1 close>SMA20 and SMA20>SMA20[-5]; -1 for both strict reverse comparisons; otherwise zero."
+  },
+  "entry_rules": {
+    "indicators": "M5 SMA20/population SD use pandas rolling(20).mean()/std(ddof=0) from last20 observed complete closes, current confirmed candle included. H1 SMA also uses pandas rolling mean. Strict comparisons preserve these frozen floating-point operations; mathematically equivalent sums may differ near exact ties. TR=max(H-L,abs(H-prev_complete_C),abs(L-prev_complete_C)); first TR=H-L; Wilder14 seeded by first14 TR mean then alpha=1/14. prior ATR at signal i is ATR[i-1].",
+    "origins": "A one-sided lower touch low<=lower3 produces BUY origin; one-sided upper touch high>=upper3 produces SELL origin. Dual touches excluded. Select earliest valid origin, reserve next12 observed M5 slots regardless of outcome; next eligible origin index>=origin+13. Ledger continuous across books, future outcomes never select origins.",
+    "reversal": "For j=origin+1..origin+11: require every adjacent timestamp 300 seconds; gap cancels. BUY cancels on low[j]<originlow before confirmation; SELL cancels on high[j]>originhigh. BUY confirms close>open and lower3<close<upper3; SELL confirms close<open and same strict inside. First qualifying confirmation only, intended next M5 open is j time+300. No same-candle origin confirmation.",
+    "range_bb": "Use identical origins and reversal signals, retain prior12 direction efficiency<=.30: abs(C[t-1]-C[t-13])/sum(abs(diff(C[t-13:t]))). Thirteen prior adjacent M5 closes, excluding origin; denominator zero means efficiency0; otherwise missing window rejected.",
+    "trend_reclaim": "At confirmed M5 i, latest available H1 direction s nonzero; prior M5 adjacent; s*(C[i-1]-SMA[i-1])<=0 and s*(C[i]-SMA[i])>0. risk=1.5*priorATR[i]>0. No BB touch needed.",
+    "entry": "Exact scheduled M1 open at signal M5 start+300. If absent, expire, do not fill a later observed open. Next M5 complete status is not known or required at its open. Filter period membership by actual scheduled entry time only, origin and confirmation may precede the book start.",
+    "state": "One position; signal during held position cannot queue. No new entry in source M5 bucket containing previous exit. Reset flat/equity between books.",
+    "price_qualification": "Actual-fill reward distance strictly positive and stop/target strictly positive. No minimum FX pips and no estimated-cost/risk rejection. Estimated cost/risk diagnostic only."
+  },
+  "exit_rules": {
+    "reward_risk_ratio": 1.0,
+    "full_exit": true,
+    "bb_target": "LONG exit-side target=signal bid SMA20; SHORT exit-side ask target=signal bid SMA20+scenario spread, so the synthetic ask reaching its center represents the bid reaching its signal center. Mirror stop around actual slipped entry. Freeze target/spread per scenario.",
+    "trend_target": "Actual slipped entry plus side*1.5*signal-known priorATR; stop=entry-side*risk. Both trigger levels in exit-side quote space.",
+    "bracket": "M1 exit-side OHLC is bid for LONG, synthetic ask=bid+spread for SHORT. Stop-gap adverse actual exit-side open; target gap capped at target. Otherwise stop wins unresolved same-M1 dual hit. Apply adverse exit slippage after trigger selection.",
+    "end": "Liquidate at last observed M1 close inside each half-open book, exit side plus adverse slippage and fees; mark period_end separately. RR1 price brackets do not guarantee fee-adjusted RR1 and forced exits/gaps differ.",
+    "prohibited": ["pyramiding", "partial exits", "breakeven", "trailing", "stop widening", "real orders"]
+  },
+  "periods": {
+    "training": ["2020-01-01", "2023-01-01"],
+    "validation": ["2023-01-01", "2025-01-01"],
+    "final_descriptive": ["2025-01-01", "2026-10-07"]
+  },
+  "final_period_prior_exposure": "ALL PREVIOUSLY VIEWED; period names are fixed descriptive partitions, not untouched validation",
+  "candidate_budget": {"new_candidates": 2, "baseline": 1, "periods": 3, "cost_scenarios": 3, "total_cases": 27},
+  "search_space": "Fixed baseline_bb_reversal/range_bb/trend_reclaim, all27 cases described. No candidate selection, threshold tuning or winner choice from cost scenarios.",
+  "cost_and_fill_model": {
+    "status": "MAIN_APPROVED_PROXY",
+    "scenarios": {
+      "normal": {"spread": 60.643, "fee": 0.0, "slippage": 0.0001, "funding_rate": 0.0004},
+      "stress": {"spread": 90.9645, "fee": 0.0, "slippage": 0.0002, "funding_rate": 0.0008},
+      "zero": {"spread": 0.0, "fee": 0.0, "slippage": 0.0, "funding_rate": 0.0}
+    },
+    "basis": "GMO crypto FX current official order fee0 and rollover0.04%/day inform the model, not historical fee reconstruction. Metadata spread USD60.643 is not GMO BTCJPY spread. Zero case is a logical before-cost reference; scenario paths/sizing differ and all are rerun.",
+    "official_reference": "https://support.coin.z.com/hc/ja/articles/115005453247",
+    "entry": "LONG=(bid_open+spread)*(1+slippage); SHORT=bid_open*(1-slippage)",
+    "exit": "LONG=bid_exit*(1-slippage); SHORT=(bid_exit+spread)*(1+slippage)",
+    "fees": "Per-side ad-valorem fee*BTCquantity*actualfill; embedded spread/slippage not subtracted twice.",
+    "funding": "Not actual GMO6:00JST accounting. At each observed M1 row timestamp t, elapsed=t-entry_timestamp. If elapsed<=0 funding0; otherwise ceil(elapsed/86400)*funding_rate*quantity*maximum synthetic ask high over observed entry-through-t M1 rows. Use causal cumulative max in MTM, never a later full-trade max for earlier marks. Realize same formula at exit. Missing elapsed days accrue even absent price rows. The entire exit-minute high may occur after intraminute exit: this is explicitly a conservative OHLC proxy. Funding clock uses row start timestamps, including elapsed0 for entry-minute exit; not precise intraminute holding duration.",
+    "funding_limitations": "Started24h-block count is a conservative proxy for unknown daily rollover crossings, not proof of actual historical charges. Intraminute time ambiguity remains. Historical rate, actual GMO BTCJPY prices, dynamic spreads and source timezone unresolved."
+  },
+  "position_sizing_and_currency": {
+    "currency": "USD",
+    "initial_equity_each_case": 10000,
+    "risk_fraction": 0.0025,
+    "gross_leverage_cap": 1.0,
+    "sizing": "At actual execution boundary, E=actual entry, S=stop*(1-side*slippage), estimated_stop_loss_per_BTC=side*(E-S)+fee*(E+S); q=min(flat_equity*.0025/estimated_stop_loss_per_BTC, flat_equity/E). Quantity observes modeled execution open, not future candle outcome. Funding and future stop gaps are excluded from budget; realized risk can exceed0.25% and is reported.",
+    "insolvency": "Reject new entries for flat equity<=0 or nonfinite equity/quote/bracket/risk/loss/quantity; loss and quantity must be strictly positive. Preserve negative realized/equity values without flooring at0. Held positions follow frozen brackets or period-end liquidation; no invented broker margin-call/liquidation behavior.",
+    "accounting": "CFD equity=initial+realized directional price P/L-fees-funding+unrealized directional liquidation P/L-fees-causal accrued funding, not cash less purchased coin. Reserved margin=abs(q*entry)/1. No Forex Tester metadata lot100000 conversion.",
+    "limitations": "1x notional cap is a research assumption, not actual broker margin/maintenance/liquidation rules; no assumed unlimited short sale proceeds."
+  },
+  "daily_frequency": {
+    "calendar": "All source-clock calendar days in each period, weekends included.",
+    "complete": "Exactly1440 observed aligned M1 timestamps, equivalent to288 complete M5 buckets; zero trades included.",
+    "partial": "At least1 M1 but fewer1440; M5-observed status additionally records complete M5 count>0. Missing day=0M1, not interpreted as confirmed no opportunity.",
+    "primary": "Complete-day entry counts only; numerator includes only fills on those complete days. Mean/median/zero_pct/two_plus_pct/two_to_three_pct/above_three_pct, total complete days and fraction of all calendar days.",
+    "secondary": "All-calendar observed-entry counts including missing/partial days, clearly labeled observed lower-bound opportunity counts; same metrics for M5-observed days and partial days. Missing/partial counts and entry counts separate.",
+    "causality": "Completeness diagnostic uses future day coverage only for reporting, never signal/entry filtering.",
+    "holding": "Count next-day exits and held gaps, no daily flat. All-hours entry model uses no night restrictions."
+  },
+  "acceptance_gates": {
+    "scope": "Designer research screen, not proof of profitability or live adoption; training and validation must each satisfy every fixed requirement.",
+    "per_period": {"normal_net_pnl_gt": 0, "normal_profit_factor_ge": 1.2, "stress_net_pnl_gt": 0, "normal_max_drawdown_pct_le": 20, "normal_closed_ge": 200, "complete_days_ge": 100, "complete_calendar_fraction_ge": 0.8, "complete_day_mean_entries_ge": 2, "complete_day_zero_pct_le": 40, "complete_day_two_plus_pct_ge": 50},
+    "too_frequent": "mean entries>3 reported separately; not silently accepted as meeting user's2-3 preference",
+    "adoption": false,
+    "override": "Feed, actual broker costs/funding and execution contract unverified; research screen never authorizes adoption."
+  },
+  "cross_symbol_rule": "Only BTCUSD requested; no cross-asset robustness claim.",
+  "reporting": {
+    "period": "Entries/closed, net USD wins and PF, long/short breakdown, gross signed price P/L, fees, total modeled cost vs raw-bid price movement, net return, all-observed-M1 liquidation MTM DD, forced exits, holdings/missing-minute gaps, complete/partial/missing daily tables.",
+    "yearly": "Closed outcomes by source exit year, annual MTM equity change separately.",
+    "outputs": "signals/episode dispositions,27 case decisions/trades/equity/daily counts, results.json with only finite values or explicit null for undefined metrics, frozen manifest of protocol/code/tests/reused helpers/cache/evidence."
+  },
+  "code_identifier": "scripts/research_btc_bb_allhours.py; freeze manifest exact SHA before first numerical result",
+  "frozen_at": "2026-10-07T13:17:47+00:00",
+  "live_trading_authorized": false
+}

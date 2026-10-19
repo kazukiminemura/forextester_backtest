@@ -1,0 +1,382 @@
+{
+  "experiment_id": "quant70_jpy_recent3m_20260908",
+  "symbols": [
+    "AUDJPY",
+    "CHFJPY",
+    "EURJPY",
+    "GBPJPY",
+    "NZDJPY"
+  ],
+  "start": "2026-06-08T00:00:00",
+  "end_exclusive": "2026-09-08T00:00:00",
+  "candidate_count": 36,
+  "candidates": [
+    {
+      "name": "ema_reclaim_e20_d0.25_x0.50",
+      "family": "ema_reclaim",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "ema_length": 20,
+      "pullback_bars": 8,
+      "min_depth_atr": 0.25,
+      "max_extension_atr": 0.5,
+      "ema_slope_bars": 4
+    },
+    {
+      "name": "ema_reclaim_e20_d0.25_x1.00",
+      "family": "ema_reclaim",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "ema_length": 20,
+      "pullback_bars": 8,
+      "min_depth_atr": 0.25,
+      "max_extension_atr": 1.0,
+      "ema_slope_bars": 4
+    },
+    {
+      "name": "ema_reclaim_e20_d0.50_x0.50",
+      "family": "ema_reclaim",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "ema_length": 20,
+      "pullback_bars": 8,
+      "min_depth_atr": 0.5,
+      "max_extension_atr": 0.5,
+      "ema_slope_bars": 4
+    },
+    {
+      "name": "ema_reclaim_e20_d0.50_x1.00",
+      "family": "ema_reclaim",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "ema_length": 20,
+      "pullback_bars": 8,
+      "min_depth_atr": 0.5,
+      "max_extension_atr": 1.0,
+      "ema_slope_bars": 4
+    },
+    {
+      "name": "ema_reclaim_e40_d0.25_x0.50",
+      "family": "ema_reclaim",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "ema_length": 40,
+      "pullback_bars": 8,
+      "min_depth_atr": 0.25,
+      "max_extension_atr": 0.5,
+      "ema_slope_bars": 4
+    },
+    {
+      "name": "ema_reclaim_e40_d0.25_x1.00",
+      "family": "ema_reclaim",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "ema_length": 40,
+      "pullback_bars": 8,
+      "min_depth_atr": 0.25,
+      "max_extension_atr": 1.0,
+      "ema_slope_bars": 4
+    },
+    {
+      "name": "ema_reclaim_e40_d0.50_x0.50",
+      "family": "ema_reclaim",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "ema_length": 40,
+      "pullback_bars": 8,
+      "min_depth_atr": 0.5,
+      "max_extension_atr": 0.5,
+      "ema_slope_bars": 4
+    },
+    {
+      "name": "ema_reclaim_e40_d0.50_x1.00",
+      "family": "ema_reclaim",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "ema_length": 40,
+      "pullback_bars": 8,
+      "min_depth_atr": 0.5,
+      "max_extension_atr": 1.0,
+      "ema_slope_bars": 4
+    },
+    {
+      "name": "range_sweep_l16_p0.00_c0.60",
+      "family": "range_sweep",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 16,
+      "min_penetration_atr": 0.0,
+      "min_close_location": 0.6
+    },
+    {
+      "name": "range_sweep_l16_p0.00_c0.80",
+      "family": "range_sweep",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 16,
+      "min_penetration_atr": 0.0,
+      "min_close_location": 0.8
+    },
+    {
+      "name": "range_sweep_l16_p0.10_c0.60",
+      "family": "range_sweep",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 16,
+      "min_penetration_atr": 0.1,
+      "min_close_location": 0.6
+    },
+    {
+      "name": "range_sweep_l16_p0.10_c0.80",
+      "family": "range_sweep",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 16,
+      "min_penetration_atr": 0.1,
+      "min_close_location": 0.8
+    },
+    {
+      "name": "range_sweep_l32_p0.00_c0.60",
+      "family": "range_sweep",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 32,
+      "min_penetration_atr": 0.0,
+      "min_close_location": 0.6
+    },
+    {
+      "name": "range_sweep_l32_p0.00_c0.80",
+      "family": "range_sweep",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 32,
+      "min_penetration_atr": 0.0,
+      "min_close_location": 0.8
+    },
+    {
+      "name": "range_sweep_l32_p0.10_c0.60",
+      "family": "range_sweep",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 32,
+      "min_penetration_atr": 0.1,
+      "min_close_location": 0.6
+    },
+    {
+      "name": "range_sweep_l32_p0.10_c0.80",
+      "family": "range_sweep",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 32,
+      "min_penetration_atr": 0.1,
+      "min_close_location": 0.8
+    },
+    {
+      "name": "compression_expansion_l8_r0.70_b0.00",
+      "family": "compression_expansion",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 8,
+      "max_atr_ratio": 0.7,
+      "breakout_buffer_atr": 0.0,
+      "min_expansion_atr": 1.25,
+      "slow_atr_length": 56
+    },
+    {
+      "name": "compression_expansion_l8_r0.70_b0.10",
+      "family": "compression_expansion",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 8,
+      "max_atr_ratio": 0.7,
+      "breakout_buffer_atr": 0.1,
+      "min_expansion_atr": 1.25,
+      "slow_atr_length": 56
+    },
+    {
+      "name": "compression_expansion_l8_r0.90_b0.00",
+      "family": "compression_expansion",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 8,
+      "max_atr_ratio": 0.9,
+      "breakout_buffer_atr": 0.0,
+      "min_expansion_atr": 1.25,
+      "slow_atr_length": 56
+    },
+    {
+      "name": "compression_expansion_l8_r0.90_b0.10",
+      "family": "compression_expansion",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 8,
+      "max_atr_ratio": 0.9,
+      "breakout_buffer_atr": 0.1,
+      "min_expansion_atr": 1.25,
+      "slow_atr_length": 56
+    },
+    {
+      "name": "compression_expansion_l16_r0.70_b0.00",
+      "family": "compression_expansion",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 16,
+      "max_atr_ratio": 0.7,
+      "breakout_buffer_atr": 0.0,
+      "min_expansion_atr": 1.25,
+      "slow_atr_length": 56
+    },
+    {
+      "name": "compression_expansion_l16_r0.70_b0.10",
+      "family": "compression_expansion",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 16,
+      "max_atr_ratio": 0.7,
+      "breakout_buffer_atr": 0.1,
+      "min_expansion_atr": 1.25,
+      "slow_atr_length": 56
+    },
+    {
+      "name": "compression_expansion_l16_r0.90_b0.00",
+      "family": "compression_expansion",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 16,
+      "max_atr_ratio": 0.9,
+      "breakout_buffer_atr": 0.0,
+      "min_expansion_atr": 1.25,
+      "slow_atr_length": 56
+    },
+    {
+      "name": "compression_expansion_l16_r0.90_b0.10",
+      "family": "compression_expansion",
+      "stop_atr": 2.0,
+      "timeframe": "15m",
+      "lookback": 16,
+      "max_atr_ratio": 0.9,
+      "breakout_buffer_atr": 0.1,
+      "min_expansion_atr": 1.25,
+      "slow_atr_length": 56
+    },
+    {
+      "name": "day_pullback_min_displacement_adr0.20_budget0.70",
+      "family": "day_pullback",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "min_displacement_adr": 0.2,
+      "max_range_adr": 0.7
+    },
+    {
+      "name": "day_pullback_min_displacement_adr0.20_budget0.90",
+      "family": "day_pullback",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "min_displacement_adr": 0.2,
+      "max_range_adr": 0.9
+    },
+    {
+      "name": "day_pullback_min_displacement_adr0.40_budget0.70",
+      "family": "day_pullback",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "min_displacement_adr": 0.4,
+      "max_range_adr": 0.7
+    },
+    {
+      "name": "day_pullback_min_displacement_adr0.40_budget0.90",
+      "family": "day_pullback",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "min_displacement_adr": 0.4,
+      "max_range_adr": 0.9
+    },
+    {
+      "name": "previous_day_failed_break_penetration_atr0.00_budget0.70",
+      "family": "previous_day_failed_break",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "penetration_atr": 0.0,
+      "max_range_adr": 0.7
+    },
+    {
+      "name": "previous_day_failed_break_penetration_atr0.00_budget0.90",
+      "family": "previous_day_failed_break",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "penetration_atr": 0.0,
+      "max_range_adr": 0.9
+    },
+    {
+      "name": "previous_day_failed_break_penetration_atr0.10_budget0.70",
+      "family": "previous_day_failed_break",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "penetration_atr": 0.1,
+      "max_range_adr": 0.7
+    },
+    {
+      "name": "previous_day_failed_break_penetration_atr0.10_budget0.90",
+      "family": "previous_day_failed_break",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "penetration_atr": 0.1,
+      "max_range_adr": 0.9
+    },
+    {
+      "name": "opening_range_retest_touch_atr0.00_budget0.70",
+      "family": "opening_range_retest",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "touch_atr": 0.0,
+      "max_range_adr": 0.7
+    },
+    {
+      "name": "opening_range_retest_touch_atr0.00_budget0.90",
+      "family": "opening_range_retest",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "touch_atr": 0.0,
+      "max_range_adr": 0.9
+    },
+    {
+      "name": "opening_range_retest_touch_atr0.10_budget0.70",
+      "family": "opening_range_retest",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "touch_atr": 0.1,
+      "max_range_adr": 0.7
+    },
+    {
+      "name": "opening_range_retest_touch_atr0.10_budget0.90",
+      "family": "opening_range_retest",
+      "timeframe": "15m",
+      "stop_atr": 2.0,
+      "selectable": true,
+      "touch_atr": 0.1,
+      "max_range_adr": 0.9
+    }
+  ],
+  "timeframe": "15m",
+  "trend": "confirmed 4h",
+  "execution": "Unchanged simulate: full RR1, ATR2, metadata spread, 0.1pip each side, next open, SL first on dual touch, period-end liquidation",
+  "monthly": "Entry cohorts [Jun8,Jul8), [Jul8,Aug8), [Aug8,Sep8); positions may cross month edges. Final liquidation Sep7.",
+  "aggregate_screen": "70% net wins, PF>=1.5, positive expectancy, >=75 trades, >=10 per pair, >=4 positive pairs, realized DD<=10%, each month >=10 trades and net R>0",
+  "pair_screen": "Same metrics, >=30 trades, each month >=10 trades and net R>0; no cross-pair gate",
+  "prior_exposure": "All three months already viewed. Descriptive selection on same sample, no unseen holdout or live approval.",
+  "limits": "Fixed spread; no swap, variable spread, live execution or mark-to-market DD. Source-naive date, not verified JST.",
+  "subagents_used": false,
+  "retuning": false,
+  "stop_rule": "Evaluate fixed 36 once; save all results regardless of failure"
+}

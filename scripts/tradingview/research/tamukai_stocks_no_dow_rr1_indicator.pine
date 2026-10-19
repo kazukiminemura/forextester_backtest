@@ -1,0 +1,114 @@
+//@version=6
+// RESEARCH DRAFT ONLY / NOT ADOPTED / TV_UNVERIFIED.
+// Frozen no_dow rules: scripts/research_tamukai_stocks_jev.py.
+// Display-only virtual trades; no orders, alerts, quantity or P/L calculation.
+// Updates ONLY at daily close. Entry/exit labels appear after that day's close,
+// although the virtual entry price is the day's open. No intraday execution claim.
+indicator("日本株 no_dow 押し目 RR1 [Indicator研究用 / TV_UNVERIFIED]", overlay = true,
+     max_lines_count = 500, max_labels_count = 500)
+
+int startTime = input.time(timestamp("01 Jan 2017 00:00 +0900"), "新規シグナル開始 (JST)")
+int endTime = input.time(timestamp("01 Jan 2099 00:00 +0900"), "新規シグナル終了・未満 (JST)")
+if not timeframe.isdaily or timeframe.multiplier != 1 or not chart.is_standard
+    runtime.error("標準ローソク足の1日足で使用してください。")
+if startTime >= endTime
+    runtime.error("開始日時は終了日時より前にしてください。")
+
+float sma21 = ta.sma(close, 21)
+float priorHigh = ta.highest(high[1], 3)
+float priorLow = ta.lowest(low[1], 3)
+bool touched = low[1] <= sma21[1] or low[2] <= sma21[2] or low[3] <= sma21[3]
+bool setup = bar_index >= 23 and close > sma21 and sma21 > sma21[2] and touched and close > priorHigh
+
+var bool pending = false
+var float pendingStop = na
+var bool holding = false
+var float entryPrice = na
+var float stopPrice = na
+var float targetPrice = na
+var line entryLine = na
+var line stopLine = na
+var line targetLine = na
+bool buySignal = false
+bool skippedGap = false
+bool stopped = false
+bool tookProfit = false
+
+if barstate.isconfirmed
+    // The signal was frozen at the preceding observed session's close.
+    if pending and not holding
+        if open > pendingStop
+            holding := true
+            entryPrice := open
+            stopPrice := pendingStop
+            targetPrice := entryPrice + (entryPrice - stopPrice)
+            // Session timestamps give same-day exits a visible horizontal span.
+            entryLine := line.new(time, entryPrice, time_close, entryPrice, xloc = xloc.bar_time, color = color.blue)
+            stopLine := line.new(time, stopPrice, time_close, stopPrice, xloc = xloc.bar_time, color = color.red, style = line.style_dashed)
+            targetLine := line.new(time, targetPrice, time_close, targetPrice, xloc = xloc.bar_time, color = color.green, style = line.style_dotted)
+            label.new(bar_index, entryPrice, "Entry " + str.tostring(entryPrice, format.mintick),
+                 color = color.blue, textcolor = color.white, style = label.style_label_left, size = size.tiny)
+            label.new(bar_index, stopPrice, "SL " + str.tostring(stopPrice, format.mintick),
+                 color = color.red, textcolor = color.white, style = label.style_label_left, size = size.tiny)
+            label.new(bar_index, targetPrice, "TP 1R " + str.tostring(targetPrice, format.mintick),
+                 color = color.green, textcolor = color.white, style = label.style_label_left, size = size.tiny)
+        else
+            skippedGap := true
+    pending := false
+
+    if holding
+        line.set_x2(entryLine, time_close)
+        line.set_x2(stopLine, time_close)
+        line.set_x2(targetLine, time_close)
+        float exitPrice = na
+        string exitReason = ""
+        // Same deterministic priority as Python, including the entry day:
+        // opening gap first, then SL before TP when both levels are touched.
+        if open <= stopPrice
+            exitPrice := open
+            exitReason := "SL gap"
+            stopped := true
+        else if open >= targetPrice
+            exitPrice := open
+            exitReason := "TP gap"
+            tookProfit := true
+        else if low <= stopPrice
+            exitPrice := stopPrice
+            exitReason := "SL"
+            stopped := true
+        else if high >= targetPrice
+            exitPrice := targetPrice
+            exitReason := "TP 1R"
+            tookProfit := true
+        if not na(exitPrice)
+            label.new(bar_index, exitPrice, exitReason + " Exit " + str.tostring(exitPrice, format.mintick),
+                 color = stopped ? color.red : color.green, textcolor = color.white,
+                 style = label.style_label_down, size = size.tiny)
+            holding := false
+            // Do not delete completed trade lines: preserve historical levels.
+
+    // An exit-day close may arm the NEXT day's entry, never same-day re-entry.
+    // The end input stops new signals only; it does not force a period-end exit.
+    if not holding and time >= startTime and time < endTime and setup
+        pending := true
+        pendingStop := priorLow
+        buySignal := true
+
+plot(sma21, "SMA21", color = color.orange, linewidth = 2)
+plotshape(buySignal, title = "確定BUY信号", text = "BUY\n翌始値", style = shape.labelup,
+     location = location.belowbar, color = color.blue, textcolor = color.white, size = size.tiny)
+plotshape(skippedGap, title = "始値<=SLで見送り", text = "SKIP\n始値<=SL", style = shape.labeldown,
+     location = location.abovebar, color = color.orange, textcolor = color.black, size = size.tiny)
+plotshape(stopped, title = "SL決済", text = "SL", style = shape.xcross,
+     location = location.abovebar, color = color.red, size = size.tiny)
+plotshape(tookProfit, title = "TP決済", text = "TP", style = shape.xcross,
+     location = location.abovebar, color = color.green, size = size.tiny)
+plot(holding ? entryPrice : na, "保有中 Entry price", color.blue, style = plot.style_linebr, display = display.data_window)
+plot(holding ? stopPrice : na, "保有中 SL price", color.red, style = plot.style_linebr, display = display.data_window)
+plot(holding ? targetPrice : na, "保有中 TP price", color.green, style = plot.style_linebr, display = display.data_window)
+
+// Native drawing GC retains the latest 500 lines / 500 labels, not all history.
+var table status = table.new(position.top_right, 1, 2)
+if barstate.islast
+    table.cell(status, 0, 0, "研究用Indicator / TV_UNVERIFIED\n当日確定後にEntry・決済を表示", text_color = color.white, bgcolor = color.new(color.red, 25))
+    table.cell(status, 0, 1, holding ? "仮想保有中・RR1全決済" : pending ? "確定BUY・次営業日待ち" : "次の確定BUYを待機", bgcolor = color.new(color.gray, 80))

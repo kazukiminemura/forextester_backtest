@@ -1,0 +1,48 @@
+{
+  "experiment_id": "bb_event_edge_20261003",
+  "status": "SPEC_FROZEN",
+  "hypothesis": "A temporary price-pressure component after a BB3 touch produces a positive six-bar reversal return and exceeds a past non-touch matched control. Persistent repricing, trend continuation and costs can refute this.",
+  "baseline": "Latest strictly prior non-touch bar matched by symbol, source calendar month, 4-hour clock bucket and prior ATR regime; event direction inherited.",
+  "history_directory": "C:/ForexTester6/data/History",
+  "data_manifest": "agent_runs/bb_alternatives_2020_2025_20260925/data_manifest.json",
+  "cache_directory": "agent_runs/bb_alternatives_2020_2025_20260925",
+  "symbols": ["USDJPY", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "AUDJPY", "NZDJPY"],
+  "entry_timeframe": "M5",
+  "higher_timeframe_rules": "None",
+  "entry_rules": "Stage A observations, not executable trades. Closed bar t high >= its upper BB or low <= its lower BB; SMA20 population standard deviation x3 including closed t. Exactly one touched side, lower=buy and upper=sell. Select online and reserve t+1 through t+12, next event earliest t+13. Invalid feature bars skipped. Both-side touches counted separately and excluded. No old context, wick or distance filters.",
+  "exit_rules": {"reward_risk_ratio": 1.0, "full_exit": true, "stage_a": "Fixed horizons 1,3,6,12 bars; first passage at symmetric +/-1 prior ATR, SL first if both touched in a bar, descriptive only."},
+  "periods": {"training": "2020-01-01 inclusive to 2023-01-01 exclusive", "validation": "2023-01-01 inclusive to 2026-01-01 exclusive", "final_confirmation": "None available: all periods previously viewed"},
+  "final_period_prior_exposure": "All 2020-2025 data were previously inspected; exploratory descriptive replication, not untouched holdout.",
+  "candidate_budget": 1,
+  "search_space": "One BB3 event definition and one matching method. Horizon6 primary, 1/3/12 secondary. No threshold tuning after results. Stage B three entry timings only if preregistered Stage A gates pass both periods.",
+  "observation_rules": {
+    "origin": "Next open f[t+1,0]; evaluation h uses close[t+h] and high/low[t+1:t+h+1].",
+    "normalization": "Raw directional pips and prior Wilder ATR14 (cache column7), positive means reversal. Each control uses its own prior ATR.",
+    "censoring": "Keep every selected origin. A horizon is missing if any interval t through t+h differs from 300 seconds, insufficient bars, or its terminal bar is outside the origin's three-year period. Report missing counts. Future gaps never affect origin/control selection.",
+    "center_contacts": "Fixed center=SMA20 at origin t. Moving center=SMA20 of each future closed bar. Contact means directional favorable high/low reaches center. Record any contact and first-contact bar. At first moving contact record that candle's favorable high/low displacement from entry and its close displacement, center displacement from original, and whether entry already lies beyond center. These are observations, not fills at the candle extreme. Moving center is retrospective diagnostic and never a historical executable target.",
+    "first_passage": "From entry next open use +/-priorATR. At each future bar check open gap (<=stop then >=target in direction coordinates), then low/high with adverse first. Values -1/0/+1 describe first side hit, not realized R for gap exits. Report unresolved and each outcome."
+  },
+  "matching": {
+    "time_bucket_hours": 4,
+    "atr_reference": "Median of priorATR[t-288:t], excluding current t; require all 288 finite positive. Ratio priorATR[t]/median.",
+    "atr_ratio_bins": [0.75, 1.5],
+    "eligibility": "Finite BB and prior ATR reference; neither band touched at control c; same calendar YYYY-MM, source hour//4 and ATR bin as event. Source timezone is unknown; clock buckets are not named market sessions. c<=t-13. Latest eligible c picked without consulting any future price, touch, gap or performance.",
+    "reuse": "Allowed and explicitly counted. Controls overlap each other or other events; no independence assumption. Event/control within same month assigned to common month bootstrap cluster. No-match origins retained. Paired valid6 requires both horizons valid. Selected control direction equals event direction. If selected control has a missing future horizon, do not replace it. Report unmatched and matched-but-censored separately.",
+    "coverage_denominator": "All selected events with valid six-bar outcome, not only events for which a control was found; numerator is paired valid six-bar count.",
+    "episode_meaning": "The fixed t+1..t+12 reservation begins only at each selected origin, never extended by later touches. One continuous 2020-2025 event ledger, no reset at 2023 boundary. It is an operational nonoverlap unit, not necessarily a full economic episode ending at the central line. Both-side and invalid touches do not start reservations."
+  },
+  "statistics": {
+    "primary": "Event-weighted mean of (event directional 6-bar return/priorATR minus control directional 6-bar return/its priorATR) on paired valid observations.",
+    "bootstrap": "Resample source-calendar months with replacement, sharing each draw across all seven symbols; recompute pooled sum/count. 10000 draws, numpy default_rng seed20261003 restarted per reported period. Percentile 2.5/97.5 intervals. Clustered associations, not causal effects or guarantees.",
+    "secondary": "Raw/all eligible and paired counts; other horizons; pips; MFE/MAE; static/moving center contacts; +/-ATR first passage; pair/year/month; unique controls/max reuse; leave-one-month-out and leave-one-symbol-out mean differences. No secondary promotion to primary."
+  },
+  "cost_and_fill_model": "Stage A gross observed movement, plus subtract 1.0 and 1.2 pips at primary horizon as descriptive friction sensitivity, not strategy P/L. Stage B next contiguous open, one position/pair, fixed signal-time SMA20 target rounded to tick, mirrored stop RR1, minimum actual target room3pips; gaps at open, adverse first on same bar; full round-trip1pip and stress1.2pip, swap0. Not historical GMO spreads.",
+  "position_sizing_and_currency": "No account sizing/currency conversion in Stage A. ATR-normalized and equal-pip observational scores; Stage B fixed1R per entry.",
+  "acceptance_gates": {"both_periods_required": true, "paired_valid6_min": 500, "paired_coverage_min": 0.8, "paired_event_gross_atr_mean_strictly_positive": true, "primary_difference_ci_lower_strictly_positive": true, "positive_pair_differences_min": 4, "every_leave_one_month_out_difference_positive": true, "interpretation": "A mechanistic screen for continuing research only, never strategy approval. Gate failure ends experiment before Stage B. Both frozen periods still reported when first fails."},
+  "cross_symbol_rule": "Pooled event-weighted means plus every symbol shown; shared-month bootstrap acknowledges synchronous currency shocks.",
+  "stage_b": {"status": "conditional", "arms": ["touch_next_open", "reversal_close_next_open", "breakout_close_next_open"], "origin_population": "Same Stage A BB origins, including origins with no eventual entry. No-entry return zero per origin; conditional trade metrics also shown.", "confirmation": "First strictly directional candle closing strictly inside both bands after origin, within12bars. Breakout must be later closed bar beyond confirmation candle high/low. Cancel if preparation extreme is breached before confirmation/breakout, cancellation before signal on same bar; gaps cancel. Entry signal must occur by t+11 for next open by t+12. No context filters.", "termination": "Fixed RR1 TP/SL, end-of-period mark-to-market separate, no time-limit exit added. Compare all3 without selecting best on later data. Before Stage B implementation, publish an additive execution-detail protocol without inspecting trade results; no changing Stage A gate."},
+  "data_limitations": "Source timezone and price-side convention unverified; cached M5 can contain buckets with fewer than five source M1 bars. Visible M5 gaps are censored per horizon; unseen within-bucket M1 gaps cannot be repaired from this cache. Raw source and caches remain read-only.",
+  "code_identifier": "scripts/research_bb_event_edge.py",
+  "frozen_at": "2026-10-03 JST; main approved, validator and quality prereview passed before result execution",
+  "live_trading_authorized": false
+}

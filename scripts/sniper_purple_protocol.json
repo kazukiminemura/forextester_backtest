@@ -1,0 +1,7 @@
+{
+  "rule": "Existing purple marker: ADX>=25 and absolute body>=0.5ATR; original EMA filter ON",
+  "tuning": false,
+  "selection": false,
+  "source_sha256": "82e483ac065982a356f8e7c2c69f3dc3c6ac7d09c243aac899e55ecff9cf6f13",
+  "disclosure": "Fixed descriptive audit after inspecting the separate loss-filter results; not a new untouched holdout."
+}

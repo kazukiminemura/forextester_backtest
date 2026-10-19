@@ -1,0 +1,132 @@
+{
+  "experiment_id": "btc_spot_rr1_20261007",
+  "status": "SPEC_FROZEN",
+  "hypothesis": "In a confirmed 4h uptrend, a 1h EMA20 pullback followed by a close above three preceding highs may resume demand sufficiently often to pay spot costs under a fixed full RR1 exit.",
+  "baseline": "Identical 1h entry and RR1 execution, with only the 4h trend filter removed; descriptive comparison, never fallback selection.",
+  "history_directory": "C:\\ForexTester6\\data\\History",
+  "data_manifest": {
+    "document": "data_inventory.md",
+    "run_manifest": "agent_runs/btc_spot_rr1_20261007/input_manifest.json",
+    "bars_sha256": "886ebaa8249eaa3ce84ae16a32c706fb1db3a3e51e3fa4120e997b05d732be9e",
+    "symbol": "BTCUSD",
+    "first": "2017-05-09T02:00:00",
+    "last": "2026-10-06T23:59:00",
+    "time_basis": "Unknown naive storage clock, aligned integer 1h/4h buckets; not asserted UTC.",
+    "price_basis": "Treat OHLC as bid for a research fill proxy; limited tick samples support bid predominance, not a verified exchange spot feed.",
+    "missing": "No imputation; complete 60-M1/240-M1 buckets only; indicators carry over complete observed bars; four signal-window 1h bars must be adjacent. Position holds across absent M1; first observed open applies stop-gap rule; missing intragap extremes unknowable."
+  },
+  "symbols": [
+    "BTCUSD"
+  ],
+  "direction": "spot long only; fractional BTC, fully funded USD cash",
+  "entry_timeframe": "1h",
+  "higher_timeframe_rules": {
+    "timeframe": "4h",
+    "availability": "Most recent complete 4h bar with close_time <= signal close_time and age < 4h",
+    "conditions": [
+      "close > EMA200",
+      "EMA50 > EMA200",
+      "EMA50 > EMA50 three complete 4h bars earlier"
+    ],
+    "ema_initialization": "SMA seed of first N complete bars then alpha=2/(N+1), no value before N bars; missing buckets neither synthesized nor counted."
+  },
+  "entry_rules": {
+    "signal": "At confirmed 1h bar t: any i in t-3..t-1 satisfies low[i] <= EMA20[i] <= high[i]; close[t] > max(high[t-3..t-1]); close[t] > EMA20[t]. All four bars are complete and calendar-adjacent.",
+    "stop": "min(low[t-3..t]) - 0.1 * WilderATR14[t]",
+    "atr": "TR=max(high-low,abs(high-prev_complete_close),abs(low-prev_complete_close)); first TR=high-low; first14 TR SMA seed then alpha=1/14",
+    "cost_filter": "At signal close c, estimated cost = NORMAL spread + 2*c*(NORMAL fee+NORMAL slippage); require stop>0, c-stop>0, estimated_cost/(c-stop)<=0.15. Same normal-cost signal qualification under stress. No next-open gap/risk filter.",
+    "order_time": "Signal close time equals next 1h open. A market order is modeled at the M1 open at that exact timestamp, with spread/slippage. If that M1 does not exist, expire; do not select a later observed open.",
+    "state": "One position. No entry while held, or in the storage-clock hour containing the previous exit. Reject invalid bracket when actual entry<=stop."
+  },
+  "exit_rules": {
+    "reward_risk_ratio": 1.0,
+    "full_exit": true,
+    "target": "2*actual_entry-stop, fixed bid trigger; risk/reward defined on intended trigger distances before sell slippage and commissions",
+    "bracket": "From entry M1 onward: open<=stop -> open; else open>=target -> target; else low<=stop -> stop; else high>=target -> target. If open inside bracket and both touched within M1 -> stop because order unresolved. TP gap gets target, never favorable open.",
+    "end": "At each half-open period end, liquidate any held quantity at last observed M1 close less sell slippage and fee, report period_end separately. Reset USD10000 and flat for next period. Forced exits need not be +/-1R.",
+    "prohibited": [
+      "shorts",
+      "leverage",
+      "pyramiding",
+      "partial exits",
+      "breakeven moves",
+      "trailing",
+      "stop widening"
+    ]
+  },
+  "periods": {
+    "training": [
+      "2018-01-01",
+      "2021-01-01"
+    ],
+    "validation": [
+      "2021-01-01",
+      "2024-01-01"
+    ],
+    "final_confirmation": [
+      "2024-01-01",
+      "2026-10-07"
+    ]
+  },
+  "warmup": "All available 2017 history initializes indicators. Indicators continue causally across period boundaries; cash and positions reset. A signal available exactly at a period start may use the preceding closed bar.",
+  "final_period_prior_exposure": "unknown; all three ranges are descriptive diagnostics, not proven untouched holdout or formal adoption stages",
+  "candidate_budget": {
+    "adoption_candidates": 1,
+    "descriptive_baselines": 1,
+    "cost_scenarios": 2,
+    "total_cases": 12
+  },
+  "search_space": "Exactly one fixed rule plus one baseline, no tuning, no replacement after later-period results.",
+  "cost_and_fill_model": {
+    "scenarios": {
+      "normal": {
+        "spread": 60.643,
+        "fee": 0.001,
+        "slippage": 0.0001
+      },
+      "stress": {
+        "spread": 90.9645,
+        "fee": 0.002,
+        "slippage": 0.0002
+      }
+    },
+    "basis": "USD/BTC absolute spread from metadata 60643*10^-3, fixed across history. Fee/slippage are assumed per-side rates, not verified venue charges. Both scenarios use normal-cost signal qualification; stress changes execution/accounting/sizing only, holding duration may differ because targets depend on actual entry.",
+    "entry": "(raw_bid_open + spread) * (1 + slippage)",
+    "exit": "raw_bid_exit * (1 - slippage); commissions = fee*quantity*actual_fill on each side; embedded spread/slippage not subtracted again",
+    "financing": "No borrowing, swap, funding or cash interest; deposit/withdrawal and tax excluded."
+  },
+  "position_sizing_and_currency": {
+    "currency": "USD",
+    "initial_cash_each_case": 10000,
+    "risk_fraction": 0.0025,
+    "signal_sizing": "E=(signal_close+spread)*(1+slippage); S=stop*(1-slippage); loss_per_BTC=E-S+fee*(E+S); request=min(cash*.0025/loss_per_BTC,cash/(E*(1+fee))). Cash is known and flat at signal.",
+    "fill_cap": "quantity=min(request,cash/(actual_entry*(1+fee))); automatic simulated affordability cap. Report cap and actual risk incl fees. Adverse gap can exceed .25% planned risk.",
+    "quantity": "Fractional BTC with no venue tick/lot constraint; do not use Forex Tester lot=100000 or margin metadata as spot position size."
+  },
+  "acceptance_gates": {
+    "scope": "Provisional research screen only. Evaluate fixed cases on all periods even if training loses; no selection, adoption or Pine authorization follows.",
+    "both_later_periods_individually": "normal closed trades>=100, net_pnl>0, USD profit_factor>=1.1, observed M1-close MTM maximum DD<=20%, stress net_pnl>0",
+    "limitations_override": "True spot feed, timezone, historical costs and unobserved holding gaps unresolved: screen pass is insufficient for adoption."
+  },
+  "cross_symbol_rule": "BTC only at user request. No multi-asset claim; repeated BTC feeds are not independent assets.",
+  "reporting": {
+    "trade_pnl": "USD realized P/L after both fees; net_r normalized by quantity*(actual_entry-stop), exit-year counts and P/L",
+    "equity": "Observed M1-close liquidation value: cash_after_buy + qty*bid_close*(1-slippage)*(1-fee). Exit minute replaced by actual realized cash. All observed M1 closes used for DD; equity.csv samples last observed M1 each hour plus entry and exit minutes.",
+    "gaps": "gap_exposed if adjacent held M1 timestamps differ >60s; holding_gap_count and missing_minutes=sum(delta/60-1). Separate no-gap-trade summary is post-hoc descriptive subset, never adoption evidence.",
+    "yearly": "Trade outcomes grouped by exit calendar year; mtm_change independently includes open exposure across years.",
+    "output": "signals.csv, case trades.csv/decisions.csv/equity.csv, results.json, input_manifest.json; empty CSV has empty header"
+  },
+  "limitations": [
+    "Forex Tester Advanced Data Feed BTCUSD is not independently confirmed as a specified exchange spot feed.",
+    "Naive storage timezone unknown; no named-market session interpretation.",
+    "2017-2019 Saturdays absent; 35988 gaps and 640803 missing minutes over source interval; unobserved TP/SL within gaps cannot be recovered.",
+    "Metadata spread is a constant assumption, not historical observed spread; fee and slippage are scenario assumptions.",
+    "OHLC bid side only partly supported by limited tick samples, full-history provenance unverified.",
+    "One-minute intrabar order unresolved; conservative stop-first tie policy and no favorable TP gaps.",
+    "One-minute-close DD cannot measure unobserved or intraminute maximum drawdown.",
+    "Backtest only: no actual Forex Tester GUI orders, broker connection, or real capital orders."
+  ],
+  "code_identifier": "scripts/research_btc_spot_rr1.py; freeze_manifest.json records exact code/test/protocol SHA256 before results",
+  "frozen_at": "2026-10-07T11:09:42.567642+00:00",
+  "live_trading_authorized": false
+}

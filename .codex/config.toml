@@ -25,3 +25,7 @@ config_file = "agents/quant_pine.toml"
 [agents.quant_auditor]
 description = "品質・再現性・移植一致の独立監査担当"
 config_file = "agents/quant_auditor.toml"
+
+[agents.quant_git_publish]
+description = "指定された変更だけをTerraでコミット・pushする担当"
+config_file = "agents/quant_git_publish.toml"

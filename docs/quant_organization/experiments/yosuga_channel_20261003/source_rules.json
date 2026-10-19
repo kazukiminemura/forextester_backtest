@@ -1,0 +1,508 @@
+{
+  "experiment_id": "yosuga_channel_20261003",
+  "source_freeze_date_jst": "2026-10-03",
+  "status": "PRIMARY_CORE_RECOVERED_MECHANICAL_APPROXIMATION_REQUIRED",
+  "identity": {
+    "channel": "https://www.youtube.com/@fxyosuga",
+    "baseline_video": "https://www.youtube.com/watch?v=p1E6kvNnqSk",
+    "baseline_date": "2022-09-17",
+    "theory_pdf_version": "1.04",
+    "practice_pdf_version": "1.01",
+    "physical_page_numbering": true
+  },
+  "rules": [
+    {
+      "id": "direction",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "高値/安値切上げを上昇、切下げを下降。下降中の前回高値突破で上昇転換、逆は下降転換。",
+      "pdf": "theory",
+      "physical_pages": [
+        12,
+        13,
+        14
+      ],
+      "video_times": [
+        229,
+        281,
+        331
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=229s",
+      "unresolved_for_code": [
+        "高安の検出方法・確定遅延",
+        "突破が髭か終値か",
+        "同値高安",
+        "転換の無効化と初期状態"
+      ]
+    },
+    {
+      "id": "entry_sequence",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "ライン付近へ接近/反発し、ダウ転換を確認した後の押し戻りで入る。転換突破点そのものと押し目点は別。",
+      "pdf": "theory",
+      "physical_pages": [
+        16,
+        17,
+        23,
+        24,
+        25,
+        33
+      ],
+      "video_times": [
+        384,
+        394,
+        398,
+        816
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=384s",
+      "unresolved_for_code": [
+        "押し戻りの最小/最大幅",
+        "反転確認と発注時刻",
+        "ライン接触からの期限",
+        "再エントリー・押し目回数"
+      ]
+    },
+    {
+      "id": "horizontal_lines",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "目立つ高安の折り返し髭先と、何度も反発する値を使う。",
+      "pdf": "practice",
+      "physical_pages": [
+        7,
+        11
+      ],
+      "video_times": [
+        1140,
+        1267,
+        1276
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=1140s",
+      "unresolved_for_code": [
+        "目立つの定量定義",
+        "何度も反発の回数",
+        "帯の幅",
+        "線の寿命"
+      ]
+    },
+    {
+      "id": "channels",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "高値同士/安値同士を結び反対側に平行線を引く。片側が揃わない場合は最遠点に置く。",
+      "pdf": "practice",
+      "physical_pages": [
+        11
+      ],
+      "video_times": [
+        1293,
+        1302,
+        1306
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=1293s",
+      "unresolved_for_code": [
+        "結ぶ高安の選び方",
+        "チャネル引き直し",
+        "許容逸脱",
+        "最遠点の検索範囲"
+      ]
+    },
+    {
+      "id": "line_maintenance",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "無反応で2回抜かれた線を消す。現在値に無関係な線を消す。近い線は直近優先。集まる線は帯にする。",
+      "pdf": "practice",
+      "physical_pages": [
+        12,
+        13,
+        14,
+        15,
+        17
+      ],
+      "video_times": [
+        1311,
+        1314,
+        1336,
+        1350,
+        1395
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=1311s",
+      "unresolved_for_code": [
+        "無反応の数値定義",
+        "跨ぎ回数の数え方",
+        "近い/無関係の距離",
+        "H&S形成中例外"
+      ]
+    },
+    {
+      "id": "timeframes",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "環境認識W/D/H4/H1/M15、ラインH4以上/H1/M15。上位足/現在足ペアD/H4,H4/H1,H1/M15,M15/M5を上から探す。多くはM15/M5。",
+      "pdf": "practice",
+      "physical_pages": [
+        16,
+        26,
+        50
+      ],
+      "video_times": [
+        1411,
+        1611,
+        2322,
+        2345,
+        2372
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=1411s",
+      "unresolved_for_code": [
+        "各足OHLCの時刻基準",
+        "ペア同時成立時の排他",
+        "M1タイミングの使用範囲"
+      ]
+    },
+    {
+      "id": "htf_obstacle",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "上位足のラインへ向かって、その近傍で順方向に注文しない。反発直後の大きい波に逆らわない。",
+      "pdf": "theory",
+      "physical_pages": [
+        30,
+        31,
+        32,
+        33
+      ],
+      "video_times": [
+        697,
+        717,
+        742,
+        751
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=697s",
+      "unresolved_for_code": [
+        "上位足ラインまでの近い距離",
+        "反発直後の有効期限",
+        "週日足の優先・競合"
+      ]
+    },
+    {
+      "id": "scenarios",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "順行型/逆行型/合致型を扱う。順行型は上位方向へ下位足が転換して押し目entry、上位前回極値等でexit。逆行型も原典に存在。",
+      "pdf": "practice",
+      "physical_pages": [
+        33,
+        34,
+        35
+      ],
+      "video_times": [
+        1806,
+        1865,
+        1883,
+        1908
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=1806s",
+      "unresolved_for_code": [
+        "シナリオ選択",
+        "ライン際/遠方の距離",
+        "逆行型と順行型の競合"
+      ]
+    },
+    {
+      "id": "strength",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "転換直後は強い、順方向極値の未更新や更新幅減少は弱いと認識。",
+      "pdf": "practice",
+      "physical_pages": [
+        24
+      ],
+      "video_times": [
+        1550,
+        1557,
+        1581,
+        1590
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=1550s",
+      "unresolved_for_code": [
+        "更新幅減少の閾値",
+        "比較窓と有効期限",
+        "弱い場合の具体的行動"
+      ]
+    },
+    {
+      "id": "pa",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "ジグザグ、ダブルトップ、H&S、下位足の長いヒゲや包み足を用いる。包み足の陰線は前回陽線の実体安値を下抜ける説明。",
+      "pdf": "practice",
+      "physical_pages": [
+        42,
+        43,
+        44,
+        45
+      ],
+      "video_times": [
+        2114,
+        2122,
+        2147,
+        2162,
+        2182,
+        2206
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=2114s",
+      "unresolved_for_code": [
+        "形の幅/高さ/同値許容",
+        "長いヒゲの比率",
+        "足の確定待ち",
+        "パターン排他と複数足の整合"
+      ]
+    },
+    {
+      "id": "target",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "注文根拠とした時間足以上の次ライン付近で利益確定。途中でトレンドが逆転換した場合も決済。",
+      "pdf": "theory",
+      "physical_pages": [
+        37,
+        39,
+        40
+      ],
+      "video_times": [
+        885,
+        888,
+        906,
+        964
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=885s",
+      "unresolved_for_code": [
+        "ライン手前の幅",
+        "ライン更新時のTP変更",
+        "逆転換時の足と執行時刻"
+      ]
+    },
+    {
+      "id": "stop",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "トレンド逆転換、または根拠ラインを抜けたら損切。上位足方向と線の重要性でシナリオが変わるが初心者は単純な極値越えでよい。",
+      "pdf": "theory",
+      "physical_pages": [
+        38,
+        39,
+        40
+      ],
+      "video_times": [
+        916,
+        918,
+        925
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=916s",
+      "unresolved_for_code": [
+        "髭/終値突破",
+        "SLバッファ",
+        "動的SLの更新",
+        "損切後再entry"
+      ]
+    },
+    {
+      "id": "breakeven",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "ある程度順行したら建値にSLを置く。戻されたら再エントリーを検討。",
+      "pdf": "practice",
+      "physical_pages": [
+        52
+      ],
+      "video_times": [
+        2419,
+        2421,
+        2424,
+        2446,
+        2449
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=2419s",
+      "unresolved_for_code": [
+        "ある程度の距離/R比率",
+        "コスト込み建値か",
+        "同足発火/SL/TPの順序"
+      ]
+    },
+    {
+      "id": "rr",
+      "status": "PRIMARY_CONFIRMED_QUALITATIVE",
+      "claim": "利益幅が損失幅より大きい有利位置を重視。2022資料は全取引固定RR1を定めていない。",
+      "pdf": "practice",
+      "physical_pages": [
+        39
+      ],
+      "video_times": [
+        976,
+        996,
+        2050
+      ],
+      "video_url": "https://www.youtube.com/watch?v=p1E6kvNnqSk&t=976s",
+      "unresolved_for_code": [
+        "最低RRの強制閾値",
+        "固定RRと次ライン利確の競合"
+      ]
+    }
+  ],
+  "published_statistics": {
+    "source": "theory.pdf",
+    "physical_pages": [
+      18,
+      26,
+      32
+    ],
+    "trials_each": 100,
+    "percentages": [
+      62,
+      71,
+      76
+    ],
+    "event": "M15のZ1転換後、次の逆転換より前にZ2順スイングを超える",
+    "z1": {
+      "depth": 25,
+      "deviation": 5
+    },
+    "z2": {
+      "depth": 5,
+      "deviation": 4
+    },
+    "not_identified": [
+      "通貨",
+      "期間",
+      "抽出方法",
+      "取引明細",
+      "手数料",
+      "スプレッド",
+      "リペイント処理",
+      "backstep/実装詳細"
+    ],
+    "interpretation": "費用後RR1の取引勝率ではない。独立した優位性証明として使わない。"
+  },
+  "not_confirmed_as_requirements": [
+    "MA20または他の移動平均",
+    "ATRの固定閾値",
+    "固定ピボット左右本数",
+    "欧州/NY/東京のみ",
+    "曜日制限",
+    "最大保有時間",
+    "単一固定時間足",
+    "RR1全決済"
+  ],
+  "mechanical_approximation_losses": [
+    "固定M15/M5のみなら時間足ペアの裁量選択を落とす",
+    "水平線のみならチャネルを落とす",
+    "順行型のみなら逆行型と合致型を落とす",
+    "固定ピボットは原典ZigZagの再現ではない",
+    "固定距離/ATR閾値は原典裁量の研究者補足",
+    "RR1固定はプロジェクト制約による派生仕様",
+    "利益が出ても本人手法全体の証明ではなく、損失でも本人裁量手法全体の反証にはならない",
+    "初動の建値なし/固定TP・SLは2024補足と整合。追随には適用できず、2022の逆転換決済を省くならその差を明示。"
+  ],
+  "later_sources_status": "2024建値、2025ライン/ナウキャスト、2026SLTPを公式自動字幕で限定確認。チャンネル全動画・有料詳細・YTT内部アルゴリズムの網羅ではない。",
+  "evidence_root": "agent_runs/yosuga_channel_20261003/source",
+  "candidate_spec_status": "研究者が未定義箇所を補い固定するまで実行可能仕様ではない",
+  "later_rules": [
+    {
+      "id": "initial_trade_exit_2024",
+      "source": "https://www.youtube.com/watch?v=77r3gZFZZHk&t=326s",
+      "times": [
+        "4:13-5:15",
+        "5:26-6:05"
+      ],
+      "claim": "明確な根拠のある初動トレードは建値設置なし、事前のTP/SLを維持。追随トレードと区別。",
+      "effect": "2022のある程度順行で建値という包括説明を初動と追随に分岐させる。初動近似で建値省略は2024に支持される。"
+    },
+    {
+      "id": "follow_trade_exit_2024",
+      "source": "https://www.youtube.com/watch?v=77r3gZFZZHk&t=369s",
+      "times": [
+        "6:09-7:03",
+        "7:45-7:56",
+        "8:16-9:30",
+        "9:35-9:55"
+      ],
+      "claim": "追随は建値を使用。例ではSLを1:1成立位置に置く。ダウ逆転換またはトレンドライン突破が建値移動のトリガー。コスト分の数pips利益側で逃げる。",
+      "unresolved": [
+        "初動と追随の機械分類",
+        "逆行中の建値注文種別",
+        "数pipsの通貨別値",
+        "髭/終値突破"
+      ],
+      "effect": "固定0.5R/1R順行発火はこの後年説明の再現ではない。"
+    },
+    {
+      "id": "line_cluster_2025",
+      "source": "https://www.youtube.com/watch?v=AmEdwAN9krA&t=484s",
+      "times": [
+        "8:04-8:37"
+      ],
+      "claim": "近接ラインが集まる場合、安値群は最安値、高値群は最高値を採る。最終防衛線として扱う。",
+      "effect": "2022直近優先とは同一ではない。研究仕様は世代選択が必要。"
+    },
+    {
+      "id": "line_retire_2025",
+      "source": "https://www.youtube.com/watch?v=AmEdwAN9krA&t=540s",
+      "times": [
+        "9:00-9:19",
+        "13:35-13:45"
+      ],
+      "claim": "跨がれたラインは基本削除。一度抜けたレジスタンスを後のサポート/ロングSLへ流用する質問には否定。",
+      "effect": "2022無反応2回削除/ロールリバーサル紹介と相違。破壊済み水平線のリテスト利用は最新説明に反する可能性。"
+    },
+    {
+      "id": "channel_spacing_2025",
+      "source": "https://www.youtube.com/watch?v=AmEdwAN9krA&t=573s",
+      "times": [
+        "9:33-10:11",
+        "13:13-13:31"
+      ],
+      "claim": "近接する直近2点より、離れた極値2点を優先。トレンドライン起点以降の最高/最安値に平行線を合わせる。",
+      "unresolved": [
+        "離れたの本数",
+        "極値2点選択",
+        "跨ぎ許容"
+      ]
+    },
+    {
+      "id": "nowcast_2025",
+      "source": "https://www.youtube.com/watch?v=xmcVN6i0BSk&t=747s",
+      "times": [
+        "7:02-7:11",
+        "8:39-10:38",
+        "10:47-10:56",
+        "12:46-13:06",
+        "13:52-14:25",
+        "15:10-15:31"
+      ],
+      "claim": "ライン/トレンド/加速減速を上位から下位へ認識。全体H4/D等と直近M15/M5等を組み合わせ、相反する圧力では上位優先。H4/M15は例で固定指定ではない。",
+      "unresolved": [
+        "加速減速の数値定義",
+        "注文層の実測根拠",
+        "圧力競合ルールの数値化"
+      ],
+      "effect": "M15/M5だけの研究はH4/Dの全体認識を省いた限定近似。"
+    },
+    {
+      "id": "entry_sl_tp_2026",
+      "source": "https://www.youtube.com/watch?v=ItvOoEgawTM&t=232s",
+      "times": [
+        "3:52-5:03",
+        "5:41-6:09",
+        "7:16-7:27",
+        "10:00-11:10",
+        "11:19-12:13",
+        "13:14-14:33",
+        "15:13-15:41"
+      ],
+      "claim": "SLは根拠ラインの外側、TPは次ラインの内側、RR>=1。裁量的に有利ならこの位置条件だけでも可、直近TLブレイクでより確認、下位ダウ転換でさらに確認。初心者は転換待ちを推奨。",
+      "unresolved": [
+        "SL/TP余白の数値",
+        "直近TLの2点選択",
+        "有利/確信の程度",
+        "足確定待ちの有無"
+      ],
+      "effect": "全取引RR1固定ではない。2022押し目極値待ちのみへ限定すると2026の複数entryタイミングを再現しない。"
+    }
+  ],
+  "recommended_research_label": "2022基準動画のM15/M5順行・水平線・転換後押し目を数値化した限定近似。2024初動の建値なしを参照。",
+  "source_evidence_limitations": [
+    "ASR字幕は誤変換を含む。2022中核は本人PDFの図と相互照合。",
+    "2024以降は公式字幕のテキスト確認で、各動画の全図版・実トレード映像は未照合。",
+    "公開資料の作者による有利/勝てる/統計の主張は、本研究で実証済みの事実ではない。",
+    "第三者の検証成績・教材要約は仕様根拠として使用しない。"
+  ]
+}
