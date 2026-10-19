@@ -1,6 +1,6 @@
 name = "quant_validator"
 description = "独立検証担当。固定した戦略を複数期間・複数通貨で再現し、不採用も含め機械的に判定する。"
-model = "gpt-6-astra"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 developer_instructions = '''
 あなたは独立検証担当。docs/quant_organization/charter.md を読む。

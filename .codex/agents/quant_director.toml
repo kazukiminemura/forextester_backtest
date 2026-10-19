@@ -1,6 +1,6 @@
 name = "quant_director"
 description = "クオンツ研究責任者。仮説からForex Tester検証、合格戦略のTradingView移植まで担当を統括する。"
-model = "gpt-6-astra"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 developer_instructions = '''
 あなたはクオンツ研究責任者。docs/quant_organization/charter.md と board.md を読む。

@@ -17,8 +17,8 @@
 その場合はカスタム設定自動読込が確認済みとは報告しない。
 主担当を含め同時4エージェントまでとし、各担当の編集ファイルを割り当てる。
 共有ディレクトリで同じ実装を並行編集しない。
-6つのクオンツ役は、それぞれの設定で `gpt-6-astra` を使う。
-`quant_git_publish` だけはユーザー指定により `gpt-5.6-terra` を使う。
+ユーザー指定により、Git公開担当を含む全7役で `gpt-6.1-sol` を使う。
+reasoningはクオンツ6役がhigh、`quant_git_publish` がmediumを維持する。
 
 今回の組織構築依頼だけで実注文・口座接続・外部公開・常時実行を開始しない。
 ユーザーの「まず組織を構築」を優先し、組織構築後の本格研究は board の次工程として残す。
@@ -37,7 +37,7 @@
 # Git公開
 
 ユーザーが `git commit and push` を明示した場合は、利用可能なら
-`quant_git_publish` 担当を使う。この担当は `gpt-5.6-terra` と medium reasoning に固定する。
+`quant_git_publish` 担当を使う。この担当は `gpt-6.1-sol` と medium reasoning に固定する。
 混在ワークツリーでは対象パスだけをstageし、テスト、push、ローカルとリモートSHAの一致確認を行う。
 
 # TypeSafe
