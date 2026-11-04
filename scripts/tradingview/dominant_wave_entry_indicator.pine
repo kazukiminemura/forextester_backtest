@@ -94,3 +94,49 @@ plot(buyLevel, "買いの2番突破ライン", color.teal, 2, plot.style_linebr)
 plot(sellLevel, "売りの2番突破ライン", color.maroon, 2, plot.style_linebr)
 alertcondition(buy, "BUY 支配波", "{{ticker}} {{interval}} BUY {{close}}")
 alertcondition(sell, "SELL 支配波", "{{ticker}} {{interval}} SELL {{close}}")
+
+var int tradeSide = 0
+var float entryPrice = na
+var float stopPrice = na
+var float targetPrice = na
+var int wins = 0
+var int losses = 0
+
+if barstate.isconfirmed
+    // 決済を先に判定するため、新規エントリー足の高安は決済に使わない。
+    if tradeSide != 0
+        bool longTrade = tradeSide == 1
+        bool stopAtOpen = longTrade ? open <= stopPrice : open >= stopPrice
+        bool targetAtOpen = longTrade ? open >= targetPrice : open <= targetPrice
+        bool hitStop = longTrade ? low <= stopPrice : high >= stopPrice
+        bool hitTarget = longTrade ? high >= targetPrice : low <= targetPrice
+        if stopAtOpen or (hitStop and not targetAtOpen)
+            losses += 1
+            tradeSide := 0
+        else if targetAtOpen or hitTarget
+            wins += 1
+            tradeSide := 0
+
+    if tradeSide == 0 and (buy or sell)
+        int side = buy ? 1 : -1
+        float stop = buy ? buyP3 : sellP3
+        int riskTicks = math.round(side * (close - stop) / syminfo.mintick)
+        if riskTicks > 0
+            tradeSide := side
+            entryPrice := close
+            stopPrice := stop
+            int targetTicks = math.ceil(riskTicks * 13 / 10.0)
+            targetPrice := math.round_to_mintick(close + side * targetTicks * syminfo.mintick)
+
+plot(tradeSide != 0 ? entryPrice : na, "集計中のエントリー", color.gray, 1, plot.style_linebr)
+plot(tradeSide != 0 ? stopPrice : na, "損切り 3番", color.red, 2, plot.style_linebr)
+plot(tradeSide != 0 ? targetPrice : na, "利確 1.3R", color.lime, 2, plot.style_linebr)
+
+var table stats = table.new(position.top_right, 1, 1)
+if barstate.islast
+    int closed = wins + losses
+    string winRate = closed > 0 ? str.tostring(100.0 * wins / closed, "#.0") + "%" : "—"
+    string summary = "RR 1:1.3  |  勝率 " + winRate +
+         "\n決済 " + str.tostring(closed) + "  |  勝 " + str.tostring(wins) + "  負 " + str.tostring(losses) +
+         "\n同時保有1件・コストなし"
+    table.cell(stats, 0, 0, summary, text_color = color.white, bgcolor = color.rgb(32, 39, 54))
