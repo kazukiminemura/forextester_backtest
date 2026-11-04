@@ -1,0 +1,96 @@
+//@version=6
+indicator("支配波 1-2-3 エントリー", overlay = true, max_labels_count = 500)
+
+int pivotBars = input.int(3, "スイング判定の左右本数", minval = 1, maxval = 20)
+bool showPoints = input.bool(true, "成立した1・2・3を表示")
+
+markPoint(int pointTime, float price, string caption, string labelStyle, color tint) =>
+    label.new(pointTime, price, caption + "\n" + str.tostring(price, format.mintick),
+         xloc = xloc.bar_time, style = labelStyle, color = tint, textcolor = color.white, size = size.small)
+
+// 売りは価格の符号を反転し、同じ条件で判定する。
+detectWave(bool isLong) =>
+    float direction = isLong ? 1.0 : -1.0
+    float upper = isLong ? high : -low
+    float lower = isLong ? low : -high
+    float settlement = direction * close
+    float pivotTop = ta.pivothigh(upper, pivotBars, pivotBars)
+    float pivotBottom = ta.pivotlow(lower, pivotBars, pivotBars)
+
+    var float priorTop = na
+    var int priorTopTime = na
+    var float lastBottom = na
+    var int lastBottomTime = na
+    var float point1 = na
+    var int point1Time = na
+    var float point2 = na
+    var int point2Time = na
+    var float point3 = na
+    var int point3Time = na
+    bool entry = false
+    float brokenLevel = na
+
+    if barstate.isconfirmed
+        int pivotTime = time[pivotBars]
+        if not na(pivotTop)
+            bool startsWave = na(point2) and not na(priorTop) and pivotTop > priorTop and
+                 not na(lastBottomTime) and priorTopTime < lastBottomTime and lastBottomTime < pivotTime
+            if startsWave
+                point1 := lastBottom
+                point1Time := lastBottomTime
+                point2 := pivotTop
+                point2Time := pivotTime
+                point3 := na
+                point3Time := na
+                // 2の右側で既に確定した足を、古い順に取り込む。当足は下で判定する。
+                if pivotBars > 1
+                    for offset = pivotBars - 1 to 1
+                        if na(point3) or lower[offset] < point3
+                            point3 := lower[offset]
+                            point3Time := time[offset]
+            priorTop := pivotTop
+            priorTopTime := pivotTime
+        if not na(pivotBottom)
+            lastBottom := pivotBottom
+            lastBottomTime := pivotTime
+
+        if not na(point2)
+            if lower <= point1 or (not na(point3) and point3 <= point1)
+                point2 := na
+            else if settlement > point2
+                if not na(point3) and point3 < point2
+                    entry := true
+                    brokenLevel := point2
+                point2 := na
+            else if na(point3) or lower < point3
+                point3 := lower
+                point3Time := time
+
+    [entry, direction * point2, point1Time, direction * point1, point2Time, direction * brokenLevel,
+         point3Time, direction * point3]
+
+drawEntry(bool isLong, int t1, float p1, int t2, float p2, int t3, float p3) =>
+    color tint = isLong ? color.teal : color.maroon
+    string bottomStyle = isLong ? label.style_label_up : label.style_label_down
+    string topStyle = isLong ? label.style_label_down : label.style_label_up
+    if showPoints
+        markPoint(t1, p1, "1", bottomStyle, tint)
+        markPoint(t2, p2, "2", topStyle, tint)
+        markPoint(t3, p3, "3", bottomStyle, tint)
+    markPoint(time, close, isLong ? "BUY" : "SELL", bottomStyle, tint)
+
+[buyBreak, buyLevel, buyT1, buyP1, buyT2, buyP2, buyT3, buyP3] = detectWave(true)
+[sellBreak, sellLevel, sellT1, sellP1, sellT2, sellP2, sellT3, sellP3] = detectWave(false)
+
+// 逆方向の支配波が当足の終値でも有効なら、その範囲内の小さな突破は表示しない。
+bool buy = buyBreak and na(sellLevel) and not sellBreak
+bool sell = sellBreak and na(buyLevel) and not buyBreak
+if buy
+    drawEntry(true, buyT1, buyP1, buyT2, buyP2, buyT3, buyP3)
+if sell
+    drawEntry(false, sellT1, sellP1, sellT2, sellP2, sellT3, sellP3)
+
+plot(buyLevel, "買いの2番突破ライン", color.teal, 2, plot.style_linebr)
+plot(sellLevel, "売りの2番突破ライン", color.maroon, 2, plot.style_linebr)
+alertcondition(buy, "BUY 支配波", "{{ticker}} {{interval}} BUY {{close}}")
+alertcondition(sell, "SELL 支配波", "{{ticker}} {{interval}} SELL {{close}}")
