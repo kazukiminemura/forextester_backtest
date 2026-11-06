@@ -14,3 +14,7 @@ scripts/gold_pf_run.log
 scripts/gold_pf_refinement_run.log
 scripts/gold_pf_minute_run.log
 scripts/gold_limit_run.log
+
+.ruff_cache/
+.pytest_tmp_gap/
+pytest_tmp_gap/

@@ -1,5 +1,10 @@
 # Forex Tester History Backtester
 
+索引にはローカル保管・未コミットの研究ファイルも含まれます。`agent_runs/`の結果やCSVはGit管理対象外です。
+
+研究・検証結果・Pineの整理済み入口は[研究総合ガイド](docs/research_index.md)です。
+[Pythonスクリプト](scripts/README.md) / [研究結果](docs/research_results.md) / [Pine](scripts/tradingview/CATALOG.md)を目的別に参照できます。
+
 クオンツAI組織の担当・起動方法は
 [`docs/quant_organization/charter.md`](docs/quant_organization/charter.md)、
 現在の進捗は[`作業台帳`](docs/quant_organization/board.md)を参照してください。
@@ -39,7 +44,8 @@ forextester-backtest bars EURUSD --start 2024-01-01 --end 2024-01-07 --timeframe
 forextester-backtest ticks EURUSD --start "2024-08-30 20:59:50" --end "2024-08-30 21:00:00" --limit 100
 
 # 田向式 4Hダウ＋15分足押し目レンジをバックテスト
-forextester-backtest backtest EURUSD --start 2024-01-01 --end 2024-08-30 --lots 0.1 --trades-output trades.csv
+New-Item -ItemType Directory -Force agent_runs/manual_exports | Out-Null
+forextester-backtest backtest EURUSD --start 2024-01-01 --end 2024-08-30 --lots 0.1 --trades-output agent_runs/manual_exports/eurusd_trades.csv
 ```
 
 `--preset auto`（既定）は銘柄名からプリセットを自動選択します。JPYクロス
@@ -49,7 +55,7 @@ forextester-backtest backtest EURUSD --start 2024-01-01 --end 2024-08-30 --lots 
 `BTCUSD`などもFXクロスとして扱いません。
 
 ```powershell
-python -m forextester_backtest backtest USDJPY --start 2004-01-01 --end 2024-08-30 --lots 0.1 --trades-output trades.csv
+python -m forextester_backtest backtest USDJPY --start 2004-01-01 --end 2024-08-30 --lots 0.1 --trades-output agent_runs/manual_exports/usdjpy_trades.csv
 ```
 
 JPYクロスは「買いのみ・小レンジ1.0 ATR以下・1R全決済」、EURUSD研究設定は

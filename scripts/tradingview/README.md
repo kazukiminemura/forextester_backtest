@@ -1,5 +1,7 @@
 # TradingView インジケーター
 
+[用途別Pineカタログ](CATALOG.md)：Patrick最新版、家族別36本、研究用・派生・比較保存とモデル正本への入口をまとめています。
+
 ## よすが式 分析補助（YTT公開機能の近似）
 
 [yosuga_ytt_assistant.pine](yosuga_ytt_assistant.pine) は、確定高安の水平線・平行チャネル、
