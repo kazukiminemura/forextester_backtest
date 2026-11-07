@@ -6,6 +6,8 @@
 
 ## 最初に開く：Patrick H4_7D
 
+- [逆方向・推定費用が損切り幅の10%以下](patrick_vp_jst_reverse_cost10_indicator.pine)：追加H4値幅制限なし、元TP・SLの価格を交換。Forex Testerの2017～2019年では通常PF_R 0.946で未採用。[仕様と動作確認](../../docs/quant_organization/experiments/patrick_reverse_cost10_pine_20261107/README.md)
+
 最新の作業入口は [patrick_vp_jst_weekly_indicator.pine](patrick_vp_jst_weekly_indicator.pine)。日本時間08:00判定・08:15仮想約定、過去7暦日内で開始・完了した確定H4形と、前週／前々週のVAH・VALを使う。全通貨対応だが、他通貨の頻度・収益を検証済みとは扱わない。
 
 **研究用の独自M1仮想エンジンを持つindicatorであり、標準Strategy Testerや実注文ではない。新H4_7D条件の経済性は未検証。** 旧E24_OFFの週平均やPFを新版へ転用しない。

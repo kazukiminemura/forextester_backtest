@@ -1,0 +1,33 @@
+{
+  "experiment_id": "patrick_reverse_cost10_pine_20261107",
+  "status": "RESEARCH_PINE_COMPILED_ON_TRADINGVIEW",
+  "user_request": "Explicit research Pine for cost<=10% of swap-reverse SL width, training6180/win61.12/PF_R0.945654; not mirror.",
+  "source_pine": "scripts\\tradingview\\patrick_vp_jst_weekly_indicator.pine",
+  "source_pine_sha256": "dc31af681b043540f8566b02f41921ec925a9606b4955b46c54e026b32b2f0f9",
+  "python_oracle": "scripts\\backtest_patrick_reverse_costfilter.py",
+  "python_oracle_sha256": "a8dcf8752a8037a94c9c59db59b5cc9818d8edd2a41ec32ca400758c162c7cb9",
+  "fixed_threshold_risk_cost": 10,
+  "h4_additional_gate": "OFF",
+  "reverse_mode": "swap_absolute_levels",
+  "cost_model": "C=spread+2slip+3carry, normal1/.1/.2pip andstress2/.2/1pip",
+  "checks": [
+    "08JST original signal/VP geometry, then reverse quote/geometry/SL>=10C; continue older candidate on failure",
+    "0815 exactM1 original+reverse geometry and actualSL>=10C; cancel without same-time reselection if failed",
+    "Execution side=-signal side; newSL=originalTP,newTP=originalSL; all exits/fees/risk/denominator actualside",
+    "Original signal-side touch/VAHVAL/H4shape7days/used stay unchanged; no currentM1 extreme before08selection",
+    "Planned and actual inverse Entry/TP/SL prices/BUYSELL labels, today/history controls retained",
+    "pnl sign wins; dimensionlessPF_R separate compound accountPF; no hardcoded FT outcome as live metrics"
+  ],
+  "default_dates": {
+    "begin_utc": "2017-01-01",
+    "end_utc": "2099-01-01"
+  },
+  "default_dates_reason": "Original source defaults kept for current chart usability; ending2020 would disable all current entries and100kM1cap may not contain training. Train reproduction requires user end2020, enough history.",
+  "research_status": "REJECTED_AT_TRAINING, user explicitly requests research implementation despite non-adoption. Existing charter validated-only handoff does not imply profitability here.",
+  "periods_validated_economically": "2017-2019 only; no new laterperiod economic validation",
+  "show_panel_default": true,
+  "live_trading_authorized": false,
+  "git_publish_authorized": false,
+  "public_script_publication_authorized": false,
+  "ui_verification": "Exact editor readback matched local source. TradingView Desktop compiled and displayed on OANDA:EURJPY 15m. See verification.md."
+}

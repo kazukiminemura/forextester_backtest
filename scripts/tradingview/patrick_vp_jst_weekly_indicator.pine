@@ -1,0 +1,631 @@
+//@version=6
+indicator("研究用 Patrick VP / JST08 H4_7D [仮想約定]", overlay=true, max_lines_count=500, max_labels_count=500, dynamic_requests=true)
+
+// Research-only: the new H4_7D window has NOT been Forex-Tester revalidated.
+// This is a custom M1 simulator, NOT Strategy Tester or an external order connection.
+// Derived from E24_OFF; keep weekly VAH/VAL, but search shapes starting within 7 days.
+const int MINUTE = 60000
+const int H4 = 14400000
+const int DAY = 86400000
+const int WEEK = 604800000
+const int JST = 32400000
+const int ATR_PERIOD = 20
+const int VP_BINS = 100
+const float VA_FRACTION = 0.70
+const float IMPULSE_ATR = 0.5
+const float RANGE_ATR = 4.0
+const float LINE_ATR = 4.0
+const float NEAR_ATR = 5.0
+const float STOP_ATR = 0.25
+const int H4_LOOKBACK_MS = 7 * DAY
+
+string costMode = input.string("通常仮定", "費用シナリオ", options=["通常仮定", "厳しめ仮定"])
+int beginTime = input.time(timestamp("01 Jan 2017 00:00 +0000"), "仮想ENTRY開始 UTC")
+int endTime = input.time(timestamp("01 Jan 2099 00:00 +0000"), "仮想ENTRY終了 UTC")
+int keepTrades = input.int(50, "保持する過去のEntry/TP/SL件数", minval=1, maxval=120)
+bool showProfiles = input.bool(true, "前週・前々週のVAH/VAL")
+int labelFontSize = input.int(18, "価格ラベルの文字サイズ", minval=12, maxval=32, group="表示")
+bool showPanel = input.bool(false, "集計表を表示", group="表示")
+bool showTodayEntry = input.bool(true, "今日・保有中のEntryを表示", group="今日・保有中")
+bool showTodaySL = input.bool(true, "今日・保有中のSLを表示", group="今日・保有中")
+bool showTodayTP = input.bool(true, "今日・保有中のTPを表示", group="今日・保有中")
+bool showHistoricalEntry = input.bool(true, "過去のEntryを表示", group="過去（決済済み）")
+bool showHistoricalSL = input.bool(true, "過去のSLを表示", group="過去（決済済み）")
+bool showHistoricalTP = input.bool(true, "過去のTPを表示", group="過去（決済済み）")
+int panelFontSize = input.int(16, "集計表の文字サイズ", minval=12, maxval=24, group="表示")
+float pipOverride = input.float(0.0, "費用1pipの価格幅（0=自動）", minval=0.0)
+bool isForex = syminfo.type == "forex"
+float automaticPip = isForex ? math.max(syminfo.mintick, syminfo.currency == "JPY" ? 0.01 : 0.0001) : syminfo.mintick
+float pip = pipOverride > 0 ? pipOverride : automaticPip
+string pipMode = pipOverride > 0 ? "手動" : isForex ? "自動FX" : "FX外・1tick"
+float spread = (costMode == "通常仮定" ? 1.0 : 2.0) * pip
+float slip = (costMode == "通常仮定" ? 0.1 : 0.2) * pip
+float carry = (costMode == "通常仮定" ? 0.2 : 1.0) * pip
+bool directM1 = timeframe.isminutes and timeframe.multiplier == 1
+bool adapterM15 = timeframe.isminutes and timeframe.multiplier == 15
+bool referenceValidatedPair = isForex and ((syminfo.basecurrency == "EUR" and syminfo.currency == "USD") or (syminfo.basecurrency == "GBP" and syminfo.currency == "USD") or (syminfo.basecurrency == "USD" and syminfo.currency == "JPY"))
+if barstate.isfirst and not (directM1 or adapterM15)
+    runtime.error("1分足または15分足を使用してください。15分足では内部の1分足を順番に仮想再生します。")
+if barstate.isfirst and pipOverride > 0 and pipOverride < syminfo.mintick
+    runtime.error("手動の費用1pip価格幅は、この銘柄の最小tick以上にしてください。0は自動設定です。")
+
+type H4Bar
+    int start
+    float o
+    float h
+    float l
+    float c
+    float atr
+type Setup
+    int key
+    int completed
+    int side
+    float a
+    float lower
+    float upper
+    float target
+    bool touched = false
+    bool used = false
+type Profile
+    int week
+    float vah
+    float val
+    bool valid
+type Engine
+    int firstT = na
+    int lastT = na
+    int observations = 0
+    int emptyIntrabarBars = 0
+    array<int> badCoverageWeeks = na
+    int missingMinutes = 0
+    int badPrices = 0
+    int h4Start = na
+    float ho = na
+    float hh = na
+    float hl = na
+    float hc = na
+    bool h4Bad = false
+    float previousH4Close = na
+    float atr = na
+    float seed = 0.0
+    int trCount = 0
+    array<H4Bar> bars = na
+    array<Setup> setups = na
+    int currentWeek = na
+    bool fullWeek = false
+    bool weekBad = false
+    float weekLow = na
+    float weekHigh = na
+    array<float> prices = na
+    array<float> volumes = na
+    Profile p1 = na
+    Profile p2 = na
+    int fullWeeks = 0
+    int validWeeks = 0
+    int partialWeeks = 0
+    bool pending = false
+    Setup pendingS = na
+    int pendingT = na
+    float pendingLine = na
+    float pendingStop = na
+    float pendingQuote = na
+    array<line> pendingLines = na
+    array<label> pendingLabels = na
+    array<line> contextLines = na
+    array<label> contextLabels = na
+    int selectionWindowStart = na
+    int selectionWindowEnd = na
+    int selectedShapeStart = na
+    int selectedShapeCompleted = na
+    int selectedProfileWeek = na
+    int selectedSide = 0
+    int selectedWindowCandidates = 0
+    float selectedWeeklyLine = na
+    bool position = false
+    int side = 0
+    int entered = na
+    int deadline = na
+    float entry = na
+    float stop = na
+    float target = na
+    float denominator = na
+    float capital = na
+    float equity = 100.0
+    float peak = 100.0
+    float drawdown = 0.0
+    float profit = 0.0
+    float loss = 0.0
+    float sumR = 0.0
+    int entries = 0
+    int closed = 0
+    int wins = 0
+    int sameOpenStops = 0
+    int firstReadyT = na
+    int frequencyWeek = na
+    array<int> weeklyEntries = na
+    array<line> historyLines = na
+    array<label> historyLabels = na
+    line activeE = na
+    line activeT = na
+    line activeS = na
+    string status = "準備中"
+
+f_week(int t) =>
+    int dayNumber = int(math.floor(t / float(DAY)))
+    (int(math.floor((dayNumber + 3) / 7.0)) * 7 - 3) * DAY
+f_jstWeek(int t) => f_week(t + JST) - JST
+f_price(float p) => str.tostring(p, format.mintick)
+f_touch(int side, float target, float h, float l) => side == 1 ? h >= target : l <= target
+f_weekend(int t) =>
+    int d = dayofweek(t, "UTC")
+    d == dayofweek.saturday or (d == dayofweek.friday and hour(t, "UTC") >= 20) or (d == dayofweek.sunday and hour(t, "UTC") < 23)
+f_deadline(int t) =>
+    int d = dayofweek(t, "UTC")
+    int ahead = (dayofweek.friday - d + 7) % 7
+    int fri = int(math.floor(t / float(DAY))) * DAY + ahead * DAY + 20 * 60 * MINUTE
+    if fri <= t
+        fri += WEEK
+    math.min(t + 3 * DAY, fri)
+
+f_profile(int week, array<float> prices, array<float> volumes, float lo, float hi, bool invalid) =>
+    bool good = not invalid and array.size(prices) > 0 and not na(lo) and hi > lo
+    float vah = na
+    float val = na
+    if good
+        array<float> weights = array.new_float(VP_BINS, 0.0)
+        float width = (hi - lo) / VP_BINS
+        for i = 0 to array.size(prices) - 1
+            int row = math.max(0, math.min(VP_BINS - 1, int(math.floor((array.get(prices, i) - lo) / width))))
+            array.set(weights, row, array.get(weights, row) + array.get(volumes, i))
+        float total = array.sum(weights)
+        good := total > 0
+        if good
+            int poc = 0
+            for i = 1 to VP_BINS - 1
+                if array.get(weights, i) > array.get(weights, poc)
+                    poc := i
+            int left = poc
+            int right = poc
+            float included = array.get(weights, poc)
+            while included < total * VA_FRACTION and (left > 0 or right < VP_BINS - 1)
+                if right == VP_BINS - 1 or (left > 0 and array.get(weights, left - 1) >= array.get(weights, right + 1))
+                    left -= 1
+                    included += array.get(weights, left)
+                else
+                    right += 1
+                    included += array.get(weights, right)
+            val := lo + left * width
+            vah := lo + (right + 1) * width
+    Profile.new(week, vah, val, good)
+
+method detect(Engine e) =>
+    int n = array.size(e.bars)
+    if n >= 6
+        H4Bar before = array.get(e.bars, n - 6)
+        H4Bar a = array.get(e.bars, n - 5)
+        H4Bar b = array.get(e.bars, n - 4)
+        H4Bar c = array.get(e.bars, n - 3)
+        H4Bar d = array.get(e.bars, n - 2)
+        H4Bar f = array.get(e.bars, n - 1)
+        float atrBefore = before.atr
+        float change = c.c - a.o
+        float lower = math.min(d.l, f.l)
+        float upper = math.max(d.h, f.h)
+        bool consecutive = b.start - a.start == H4 and c.start - b.start == H4 and d.start - c.start == H4 and f.start - d.start == H4
+        bool shape = consecutive and not na(atrBefore) and atrBefore > 0 and math.abs(change) >= IMPULSE_ATR * atrBefore and upper - lower <= RANGE_ATR * atrBefore
+        int side = change > 0 ? -1 : 1
+        bool half = side == -1 ? lower >= a.o + change * 0.5 : upper <= a.o + change * 0.5
+        if shape and half
+            float target = side == -1 ? math.min(a.l, math.min(b.l, c.l)) : math.max(a.h, math.max(b.h, c.h))
+            array.push(e.setups, Setup.new(a.start, f.start + H4, side, atrBefore, lower, upper, target))
+
+method finishH4(Engine e) =>
+    if not e.h4Bad
+        float tr = na(e.previousH4Close) ? e.hh - e.hl : math.max(e.hh - e.hl, math.max(math.abs(e.hh - e.previousH4Close), math.abs(e.hl - e.previousH4Close)))
+        e.trCount += 1
+        if e.trCount <= ATR_PERIOD
+            e.seed += tr
+            if e.trCount == ATR_PERIOD
+                e.atr := e.seed / ATR_PERIOD
+        else
+            e.atr := (e.atr * (ATR_PERIOD - 1) + tr) / ATR_PERIOD
+        e.previousH4Close := e.hc
+        array.push(e.bars, H4Bar.new(e.h4Start, e.ho, e.hh, e.hl, e.hc, e.atr))
+        if array.size(e.bars) > 6
+            array.shift(e.bars)
+        e.detect()
+
+method cancelPending(Engine e, string reason) =>
+    while array.size(e.pendingLines) > 0
+        line.delete(array.pop(e.pendingLines))
+    while array.size(e.pendingLabels) > 0
+        label.delete(array.pop(e.pendingLabels))
+    e.pending := false
+    e.pendingS := na
+    e.status := reason
+
+method drawPending(Engine e, int t) =>
+    float y = e.pendingQuote
+    array.push(e.pendingLines, line.new(t, y, t + 15 * MINUTE, y, xloc=xloc.bar_time, color=color.gray, style=line.style_dashed))
+    array.push(e.pendingLines, line.new(t, e.pendingS.target, t + 15 * MINUTE, e.pendingS.target, xloc=xloc.bar_time, color=color.green, style=line.style_dashed))
+    array.push(e.pendingLines, line.new(t, e.pendingStop, t + 15 * MINUTE, e.pendingStop, xloc=xloc.bar_time, color=color.red, style=line.style_dashed))
+    array.push(e.pendingLabels, label.new(t, y, "予定Entry 08:15成行\n08:00参考 " + f_price(y), xloc=xloc.bar_time, style=label.style_label_left, color=color.gray, textcolor=color.white, size=labelFontSize))
+    array.push(e.pendingLabels, label.new(t, e.pendingS.target, "予定TP " + f_price(e.pendingS.target), xloc=xloc.bar_time, style=label.style_label_left, color=color.green, textcolor=color.white, size=labelFontSize))
+    array.push(e.pendingLabels, label.new(t, e.pendingStop, "予定SL " + f_price(e.pendingStop), xloc=xloc.bar_time, style=label.style_label_left, color=color.red, textcolor=color.white, size=labelFontSize))
+
+method drawH4Context(Engine e, int t, Setup s, float weeklyLine, int profileWeek) =>
+    while array.size(e.contextLines) > 0
+        line.delete(array.pop(e.contextLines))
+    while array.size(e.contextLabels) > 0
+        label.delete(array.pop(e.contextLabels))
+    int rangeStart = s.completed - 2 * H4
+    int endpoint = t + 15 * MINUTE
+    string lineName = s.side == -1 ? "VAH" : "VAL"
+    array.push(e.contextLines, line.new(rangeStart, s.upper, endpoint, s.upper, xloc=xloc.bar_time, color=color.new(color.fuchsia, 15), style=line.style_dotted))
+    array.push(e.contextLines, line.new(rangeStart, s.lower, endpoint, s.lower, xloc=xloc.bar_time, color=color.new(color.fuchsia, 15), style=line.style_dotted))
+    array.push(e.contextLines, line.new(profileWeek + WEEK, weeklyLine, endpoint, weeklyLine, xloc=xloc.bar_time, color=color.orange, style=line.style_dashed))
+    array.push(e.contextLabels, label.new(t, s.upper, "最終選定H4 range高 " + f_price(s.upper), xloc=xloc.bar_time, style=label.style_label_left, color=color.new(color.fuchsia, 20), textcolor=color.white, size=labelFontSize))
+    array.push(e.contextLabels, label.new(t, s.lower, "最終選定H4 range安 " + f_price(s.lower), xloc=xloc.bar_time, style=label.style_label_left, color=color.new(color.fuchsia, 20), textcolor=color.white, size=labelFontSize))
+    array.push(e.contextLabels, label.new(t, weeklyLine, "最終選定参照" + lineName + " UTC週" + str.format_time(profileWeek, "MM-dd", "UTC") + "\n" + f_price(weeklyLine), xloc=xloc.bar_time, style=label.style_label_left, color=color.orange, textcolor=color.white, size=labelFontSize))
+
+method closePosition(Engine e, int at, float quote, string reason) =>
+    float net = e.side * (quote - e.entry) - 2 * slip - ((at - e.entered) / float(DAY)) * carry
+    float r = net / e.denominator
+    float pnl = e.capital * 0.01 * r
+    e.equity += pnl
+    e.sumR += r
+    e.closed += 1
+    if pnl > 0
+        e.profit += pnl
+        e.wins += 1
+    else if pnl < 0
+        e.loss -= pnl
+    if reason == "SL gap" and at == e.entered
+        e.sameOpenStops += 1
+    e.peak := math.max(e.peak, e.equity)
+    e.drawdown := math.max(e.drawdown, (e.peak - e.equity) / e.peak * 100)
+    if not na(e.activeE)
+        line.set_x2(e.activeE, at)
+        line.set_x2(e.activeT, at)
+        line.set_x2(e.activeS, at)
+    e.activeE := na
+    e.activeT := na
+    e.activeS := na
+    e.position := false
+    e.status := reason + " / " + str.tostring(r, "#.###") + "R"
+
+method enterPosition(Engine e, int t, float quote) =>
+    Setup s = e.pendingS
+    e.side := s.side
+    e.entered := t
+    e.deadline := f_deadline(t)
+    e.entry := quote
+    e.stop := e.pendingStop
+    e.target := s.target
+    e.denominator := math.abs(quote - e.stop) + spread + 2 * slip + 3 * carry
+    e.capital := e.equity
+    e.position := true
+    e.entries += 1
+    s.used := true
+    if array.size(e.weeklyEntries) > 0
+        int index = array.size(e.weeklyEntries) - 1
+        array.set(e.weeklyEntries, index, array.get(e.weeklyEntries, index) + 1)
+    e.activeE := line.new(t, quote, t + MINUTE, quote, xloc=xloc.bar_time, color=color.blue)
+    e.activeT := line.new(t, e.target, t + MINUTE, e.target, xloc=xloc.bar_time, color=color.green)
+    e.activeS := line.new(t, e.stop, t + MINUTE, e.stop, xloc=xloc.bar_time, color=color.red)
+    array.push(e.historyLines, e.activeE)
+    array.push(e.historyLines, e.activeT)
+    array.push(e.historyLines, e.activeS)
+    array.push(e.historyLabels, label.new(t, quote, "Entry " + (s.side == 1 ? "BUY " : "SELL ") + f_price(quote), xloc=xloc.bar_time, style=label.style_label_left, color=color.blue, textcolor=color.white, size=labelFontSize))
+    array.push(e.historyLabels, label.new(t, e.target, "TP " + f_price(e.target), xloc=xloc.bar_time, style=label.style_label_left, color=color.green, textcolor=color.white, size=labelFontSize))
+    array.push(e.historyLabels, label.new(t, e.stop, "SL " + f_price(e.stop), xloc=xloc.bar_time, style=label.style_label_left, color=color.red, textcolor=color.white, size=labelFontSize))
+    while array.size(e.historyLines) > keepTrades * 3
+        line.delete(array.shift(e.historyLines))
+    while array.size(e.historyLabels) > keepTrades * 3
+        label.delete(array.shift(e.historyLabels))
+    e.cancelPending("仮想成行 / " + f_price(quote))
+
+method renderTradeLevels(Engine e, int todayStart) =>
+    // Display only: Japan date never affects signal/order/accounting decisions.
+    int count = array.size(e.historyLines)
+    if count >= 3
+        for first = 0 to int(count / 3) - 1
+            int offset = first * 3
+            int entryT = label.get_x(array.get(e.historyLabels, offset))
+            bool active = e.position and entryT == e.entered
+            bool today = entryT >= todayStart and entryT < todayStart + DAY
+            bool current = today or active
+            string stamp = str.format_time(entryT, "MM/dd HH:mm", "Asia/Tokyo")
+            string prefix = active ? (today ? "今日・保有中 " : "持越・保有中 ") : today ? "今日・決済済 " : "過去 "
+            for kind = 0 to 2
+                line level = array.get(e.historyLines, offset + kind)
+                label tag = array.get(e.historyLabels, offset + kind)
+                bool enabled = kind == 0 ? (current ? showTodayEntry : showHistoricalEntry) : kind == 1 ? (current ? showTodayTP : showHistoricalTP) : (current ? showTodaySL : showHistoricalSL)
+                color base = kind == 0 ? color.blue : kind == 1 ? color.green : color.red
+                string role = kind == 0 ? "Entry " + (str.contains(label.get_text(tag), "BUY") ? "BUY " : "SELL ") : kind == 1 ? "TP " : "SL "
+                line.set_color(level, enabled ? color.new(base, current ? 0 : 60) : na)
+                line.set_width(level, current ? 3 : 1)
+                line.set_style(level, current ? line.style_solid : line.style_dotted)
+                label.set_text(tag, prefix + role + f_price(label.get_y(tag)) + "\n" + stamp)
+                label.set_color(tag, enabled ? color.new(base, current ? 0 : 55) : na)
+                label.set_textcolor(tag, enabled ? color.white : na)
+                label.set_style(tag, current ? label.style_label_right : label.style_label_left)
+                label.set_size(tag, current ? labelFontSize : math.max(12, labelFontSize - 4))
+
+method selectAtOpen(Engine e, int t, float bidOpen) =>
+    e.cancelPending("08:00 条件なし")
+    int n = array.size(e.setups)
+    if n > 0
+        int windowCandidates = 0
+        for s in e.setups
+            if s.key >= t - H4_LOOKBACK_MS and s.completed <= t
+                windowCandidates += 1
+        for offset = 0 to n - 1
+            Setup s = array.get(e.setups, n - 1 - offset)
+            if s.key >= t - H4_LOOKBACK_MS and s.completed <= t and not s.used and not s.touched
+                float best = na
+                float distance = na
+                int profileWeek = na
+                for j = 0 to 1
+                    Profile p = j == 0 ? e.p1 : e.p2
+                    if not na(p) and p.valid and (p.week == f_week(t) - WEEK or p.week == f_week(t) - 2 * WEEK)
+                        float level = s.side == -1 ? p.vah : p.val
+                        float delta = math.abs(level - (s.side == -1 ? s.upper : s.lower))
+                        if delta <= LINE_ATR * s.a and (na(distance) or delta < distance)
+                            distance := delta
+                            best := level
+                            profileWeek := p.week
+                if not na(best)
+                    float stop = s.side == -1 ? math.max(best, s.upper) + STOP_ATR * s.a : math.min(best, s.lower) - STOP_ATR * s.a
+                    float quote = bidOpen + (s.side == 1 ? spread : 0)
+                    bool geometry = s.side * (s.target - quote) > 0 and s.side * (quote - stop) > 0
+                    if geometry and math.abs(quote - best) <= NEAR_ATR * s.a
+                        e.pending := true
+                        e.pendingS := s
+                        e.pendingT := t
+                        e.pendingLine := best
+                        e.pendingStop := stop
+                        e.pendingQuote := quote
+                        e.selectionWindowStart := t - H4_LOOKBACK_MS
+                        e.selectionWindowEnd := t
+                        e.selectedShapeStart := s.key
+                        e.selectedShapeCompleted := s.completed
+                        e.selectedProfileWeek := profileWeek
+                        e.selectedWeeklyLine := best
+                        e.selectedSide := s.side
+                        e.selectedWindowCandidates := windowCandidates
+                        e.status := "08:15成行待機"
+                        e.drawPending(t)
+                        e.drawH4Context(t, s, best, profileWeek)
+                        break
+
+method process(Engine e, int t, float o, float h, float l, float c, float v) =>
+    if na(e.lastT) or t > e.lastT
+        if na(e.firstT)
+            e.firstT := t
+        if not na(e.lastT) and t - e.lastT > MINUTE
+            e.missingMinutes += int((t - e.lastT) / MINUTE) - 1
+        e.lastT := t
+        e.observations += 1
+        int bucket = int(math.floor(t / float(H4))) * H4
+        if not na(e.h4Start) and bucket != e.h4Start
+            e.finishH4()
+            e.h4Start := na
+        if na(e.h4Start)
+            e.h4Start := bucket
+            e.ho := o
+            e.hh := o
+            e.hl := o
+            e.hc := o
+            e.h4Bad := false
+        int week = f_week(t)
+        if na(e.currentWeek) or week != e.currentWeek
+            if not na(e.currentWeek)
+                Profile complete = f_profile(e.currentWeek, e.prices, e.volumes, e.weekLow, e.weekHigh, e.weekBad or not e.fullWeek)
+                e.p2 := e.p1
+                e.p1 := complete
+                if e.fullWeek
+                    e.fullWeeks += 1
+                    if complete.valid
+                        e.validWeeks += 1
+                else
+                    e.partialWeeks += 1
+            e.fullWeek := not na(e.currentWeek) or t == week
+            e.currentWeek := week
+            e.weekBad := array.includes(e.badCoverageWeeks, week)
+            e.weekLow := na
+            e.weekHigh := na
+            array.clear(e.prices)
+            array.clear(e.volumes)
+        bool goodPrice = not na(o + h + l + c) and o > 0 and l > 0 and h >= math.max(o, c) and l <= math.min(o, c)
+        bool ready = e.fullWeeks >= 2 and not na(e.atr)
+        bool inDates = t >= beginTime and t < endTime
+        int localDay = dayofweek(t, "Asia/Tokyo")
+        bool decision = localDay >= dayofweek.monday and localDay <= dayofweek.friday and hour(t, "Asia/Tokyo") == 8 and minute(t, "Asia/Tokyo") == 0
+        if ready and inDates and goodPrice
+            if na(e.firstReadyT) and decision
+                e.firstReadyT := t
+                e.frequencyWeek := f_jstWeek(t)
+                array.push(e.weeklyEntries, 0)
+            while not na(e.frequencyWeek) and e.frequencyWeek < f_jstWeek(t)
+                e.frequencyWeek += WEEK
+                array.push(e.weeklyEntries, 0)
+        if goodPrice
+            // OPEN PATH: only current open and already-completed prior M1/H4/week data.
+            if e.position
+                float exitOpen = o + (e.side == -1 ? spread : 0)
+                if t >= e.deadline
+                    e.closePosition(t, exitOpen, "時間決済")
+                else if (e.side == 1 ? exitOpen <= e.stop : exitOpen >= e.stop)
+                    e.closePosition(t, exitOpen, "SL gap")
+                else if (e.side == 1 ? exitOpen >= e.target : exitOpen <= e.target)
+                    e.closePosition(t, e.target, "TP gap")
+            if e.pending
+                if t >= endTime
+                    e.cancelPending("ENTRY期間終了・取消")
+                else if e.pendingS.touched
+                    e.cancelPending("TP先触れ・取消")
+                else if f_weekend(t)
+                    e.cancelPending("週末取消")
+                else if t > e.pendingT + 15 * MINUTE
+                    e.cancelPending("08:15 M1欠落・取消")
+            if e.pending and not e.position and t == e.pendingT + 15 * MINUTE
+                float actual = o + (e.pendingS.side == 1 ? spread : 0)
+                if e.pendingS.side * (e.pendingS.target - actual) > 0 and e.pendingS.side * (actual - e.pendingStop) > 0
+                    e.enterPosition(t, actual)
+                    float exitOpen = o + (e.side == -1 ? spread : 0)
+                    if (e.side == 1 ? exitOpen <= e.stop : exitOpen >= e.stop)
+                        e.closePosition(t, exitOpen, "SL gap")
+                else
+                    e.cancelPending("08:15 SL/TP方向不成立")
+            if decision and ready and inDates and not e.position
+                e.selectAtOpen(t, o)
+            // INTRAMINUTE PATH: capacity freed here cannot affect this minute's 08 decision.
+            if e.position
+                float exitHigh = h + (e.side == -1 ? spread : 0)
+                float exitLow = l + (e.side == -1 ? spread : 0)
+                bool stopHit = e.side == 1 ? exitLow <= e.stop : exitHigh >= e.stop
+                bool targetHit = e.side == 1 ? exitHigh >= e.target : exitLow <= e.target
+                if stopHit
+                    e.closePosition(t + MINUTE, e.stop, targetHit ? "SL/TP両方→SL先" : "SL")
+                else if targetHit
+                    e.closePosition(t + MINUTE, e.target, "TP")
+            if e.position and not na(e.activeE)
+                line.set_x2(e.activeE, t + MINUTE)
+                line.set_x2(e.activeT, t + MINUTE)
+                line.set_x2(e.activeS, t + MINUTE)
+            // Only now may the current minute's extremes invalidate a future decision/order.
+            if array.size(e.setups) > 0
+                for s in e.setups
+                    if t >= s.completed and f_touch(s.side, s.target, h, l)
+                        s.touched := true
+            if e.pending and f_touch(e.pendingS.side, e.pendingS.target, h, l)
+                e.pendingS.touched := true
+            e.hh := math.max(e.hh, h)
+            e.hl := math.min(e.hl, l)
+            e.hc := c
+            e.weekLow := na(e.weekLow) ? l : math.min(e.weekLow, l)
+            e.weekHigh := na(e.weekHigh) ? h : math.max(e.weekHigh, h)
+            if na(v) or v < 0
+                e.weekBad := true
+            else
+                array.push(e.prices, (h + l + c) / 3)
+                array.push(e.volumes, v)
+        else
+            e.badPrices += 1
+            e.weekBad := true
+            e.h4Bad := true
+        while array.size(e.setups) > 0 and array.get(e.setups, 0).key < t - H4_LOOKBACK_MS
+            array.shift(e.setups)
+        e.observations
+
+var Engine engine = Engine.new()
+if barstate.isfirst
+    engine.bars := array.new<H4Bar>()
+    engine.setups := array.new<Setup>()
+    engine.prices := array.new_float()
+    engine.volumes := array.new_float()
+    engine.pendingLines := array.new_line()
+    engine.pendingLabels := array.new_label()
+    engine.contextLines := array.new_line()
+    engine.contextLabels := array.new_label()
+    engine.historyLines := array.new_line()
+    engine.historyLabels := array.new_label()
+    engine.weeklyEntries := array.new_int()
+    engine.badCoverageWeeks := array.new_int()
+
+// Identical M1 core; confirmed chart bars only. No synthetic missing-minute fallback.
+if directM1 and barstate.isconfirmed
+    engine.process(time, open, high, low, close, volume)
+if adapterM15
+    [ts, os, hs, ls, cs, vs] = request.security_lower_tf(syminfo.tickerid, "1", [time, open, high, low, close, volume], calc_bars_count=100000)
+    if barstate.isconfirmed and array.size(ts) > 0
+        for i = 0 to array.size(ts) - 1
+            engine.process(array.get(ts, i), array.get(os, i), array.get(hs, i), array.get(ls, i), array.get(cs, i), array.get(vs, i))
+    else if barstate.isconfirmed and array.size(ts) == 0
+        engine.emptyIntrabarBars += 1
+        // A parent bar exists but its M1 data is unavailable. Never synthesize M1.
+        // Before firstT this is the history cap; after firstT invalidate its UTC week.
+        if not na(engine.firstT)
+            int badWeek = f_week(time)
+            if not array.includes(engine.badCoverageWeeks, badWeek)
+                array.push(engine.badCoverageWeeks, badWeek)
+            if array.size(engine.badCoverageWeeks) > 10
+                array.shift(engine.badCoverageWeeks)
+            if engine.currentWeek == badWeek
+                engine.weekBad := true
+
+if barstate.isconfirmed and not na(engine.lastT) and array.size(engine.contextLines) > 0
+    for contextLine in engine.contextLines
+        line.set_x2(contextLine, engine.lastT + MINUTE)
+
+f_calendarLevel(Engine e, int back, bool highLevel) =>
+    float result = na
+    if not na(e.lastT)
+        int expectedWeek = f_week(e.lastT) - back * WEEK
+        if not na(e.p1) and e.p1.valid and e.p1.week == expectedWeek
+            result := highLevel ? e.p1.vah : e.p1.val
+        else if not na(e.p2) and e.p2.valid and e.p2.week == expectedWeek
+            result := highLevel ? e.p2.vah : e.p2.val
+    result
+plot(showProfiles ? f_calendarLevel(engine, 1, true) : na, "前UTC週 VAH", color=color.new(color.orange, 25), style=plot.style_linebr, linewidth=4)
+plot(showProfiles ? f_calendarLevel(engine, 1, false) : na, "前UTC週 VAL", color=color.new(color.aqua, 25), style=plot.style_linebr, linewidth=4)
+plot(showProfiles ? f_calendarLevel(engine, 2, true) : na, "前々UTC週 VAH", color=color.new(color.orange, 70), style=plot.style_linebr, linewidth=4)
+plot(showProfiles ? f_calendarLevel(engine, 2, false) : na, "前々UTC週 VAL", color=color.new(color.aqua, 70), style=plot.style_linebr, linewidth=4)
+
+if barstate.islast
+    int todayStart = int(math.floor((timenow + JST) / float(DAY))) * DAY - JST
+    engine.renderTradeLevels(todayStart)
+
+var table panel = showPanel ? table.new(position.top_right, 2, 20, bgcolor=color.new(color.black, 12), frame_color=color.gray, frame_width=1) : na
+if barstate.islast and showPanel
+    int weeks = array.size(engine.weeklyEntries)
+    int zero = 0
+    int typical = 0
+    if weeks > 0
+        for count in engine.weeklyEntries
+            zero += count == 0 ? 1 : 0
+            typical += count >= 1 and count <= 2 ? 1 : 0
+    string span = na(engine.firstT) ? "未取得" : str.format_time(engine.firstT, "yyyy-MM-dd", "UTC") + "～" + str.format_time(engine.lastT, "yyyy-MM-dd", "UTC")
+    string readyText = engine.fullWeeks >= 2 and not na(engine.atr) ? "READY (初期部分週は除外)" : "準備中：2完成UTC週＋ATR20が必要"
+    string pf = engine.loss > 0 ? str.tostring(engine.profit / engine.loss, "#.###") : "—"
+    table.cell(panel, 0, 0, "H4_7D 研究用", text_color=color.yellow, text_size=panelFontSize)
+    table.cell(panel, 1, 0, "新条件 / 頻度・収益性未検証", text_color=color.yellow, text_size=panelFontSize)
+    table.cell(panel, 0, 1, "形式", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 1, "独自仮想集計・Strategy Testerではない", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 2, "準備", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 2, readyText, text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 3, "観測UTC範囲", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 3, span, text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 4, "M1 / 完成週", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 4, str.tostring(engine.observations) + " / " + str.tostring(engine.fullWeeks) + " (有効" + str.tostring(engine.validWeeks) + "・部分除外" + str.tostring(engine.partialWeeks) + ") ATR" + str.tostring(math.min(engine.trCount, ATR_PERIOD)) + "/20", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 5, "仮想ENTRY / 決済", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 5, str.tostring(engine.entries) + " / " + str.tostring(engine.closed), text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 6, "READY以降JST週 / 平均", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 6, str.tostring(weeks) + " / " + (weeks > 0 ? str.tostring(engine.entries / float(weeks), "#.###") : "—"), text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 7, "0回週 / 1～2回週", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 7, str.tostring(zero) + " / " + str.tostring(typical), text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 8, "仮想PF / 資産100→", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 8, pf + " / " + str.tostring(engine.equity, "#.##"), text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 9, "最大決済DD / 即SL", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 9, str.tostring(engine.drawdown, "#.##") + "% / " + str.tostring(engine.sameOpenStops), text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 10, "最終状態", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 10, engine.status, text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 11, "計算遅延・表示保持", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 11, (adapterM15 ? "確定15分後" : "確定1分後") + " / 直近" + str.tostring(keepTrades) + "取引", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 12, "一致の限界", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 12, "TV volume/価格≠FT・Ask/費用は仮定・ニュースなし", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 13, "LTF空バー / OHLC不正", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 13, str.tostring(engine.emptyIntrabarBars) + " / " + str.tostring(engine.badPrices), text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 14, "頻度集計開始 JST", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 14, na(engine.firstReadyT) ? "READY後の初回08時を待機" : str.format_time(engine.firstReadyT, "yyyy-MM-dd HH:mm", "Asia/Tokyo"), text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 15, "銘柄 / 費用1単位", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 15, syminfo.tickerid + " / " + str.tostring(pip, format.mintick) + " (" + pipMode + ")", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 16, "研究参照範囲", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 16, referenceValidatedPair ? "旧版参照3通貨 / 新7日条件は未検証" : "この銘柄の頻度・収益は未検証", text_color=color.yellow, text_size=panelFontSize)
+    table.cell(panel, 0, 17, "最終選定の7日窓 JST", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 17, na(engine.selectionWindowStart) ? "08時の候補選定待ち" : str.format_time(engine.selectionWindowStart, "MM-dd HH:mm", "Asia/Tokyo") + " ～ " + str.format_time(engine.selectionWindowEnd, "MM-dd HH:mm", "Asia/Tokyo"), text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 18, "最終選定H4形 UTC", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 18, na(engine.selectedShapeStart) ? "未選定" : str.format_time(engine.selectedShapeStart, "MM-dd HH:mm", "UTC") + " → " + str.format_time(engine.selectedShapeCompleted, "MM-dd HH:mm", "UTC") + "\n窓内形" + str.tostring(engine.selectedWindowCandidates) + " / " + (engine.selectedSide == 1 ? "BUY" : "SELL"), text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 0, 19, "選定VAH/VAL UTC週", text_color=color.white, text_size=panelFontSize)
+    table.cell(panel, 1, 19, na(engine.selectedProfileWeek) ? "未選定" : str.format_time(engine.selectedProfileWeek, "yyyy-MM-dd", "UTC") + " " + (engine.selectedSide == -1 ? "VAH " : "VAL ") + f_price(engine.selectedWeeklyLine), text_color=color.white, text_size=panelFontSize)
