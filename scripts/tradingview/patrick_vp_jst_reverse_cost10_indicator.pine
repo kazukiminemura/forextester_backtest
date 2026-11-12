@@ -33,6 +33,8 @@ const int SCAN_HOLDING = 6
 const int SCAN_TP = 7
 const int SCAN_SL = 8
 const int SCAN_MOVE_SHORT = 9
+const int SCAN_PULLBACK = 10
+const int SCAN_M1_GAP = 11
 
 bool showScanner = input.bool(true, "9銘柄スキャナーを表示", group="監視通貨")
 int scannerHistory = input.int(32000, "一覧の取得1分足数", minval=30000, maxval=100000, step=1000, group="監視通貨", tooltip="一覧の初期化に使う銘柄ごとの履歴。出来高帯に完成2週が必要です。増やすほど読み込み負荷が上がります。")
@@ -45,7 +47,8 @@ string symbol6 = input.symbol("OANDA:NZDJPY", "通貨6", group="監視通貨")
 string symbol7 = input.symbol("OANDA:CADJPY", "通貨7", group="監視通貨")
 string symbol8 = input.symbol("OANDA:AUDJPY", "通貨8", group="監視通貨")
 string symbol9 = input.symbol("OANDA:XAUUSD", "ゴールド", group="監視通貨")
-float goldCostUnit = input.float(0.20, "XAUUSDの費用単位（USD）", minval=0.01, step=0.01, tooltip="仮定値。通常のスプレッドはこの値、判定用推定費用は1.8倍。厳しめではそれぞれ2倍と5.4倍。取引先の条件に合わせて調整。")
+float goldCostUnit = input.float(0.20, "XAUUSDの滑り・保有費用単位（USD）", minval=0.01, step=0.01)
+float goldSpreadUsd = input.float(0.376, "XAUUSDの通常スプレッド（USD）", minval=0.001, step=0.001, tooltip="初期値はForex TesterのXAUUSD設定。厳しめは2倍。")
 int tableTextSize = input.int(15, "一覧の文字サイズ", minval=11, maxval=22, group="表示")
 
 string costMode = input.string("通常仮定", "費用シナリオ", options=["通常仮定", "厳しめ仮定"])
@@ -66,10 +69,11 @@ bool showHistoricalTP = input.bool(true, "過去のTPを表示", group="過去�
 int panelFontSize = input.int(16, "集計表の文字サイズ", minval=12, maxval=24, group="表示")
 float pipOverride = input.float(0.0, "費用1pipの価格幅（0=自動）", minval=0.0)
 bool isForex = syminfo.type == "forex"
-float automaticPip = isForex ? math.max(syminfo.mintick, syminfo.currency == "JPY" ? 0.01 : 0.0001) : syminfo.mintick
+bool chartIsGoldUsd = syminfo.ticker == "XAUUSD" or (syminfo.basecurrency == "XAU" and syminfo.currency == "USD")
+float automaticPip = chartIsGoldUsd ? math.max(syminfo.mintick, goldCostUnit) : isForex ? math.max(syminfo.mintick, syminfo.currency == "JPY" ? 0.01 : 0.0001) : syminfo.mintick
 float pip = pipOverride > 0 ? pipOverride : automaticPip
-string pipMode = pipOverride > 0 ? "手動" : isForex ? "自動FX" : "FX外・1tick"
-float spread = (costMode == "通常仮定" ? 1.0 : 2.0) * pip
+string pipMode = pipOverride > 0 ? "手動" : chartIsGoldUsd ? "XAUUSD" : isForex ? "自動FX" : "FX外・1tick"
+float spread = (costMode == "通常仮定" ? 1.0 : 2.0) * (chartIsGoldUsd ? goldSpreadUsd : pip)
 float slip = (costMode == "通常仮定" ? 0.1 : 0.2) * pip
 float carry = (costMode == "通常仮定" ? 0.2 : 1.0) * pip
 float filterCost = spread + 2 * slip + 3 * carry
@@ -143,6 +147,8 @@ type Engine
     float pendingLine = na
     float pendingStop = na
     float pendingBidOpen = na
+    int pendingBars = 0
+    float pendingAdverse = 0.0
     Profile pendingProfile = na
     float pendingQuote = na
     array<line> pendingLines = na
@@ -189,6 +195,9 @@ type Engine
     string status = "準備中"
     int lastBarrierMinute = na
     string lastBarrier = ""
+
+f_adverseMove(int executionSide, float decisionOpen, float h, float l) =>
+    executionSide == 1 ? decisionOpen - l : h - decisionOpen
 
 f_week(int t) =>
     int dayNumber = int(math.floor(t / float(DAY)))
@@ -309,7 +318,7 @@ method drawPending(Engine e, int t) =>
     int executionSide = -e.pendingS.side
     array.push(e.pendingLines, line.new(t, executionTarget, t + 15 * MINUTE, executionTarget, xloc=xloc.bar_time, color=color.green, style=line.style_dashed))
     array.push(e.pendingLines, line.new(t, executionStop, t + 15 * MINUTE, executionStop, xloc=xloc.bar_time, color=color.red, style=line.style_dashed))
-    string preview = "08:15予定 " + (executionSide == 1 ? "BUY" : "SELL") + "\nEntry参考 " + f_price(y) + "\nTP " + f_price(executionTarget) + "  /  SL " + f_price(executionStop)
+    string preview = str.format_time(t + 15 * MINUTE, "HH:mm", "Asia/Tokyo") + "予定 " + (executionSide == 1 ? "BUY" : "SELL") + "\nEntry参考 " + f_price(y) + "\nTP " + f_price(executionTarget) + "  /  SL " + f_price(executionStop)
     array.push(e.pendingLabels, label.new(t, y, preview, xloc=xloc.bar_time, style=label.style_label_left, color=color.rgb(28, 45, 66), textcolor=color.white, size=labelFontSize))
 
 method drawH4Context(Engine e, int t, Setup s, float weeklyLine, int profileWeek) =>
@@ -407,7 +416,7 @@ method renderTradeLevels(Engine e, int todayStart) =>
                 line level = array.get(e.historyLines, offset + kind)
                 label tag = array.get(e.historyLabels, offset + kind)
                 bool enabled = kind == 0 ? (current ? showTodayEntry : showHistoricalEntry) : kind == 1 ? (current ? showTodayTP : showHistoricalTP) : (current ? showTodaySL : showHistoricalSL)
-                bool labelEnabled = enabled and (current or showHistoricalLabels)
+                bool labelEnabled = enabled and (current or showHistoricalLabels or chartIsGoldUsd)
                 color base = kind == 0 ? color.blue : kind == 1 ? color.green : color.red
                 string role = kind == 0 ? "Entry " + (str.contains(label.get_text(tag), "BUY") ? "BUY " : "SELL ") : kind == 1 ? "TP " : "SL "
                 line.set_color(level, enabled ? color.new(base, current ? 0 : 78) : na)
@@ -421,7 +430,7 @@ method renderTradeLevels(Engine e, int todayStart) =>
                 label.set_size(tag, current ? labelFontSize : math.max(12, labelFontSize - 4))
 
 method selectAtOpen(Engine e, int t, float bidOpen) =>
-    e.cancelPending("08:00 条件なし")
+    e.cancelPending(str.format_time(t, "HH:mm", "Asia/Tokyo") + " 条件なし")
     int n = array.size(e.setups)
     if n > 0
         int windowCandidates = 0
@@ -459,6 +468,8 @@ method selectAtOpen(Engine e, int t, float bidOpen) =>
                         e.pendingLine := best
                         e.pendingStop := stop
                         e.pendingBidOpen := bidOpen
+                        e.pendingBars := 0
+                        e.pendingAdverse := 0.0
                         e.pendingProfile := selectedProfile
                         e.pendingQuote := executionQuote
                         e.selectionWindowStart := t - H4_LOOKBACK_MS
@@ -469,7 +480,7 @@ method selectAtOpen(Engine e, int t, float bidOpen) =>
                         e.selectedWeeklyLine := best
                         e.selectedSide := s.side
                         e.selectedWindowCandidates := windowCandidates
-                        e.status := "08:15 順方向の値幅確認待ち"
+                        e.status := str.format_time(t + 15 * MINUTE, "HH:mm", "Asia/Tokyo") + " 順行・逆行幅の確認待ち"
                         e.drawPending(t)
                         if showSetupContext
                             e.drawH4Context(t, s, best, selectedProfile.week)
@@ -524,7 +535,7 @@ method process(Engine e, int t, float o, float h, float l, float c, float v) =>
         bool ready = e.fullWeeks >= 2 and not na(e.atr)
         bool inDates = t >= beginTime and t < endTime
         int localDay = dayofweek(t, "Asia/Tokyo")
-        bool decision = localDay >= dayofweek.monday and localDay <= dayofweek.friday and hour(t, "Asia/Tokyo") == 8 and minute(t, "Asia/Tokyo") == 0
+        bool decision = localDay >= dayofweek.monday and localDay <= dayofweek.friday and hour(t, "Asia/Tokyo") == 8 and minute(t, "Asia/Tokyo") == (chartIsGoldUsd ? 15 : 0)
         if ready and inDates and goodPrice
             if na(e.firstReadyT) and decision
                 e.firstReadyT := t
@@ -551,7 +562,7 @@ method process(Engine e, int t, float o, float h, float l, float c, float v) =>
                 else if f_weekend(t)
                     e.cancelPending("週末取消")
                 else if t > e.pendingT + 15 * MINUTE
-                    e.cancelPending("08:15 M1欠落・取消")
+                    e.cancelPending(str.format_time(e.pendingT + 15 * MINUTE, "HH:mm", "Asia/Tokyo") + " M1欠落・取消")
             if e.pending and not e.position and t == e.pendingT + 15 * MINUTE
                 // The setup remains original-side; only execution is reversed.
                 float planned = o + (e.pendingS.side == 1 ? spread : 0)
@@ -561,14 +572,26 @@ method process(Engine e, int t, float o, float h, float l, float c, float v) =>
                 bool executionGeometry = executionSide * (e.pendingStop - actual) > 0 and executionSide * (actual - e.pendingS.target) > 0
                 bool costFits = math.abs(actual - e.pendingS.target) / filterCost >= MIN_RISK_COST
                 bool insideVA = e.pendingProfile.val <= actual and actual <= e.pendingProfile.vah
-                bool aligned = executionSide * (o - e.pendingBidOpen) >= filterCost
-                if originalGeometry and executionGeometry and costFits and insideVA and aligned
+                float directionalMove = executionSide * (o - e.pendingBidOpen)
+                bool aligned = directionalMove >= filterCost
+                bool completeWindow = e.pendingBars == 15
+                bool pullbackFits = e.pendingAdverse <= directionalMove / 2
+                if originalGeometry and executionGeometry and costFits and insideVA and aligned and completeWindow and pullbackFits
                     e.enterPosition(t, actual)
                     float exitOpen = o + (e.side == -1 ? spread : 0)
                     if (e.side == 1 ? exitOpen <= e.stop : exitOpen >= e.stop)
                         e.closePosition(t, exitOpen, "SL gap")
                 else
-                    e.cancelPending(not insideVA ? "08:15 見送り・VA外" : not (originalGeometry and executionGeometry and costFits) ? "08:15 価格/費用10%条件不成立" : "08:15 見送り・順方向の値幅不足")
+                    string reason = str.format_time(t, "HH:mm", "Asia/Tokyo") + " 価格/費用10%条件不成立"
+                    if not insideVA
+                        reason := str.format_time(t, "HH:mm", "Asia/Tokyo") + " 見送り・VA外"
+                    else if not completeWindow
+                        reason := str.format_time(t, "HH:mm", "Asia/Tokyo") + " 見送り・直前M1欠損"
+                    else if not aligned
+                        reason := str.format_time(t, "HH:mm", "Asia/Tokyo") + " 見送り・順方向の値幅不足"
+                    else if not pullbackFits
+                        reason := str.format_time(t, "HH:mm", "Asia/Tokyo") + " 見送り・逆行幅が半分超"
+                    e.cancelPending(reason)
             if decision and ready and inDates and not e.position
                 e.selectAtOpen(t, o)
             // INTRAMINUTE PATH: capacity freed here cannot affect this minute's 08 decision.
@@ -589,6 +612,10 @@ method process(Engine e, int t, float o, float h, float l, float c, float v) =>
             [nextUpper, nextLower] = f_markTouched(e.setups, e.nextUpperTarget, e.nextLowerTarget, t, h, l)
             e.nextUpperTarget := nextUpper
             e.nextLowerTarget := nextLower
+            // The 08:15 bar's extremes are excluded from the entry filter.
+            if e.pending and t < e.pendingT + 15 * MINUTE and t == e.pendingT + e.pendingBars * MINUTE
+                e.pendingBars += 1
+                e.pendingAdverse := math.max(e.pendingAdverse, f_adverseMove(-e.pendingS.side, e.pendingBidOpen, h, l))
             if e.pending and f_touch(e.pendingS.side, e.pendingS.target, h, l)
                 e.pendingS.touched := true
             e.hh := math.max(e.hh, h)
@@ -721,7 +748,7 @@ if barstate.islast and showPanel
     table.cell(panel, 0, 15, "銘柄 / 費用1単位", text_color=color.white, text_size=panelFontSize)
     table.cell(panel, 1, 15, syminfo.tickerid + " / " + str.tostring(pip, format.mintick) + " (" + pipMode + ")", text_color=color.white, text_size=panelFontSize)
     table.cell(panel, 0, 16, "研究参照範囲", text_color=color.white, text_size=panelFontSize)
-    table.cell(panel, 1, 16, "FT 2023–2025 両費用PF<1 / 研究未採用", text_color=color.yellow, text_size=panelFontSize)
+    table.cell(panel, 1, 16, "FT 2026 厳しめでPF低下 / 研究未採用", text_color=color.yellow, text_size=panelFontSize)
     table.cell(panel, 0, 17, "最終選定の7日窓 JST", text_color=color.white, text_size=panelFontSize)
     table.cell(panel, 1, 17, na(engine.selectionWindowStart) ? "08時の候補選定待ち" : str.format_time(engine.selectionWindowStart, "MM-dd HH:mm", "Asia/Tokyo") + " ～ " + str.format_time(engine.selectionWindowEnd, "MM-dd HH:mm", "Asia/Tokyo"), text_color=color.white, text_size=panelFontSize)
     table.cell(panel, 0, 18, "原シグナルH4形 UTC", text_color=color.white, text_size=panelFontSize)
@@ -761,6 +788,8 @@ type ScanEngine
     int pendingT = na
     float pendingStop = na
     float pendingBidOpen = na
+    int pendingBars = 0
+    float pendingAdverse = 0.0
     Profile pendingProfile = na
     bool position = false
     int side = 0
@@ -879,12 +908,14 @@ method scanSelectAtOpen(ScanEngine e, int t, float bidOpen, float spread, float 
                         e.pendingT := t
                         e.pendingStop := stop
                         e.pendingBidOpen := bidOpen
+                        e.pendingBars := 0
+                        e.pendingAdverse := 0.0
                         e.pendingProfile := selectedProfile
                         e.scanRecordScan(SCAN_CANDIDATE, executionSide, executionQuote, stop, s.target)
                         break
     e.scanState
 
-method scanProcess(ScanEngine e, int t, float o, float h, float l, float c, float v, float spread, float filterCost) =>
+method scanProcess(ScanEngine e, int t, float o, float h, float l, float c, float v, float spread, float filterCost, bool isGoldUsd) =>
     if not na(t) and (na(e.lastT) or t > e.lastT)
         e.lastT := t
         int today = f_jstDay(t)
@@ -928,7 +959,7 @@ method scanProcess(ScanEngine e, int t, float o, float h, float l, float c, floa
         bool ready = e.fullWeeks >= 2 and not na(e.atr)
         bool inDates = t >= beginTime and t < endTime
         int localDay = dayofweek(t, "Asia/Tokyo")
-        bool decision = localDay >= dayofweek.monday and localDay <= dayofweek.friday and hour(t, "Asia/Tokyo") == 8 and minute(t, "Asia/Tokyo") == 0
+        bool decision = localDay >= dayofweek.monday and localDay <= dayofweek.friday and hour(t, "Asia/Tokyo") == 8 and minute(t, "Asia/Tokyo") == (isGoldUsd ? 15 : 0)
         if decision and inDates and (not goodPrice or not ready)
             e.scanRecordScan(SCAN_UNREADY, 0, na, na, na)
         if goodPrice
@@ -951,14 +982,18 @@ method scanProcess(ScanEngine e, int t, float o, float h, float l, float c, floa
                 bool executionGeometry = executionSide * (e.pendingStop - actual) > 0 and executionSide * (actual - e.pendingS.target) > 0
                 bool costFits = math.abs(actual - e.pendingS.target) / filterCost >= MIN_RISK_COST
                 bool insideVA = e.pendingProfile.val <= actual and actual <= e.pendingProfile.vah
-                bool aligned = executionSide * (o - e.pendingBidOpen) >= filterCost
-                if originalGeometry and executionGeometry and costFits and insideVA and aligned
+                float directionalMove = executionSide * (o - e.pendingBidOpen)
+                bool aligned = directionalMove >= filterCost
+                bool completeWindow = e.pendingBars == 15
+                bool pullbackFits = e.pendingAdverse <= directionalMove / 2
+                if originalGeometry and executionGeometry and costFits and insideVA and aligned and completeWindow and pullbackFits
                     e.scanEnterPosition(t, actual)
                     float exitOpen = o + (e.side == -1 ? spread : 0)
                     if (e.side == 1 ? exitOpen <= e.stop : exitOpen >= e.stop)
                         e.scanFinishPosition(SCAN_SL)
                 else if originalGeometry and executionGeometry and costFits and insideVA
-                    e.scanRecordScan(SCAN_MOVE_SHORT, 0, na, na, na)
+                    int rejectState = not completeWindow ? SCAN_M1_GAP : not aligned ? SCAN_MOVE_SHORT : SCAN_PULLBACK
+                    e.scanRecordScan(rejectState, 0, na, na, na)
                 e.scanCancelPending()
             if decision and ready and inDates
                 if e.position
@@ -977,6 +1012,10 @@ method scanProcess(ScanEngine e, int t, float o, float h, float l, float c, floa
             [nextUpper, nextLower] = f_markTouched(e.setups, e.nextUpperTarget, e.nextLowerTarget, t, h, l)
             e.nextUpperTarget := nextUpper
             e.nextLowerTarget := nextLower
+            // The 08:15 bar's extremes are excluded from the entry filter.
+            if e.pending and t < e.pendingT + 15 * MINUTE and t == e.pendingT + e.pendingBars * MINUTE
+                e.pendingBars += 1
+                e.pendingAdverse := math.max(e.pendingAdverse, f_adverseMove(-e.pendingS.side, e.pendingBidOpen, h, l))
             if e.pending and f_touch(e.pendingS.side, e.pendingS.target, h, l)
                 e.pendingS.touched := true
             e.hh := math.max(e.hh, h)
@@ -1008,39 +1047,43 @@ f_scan() =>
     if isGoldUsd
         costUnit := math.max(syminfo.mintick, goldCostUnit)
     bool normal = costMode == "通常仮定"
-    float spread = (normal ? 1.0 : 2.0) * costUnit
+    float spread = (normal ? 1.0 : 2.0) * (isGoldUsd ? goldSpreadUsd : costUnit)
     float slip = (normal ? 0.1 : 0.2) * costUnit
     float carry = (normal ? 0.2 : 1.0) * costUnit
     float filterCost = spread + 2 * slip + 3 * carry
     // Evaluate the previous, closed M1 in this symbol's own dataset.
-    e.scanProcess(time[1], open[1], high[1], low[1], close[1], volume[1], spread, filterCost)
-    [e.scanDay, e.lastT, e.scanState, e.scanSide, e.scanEntry, e.scanTP, e.scanSL, syminfo.mintick]
+    e.scanProcess(time[1], open[1], high[1], low[1], close[1], volume[1], spread, filterCost, isGoldUsd)
+    [e.scanDay, e.lastT, e.scanState, e.scanSide, e.scanEntry, e.scanTP, e.scanSL, syminfo.mintick, isGoldUsd]
 
 f_scanPrice(float value, float tick) =>
     na(value) or na(tick) or tick <= 0 ? "—" : str.tostring(math.round(value / tick) * tick, "0.########")
 
 f_row(table panel, int row, string symbol, int day, int lastMinute, int state, int side, float entry, float tp, float sl, float tick, int today, int decisionAt, bool eligibleDay) =>
+    string decisionLabel = str.format_time(decisionAt, "HH:mm", "Asia/Tokyo")
+    string fillLabel = str.format_time(decisionAt + 15 * MINUTE, "HH:mm", "Asia/Tokyo")
     bool sameDay = not na(day) and day == today
     bool showPrices = eligibleDay and sameDay and (state == SCAN_CANDIDATE or state == SCAN_FILLED or state == SCAN_HOLDING)
-    string status = "08:00 未判定"
+    string status = decisionLabel + " 未判定"
     if sameDay and (state == SCAN_TP or state == SCAN_SL)
         status := state == SCAN_TP ? "エントリーチャンスなし（TP到達）" : "エントリーチャンスなし（SL到達）"
     else if not eligibleDay
         status := "対象日なし"
     else if timenow < decisionAt
-        status := "08:00 待ち"
+        status := decisionLabel + " 待ち"
     else if not sameDay or na(lastMinute)
         status := "データ未判定"
     else
         status := switch state
-            SCAN_CANDIDATE => timenow >= decisionAt + 16 * MINUTE ? "08:15 未判定" : "08:00 候補"
-            SCAN_FILLED => "08:15 仮想約定"
-            SCAN_CANCELED => "08:15 取消"
-            SCAN_MOVE_SHORT => "08:15 順方向の値幅不足"
+            SCAN_CANDIDATE => timenow >= decisionAt + 16 * MINUTE ? fillLabel + " 未判定" : decisionLabel + " 候補"
+            SCAN_FILLED => fillLabel + " 仮想約定"
+            SCAN_CANCELED => fillLabel + " 取消"
+            SCAN_MOVE_SHORT => fillLabel + " 順方向の値幅不足"
+            SCAN_PULLBACK => fillLabel + " 逆行幅が半分超"
+            SCAN_M1_GAP => fillLabel + " 直前M1欠損"
             SCAN_NONE => "候補なし"
             SCAN_UNREADY => "データ未判定"
-            SCAN_HOLDING => "08:00 既存保有"
-            => lastMinute >= decisionAt ? "08:00 M1なし" : "08:00 未判定"
+            SCAN_HOLDING => decisionLabel + " 既存保有"
+            => lastMinute >= decisionAt ? decisionLabel + " M1なし" : decisionLabel + " 未判定"
     string direction = showPrices ? (side == 1 ? "BUY" : "SELL") : "—"
     color sideColor = showPrices ? (side == 1 ? color.rgb(140, 226, 184) : color.rgb(255, 166, 175)) : color.silver
     bool chartSymbol = ticker.standard(symbol) == ticker.standard(syminfo.tickerid)
@@ -1063,7 +1106,7 @@ if showScanner
     int today = f_jstDay(timenow)
     int decisionAt = today + 8 * 60 * MINUTE
     int localDay = dayofweek(timenow, "Asia/Tokyo")
-    bool eligibleDay = localDay >= dayofweek.monday and localDay <= dayofweek.friday and decisionAt >= beginTime and decisionAt < endTime
+    bool eligibleDay = localDay >= dayofweek.monday and localDay <= dayofweek.friday
     color titleBg = color.rgb(14, 22, 32)
     if barstate.islast
         table.cell(scannerPanel, 0, 0, "Patrick K10  /  " + str.format_time(timenow, "MM/dd", "Asia/Tokyo") + " JST  /  " + costMode, text_color=color.white, bgcolor=titleBg, text_size=tableTextSize + 1)
@@ -1073,11 +1116,12 @@ if showScanner
         table.cell(scannerPanel, 3, 1, "Entry", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
         table.cell(scannerPanel, 4, 1, "TP", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
         table.cell(scannerPanel, 5, 1, "SL", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
-        table.cell(scannerPanel, 0, SCAN_FOOTER_ROW, "候補は08:00参考値 / 08:15に順方向の値幅を確認", text_color=color.silver, bgcolor=titleBg, text_size=math.max(11, tableTextSize - 2))
+        table.cell(scannerPanel, 0, SCAN_FOOTER_ROW, "仮想約定 FX 08:15 / XAUUSD 08:30（JST）", text_color=color.silver, bgcolor=titleBg, text_size=math.max(11, tableTextSize - 2))
     // Run all enabled requests on historical and realtime bars.
     for [index, scanSymbol] in scannerSymbols
-        [day, lastMinute, state, side, entry, tp, sl, tick] = request.security(scanSymbol, "1", f_scan(),
+        [day, lastMinute, state, side, entry, tp, sl, tick, isGoldUsd] = request.security(scanSymbol, "1", f_scan(),
              lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=scannerHistory)
         if barstate.islast
+            int rowDecisionAt = decisionAt + (isGoldUsd ? 15 * MINUTE : 0)
             f_row(scannerPanel, index + 2, scanSymbol, day, lastMinute, state, side, entry, tp, sl, tick,
-                 today, decisionAt, eligibleDay)
+                 today, rowDecisionAt, eligibleDay and rowDecisionAt >= beginTime and rowDecisionAt < endTime)

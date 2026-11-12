@@ -1,7 +1,7 @@
 //@version=6
 indicator("研究用 Patrick K10 / 今日のBUY・SELL候補", overlay=true, dynamic_requests=true)
 
-// K10 swap execution inside the selected VA, with 08:00–08:15 direction confirmation.
+// K10 swap execution inside the selected VA, with 15-minute direction and pullback checks.
 // Headless M1 state lives in each requested symbol context. No drawings or arrays are returned.
 const int MINUTE = 60000
 const int H4 = 14400000
@@ -29,7 +29,9 @@ const int SCAN_HOLDING = 6
 const int SCAN_TP = 7
 const int SCAN_SL = 8
 const int SCAN_MOVE_SHORT = 9
-const int M1_HISTORY = 100000
+const int SCAN_M1_MISSING = 10
+const int SCAN_PULLBACK_LARGE = 11
+const int M1_HISTORY = 32000
 
 string symbol1 = input.symbol("OANDA:EURUSD", "通貨1", group="監視通貨")
 string symbol2 = input.symbol("OANDA:GBPUSD", "通貨2", group="監視通貨")
@@ -41,7 +43,8 @@ string symbol7 = input.symbol("OANDA:CADJPY", "通貨7", group="監視通貨")
 string symbol8 = input.symbol("OANDA:AUDJPY", "通貨8", group="監視通貨")
 string symbol9 = input.symbol("OANDA:XAUUSD", "ゴールド", group="監視通貨")
 string costMode = input.string("通常仮定", "費用シナリオ", options=["通常仮定", "厳しめ仮定"])
-float goldCostUnit = input.float(0.20, "XAUUSDの費用単位（USD）", minval=0.01, step=0.01, tooltip="仮定値。通常のスプレッドはこの値、判定用推定費用は1.8倍。厳しめではそれぞれ2倍と5.4倍。取引先の条件に合わせて調整。")
+float goldCostUnit = input.float(0.20, "XAUUSDの滑り・保有費用単位（USD）", minval=0.01, step=0.01)
+float goldSpreadUsd = input.float(0.376, "XAUUSDの通常スプレッド（USD）", minval=0.001, step=0.001, tooltip="初期値はForex TesterのXAUUSD設定。厳しめは2倍。")
 int tableTextSize = input.int(15, "一覧の文字サイズ", minval=11, maxval=22, group="表示")
 int beginTime = input.time(timestamp("01 Jan 2017 00:00 +0000"), "仮想ENTRY開始 UTC")
 int endTime = input.time(timestamp("01 Jan 2099 00:00 +0000"), "仮想ENTRY終了 UTC")
@@ -99,6 +102,8 @@ type Engine
     int pendingT = na
     float pendingStop = na
     float pendingBidOpen = na
+    int pendingBars = 0
+    float pendingAdverse = 0.0
     float pendingVal = na
     float pendingVah = na
     bool position = false
@@ -264,13 +269,15 @@ method selectAtOpen(Engine e, int t, float bidOpen, float spread, float filterCo
                         e.pendingT := t
                         e.pendingStop := stop
                         e.pendingBidOpen := bidOpen
+                        e.pendingBars := 0
+                        e.pendingAdverse := 0.0
                         e.pendingVal := selected.val
                         e.pendingVah := selected.vah
                         e.recordScan(SCAN_CANDIDATE, executionSide, executionQuote, stop, s.target)
                         break
     e.scanState
 
-method process(Engine e, int t, float o, float h, float l, float c, float v, float spread, float filterCost) =>
+method process(Engine e, int t, float o, float h, float l, float c, float v, float spread, float filterCost, int decisionMinute) =>
     if not na(t) and (na(e.lastT) or t > e.lastT)
         e.lastT := t
         int today = f_jstDay(t)
@@ -307,11 +314,11 @@ method process(Engine e, int t, float o, float h, float l, float c, float v, flo
         bool ready = e.fullWeeks >= 2 and not na(e.atr)
         bool inDates = t >= beginTime and t < endTime
         int localDay = dayofweek(t, "Asia/Tokyo")
-        bool decision = localDay >= dayofweek.monday and localDay <= dayofweek.friday and hour(t, "Asia/Tokyo") == 8 and minute(t, "Asia/Tokyo") == 0
+        bool decision = localDay >= dayofweek.monday and localDay <= dayofweek.friday and t == today + decisionMinute * MINUTE
         if decision and inDates and (not goodPrice or not ready)
             e.recordScan(SCAN_UNREADY, 0, na, na, na)
         if goodPrice
-            // Release an existing position at the open before the 08:00 decision.
+            // Release an existing position at the open before the scheduled decision.
             if e.position
                 float exitOpen = o + (e.side == -1 ? spread : 0)
                 bool stopAtOpen = e.side == 1 ? exitOpen <= e.stop : exitOpen >= e.stop
@@ -330,15 +337,21 @@ method process(Engine e, int t, float o, float h, float l, float c, float v, flo
                 bool executionGeometry = executionSide * (e.pendingStop - actual) > 0 and executionSide * (actual - e.pendingS.target) > 0
                 bool costFits = math.abs(actual - e.pendingS.target) / filterCost >= MIN_RISK_COST
                 bool insideVa = e.pendingVal <= actual and actual <= e.pendingVah
-                bool moveFits = executionSide * (o - e.pendingBidOpen) >= filterCost
+                float directionalMove = executionSide * (o - e.pendingBidOpen)
+                bool moveFits = directionalMove >= filterCost
+                bool pullbackFits = e.pendingAdverse <= directionalMove / 2
                 if originalGeometry and executionGeometry and costFits and insideVa
-                    if moveFits
+                    if e.pendingBars != 15
+                        e.recordScan(SCAN_M1_MISSING, 0, na, na, na)
+                    else if not moveFits
+                        e.recordScan(SCAN_MOVE_SHORT, 0, na, na, na)
+                    else if not pullbackFits
+                        e.recordScan(SCAN_PULLBACK_LARGE, 0, na, na, na)
+                    else
                         e.enterPosition(t, actual)
                         float exitOpen = o + (e.side == -1 ? spread : 0)
                         if (e.side == 1 ? exitOpen <= e.stop : exitOpen >= e.stop)
                             e.finishPosition(SCAN_SL)
-                    else
-                        e.recordScan(SCAN_MOVE_SHORT, 0, na, na, na)
                 e.cancelPending()
             if decision and ready and inDates
                 if e.position
@@ -354,6 +367,10 @@ method process(Engine e, int t, float o, float h, float l, float c, float v, flo
                 if stopHit or targetHit
                     e.finishPosition(stopHit ? SCAN_SL : SCAN_TP)
             // Only now may the current minute's extremes invalidate a future decision/order.
+            if e.pending and t < e.pendingT + 15 * MINUTE and t == e.pendingT + e.pendingBars * MINUTE
+                float adverse = e.pendingS.side == -1 ? e.pendingBidOpen - l : h - e.pendingBidOpen
+                e.pendingAdverse := math.max(e.pendingAdverse, adverse)
+                e.pendingBars += 1
             if array.size(e.setups) > 0
                 for s in e.setups
                     if t >= s.completed and f_touch(s.side, s.target, h, l)
@@ -385,53 +402,61 @@ f_scan() =>
         e.prices := array.new_float()
         e.volumes := array.new_float()
     bool isGoldUsd = syminfo.ticker == "XAUUSD" or (syminfo.basecurrency == "XAU" and syminfo.currency == "USD")
+    int decisionMinute = isGoldUsd ? 8 * 60 + 15 : 8 * 60
     float costUnit = syminfo.type == "forex" ? math.max(syminfo.mintick, syminfo.currency == "JPY" ? 0.01 : 0.0001) : syminfo.mintick
     if isGoldUsd
         costUnit := math.max(syminfo.mintick, goldCostUnit)
     bool normal = costMode == "通常仮定"
-    float spread = (normal ? 1.0 : 2.0) * costUnit
+    float spread = (normal ? 1.0 : 2.0) * (isGoldUsd ? goldSpreadUsd : costUnit)
     float slip = (normal ? 0.1 : 0.2) * costUnit
     float carry = (normal ? 0.2 : 1.0) * costUnit
     float filterCost = spread + 2 * slip + 3 * carry
     // Evaluate the previous, closed M1 in this symbol's own dataset.
-    e.process(time[1], open[1], high[1], low[1], close[1], volume[1], spread, filterCost)
-    [e.scanDay, e.lastT, e.scanState, e.scanSide, e.scanEntry, e.scanTP, e.scanSL, syminfo.mintick]
+    e.process(time[1], open[1], high[1], low[1], close[1], volume[1], spread, filterCost, decisionMinute)
+    [e.scanDay, e.lastT, e.scanState, e.scanSide, e.scanEntry, e.scanTP, e.scanSL, syminfo.mintick, decisionMinute]
 
-[day1, last1, state1, side1, entry1, tp1, sl1, tick1] = request.security(symbol1, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
-[day2, last2, state2, side2, entry2, tp2, sl2, tick2] = request.security(symbol2, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
-[day3, last3, state3, side3, entry3, tp3, sl3, tick3] = request.security(symbol3, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
-[day4, last4, state4, side4, entry4, tp4, sl4, tick4] = request.security(symbol4, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
-[day5, last5, state5, side5, entry5, tp5, sl5, tick5] = request.security(symbol5, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
-[day6, last6, state6, side6, entry6, tp6, sl6, tick6] = request.security(symbol6, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
-[day7, last7, state7, side7, entry7, tp7, sl7, tick7] = request.security(symbol7, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
-[day8, last8, state8, side8, entry8, tp8, sl8, tick8] = request.security(symbol8, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
-[day9, last9, state9, side9, entry9, tp9, sl9, tick9] = request.security(symbol9, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day1, last1, state1, side1, entry1, tp1, sl1, tick1, decisionMinute1] = request.security(symbol1, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day2, last2, state2, side2, entry2, tp2, sl2, tick2, decisionMinute2] = request.security(symbol2, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day3, last3, state3, side3, entry3, tp3, sl3, tick3, decisionMinute3] = request.security(symbol3, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day4, last4, state4, side4, entry4, tp4, sl4, tick4, decisionMinute4] = request.security(symbol4, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day5, last5, state5, side5, entry5, tp5, sl5, tick5, decisionMinute5] = request.security(symbol5, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day6, last6, state6, side6, entry6, tp6, sl6, tick6, decisionMinute6] = request.security(symbol6, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day7, last7, state7, side7, entry7, tp7, sl7, tick7, decisionMinute7] = request.security(symbol7, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day8, last8, state8, side8, entry8, tp8, sl8, tick8, decisionMinute8] = request.security(symbol8, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day9, last9, state9, side9, entry9, tp9, sl9, tick9, decisionMinute9] = request.security(symbol9, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
 
 f_price(float value, float tick) =>
     na(value) or na(tick) or tick <= 0 ? "—" : str.tostring(math.round(value / tick) * tick, "0.########")
 
-f_row(table panel, int row, string symbol, int day, int lastMinute, int state, int side, float entry, float tp, float sl, float tick, int today, int decisionAt, bool eligibleDay) =>
+f_row(table panel, int row, string symbol, int day, int lastMinute, int state, int side, float entry, float tp, float sl, float tick, int today, int decisionMinute, bool weekday) =>
+    int decisionAt = today + nz(decisionMinute, 8 * 60) * MINUTE
+    int fillAt = decisionAt + 15 * MINUTE
+    string decisionLabel = str.format_time(decisionAt, "HH:mm", "Asia/Tokyo")
+    string fillLabel = str.format_time(fillAt, "HH:mm", "Asia/Tokyo")
+    bool eligibleDay = weekday and decisionAt >= beginTime and decisionAt < endTime
     bool sameDay = not na(day) and day == today
     bool showPrices = eligibleDay and sameDay and (state == SCAN_CANDIDATE or state == SCAN_FILLED or state == SCAN_HOLDING)
-    string status = "08:00 未判定"
+    string status = decisionLabel + " 未判定"
     if sameDay and (state == SCAN_TP or state == SCAN_SL)
         status := state == SCAN_TP ? "エントリーチャンスなし（TP到達）" : "エントリーチャンスなし（SL到達）"
     else if not eligibleDay
         status := "対象日なし"
     else if timenow < decisionAt
-        status := "08:00 待ち"
+        status := decisionLabel + " 待ち"
     else if not sameDay or na(lastMinute)
         status := "データ未判定"
     else
         status := switch state
-            SCAN_CANDIDATE => timenow >= decisionAt + 16 * MINUTE ? "08:15 未判定" : "08:00 候補"
-            SCAN_FILLED => "08:15 仮想約定"
-            SCAN_CANCELED => "08:15 取消"
-            SCAN_MOVE_SHORT => "08:15 順方向の値幅不足"
+            SCAN_CANDIDATE => timenow >= fillAt + MINUTE ? fillLabel + " 未判定" : decisionLabel + " 候補"
+            SCAN_FILLED => fillLabel + " 仮想約定"
+            SCAN_CANCELED => fillLabel + " 取消"
+            SCAN_MOVE_SHORT => fillLabel + " 順方向の値幅不足"
+            SCAN_M1_MISSING => fillLabel + " 見送り・M1欠損"
+            SCAN_PULLBACK_LARGE => fillLabel + " 見送り・逆行幅超過"
             SCAN_NONE => "候補なし"
             SCAN_UNREADY => "データ未判定"
-            SCAN_HOLDING => "08:00 既存保有"
-            => lastMinute >= decisionAt ? "08:00 M1なし" : "08:00 未判定"
+            SCAN_HOLDING => decisionLabel + " 既存保有"
+            => lastMinute >= decisionAt ? decisionLabel + " M1なし" : decisionLabel + " 未判定"
     string direction = showPrices ? (side == 1 ? "BUY" : "SELL") : "—"
     color sideColor = showPrices ? (side == 1 ? color.rgb(140, 226, 184) : color.rgb(255, 166, 175)) : color.silver
     bool chartSymbol = ticker.standard(symbol) == ticker.standard(syminfo.tickerid)
@@ -451,9 +476,8 @@ if barstate.isfirst
     table.merge_cells(panel, 0, FOOTER_ROW, 5, FOOTER_ROW)
 if barstate.islast
     int today = f_jstDay(timenow)
-    int decisionAt = today + 8 * 60 * MINUTE
     int localDay = dayofweek(timenow, "Asia/Tokyo")
-    bool eligibleDay = localDay >= dayofweek.monday and localDay <= dayofweek.friday and decisionAt >= beginTime and decisionAt < endTime
+    bool eligibleDay = localDay >= dayofweek.monday and localDay <= dayofweek.friday
     color titleBg = color.rgb(14, 22, 32)
     table.cell(panel, 0, 0, "Patrick K10  /  " + str.format_time(timenow, "MM/dd", "Asia/Tokyo") + " JST  /  " + costMode, text_color=color.white, bgcolor=titleBg, text_size=tableTextSize + 1)
     table.cell(panel, 0, 1, "銘柄", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
@@ -462,13 +486,13 @@ if barstate.islast
     table.cell(panel, 3, 1, "Entry", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
     table.cell(panel, 4, 1, "TP", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
     table.cell(panel, 5, 1, "SL", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
-    f_row(panel, 2, symbol1, day1, last1, state1, side1, entry1, tp1, sl1, tick1, today, decisionAt, eligibleDay)
-    f_row(panel, 3, symbol2, day2, last2, state2, side2, entry2, tp2, sl2, tick2, today, decisionAt, eligibleDay)
-    f_row(panel, 4, symbol3, day3, last3, state3, side3, entry3, tp3, sl3, tick3, today, decisionAt, eligibleDay)
-    f_row(panel, 5, symbol4, day4, last4, state4, side4, entry4, tp4, sl4, tick4, today, decisionAt, eligibleDay)
-    f_row(panel, 6, symbol5, day5, last5, state5, side5, entry5, tp5, sl5, tick5, today, decisionAt, eligibleDay)
-    f_row(panel, 7, symbol6, day6, last6, state6, side6, entry6, tp6, sl6, tick6, today, decisionAt, eligibleDay)
-    f_row(panel, 8, symbol7, day7, last7, state7, side7, entry7, tp7, sl7, tick7, today, decisionAt, eligibleDay)
-    f_row(panel, 9, symbol8, day8, last8, state8, side8, entry8, tp8, sl8, tick8, today, decisionAt, eligibleDay)
-    f_row(panel, 10, symbol9, day9, last9, state9, side9, entry9, tp9, sl9, tick9, today, decisionAt, eligibleDay)
-    table.cell(panel, 0, FOOTER_ROW, "08:00候補 → 08:15にVA内・順方向を確認  /  研究未採用", text_color=color.silver, bgcolor=titleBg, text_size=math.max(11, tableTextSize - 2))
+    f_row(panel, 2, symbol1, day1, last1, state1, side1, entry1, tp1, sl1, tick1, today, decisionMinute1, eligibleDay)
+    f_row(panel, 3, symbol2, day2, last2, state2, side2, entry2, tp2, sl2, tick2, today, decisionMinute2, eligibleDay)
+    f_row(panel, 4, symbol3, day3, last3, state3, side3, entry3, tp3, sl3, tick3, today, decisionMinute3, eligibleDay)
+    f_row(panel, 5, symbol4, day4, last4, state4, side4, entry4, tp4, sl4, tick4, today, decisionMinute4, eligibleDay)
+    f_row(panel, 6, symbol5, day5, last5, state5, side5, entry5, tp5, sl5, tick5, today, decisionMinute5, eligibleDay)
+    f_row(panel, 7, symbol6, day6, last6, state6, side6, entry6, tp6, sl6, tick6, today, decisionMinute6, eligibleDay)
+    f_row(panel, 8, symbol7, day7, last7, state7, side7, entry7, tp7, sl7, tick7, today, decisionMinute7, eligibleDay)
+    f_row(panel, 9, symbol8, day8, last8, state8, side8, entry8, tp8, sl8, tick8, today, decisionMinute8, eligibleDay)
+    f_row(panel, 10, symbol9, day9, last9, state9, side9, entry9, tp9, sl9, tick9, today, decisionMinute9, eligibleDay)
+    table.cell(panel, 0, FOOTER_ROW, "仮想約定 FX 08:15 / XAUUSD 08:30 JST・研究未採用", text_color=color.silver, bgcolor=titleBg, text_size=math.max(11, tableTextSize - 2))

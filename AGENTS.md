@@ -25,6 +25,12 @@ reasoningはクオンツ6役がhigh、`quant_git_publish` がmediumを維持す�
 過去に作成した `src/forextester_backtest/agents.py` は既存戦略の条件比較用部品であり、
 新規ロジックを構築する組織そのものとは扱わない。
 
+# Pine Scriptの確定
+
+Pineを変更したら、引き渡す最終の `.pine` ファイルの全文をTradingViewのPineエディタでコンパイルし、チャートに追加または更新できることを確認してから確定する。
+貼り付け前にファイル名と先頭の `//@version=` を確認する。対象が複数あれば各ファイルを確認する。
+ローカルテストは補助検証とする。TradingViewで確認できなければ、未確認のファイルと理由を報告する。
+
 # 保存済み株価データの再利用
 
 株式研究では、まず `data/stocks/README.md` と保存済みデータのmanifestを確認する。
