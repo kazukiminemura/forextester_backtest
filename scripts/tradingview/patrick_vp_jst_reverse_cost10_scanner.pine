@@ -1,0 +1,474 @@
+//@version=6
+indicator("研究用 Patrick K10 / 今日のBUY・SELL候補", overlay=true, dynamic_requests=true)
+
+// K10 swap execution inside the selected VA, with 08:00–08:15 direction confirmation.
+// Headless M1 state lives in each requested symbol context. No drawings or arrays are returned.
+const int MINUTE = 60000
+const int H4 = 14400000
+const int DAY = 86400000
+const int WEEK = 604800000
+const int JST = 32400000
+const int ATR_PERIOD = 20
+const int VP_BINS = 100
+const float VA_FRACTION = 0.70
+const float IMPULSE_ATR = 0.5
+const float RANGE_ATR = 4.0
+const float LINE_ATR = 4.0
+const float NEAR_ATR = 5.0
+const float STOP_ATR = 0.25
+const int H4_LOOKBACK_MS = 7 * DAY
+const float MIN_RISK_COST = 10.0
+
+const int SCAN_UNDECIDED = 0
+const int SCAN_CANDIDATE = 1
+const int SCAN_FILLED = 2
+const int SCAN_CANCELED = 3
+const int SCAN_NONE = 4
+const int SCAN_UNREADY = 5
+const int SCAN_HOLDING = 6
+const int SCAN_TP = 7
+const int SCAN_SL = 8
+const int SCAN_MOVE_SHORT = 9
+const int M1_HISTORY = 100000
+
+string symbol1 = input.symbol("OANDA:EURUSD", "通貨1", group="監視通貨")
+string symbol2 = input.symbol("OANDA:GBPUSD", "通貨2", group="監視通貨")
+string symbol3 = input.symbol("OANDA:USDJPY", "通貨3", group="監視通貨")
+string symbol4 = input.symbol("OANDA:EURJPY", "通貨4", group="監視通貨")
+string symbol5 = input.symbol("OANDA:GBPJPY", "通貨5", group="監視通貨")
+string symbol6 = input.symbol("OANDA:NZDJPY", "通貨6", group="監視通貨")
+string symbol7 = input.symbol("OANDA:CADJPY", "通貨7", group="監視通貨")
+string symbol8 = input.symbol("OANDA:AUDJPY", "通貨8", group="監視通貨")
+string symbol9 = input.symbol("OANDA:XAUUSD", "ゴールド", group="監視通貨")
+string costMode = input.string("通常仮定", "費用シナリオ", options=["通常仮定", "厳しめ仮定"])
+float goldCostUnit = input.float(0.20, "XAUUSDの費用単位（USD）", minval=0.01, step=0.01, tooltip="仮定値。通常のスプレッドはこの値、判定用推定費用は1.8倍。厳しめではそれぞれ2倍と5.4倍。取引先の条件に合わせて調整。")
+int tableTextSize = input.int(15, "一覧の文字サイズ", minval=11, maxval=22, group="表示")
+int beginTime = input.time(timestamp("01 Jan 2017 00:00 +0000"), "仮想ENTRY開始 UTC")
+int endTime = input.time(timestamp("01 Jan 2099 00:00 +0000"), "仮想ENTRY終了 UTC")
+if barstate.isfirst and not (timeframe.isminutes and (timeframe.multiplier == 1 or timeframe.multiplier == 15))
+    runtime.error("1分足または15分足で表示してください。判定には各通貨の確定1分足を使います。")
+
+type H4Bar
+    int start
+    float o
+    float h
+    float l
+    float c
+    float atr
+type Setup
+    int key
+    int completed
+    int side
+    float a
+    float lower
+    float upper
+    float target
+    bool touched = false
+    bool used = false
+type Profile
+    int week
+    float vah
+    float val
+    bool valid
+type Engine
+    int lastT = na
+    int h4Start = na
+    float ho = na
+    float hh = na
+    float hl = na
+    float hc = na
+    bool h4Bad = false
+    float previousH4Close = na
+    float atr = na
+    float seed = 0.0
+    int trCount = 0
+    array<H4Bar> bars = na
+    array<Setup> setups = na
+    int currentWeek = na
+    bool fullWeek = false
+    bool weekBad = false
+    float weekLow = na
+    float weekHigh = na
+    array<float> prices = na
+    array<float> volumes = na
+    Profile p1 = na
+    Profile p2 = na
+    int fullWeeks = 0
+    bool pending = false
+    Setup pendingS = na
+    int pendingT = na
+    float pendingStop = na
+    float pendingBidOpen = na
+    float pendingVal = na
+    float pendingVah = na
+    bool position = false
+    int side = 0
+    int deadline = na
+    float entry = na
+    float stop = na
+    float target = na
+    int scanDay = na
+    int scanState
+    int scanSide = 0
+    float scanEntry = na
+    float scanTP = na
+    float scanSL = na
+
+f_jstDay(int t) =>
+    int(math.floor((t + JST) / float(DAY))) * DAY - JST
+
+f_week(int t) =>
+    int dayNumber = int(math.floor(t / float(DAY)))
+    (int(math.floor((dayNumber + 3) / 7.0)) * 7 - 3) * DAY
+f_touch(int side, float target, float h, float l) => side == 1 ? h >= target : l <= target
+f_weekend(int t) =>
+    int d = dayofweek(t, "UTC")
+    d == dayofweek.saturday or (d == dayofweek.friday and hour(t, "UTC") >= 20) or (d == dayofweek.sunday and hour(t, "UTC") < 23)
+f_deadline(int t) =>
+    int d = dayofweek(t, "UTC")
+    int ahead = (dayofweek.friday - d + 7) % 7
+    int fri = int(math.floor(t / float(DAY))) * DAY + ahead * DAY + 20 * 60 * MINUTE
+    if fri <= t
+        fri += WEEK
+    math.min(t + 3 * DAY, fri)
+
+f_profile(int week, array<float> prices, array<float> volumes, float lo, float hi, bool invalid) =>
+    bool good = not invalid and array.size(prices) > 0 and not na(lo) and hi > lo
+    float vah = na
+    float val = na
+    if good
+        array<float> weights = array.new_float(VP_BINS, 0.0)
+        float width = (hi - lo) / VP_BINS
+        for i = 0 to array.size(prices) - 1
+            int row = math.max(0, math.min(VP_BINS - 1, int(math.floor((array.get(prices, i) - lo) / width))))
+            array.set(weights, row, array.get(weights, row) + array.get(volumes, i))
+        float total = array.sum(weights)
+        good := total > 0
+        if good
+            int poc = 0
+            for i = 1 to VP_BINS - 1
+                if array.get(weights, i) > array.get(weights, poc)
+                    poc := i
+            int left = poc
+            int right = poc
+            float included = array.get(weights, poc)
+            while included < total * VA_FRACTION and (left > 0 or right < VP_BINS - 1)
+                if right == VP_BINS - 1 or (left > 0 and array.get(weights, left - 1) >= array.get(weights, right + 1))
+                    left -= 1
+                    included += array.get(weights, left)
+                else
+                    right += 1
+                    included += array.get(weights, right)
+            val := lo + left * width
+            vah := lo + (right + 1) * width
+    Profile.new(week, vah, val, good)
+
+method detect(Engine e) =>
+    int n = array.size(e.bars)
+    if n >= 6
+        H4Bar before = array.get(e.bars, n - 6)
+        H4Bar a = array.get(e.bars, n - 5)
+        H4Bar b = array.get(e.bars, n - 4)
+        H4Bar c = array.get(e.bars, n - 3)
+        H4Bar d = array.get(e.bars, n - 2)
+        H4Bar f = array.get(e.bars, n - 1)
+        float atrBefore = before.atr
+        float change = c.c - a.o
+        float lower = math.min(d.l, f.l)
+        float upper = math.max(d.h, f.h)
+        bool consecutive = b.start - a.start == H4 and c.start - b.start == H4 and d.start - c.start == H4 and f.start - d.start == H4
+        bool shape = consecutive and not na(atrBefore) and atrBefore > 0 and math.abs(change) >= IMPULSE_ATR * atrBefore and upper - lower <= RANGE_ATR * atrBefore
+        int side = change > 0 ? -1 : 1
+        bool half = side == -1 ? lower >= a.o + change * 0.5 : upper <= a.o + change * 0.5
+        if shape and half
+            float target = side == -1 ? math.min(a.l, math.min(b.l, c.l)) : math.max(a.h, math.max(b.h, c.h))
+            array.push(e.setups, Setup.new(a.start, f.start + H4, side, atrBefore, lower, upper, target))
+
+method finishH4(Engine e) =>
+    if not e.h4Bad
+        float tr = na(e.previousH4Close) ? e.hh - e.hl : math.max(e.hh - e.hl, math.max(math.abs(e.hh - e.previousH4Close), math.abs(e.hl - e.previousH4Close)))
+        e.trCount += 1
+        if e.trCount <= ATR_PERIOD
+            e.seed += tr
+            if e.trCount == ATR_PERIOD
+                e.atr := e.seed / ATR_PERIOD
+        else
+            e.atr := (e.atr * (ATR_PERIOD - 1) + tr) / ATR_PERIOD
+        e.previousH4Close := e.hc
+        array.push(e.bars, H4Bar.new(e.h4Start, e.ho, e.hh, e.hl, e.hc, e.atr))
+        if array.size(e.bars) > 6
+            array.shift(e.bars)
+        e.detect()
+
+method recordScan(Engine e, int state, int side, float entry, float target, float stop) =>
+    e.scanState := state
+    e.scanSide := side
+    e.scanEntry := entry
+    e.scanTP := target
+    e.scanSL := stop
+    state
+
+method cancelPending(Engine e) =>
+    if e.pending and e.scanState == SCAN_CANDIDATE and e.pendingT >= e.scanDay
+        e.recordScan(SCAN_CANCELED, 0, na, na, na)
+    e.pending := false
+    e.pendingS := na
+
+method finishPosition(Engine e, int state) =>
+    e.position := false
+    e.recordScan(state, 0, na, na, na)
+
+method enterPosition(Engine e, int t, float quote) =>
+    Setup s = e.pendingS
+    e.side := -s.side
+    e.deadline := f_deadline(t)
+    e.entry := quote
+    e.stop := s.target
+    e.target := e.pendingStop
+    e.position := true
+    s.used := true
+    e.recordScan(SCAN_FILLED, e.side, e.entry, e.target, e.stop)
+
+method selectAtOpen(Engine e, int t, float bidOpen, float spread, float filterCost) =>
+    e.cancelPending()
+    e.recordScan(SCAN_NONE, 0, na, na, na)
+    int n = array.size(e.setups)
+    if n > 0
+        for offset = 0 to n - 1
+            Setup s = array.get(e.setups, n - 1 - offset)
+            if s.key >= t - H4_LOOKBACK_MS and s.completed <= t and not s.used and not s.touched
+                float best = na
+                float distance = na
+                Profile selected = na
+                for j = 0 to 1
+                    Profile p = j == 0 ? e.p1 : e.p2
+                    if not na(p) and p.valid and (p.week == f_week(t) - WEEK or p.week == f_week(t) - 2 * WEEK)
+                        float level = s.side == -1 ? p.vah : p.val
+                        float delta = math.abs(level - (s.side == -1 ? s.upper : s.lower))
+                        if delta <= LINE_ATR * s.a and (na(distance) or delta < distance)
+                            distance := delta
+                            best := level
+                            selected := p
+                if not na(best)
+                    float stop = s.side == -1 ? math.max(best, s.upper) + STOP_ATR * s.a : math.min(best, s.lower) - STOP_ATR * s.a
+                    float quote = bidOpen + (s.side == 1 ? spread : 0)
+                    bool geometry = s.side * (s.target - quote) > 0 and s.side * (quote - stop) > 0
+                    int executionSide = -s.side
+                    float executionQuote = bidOpen + (executionSide == 1 ? spread : 0)
+                    bool executionGeometry = executionSide * (stop - executionQuote) > 0 and executionSide * (executionQuote - s.target) > 0
+                    bool costFits = math.abs(executionQuote - s.target) / filterCost >= MIN_RISK_COST
+                    bool insideVa = selected.val <= executionQuote and executionQuote <= selected.vah
+                    if geometry and math.abs(quote - best) <= NEAR_ATR * s.a and executionGeometry and costFits and insideVa
+                        e.pending := true
+                        e.pendingS := s
+                        e.pendingT := t
+                        e.pendingStop := stop
+                        e.pendingBidOpen := bidOpen
+                        e.pendingVal := selected.val
+                        e.pendingVah := selected.vah
+                        e.recordScan(SCAN_CANDIDATE, executionSide, executionQuote, stop, s.target)
+                        break
+    e.scanState
+
+method process(Engine e, int t, float o, float h, float l, float c, float v, float spread, float filterCost) =>
+    if not na(t) and (na(e.lastT) or t > e.lastT)
+        e.lastT := t
+        int today = f_jstDay(t)
+        if na(e.scanDay) or e.scanDay != today
+            e.scanDay := today
+            e.recordScan(SCAN_UNDECIDED, 0, na, na, na)
+        int bucket = int(math.floor(t / float(H4))) * H4
+        if not na(e.h4Start) and bucket != e.h4Start
+            e.finishH4()
+            e.h4Start := na
+        if na(e.h4Start)
+            e.h4Start := bucket
+            e.ho := o
+            e.hh := o
+            e.hl := o
+            e.hc := o
+            e.h4Bad := false
+        int week = f_week(t)
+        if na(e.currentWeek) or week != e.currentWeek
+            if not na(e.currentWeek)
+                Profile complete = f_profile(e.currentWeek, e.prices, e.volumes, e.weekLow, e.weekHigh, e.weekBad or not e.fullWeek)
+                e.p2 := e.p1
+                e.p1 := complete
+                if e.fullWeek
+                    e.fullWeeks += 1
+            e.fullWeek := not na(e.currentWeek) or t == week
+            e.currentWeek := week
+            e.weekBad := false
+            e.weekLow := na
+            e.weekHigh := na
+            array.clear(e.prices)
+            array.clear(e.volumes)
+        bool goodPrice = not na(o + h + l + c) and o > 0 and l > 0 and h >= math.max(o, c) and l <= math.min(o, c)
+        bool ready = e.fullWeeks >= 2 and not na(e.atr)
+        bool inDates = t >= beginTime and t < endTime
+        int localDay = dayofweek(t, "Asia/Tokyo")
+        bool decision = localDay >= dayofweek.monday and localDay <= dayofweek.friday and hour(t, "Asia/Tokyo") == 8 and minute(t, "Asia/Tokyo") == 0
+        if decision and inDates and (not goodPrice or not ready)
+            e.recordScan(SCAN_UNREADY, 0, na, na, na)
+        if goodPrice
+            // Release an existing position at the open before the 08:00 decision.
+            if e.position
+                float exitOpen = o + (e.side == -1 ? spread : 0)
+                bool stopAtOpen = e.side == 1 ? exitOpen <= e.stop : exitOpen >= e.stop
+                bool targetAtOpen = e.side == 1 ? exitOpen >= e.target : exitOpen <= e.target
+                if t >= e.deadline
+                    e.finishPosition(SCAN_NONE)
+                else if stopAtOpen or targetAtOpen
+                    e.finishPosition(stopAtOpen ? SCAN_SL : SCAN_TP)
+            if e.pending and (t >= endTime or e.pendingS.touched or f_weekend(t) or t > e.pendingT + 15 * MINUTE)
+                e.cancelPending()
+            if e.pending and not e.position and t == e.pendingT + 15 * MINUTE
+                float planned = o + (e.pendingS.side == 1 ? spread : 0)
+                int executionSide = -e.pendingS.side
+                float actual = o + (executionSide == 1 ? spread : 0)
+                bool originalGeometry = e.pendingS.side * (e.pendingS.target - planned) > 0 and e.pendingS.side * (planned - e.pendingStop) > 0
+                bool executionGeometry = executionSide * (e.pendingStop - actual) > 0 and executionSide * (actual - e.pendingS.target) > 0
+                bool costFits = math.abs(actual - e.pendingS.target) / filterCost >= MIN_RISK_COST
+                bool insideVa = e.pendingVal <= actual and actual <= e.pendingVah
+                bool moveFits = executionSide * (o - e.pendingBidOpen) >= filterCost
+                if originalGeometry and executionGeometry and costFits and insideVa
+                    if moveFits
+                        e.enterPosition(t, actual)
+                        float exitOpen = o + (e.side == -1 ? spread : 0)
+                        if (e.side == 1 ? exitOpen <= e.stop : exitOpen >= e.stop)
+                            e.finishPosition(SCAN_SL)
+                    else
+                        e.recordScan(SCAN_MOVE_SHORT, 0, na, na, na)
+                e.cancelPending()
+            if decision and ready and inDates
+                if e.position
+                    e.recordScan(SCAN_HOLDING, e.side, e.entry, e.target, e.stop)
+                else
+                    e.selectAtOpen(t, o, spread, filterCost)
+            // Minute extremes affect position availability only after this minute's decision.
+            if e.position
+                float exitHigh = h + (e.side == -1 ? spread : 0)
+                float exitLow = l + (e.side == -1 ? spread : 0)
+                bool stopHit = e.side == 1 ? exitLow <= e.stop : exitHigh >= e.stop
+                bool targetHit = e.side == 1 ? exitHigh >= e.target : exitLow <= e.target
+                if stopHit or targetHit
+                    e.finishPosition(stopHit ? SCAN_SL : SCAN_TP)
+            // Only now may the current minute's extremes invalidate a future decision/order.
+            if array.size(e.setups) > 0
+                for s in e.setups
+                    if t >= s.completed and f_touch(s.side, s.target, h, l)
+                        s.touched := true
+            if e.pending and f_touch(e.pendingS.side, e.pendingS.target, h, l)
+                e.pendingS.touched := true
+            e.hh := math.max(e.hh, h)
+            e.hl := math.min(e.hl, l)
+            e.hc := c
+            e.weekLow := na(e.weekLow) ? l : math.min(e.weekLow, l)
+            e.weekHigh := na(e.weekHigh) ? h : math.max(e.weekHigh, h)
+            if na(v) or v < 0
+                e.weekBad := true
+            else
+                array.push(e.prices, (h + l + c) / 3)
+                array.push(e.volumes, v)
+        else
+            e.weekBad := true
+            e.h4Bad := true
+        while array.size(e.setups) > 0 and array.get(e.setups, 0).key < t - H4_LOOKBACK_MS
+            array.shift(e.setups)
+    e.scanState
+
+f_scan() =>
+    var Engine e = Engine.new(scanState = SCAN_UNDECIDED)
+    if na(e.bars)
+        e.bars := array.new<H4Bar>()
+        e.setups := array.new<Setup>()
+        e.prices := array.new_float()
+        e.volumes := array.new_float()
+    bool isGoldUsd = syminfo.ticker == "XAUUSD" or (syminfo.basecurrency == "XAU" and syminfo.currency == "USD")
+    float costUnit = syminfo.type == "forex" ? math.max(syminfo.mintick, syminfo.currency == "JPY" ? 0.01 : 0.0001) : syminfo.mintick
+    if isGoldUsd
+        costUnit := math.max(syminfo.mintick, goldCostUnit)
+    bool normal = costMode == "通常仮定"
+    float spread = (normal ? 1.0 : 2.0) * costUnit
+    float slip = (normal ? 0.1 : 0.2) * costUnit
+    float carry = (normal ? 0.2 : 1.0) * costUnit
+    float filterCost = spread + 2 * slip + 3 * carry
+    // Evaluate the previous, closed M1 in this symbol's own dataset.
+    e.process(time[1], open[1], high[1], low[1], close[1], volume[1], spread, filterCost)
+    [e.scanDay, e.lastT, e.scanState, e.scanSide, e.scanEntry, e.scanTP, e.scanSL, syminfo.mintick]
+
+[day1, last1, state1, side1, entry1, tp1, sl1, tick1] = request.security(symbol1, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day2, last2, state2, side2, entry2, tp2, sl2, tick2] = request.security(symbol2, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day3, last3, state3, side3, entry3, tp3, sl3, tick3] = request.security(symbol3, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day4, last4, state4, side4, entry4, tp4, sl4, tick4] = request.security(symbol4, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day5, last5, state5, side5, entry5, tp5, sl5, tick5] = request.security(symbol5, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day6, last6, state6, side6, entry6, tp6, sl6, tick6] = request.security(symbol6, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day7, last7, state7, side7, entry7, tp7, sl7, tick7] = request.security(symbol7, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day8, last8, state8, side8, entry8, tp8, sl8, tick8] = request.security(symbol8, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+[day9, last9, state9, side9, entry9, tp9, sl9, tick9] = request.security(symbol9, "1", f_scan(), lookahead=barmerge.lookahead_off, ignore_invalid_symbol=true, calc_bars_count=M1_HISTORY)
+
+f_price(float value, float tick) =>
+    na(value) or na(tick) or tick <= 0 ? "—" : str.tostring(math.round(value / tick) * tick, "0.########")
+
+f_row(table panel, int row, string symbol, int day, int lastMinute, int state, int side, float entry, float tp, float sl, float tick, int today, int decisionAt, bool eligibleDay) =>
+    bool sameDay = not na(day) and day == today
+    bool showPrices = eligibleDay and sameDay and (state == SCAN_CANDIDATE or state == SCAN_FILLED or state == SCAN_HOLDING)
+    string status = "08:00 未判定"
+    if sameDay and (state == SCAN_TP or state == SCAN_SL)
+        status := state == SCAN_TP ? "エントリーチャンスなし（TP到達）" : "エントリーチャンスなし（SL到達）"
+    else if not eligibleDay
+        status := "対象日なし"
+    else if timenow < decisionAt
+        status := "08:00 待ち"
+    else if not sameDay or na(lastMinute)
+        status := "データ未判定"
+    else
+        status := switch state
+            SCAN_CANDIDATE => timenow >= decisionAt + 16 * MINUTE ? "08:15 未判定" : "08:00 候補"
+            SCAN_FILLED => "08:15 仮想約定"
+            SCAN_CANCELED => "08:15 取消"
+            SCAN_MOVE_SHORT => "08:15 順方向の値幅不足"
+            SCAN_NONE => "候補なし"
+            SCAN_UNREADY => "データ未判定"
+            SCAN_HOLDING => "08:00 既存保有"
+            => lastMinute >= decisionAt ? "08:00 M1なし" : "08:00 未判定"
+    string direction = showPrices ? (side == 1 ? "BUY" : "SELL") : "—"
+    color sideColor = showPrices ? (side == 1 ? color.rgb(140, 226, 184) : color.rgb(255, 166, 175)) : color.silver
+    bool chartSymbol = ticker.standard(symbol) == ticker.standard(syminfo.tickerid)
+    color bg = chartSymbol ? color.rgb(33, 58, 87) : row % 2 == 1 ? color.rgb(19, 28, 41) : color.rgb(26, 38, 54)
+    string pair = str.contains(symbol, ":") ? str.substring(symbol, str.pos(symbol, ":") + 1) : symbol
+    table.cell(panel, 0, row, (chartSymbol ? "▸ " : "") + pair, text_color=color.white, bgcolor=bg, text_size=tableTextSize, text_halign=text.align_left, tooltip=symbol)
+    table.cell(panel, 1, row, status, text_color=color.white, bgcolor=bg, text_size=tableTextSize, text_halign=text.align_left)
+    table.cell(panel, 2, row, direction, text_color=sideColor, bgcolor=bg, text_size=tableTextSize)
+    table.cell(panel, 3, row, showPrices ? f_price(entry, tick) : "—", text_color=color.white, bgcolor=bg, text_size=tableTextSize, text_halign=text.align_right)
+    table.cell(panel, 4, row, showPrices ? f_price(tp, tick) : "—", text_color=color.white, bgcolor=bg, text_size=tableTextSize, text_halign=text.align_right)
+    table.cell(panel, 5, row, showPrices ? f_price(sl, tick) : "—", text_color=color.white, bgcolor=bg, text_size=tableTextSize, text_halign=text.align_right)
+
+const int FOOTER_ROW = 11
+var table panel = table.new(position.top_right, 6, FOOTER_ROW + 1, border_width=1, border_color=color.rgb(46, 58, 70))
+if barstate.isfirst
+    table.merge_cells(panel, 0, 0, 5, 0)
+    table.merge_cells(panel, 0, FOOTER_ROW, 5, FOOTER_ROW)
+if barstate.islast
+    int today = f_jstDay(timenow)
+    int decisionAt = today + 8 * 60 * MINUTE
+    int localDay = dayofweek(timenow, "Asia/Tokyo")
+    bool eligibleDay = localDay >= dayofweek.monday and localDay <= dayofweek.friday and decisionAt >= beginTime and decisionAt < endTime
+    color titleBg = color.rgb(14, 22, 32)
+    table.cell(panel, 0, 0, "Patrick K10  /  " + str.format_time(timenow, "MM/dd", "Asia/Tokyo") + " JST  /  " + costMode, text_color=color.white, bgcolor=titleBg, text_size=tableTextSize + 1)
+    table.cell(panel, 0, 1, "銘柄", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
+    table.cell(panel, 1, 1, "今日の状態", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
+    table.cell(panel, 2, 1, "方向", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
+    table.cell(panel, 3, 1, "Entry", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
+    table.cell(panel, 4, 1, "TP", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
+    table.cell(panel, 5, 1, "SL", text_color=color.white, bgcolor=titleBg, text_size=tableTextSize)
+    f_row(panel, 2, symbol1, day1, last1, state1, side1, entry1, tp1, sl1, tick1, today, decisionAt, eligibleDay)
+    f_row(panel, 3, symbol2, day2, last2, state2, side2, entry2, tp2, sl2, tick2, today, decisionAt, eligibleDay)
+    f_row(panel, 4, symbol3, day3, last3, state3, side3, entry3, tp3, sl3, tick3, today, decisionAt, eligibleDay)
+    f_row(panel, 5, symbol4, day4, last4, state4, side4, entry4, tp4, sl4, tick4, today, decisionAt, eligibleDay)
+    f_row(panel, 6, symbol5, day5, last5, state5, side5, entry5, tp5, sl5, tick5, today, decisionAt, eligibleDay)
+    f_row(panel, 7, symbol6, day6, last6, state6, side6, entry6, tp6, sl6, tick6, today, decisionAt, eligibleDay)
+    f_row(panel, 8, symbol7, day7, last7, state7, side7, entry7, tp7, sl7, tick7, today, decisionAt, eligibleDay)
+    f_row(panel, 9, symbol8, day8, last8, state8, side8, entry8, tp8, sl8, tick8, today, decisionAt, eligibleDay)
+    f_row(panel, 10, symbol9, day9, last9, state9, side9, entry9, tp9, sl9, tick9, today, decisionAt, eligibleDay)
+    table.cell(panel, 0, FOOTER_ROW, "08:00候補 → 08:15にVA内・順方向を確認  /  研究未採用", text_color=color.silver, bgcolor=titleBg, text_size=math.max(11, tableTextSize - 2))
