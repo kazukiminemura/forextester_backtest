@@ -1,0 +1,38 @@
+{
+  "experiment_id": "jlaw_vcp_jp_20261115",
+  "status": "FROZEN_DESCRIPTIVE",
+  "hypothesis": "On stocks with rising moving averages near a 52-week high, shrinking pullbacks and quieter volume add net expectancy to volume-confirmed high breakouts.",
+  "baseline": "Apply every common price, breakout, volume, stop and exit rule while omitting the three-window contraction and volume-dry-up conditions.",
+  "history_directory": "data/stocks/yahoo/jp_largecap10_20261115",
+  "data_manifest": {
+    "sha256": "138e8c84ea79a9eb41e86ac801c4bc3362f2fb90be6c06cdefcc939a6fb0008f",
+    "details": "The September snapshot is absent in this workspace. Use the separately preserved replacement daily OHLC and source volume from SYMBOL.csv, validate raw and CSV hashes against its manifest, and document adjustments, repairs and omissions in validation.md. Time basis: Tokyo trading-session date. No forward fills."
+  },
+  "symbols": ["4502.T", "6501.T", "6758.T", "6861.T", "7203.T", "8035.T", "8058.T", "8306.T", "9432.T", "9984.T"],
+  "entry_timeframe": "Daily, long only",
+  "higher_timeframe_rules": "Daily history only. Require 252 available bars including the signal bar.",
+  "entry_rules": {
+    "trend": "On completed day i, C > SMA50 > SMA200. Each SMA strictly above its value 20 sessions earlier. C is at least 85% of the trailing 252-session high including i.",
+    "breakout": "C must strictly exceed the maximum high of i-10:i (Python slice, upper endpoint excluded). Signal volume must be positive and >= 1.5 times the strictly positive mean over i-50:i.",
+    "stop": "Minimum low of i-10:i. Require (price - stop) / price in (0, 0.08] both at signal close and at entry.",
+    "entry": "At next available trading-session open only if open strictly exceeds the breakout level and passes the stop-width limit. One position per symbol per variant. No pyramiding. A completed exit day may produce a new signal at its close.",
+    "contraction": "Before signal, take slices i-40:i-20, i-20:i-10, i-10:i. Depth is maximum 1 - later low / earlier high within each slice, clamped to zero, with earlier session strictly before later. Require first > middle > last, last <= 0.10, and strictly descending arithmetic mean volume across the same slices.",
+    "variants": {"control": "Common rules only", "vcp_strict": "All conditions, first depth in [0.20, 0.35]", "vcp_relaxed": "All conditions, first depth in [0.10, 0.35]"}
+  },
+  "exit_rules": {
+    "reward_risk_ratio": 3.0,
+    "full_exit": true,
+    "details": "Image-based take-profit variant, full 3R target and initial stop on all days from entry. If neither fires, liquidate at final bar close. No trailing or time exit. Opening gaps through stop or target fill at actual open, and stop has precedence when both are touched intraday and open lies between the levels."
+  },
+  "periods": {"training": ["2017-01-01", "2019-12-31"], "validation": ["2020-01-01", "2022-12-31"], "final_confirmation": ["2023-01-01", "2025-12-31"], "continuous": ["2017-01-01", "2025-12-31"]},
+  "final_period_prior_exposure": "These dates were previously used by other stock experiments. All three periods are reported as descriptive with a fresh flat start per period; the continuous replay is separate.",
+  "candidate_budget": 2,
+  "search_space": "Fixed control, strict and relaxed variants only. Report both as fixed comparisons before any tuning or selection.",
+  "cost_and_fill_model": "All-in fees/slippage proxies of 10bp usual or 25bp stress per side applied to respective fill notionals. No explicit dividend cash flow, taxes, auction order queue or daily price-limit constraints. Both cost scenarios share identical fills.",
+  "position_sizing_and_currency": "Signals-only equal initial risk normalization in R, precision fractional and no portfolio capital constraint. With entry E, exit X, stop S and per-side decimal cost c, net R = (X-E-c*(X+E))/(E-S). Drawdown is on cumulative net realized R grouped by exit date. No inference of portfolio yield or drawdown in JPY.",
+  "acceptance_gates": "Descriptive support requires at least 100 trades continuous and 20 in each 3y period, positive net and PF > 1 in all 3y blocks under both costs, average net R greater than control in every block at usual costs, >= 5 positive names and <= 25R realized drawdown over continuous usual-cost replay. Sample-size gates limit fragile subgroup evidence; drawdown is a screening bound. Any screen pass still needs fresh out-of-sample data for adoption.",
+  "cross_symbol_rule": "Pool one unit of initial risk per trade, report symbol metrics, and require positive net R in >= 5 of the 10 names at usual costs, with no-trade symbols not counted as positive.",
+  "code_identifier": "scripts/research_jlaw_vcp.py",
+  "frozen_at": "2026-11-15T10:49:00Z",
+  "live_trading_authorized": false
+}

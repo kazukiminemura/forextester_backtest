@@ -1,0 +1,171 @@
+//@version=6
+// Research only. Port of the fixed daily-price/volume VCP experiment (not adopted).
+// Virtual fills are booked at confirmed bar close. The chart is the price/volume source.
+indicator("J Law VCP 日経225検証 [研究用]", overlay = true, max_bars_back = 252,
+     max_lines_count = 500, max_labels_count = 500)
+
+string mode = input.string("VCP 緩和", "検証条件", options = ["VCP 緩和", "VCP 厳格", "収縮なし"])
+string fee = input.string("0.10%", "片道費用", options = ["0.10%", "0.25%"])
+int fromInput = input.time(timestamp("01 Jan 2017 00:00 +0900"), "開始日 (JST)")
+int toInput = input.time(timestamp("30 Dec 2025 00:00 +0900"), "最終取引日 (JST)")
+float cost = fee == "0.25%" ? 0.0025 : 0.001
+
+tokyoMidnight(int stamp) =>
+    timestamp("Asia/Tokyo", year(stamp, "Asia/Tokyo"), month(stamp, "Asia/Tokyo"), dayofmonth(stamp, "Asia/Tokyo"))
+
+int startDay = tokyoMidnight(fromInput)
+int endDay = tokyoMidnight(toInput)
+int endExclusive = endDay + 86400000
+int firstWarmupDay = timestamp("12 Jul 2016 00:00 +0900")
+if not timeframe.isdaily or timeframe.multiplier != 1 or not chart.is_standard
+    runtime.error("標準ローソク足の1日足で使用してください。")
+if startDay > endDay
+    runtime.error("開始日を最終取引日以前にしてください。")
+
+// Read from oldest to newest. The same bar's high is unavailable for its low.
+pullbackDepth(int oldest, int length) =>
+    float peak = high[oldest]
+    float depth = 0.0
+    for step = 1 to length - 1
+        int barsAgo = oldest - step
+        depth := math.max(depth, (peak - low[barsAgo]) / peak)
+        peak := math.max(peak, high[barsAgo])
+    depth
+
+validRisk(float price, float stop) =>
+    float width = (price - stop) / price
+    width > 0 and width <= 0.08
+
+priceText(float price) =>
+    str.tostring(price, "#.########")
+
+drawLevel(float price, string name, color shade, string pattern) =>
+    label.new(time, price, name + " " + priceText(price), xloc = xloc.bar_time, color = shade,
+         yloc = yloc.price, style = label.style_label_left, textcolor = color.white, size = size.small, force_overlay = true)
+    line.new(time, price, time_close, price, xloc = xloc.bar_time, color = shade, style = pattern, force_overlay = true)
+
+float sma50 = ta.sma(close, 50)
+float sma200 = ta.sma(close, 200)
+float highest252 = ta.highest(high, 252)
+float priorHigh = ta.highest(high[1], 10)
+float priorLow = ta.lowest(low[1], 10)
+float volume50 = ta.sma(volume, 50)
+float volume20 = ta.sma(volume, 20)
+float volume10 = ta.sma(volume, 10)
+bool common = time[251] >= firstWarmupDay and close > sma50 and sma50 > sma200 and
+     sma50 > sma50[20] and sma200 > sma200[20] and close >= 0.85 * highest252 and
+     close > priorHigh and volume50[1] > 0 and volume >= 1.5 * volume50[1] and validRisk(close, priorLow)
+bool qualifies = common and mode == "収縮なし"
+if common and mode != "収縮なし"
+    float firstDepth = pullbackDepth(40, 20)
+    float middleDepth = pullbackDepth(20, 10)
+    float lastDepth = pullbackDepth(10, 10)
+    float minDepth = mode == "VCP 厳格" ? 0.20 : 0.10
+    qualifies := firstDepth >= minDepth and firstDepth <= 0.35 and firstDepth > middleDepth and
+         middleDepth > lastDepth and lastDepth <= 0.10 and volume20[21] > volume10[11] and volume10[11] > volume10[1]
+
+color entryColor = color.rgb(29, 87, 173)
+color targetColor = color.rgb(8, 115, 85)
+color stopColor = color.rgb(165, 49, 55)
+var float pendingPivot = na
+var float pendingStop = na
+var float entryPrice = na
+var float stopPrice = na
+var float targetPrice = na
+var line entryLine = na
+var line stopLine = na
+var line targetLine = na
+var int trades = 0
+var int wins = 0
+var float netR = 0.0
+var float profitR = 0.0
+var float lossR = 0.0
+var float peakR = 0.0
+var float maxDrawdownR = 0.0
+
+bool inPeriod = time >= startDay and time < endExclusive
+bool finalDay = inPeriod and time >= endDay
+bool passedEnd = time >= endExclusive and inPeriod[1]
+bool signaled = false
+bool skipped = false
+float filledOpen = na
+float bookedR = na
+if barstate.isconfirmed
+    if inPeriod and not na(pendingStop)
+        if open > pendingPivot and validRisk(open, pendingStop)
+            entryPrice := open
+            filledOpen := open
+            stopPrice := pendingStop
+            targetPrice := open + 3 * (open - pendingStop)
+            entryLine := drawLevel(entryPrice, "買い（寄付き）", entryColor, line.style_solid)
+            stopLine := drawLevel(stopPrice, "SL", stopColor, line.style_dashed)
+            targetLine := drawLevel(targetPrice, "TP 3R", targetColor, line.style_dotted)
+        else
+            skipped := true
+    pendingPivot := na
+    pendingStop := na
+
+    if not na(entryPrice) and (inPeriod or passedEnd)
+        int exitTime = passedEnd ? time[1] : time
+        int lastLineTime = passedEnd ? time_close[1] : time_close
+        line.set_x2(entryLine, lastLineTime)
+        line.set_x2(stopLine, lastLineTime)
+        line.set_x2(targetLine, lastLineTime)
+        float exitPrice = na
+        string reason = ""
+        if passedEnd
+            // If the selected last date had no session, book the last in-range close.
+            exitPrice := close[1]
+            reason := "期間末"
+        else if open <= stopPrice
+            exitPrice := open
+            reason := "SL 窓"
+        else if open >= targetPrice
+            exitPrice := open
+            reason := "TP 窓"
+        else if low <= stopPrice
+            exitPrice := stopPrice
+            reason := "SL"
+        else if high >= targetPrice
+            exitPrice := targetPrice
+            reason := "TP 3R"
+        else if finalDay
+            exitPrice := close
+            reason := "期間末"
+        if not na(exitPrice)
+            bookedR := (exitPrice - entryPrice - cost * (exitPrice + entryPrice)) / (entryPrice - stopPrice)
+            trades += 1
+            wins += bookedR > 0 ? 1 : 0
+            netR += bookedR
+            profitR += math.max(bookedR, 0)
+            lossR += math.max(-bookedR, 0)
+            peakR := math.max(peakR, netR)
+            maxDrawdownR := math.max(maxDrawdownR, peakR - netR)
+            label.new(exitTime, exitPrice, "Exit " + priceText(exitPrice) + "  " + reason + "\n" + str.tostring(bookedR, "#.###") + "R",
+                 xloc = xloc.bar_time, color = bookedR > 0 ? targetColor : stopColor,
+                 yloc = yloc.price, style = label.style_label_down, textcolor = color.white, size = size.tiny, force_overlay = true)
+            entryPrice := na
+
+    // The close of an exit day may queue a fresh order for the next session.
+    if inPeriod and not finalDay and na(entryPrice) and qualifies
+        pendingPivot := priorHigh
+        pendingStop := priorLow
+        signaled := true
+
+plot(sma50, "SMA 50", color = color.orange, force_overlay = true)
+plot(sma200, "SMA 200", color = color.gray, force_overlay = true)
+plotshape(signaled, "終値で買い候補", shape.triangleup, location.belowbar, color.gray, size = size.tiny, display = display.pane, force_overlay = true)
+plotshape(filledOpen, "買い約定（始値）", shape.circle, location.absolute, entryColor, size = size.small, display = display.pane, force_overlay = true)
+plotshape(skipped, "寄付き見送り", shape.xcross, location.abovebar, color.orange, size = size.tiny, display = display.pane, force_overlay = true)
+plot(bookedR, "決済損益 R・費用後", display = display.data_window)
+
+// Native drawing limits retain the latest 500 labels and 500 lines.
+var table summary = table.new(position.top_right, 1, 3)
+if barstate.islast
+    color panel = color.rgb(32, 39, 48)
+    string winText = trades > 0 ? str.tostring(100.0 * wins / trades, "#.##") + "%" : "—"
+    string pfText = lossR > 0 ? str.tostring(profitR / lossR, "#.###") : profitR > 0 ? "∞" : "—"
+    table.cell(summary, 0, 0, "研究用・採用基準未達   " + mode + "   片道 " + fee, text_color = color.white, bgcolor = panel)
+    table.cell(summary, 0, 1, "決済 " + str.tostring(trades) + "   勝率 " + winText + "   PF " + pfText, text_color = color.white, bgcolor = panel)
+    table.cell(summary, 0, 2, "費用後 " + str.tostring(netR, "#.###") + "R   最大DD " + str.tostring(maxDrawdownR, "#.###") + "R",
+         text_color = color.white, bgcolor = panel)
