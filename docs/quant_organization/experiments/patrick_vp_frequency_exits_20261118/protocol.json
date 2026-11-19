@@ -1,0 +1,32 @@
+{
+  "experiment_id": "patrick_vp_frequency_exits_20261118",
+  "status": "SPEC_FROZEN",
+  "frozen_at": "2026-11-18T15:10:50+09:00",
+  "hypothesis": "Taking half off earlier can improve net profit factor without losing any original entry. Separately, the previously studied reversal condition might be useful for choosing size while keeping all entry opportunities.",
+  "baseline": "JST 08:15 Patrick VP K10 small_pullback (fill filter 7 with inside VA and reverse swap). Rerun base and match all original 32 ledgers, 17 columns.",
+  "history_directory": "C:\\ForexTester6\\data\\History",
+  "data_manifest": "agent_runs/patrick_h4_7d_reverse_20261107/result.json: Bars.dat and info.dat hashes per symbol. Original entries: agent_runs/patrick_cost10_va_preentry_shape/<symbol>_<scenario>_small_pullback.npy.",
+  "symbols": ["AUDJPY", "AUDUSD", "CHFJPY", "EURCHF", "EURGBP", "EURHKD", "EURJPY", "EURUSD", "GBPCHF", "GBPJPY", "GBPUSD", "NZDJPY", "NZDUSD", "USDCAD", "USDCHF", "USDJPY"],
+  "entry_timeframe": "Exact 08:15 JST M1 open after the usual 08:00 candidate selection; original time, symbol, side, entry price, stop and target for every trade.",
+  "higher_timeframe_rules": "Keep completed H4 setup and completed UTC weekly VA from baseline; no additional vetoes.",
+  "entry_rules": "Identical entry calendar. A-C keep half until original final exit, so a new same-symbol position cannot become eligible early. D changes size only. Count one original entry as one trade, including partial-exit cases; require exact row/key match in each arm.",
+  "exit_rules": {
+    "reward_risk_ratio": "Original variable reverse-swap geometry, denominator fixed to the original modeled risk of one full position.",
+    "full_exit": "Remainder always closes with the baseline position.",
+    "halfway_tp": "A: book 50% at the arithmetic midpoint of entry and original TP, at the midpoint quote (limit capped even for favorable gaps). A time expiry or an original stop hit at open takes precedence, then an open crossing the midpoint fills before subsequent price movement, including open gaps to original TP. If open has not crossed and the same bar can hit both original SL and midpoint, original SL takes precedence. If original intrabar TP is hit without a stop, midpoint must fill first. Check entry bar too.",
+    "jst17": "B: book 50% at the first saved M1 open at/after 17:00 JST on the entry's JST date only. Skip if baseline exits at that open; allow before an intrabar exit in that minute. No carry-forward to next JST date.",
+    "jst17_nonpositive": "C: same single time as B. Book 50% only if full-exit net R evaluated at the executable quote then (including round-trip slip and elapsed carry) is <=0. No later retry.",
+    "reversal_size": "D (sizing only, separate from A-C): full baseline size when the six exactly observed endpoint signs at 08:15 agree with actual side, else half baseline size, including missing endpoints. Recompute direction from the existing -225/-151/-150/-76/-75/-1 minute rule at each actual baseline entry. Original final exit for all units. No combination of candidates."
+  },
+  "periods": {"training": "2017-2019 UTC", "validation": "2020-2022 UTC", "final_confirmation": "2023-2025 UTC (previously examined)", "additional_diagnostic": "2026-01-05 inclusive to 2026-08-28 exclusive UTC, all candidates; preserve previous trading state and use exit data before 2026-08-31", "earlier_check": "2010-2016 UTC, state from the 2009-10 M1 warmup, as an additional chronological-regime check for any candidate with PF improvement in all six historical cells. Same rules and costs, no tuning."},
+  "final_period_prior_exposure": "All 2017-2026 windows examined with prior Patrick variants, especially the 6-observation motif used for D. Earlier regime has also been loaded for features and used in other projects. No pristine prospective holdout.",
+  "candidate_budget": 3,
+  "additional_sizing_candidate_budget": 1,
+  "search_space": "Three exit policies A-C and one size-only diagnostic D fixed before any new results; no tuning, signal filtering or alternative cutoff times.",
+  "cost_and_fill_model": "Assume UTC saved Bid M1; executable Bid for long exits, Ask for short exits at the original spread. Normal/stress spreads 1/2 pips, slippage each side 0.1/0.2 pip, elapsed daily carry 0.2/1 pip, no commission minimum or fixed cost per order. For A-C weight both roundtrip slippage and carry by fraction and actual holding time. No double charge of entry costs. No filling missing prices.",
+  "position_sizing_and_currency": "Original per-symbol risk budget 1% of equity per full trade. For A-C trade net R = 0.5*partial net R + 0.5*original net R when triggered. PF aggregates positive/negative CLOSED TRADE net R after combining legs. D uses the same full-budget units times weight; disclose mean size, total R, and separate PF normalized by each trade's actual position risk (identical to the original).",
+  "acceptance_gates": "Require 100% of original entry keys in every arm and cell. Define stable PF improvement as candidate PF strictly above control in all 3 historical blocks at BOTH costs (6/6). Report separate profitability test PF>1 in every cell, average/total R, win rate, breadth, and both 2026 cells. Any 6/6 candidate also gets the frozen 2010-16 check. Stronger evidence requires net PF>1 and >control in both 2026 cells and in the earlier check at both costs. If criteria fail, preserve descriptive gains without adoption. No win-rate improvement requirement.",
+  "cross_symbol_rule": "Fixed 16 FX pairs. Pool closed trade R, not pooled account currency. Report per-pair results; no pair selection.",
+  "code_identifier": {"runner":"scripts/backtest_patrick_vp_frequency_exits.py","sizing_runner":"scripts/backtest_patrick_vp_frequency_size.py","common_replay_sha256":"1b20df814f67531d0feb99f742b4d99c8e13d5d4f22e8cdc2082ba6c6c6b420e"},
+  "live_trading_authorized": false
+}

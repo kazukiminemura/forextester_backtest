@@ -1,0 +1,15 @@
+# The Patrick VP protocols and audit records use SHA256 of the working file bytes.
+/scripts/backtest_patrick_h4_7d.py text eol=lf
+/scripts/backtest_patrick_h4_7d_bigmove.py text eol=lf
+/scripts/backtest_patrick_h4_7d_reverse.py text eol=lf
+/scripts/backtest_patrick_reverse_costfilter.py text eol=lf
+/scripts/backtest_patrick_reverse_cost10_inside_va.py text eol=crlf
+/scripts/backtest_patrick_reverse_cost10_m15_reversal.py text eol=crlf
+/scripts/backtest_patrick_vp_jst.py text eol=lf
+/scripts/backtest_patrick_vp_value_migration.py text eol=lf
+/scripts/backtest_patrick_vp_reversal_endpoints.py text eol=lf
+/scripts/backtest_patrick_vp_frequency_exits.py text eol=lf
+/scripts/backtest_patrick_vp_frequency_size.py text eol=lf
+/docs/quant_organization/experiments/patrick_vp_frequency_exits_20261118/protocol.json text eol=lf
+/docs/quant_organization/experiments/patrick_vp_reversal_endpoints_20261118/protocol.json text eol=lf
+/docs/quant_organization/experiments/patrick_vp_value_migration_20261118/protocol.json text eol=lf
