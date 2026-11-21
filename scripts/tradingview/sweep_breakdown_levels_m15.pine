@@ -6,7 +6,7 @@
 // Display rules only. Entry is the next observed candle's open, SL is the
 // original pivot, and TP is an equal distance from Entry. Costs are excluded.
 indicator("スイープ上抜け・下抜け Entry・TP・SL", overlay = true,
-     max_lines_count = 500, max_labels_count = 500, max_bars_back = 2100)
+     max_lines_count = 500, max_labels_count = 500, max_boxes_count = 200, max_bars_back = 2100)
 
 int levelBars = input.int(12, "価格線の長さ（本）", minval = 1, maxval = 100)
 int keepHistory = input.int(60, "履歴を残す件数", minval = 1, maxval = 150)
@@ -14,6 +14,35 @@ int keepHistory = input.int(60, "履歴を残す件数", minval = 1, maxval = 15
 type SweepPivot
     float price
     int originBar
+
+type SweepZone
+    line level
+    box band
+    bool highSide
+    bool extending
+
+var array<SweepZone> zones = array.new<SweepZone>()
+
+f_drawSweep(SweepPivot pivot, bool highSide) =>
+    // Leave room for trade lines even while a new trade is being drawn.
+    int capacity = math.min(200, 496 - 3 * keepHistory)
+    if array.size(zones) >= capacity
+        SweepZone oldest = array.shift(zones)
+        line.delete(oldest.level)
+        box.delete(oldest.band)
+    color ink = highSide ? #f23645 : #089981
+    line level = line.new(pivot.originBar, pivot.price, bar_index, pivot.price, color = ink, style = line.style_dotted, width = 2)
+    float top = highSide ? high : pivot.price
+    float bottom = highSide ? pivot.price : low
+    box band = box.new(bar_index, top, bar_index + 1, bottom, border_color = color.new(ink, 35), bgcolor = color.new(ink, 80))
+    array.push(zones, SweepZone.new(level, band, highSide, true))
+
+if barstate.isconfirmed
+    for zone in zones
+        if zone.extending
+            box.set_right(zone.band, bar_index)
+            bool crossed = zone.highSide ? close > box.get_top(zone.band) : close < box.get_bottom(zone.band)
+            zone.extending := not crossed and bar_index - box.get_left(zone.band) < 300
 
 var array<line> levelLines = array.new<line>()
 var array<label> levelLabels = array.new<label>()
@@ -72,6 +101,7 @@ f_levels(bool isLong, float confirmedPivot) =>
                 bool swept = isLong ? (high > pivot.price and close < pivot.price) : (low < pivot.price and close > pivot.price)
                 bool invalid = isLong ? close > pivot.price : close < pivot.price
                 if swept
+                    f_drawSweep(pivot, isLong)
                     nearest := na(nearest) ? pivot.price : (isLong ? math.min(nearest, pivot.price) : math.max(nearest, pivot.price))
                 if swept or invalid or bar_index - pivot.originBar > 2000
                     array.remove(pivots, index)

@@ -22,3 +22,28 @@ Forex TesterのUSDJPY・EURUSD・GBPUSD・AUDUSD・USDCHF、2017〜2025年エン
 4時間足は保存時刻0時を起点としたため、TradingViewの配信元によっては足の境界やシグナルが異なる。USDCHFの粗い保存価格を考慮し除外した場合も、費用後PFは15分足0.421、4時間足0.820。どちらの時間足も3つの期間すべてで費用後の総損失が総利益を上回った。
 
 [事前仕様](protocol.json) / [取引明細](../../../../agent_runs/sweep_breakout_m15_h4_20261121/trades.csv.gz) / [通貨・期間別結果](../../../../agent_runs/sweep_breakout_m15_h4_20261121/results.json) / [データ台帳](data_inventory.md) / [独立再生](validation.md) / [監査](audit.md)
+
+## 検証版とチャート表示版の再現
+
+検証時のPineはコミット `e77c837f57f2d385588a2b87df4320fef3984270` の `scripts/tradingview/sweep_breakdown_levels_m15.pine` に保存した。後続の表示版はスイープ点線と価格帯を同じインジケーターに追加している。固定した研究の再実行は、Windowsの同じ保存履歴を持つ環境で以下をプロジェクト直下から実行する。現在の表示版をメモリに保持し、終了時に戻す。
+
+```python
+from pathlib import Path
+import os
+import subprocess
+
+source = Path("scripts/tradingview/sweep_breakdown_levels_m15.pine")
+current = source.read_bytes()
+frozen = subprocess.check_output([
+    "git", "show", "e77c837f57f2d385588a2b87df4320fef3984270:" + source.as_posix(),
+])
+environment = dict(os.environ, PYTHONPATH="src;.")
+try:
+    source.write_bytes(frozen)
+    subprocess.run(["python", "-m", "scripts.research_sweep_breakout_m15_h4"],
+                   env=environment, check=True)
+finally:
+    source.write_bytes(current)
+```
+
+公開時の再確認で研究コードの回帰12項目とruffが合格した。共通依存 `research_fx65_pf15.py` の既存E741 2件は入力SHAを維持するため保持し、この依存だけE741を除外してruffを確認した。新規3 Pythonファイルは除外指定なしで合格した。
