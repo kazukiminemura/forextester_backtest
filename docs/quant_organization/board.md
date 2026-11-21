@@ -1,3 +1,7 @@
+2026-11-21 FX5通貨でスイープ足の上抜け買い・下抜け売りを検証。2017〜2025年の往復1 pip控除後は15分足28,853件・勝率44.48%・PF 0.426、4時間足2,001件・48.78%・0.800。[方向別成績](experiments/sweep_breakout_m15_h4_20261121/report.md)
+
+2026-11-20 luxalgo_sweeps_m15_20261120。FX5通貨、2017〜2025年の15分足。Only Wicks・Swings 5、翌足始値・ヒゲ先損切り・1R全利確で48,436件。費用前勝率49.76%、往復1 pip控除後46.28%、建値込み47.19%、費用後PF 0.450。独立再生は全取引一致。USDCHFを除く4通貨でも費用後46.24%、PF 0.446。[検証結果](experiments/luxalgo_sweeps_m15_20261120/report.md)
+
 2026-11-18 `patrick_vp_frequency_exits_20261118` **AUDITED_DESCRIPTIVE_NOT_ADOPTED**。FX16通貨で現行のJST08:15エントリーを全件維持。2017〜2025年は通常2,529件・月23.42回、厳しめ939件・月8.69回。半値で50%利確、17時に50%決済、17時損益非正のときのみ50%決済のPF改善は各2/6、4/6、4/6区分。反転時通常量・その他半量では配分後PFが通常1.032→1.061、厳しめ1.117→1.155で6/6。平均サイズは現行比55.4%・55.6%。2026年両費用で改善したが、2010〜2016年の追加比較は両費用で悪化。[比較結果](experiments/patrick_vp_frequency_exits_20261118/report.md) / [検証](experiments/patrick_vp_frequency_exits_20261118/validation.md) / [監査](experiments/patrick_vp_frequency_exits_20261118/audit.md)
 
 2026-11-18 `patrick_vp_reversal_endpoints_20261118` **AUDITED_DESCRIPTIVE_REJECTED**。JST08:15のPatrick VPで、3つの75分区間の始値・終値が実在する場合に「逆行→順行→順行」を判定。FX16通貨、2017〜2025年。通常299件・PF 1.370・合計+32.93R（現行2,529件・1.032・+28.99R）。厳しめ116件・1.583・+14.75R（現行939件・1.117・+30.80R）。PF・平均Rは3期間×2費用で両対照を上回った。勝率と件数を含む事前基準は3/6区分、2026年は通常9件・厳しめ3件。[改善案比較](experiments/patrick_vp_reversal_endpoints_20261118/report.md) / [独立検証](experiments/patrick_vp_reversal_endpoints_20261118/validation.md) / [監査](experiments/patrick_vp_reversal_endpoints_20261118/audit.md)

@@ -1,0 +1,1321 @@
+{
+  "experiment": "luxalgo_sweeps_m15_20261120",
+  "implementation_sha256": "fa0308b881819589e59a90af546fda944fdeb84334096f508d1f6bb5ad4d7468",
+  "protocol_sha256": "67e2f1916af803e38a23881c9b672f022da1552f3c66944457c84da4038cb788",
+  "source_url": "https://indie-script.github.io/indicators/Liquidity%20Sweeps/Liquidity%20Sweeps.pinescript5",
+  "source_sha256": "466daad041cafc87ee0540219a889377872bb405fdf003bd8a25f35ab6c137f7",
+  "dependencies_sha256": {
+    "scripts/research_fx65_pf15.py": "ea525e8f647d56a8131cbe3b575b859444a85e4c81b9103bdbe320e9a72ce452",
+    "scripts/research_dinapoli_3x3_daily.py": "0258f67c49fd47ce025a54bbc8b10a3838dc7c7655caba11874ea29c1c951311",
+    "src/forextester_backtest/data.py": "ee8117ad84b966912ffffa723b63fc3feb9713d522a8a4f1590f9b304f5103ec"
+  },
+  "self_check": {
+    "assertions": 10,
+    "status": "passed"
+  },
+  "configuration": {
+    "timeframe": "15m",
+    "swing_length": 5,
+    "mode": "Only Wicks",
+    "rr": 1.0,
+    "cost_pips": 1.0,
+    "incomplete_policy": "all nonempty observed M15 buckets retained",
+    "entry_policy": "first observed M1 in next nonempty M15 bucket",
+    "warmup_calendar_days": 60
+  },
+  "records": [
+    {
+      "symbol": "USDJPY",
+      "phase": "2017-2019",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\USDJPY\\Bars.dat",
+        "size": 409681924,
+        "mtime_ns": 1788870507044051000,
+        "raw_slice_sha256": "5754d3992af0f6412d6883e9e62fd7e39d2d9086cfee1e038361d20dfd0c2b83",
+        "metadata_sha256": "cea2c8b470c145f236577f466937e8c5b04a17960ac5a4f281769338b65b38c4",
+        "record_start": 4872257,
+        "record_end_exclusive": 6051582,
+        "first": "2016-11-02T00:00:00",
+        "last": "2019-12-31T21:59:00",
+        "rows": 1179325,
+        "metadata_spread_pips": 1.2,
+        "price_tick": 0.001,
+        "max_off_tick_units": 1.4551915228366852e-11
+      },
+      "m15_bars": 78801,
+      "incomplete_m15_bars": 1654,
+      "signal_counts_including_warmup": {
+        "bullish_levels": 2169,
+        "event_bars": 3753,
+        "bearish_levels": 2175,
+        "both_direction_bars": 14
+      },
+      "skips": {
+        "position_open": 193,
+        "invalid_stop": 5
+      },
+      "metrics": {
+        "trades": 3364,
+        "exit_reasons": {
+          "stop_gap": 23,
+          "target": 1720,
+          "stop": 1566,
+          "both_stop_first": 34,
+          "target_gap": 21
+        },
+        "gross": {
+          "wins": 1741,
+          "losses": 1623,
+          "breakevens": 0,
+          "win_rate": 0.5175386444708681,
+          "win_rate_including_breakevens": 0.5175386444708681,
+          "pf_r": 1.0704817510085431,
+          "total_r": 114.62944453771763,
+          "mean_r": 0.034075340231188356,
+          "max_realized_dd_r": 51.00000000000411,
+          "total_pips": 583.4000000000024
+        },
+        "net": {
+          "wins": 1623,
+          "losses": 1721,
+          "breakevens": 20,
+          "win_rate": 0.482461355529132,
+          "win_rate_including_breakevens": 0.4884066587395957,
+          "pf_r": 0.4907893549235757,
+          "total_r": -1187.8023084963254,
+          "mean_r": -0.3530922439049719,
+          "max_realized_dd_r": 1189.9718503259598,
+          "total_pips": -2780.6000000000017
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "phase": "2020-2022",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\USDJPY\\Bars.dat",
+        "size": 409681924,
+        "mtime_ns": 1788870507044051000,
+        "raw_slice_sha256": "5ba72765129707c4f0e1679d4605b879bece0e1f58f4125cf796061ba89d6b52",
+        "metadata_sha256": "cea2c8b470c145f236577f466937e8c5b04a17960ac5a4f281769338b65b38c4",
+        "record_start": 5992272,
+        "record_end_exclusive": 7167653,
+        "first": "2019-11-03T22:00:00",
+        "last": "2022-12-30T21:59:00",
+        "rows": 1175381,
+        "metadata_spread_pips": 1.2,
+        "price_tick": 0.001,
+        "max_off_tick_units": 2.9103830456733704e-11
+      },
+      "m15_bars": 78874,
+      "incomplete_m15_bars": 4260,
+      "signal_counts_including_warmup": {
+        "bearish_levels": 2108,
+        "event_bars": 3660,
+        "bullish_levels": 2111,
+        "both_direction_bars": 17
+      },
+      "skips": {
+        "position_open": 104,
+        "invalid_stop": 6
+      },
+      "metrics": {
+        "trades": 3336,
+        "exit_reasons": {
+          "target": 1616,
+          "stop": 1607,
+          "stop_gap": 30,
+          "target_gap": 45,
+          "both_stop_first": 38
+        },
+        "gross": {
+          "wins": 1661,
+          "losses": 1675,
+          "breakevens": 0,
+          "win_rate": 0.49790167865707435,
+          "win_rate_including_breakevens": 0.49790167865707435,
+          "pf_r": 0.9889715497805596,
+          "total_r": -18.522530621386952,
+          "mean_r": -0.005552317332550046,
+          "max_realized_dd_r": 52.52470899469962,
+          "total_pips": -669.4999999999453
+        },
+        "net": {
+          "wins": 1528,
+          "losses": 1781,
+          "breakevens": 27,
+          "win_rate": 0.4580335731414868,
+          "win_rate_including_breakevens": 0.4661270983213429,
+          "pf_r": 0.43879575680748223,
+          "total_r": -1377.3381379817201,
+          "mean_r": -0.4128711444789329,
+          "max_realized_dd_r": 1380.4797721328302,
+          "total_pips": -4005.4999999999472
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "phase": "2023-2025",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\USDJPY\\Bars.dat",
+        "size": 409681924,
+        "mtime_ns": 1788870507044051000,
+        "raw_slice_sha256": "1789c7549087eb2b152e4ed11f32828029502b2e704c0e858a4547b5bb570259",
+        "metadata_sha256": "cea2c8b470c145f236577f466937e8c5b04a17960ac5a4f281769338b65b38c4",
+        "record_start": 7106270,
+        "record_end_exclusive": 8284343,
+        "first": "2022-11-02T00:00:00",
+        "last": "2025-12-31T21:58:00",
+        "rows": 1178073,
+        "metadata_spread_pips": 1.2,
+        "price_tick": 0.001,
+        "max_off_tick_units": 2.9103830456733704e-11
+      },
+      "m15_bars": 78898,
+      "incomplete_m15_bars": 2242,
+      "signal_counts_including_warmup": {
+        "bearish_levels": 2126,
+        "event_bars": 3755,
+        "bullish_levels": 2229,
+        "both_direction_bars": 29
+      },
+      "skips": {
+        "invalid_stop": 3,
+        "position_open": 292
+      },
+      "metrics": {
+        "trades": 3252,
+        "exit_reasons": {
+          "stop": 1638,
+          "target": 1514,
+          "both_stop_first": 54,
+          "stop_gap": 25,
+          "target_gap": 21
+        },
+        "gross": {
+          "wins": 1535,
+          "losses": 1717,
+          "breakevens": 0,
+          "win_rate": 0.4720172201722017,
+          "win_rate_including_breakevens": 0.4720172201722017,
+          "pf_r": 0.8919834094222159,
+          "total_r": -185.8840251796704,
+          "mean_r": -0.05715990934184207,
+          "max_realized_dd_r": 190.88402517966753,
+          "total_pips": -1320.200000000062
+        },
+        "net": {
+          "wins": 1487,
+          "losses": 1751,
+          "breakevens": 14,
+          "win_rate": 0.45725707257072573,
+          "win_rate_including_breakevens": 0.46156211562115623,
+          "pf_r": 0.531988873263211,
+          "total_r": -1042.780932068817,
+          "mean_r": -0.3206583431945932,
+          "max_realized_dd_r": 1044.0517758584688,
+          "total_pips": -4572.200000000058
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "phase": "2017-2019",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\EURUSD\\Bars.dat",
+        "size": 411254788,
+        "mtime_ns": 1788870492875394400,
+        "raw_slice_sha256": "cb14d4af71f97b251126f0b51b08760486020acdf2dbdf1897330ceabe5d12b4",
+        "metadata_sha256": "2bf533cbaad2715e47cdb477de21c3e894bf61430a7d6ee82130f9f54fe31541",
+        "record_start": 4904364,
+        "record_end_exclusive": 6084731,
+        "first": "2016-11-02T00:00:00",
+        "last": "2019-12-31T22:00:00",
+        "rows": 1180367,
+        "metadata_spread_pips": 1.1,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 1.4551915228366852e-11
+      },
+      "m15_bars": 78766,
+      "incomplete_m15_bars": 736,
+      "signal_counts_including_warmup": {
+        "bearish_levels": 2228,
+        "event_bars": 3826,
+        "bullish_levels": 2197,
+        "both_direction_bars": 22
+      },
+      "skips": {
+        "position_open": 135,
+        "invalid_stop": 8
+      },
+      "metrics": {
+        "trades": 3465,
+        "exit_reasons": {
+          "stop": 1704,
+          "target": 1687,
+          "both_stop_first": 40,
+          "target_gap": 16,
+          "stop_gap": 18
+        },
+        "gross": {
+          "wins": 1703,
+          "losses": 1762,
+          "breakevens": 0,
+          "win_rate": 0.49148629148629147,
+          "win_rate_including_breakevens": 0.49148629148629147,
+          "pf_r": 0.9656150489124672,
+          "total_r": -60.64277039594475,
+          "mean_r": -0.017501521037790693,
+          "max_realized_dd_r": 100.53788201849831,
+          "total_pips": -136.40000000001285
+        },
+        "net": {
+          "wins": 1551,
+          "losses": 1879,
+          "breakevens": 35,
+          "win_rate": 0.44761904761904764,
+          "win_rate_including_breakevens": 0.4577200577200577,
+          "pf_r": 0.4067895239511573,
+          "total_r": -1563.0519149666084,
+          "mean_r": -0.45109723375659694,
+          "max_realized_dd_r": 1563.2201367598275,
+          "total_pips": -3601.400000000011
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "phase": "2020-2022",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\EURUSD\\Bars.dat",
+        "size": 411254788,
+        "mtime_ns": 1788870492875394400,
+        "raw_slice_sha256": "c2ab7601a6d7fc39e1e6ae9efc44ea802bd19e38c3ef0a1e1d293899e695a06b",
+        "metadata_sha256": "2bf533cbaad2715e47cdb477de21c3e894bf61430a7d6ee82130f9f54fe31541",
+        "record_start": 6025304,
+        "record_end_exclusive": 7200099,
+        "first": "2019-11-03T22:00:00",
+        "last": "2022-12-30T21:59:00",
+        "rows": 1174795,
+        "metadata_spread_pips": 1.1,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 1.4551915228366852e-11
+      },
+      "m15_bars": 78875,
+      "incomplete_m15_bars": 4330,
+      "signal_counts_including_warmup": {
+        "bearish_levels": 2116,
+        "event_bars": 3707,
+        "bullish_levels": 2149,
+        "both_direction_bars": 9
+      },
+      "skips": {
+        "position_open": 92,
+        "invalid_stop": 4
+      },
+      "metrics": {
+        "trades": 3423,
+        "exit_reasons": {
+          "target": 1694,
+          "stop": 1620,
+          "both_stop_first": 40,
+          "target_gap": 39,
+          "stop_gap": 30
+        },
+        "gross": {
+          "wins": 1733,
+          "losses": 1690,
+          "breakevens": 0,
+          "win_rate": 0.5062810400233713,
+          "win_rate_including_breakevens": 0.5062810400233713,
+          "pf_r": 1.0233471061480126,
+          "total_r": 39.53744991452818,
+          "mean_r": 0.011550525829543728,
+          "max_realized_dd_r": 48.950512599868844,
+          "total_pips": -456.00000000004155
+        },
+        "net": {
+          "wins": 1604,
+          "losses": 1793,
+          "breakevens": 26,
+          "win_rate": 0.46859479988314345,
+          "win_rate_including_breakevens": 0.47619047619047616,
+          "pf_r": 0.4554983696536234,
+          "total_r": -1347.6823947621876,
+          "mean_r": -0.3937138167578696,
+          "max_realized_dd_r": 1350.3039003097751,
+          "total_pips": -3879.0000000000423
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "phase": "2023-2025",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\EURUSD\\Bars.dat",
+        "size": 411254788,
+        "mtime_ns": 1788870492875394400,
+        "raw_slice_sha256": "497adc9b13bc9dd45912e7e2c58e26e995d041ee523e1bf3de9984d2d948cef3",
+        "metadata_sha256": "2bf533cbaad2715e47cdb477de21c3e894bf61430a7d6ee82130f9f54fe31541",
+        "record_start": 7138661,
+        "record_end_exclusive": 8315343,
+        "first": "2022-11-02T00:00:00",
+        "last": "2025-12-31T21:58:00",
+        "rows": 1176682,
+        "metadata_spread_pips": 1.1,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 1.4551915228366852e-11
+      },
+      "m15_bars": 78875,
+      "incomplete_m15_bars": 3089,
+      "signal_counts_including_warmup": {
+        "bullish_levels": 2140,
+        "event_bars": 3755,
+        "bearish_levels": 2175,
+        "both_direction_bars": 18
+      },
+      "skips": {
+        "position_open": 172,
+        "invalid_stop": 6
+      },
+      "metrics": {
+        "trades": 3383,
+        "exit_reasons": {
+          "stop": 1634,
+          "target": 1631,
+          "both_stop_first": 48,
+          "stop_gap": 31,
+          "target_gap": 39
+        },
+        "gross": {
+          "wins": 1670,
+          "losses": 1713,
+          "breakevens": 0,
+          "win_rate": 0.49364469405852796,
+          "win_rate_including_breakevens": 0.49364469405852796,
+          "pf_r": 0.9741547231506071,
+          "total_r": -44.306732095794345,
+          "mean_r": -0.013096876173749437,
+          "max_realized_dd_r": 96.19999999999847,
+          "total_pips": 312.40000000007007
+        },
+        "net": {
+          "wins": 1506,
+          "losses": 1845,
+          "breakevens": 32,
+          "win_rate": 0.4451670115282294,
+          "win_rate_including_breakevens": 0.4546260715341413,
+          "pf_r": 0.3827188988983006,
+          "total_r": -1662.9633814705187,
+          "mean_r": -0.49156470040511935,
+          "max_realized_dd_r": 1663.6651388401342,
+          "total_pips": -3070.599999999931
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "phase": "2017-2019",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\GBPUSD\\Bars.dat",
+        "size": 416661508,
+        "mtime_ns": 1788870495882941900,
+        "raw_slice_sha256": "5218767a70f7d81d41426232047b3b8f3439a0e052b74fae8428c04660f3bd7a",
+        "metadata_sha256": "fd4a6244c76ef686a52e43d9f773b77354e506fbbd8adadc08f2b81dc8dfdf31",
+        "record_start": 5015939,
+        "record_end_exclusive": 6196294,
+        "first": "2016-11-02T00:00:00",
+        "last": "2019-12-31T21:59:00",
+        "rows": 1180355,
+        "metadata_spread_pips": 1.4000000000000001,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 2.9103830456733704e-11
+      },
+      "m15_bars": 78761,
+      "incomplete_m15_bars": 590,
+      "signal_counts_including_warmup": {
+        "bullish_levels": 2235,
+        "event_bars": 3906,
+        "bearish_levels": 2313,
+        "both_direction_bars": 5
+      },
+      "skips": {
+        "position_open": 152,
+        "invalid_stop": 4
+      },
+      "metrics": {
+        "trades": 3539,
+        "exit_reasons": {
+          "stop": 1687,
+          "target": 1742,
+          "target_gap": 31,
+          "both_stop_first": 50,
+          "stop_gap": 29
+        },
+        "gross": {
+          "wins": 1773,
+          "losses": 1766,
+          "breakevens": 0,
+          "win_rate": 0.5009889799378355,
+          "win_rate_including_breakevens": 0.5009889799378355,
+          "pf_r": 0.9962237804798295,
+          "total_r": -6.7206157295679105,
+          "mean_r": -0.0018990154646984772,
+          "max_realized_dd_r": 57.24026148894186,
+          "total_pips": -287.10000000004635
+        },
+        "net": {
+          "wins": 1685,
+          "losses": 1835,
+          "breakevens": 19,
+          "win_rate": 0.47612319864368463,
+          "win_rate_including_breakevens": 0.48149194687764907,
+          "pf_r": 0.5276511129072335,
+          "total_r": -1131.6616861898756,
+          "mean_r": -0.31976877258826664,
+          "max_realized_dd_r": 1133.2798743189962,
+          "total_pips": -3826.100000000048
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "phase": "2020-2022",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\GBPUSD\\Bars.dat",
+        "size": 416661508,
+        "mtime_ns": 1788870495882941900,
+        "raw_slice_sha256": "49be9d1735e600e25859148776b6ae74927170a15ae0f6363282dbce9787cd5d",
+        "metadata_sha256": "fd4a6244c76ef686a52e43d9f773b77354e506fbbd8adadc08f2b81dc8dfdf31",
+        "record_start": 6136850,
+        "record_end_exclusive": 7314160,
+        "first": "2019-11-03T22:00:00",
+        "last": "2022-12-30T21:59:00",
+        "rows": 1177310,
+        "metadata_spread_pips": 1.4000000000000001,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 2.9103830456733704e-11
+      },
+      "m15_bars": 78871,
+      "incomplete_m15_bars": 2676,
+      "signal_counts_including_warmup": {
+        "bullish_levels": 2138,
+        "event_bars": 3752,
+        "bearish_levels": 2151,
+        "both_direction_bars": 10
+      },
+      "skips": {
+        "position_open": 85,
+        "invalid_stop": 8
+      },
+      "metrics": {
+        "trades": 3486,
+        "exit_reasons": {
+          "target": 1705,
+          "stop": 1681,
+          "target_gap": 26,
+          "stop_gap": 22,
+          "both_stop_first": 52
+        },
+        "gross": {
+          "wins": 1731,
+          "losses": 1755,
+          "breakevens": 0,
+          "win_rate": 0.4965576592082616,
+          "win_rate_including_breakevens": 0.4965576592082616,
+          "pf_r": 0.9857062763971839,
+          "total_r": -25.101225536383748,
+          "mean_r": -0.007200581048876577,
+          "max_realized_dd_r": 65.09625668448489,
+          "total_pips": -491.2000000000238
+        },
+        "net": {
+          "wins": 1661,
+          "losses": 1811,
+          "breakevens": 14,
+          "win_rate": 0.4764773379231211,
+          "win_rate_including_breakevens": 0.4804934021801492,
+          "pf_r": 0.5408623860758413,
+          "total_r": -1076.3396643627405,
+          "mean_r": -0.30876066103348837,
+          "max_realized_dd_r": 1080.5107757961437,
+          "total_pips": -3977.2000000000107
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "phase": "2023-2025",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\GBPUSD\\Bars.dat",
+        "size": 416661508,
+        "mtime_ns": 1788870495882941900,
+        "raw_slice_sha256": "fe168a7a03a050f8311c8f1b899d7b4580a930cae15b8f3d12b35bf130b7c514",
+        "metadata_sha256": "fd4a6244c76ef686a52e43d9f773b77354e506fbbd8adadc08f2b81dc8dfdf31",
+        "record_start": 7252784,
+        "record_end_exclusive": 8429213,
+        "first": "2022-11-02T00:00:00",
+        "last": "2025-12-31T21:58:00",
+        "rows": 1176429,
+        "metadata_spread_pips": 1.4000000000000001,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 2.9103830456733704e-11
+      },
+      "m15_bars": 78877,
+      "incomplete_m15_bars": 3003,
+      "signal_counts_including_warmup": {
+        "bullish_levels": 2190,
+        "event_bars": 3865,
+        "bearish_levels": 2249,
+        "both_direction_bars": 17
+      },
+      "skips": {
+        "position_open": 165,
+        "invalid_stop": 6
+      },
+      "metrics": {
+        "trades": 3480,
+        "exit_reasons": {
+          "target": 1718,
+          "stop": 1655,
+          "both_stop_first": 53,
+          "target_gap": 33,
+          "stop_gap": 20,
+          "period_end": 1
+        },
+        "gross": {
+          "wins": 1752,
+          "losses": 1728,
+          "breakevens": 0,
+          "win_rate": 0.503448275862069,
+          "win_rate_including_breakevens": 0.503448275862069,
+          "pf_r": 1.0117720600425317,
+          "total_r": 20.383658901198118,
+          "mean_r": 0.0058573732474707235,
+          "max_realized_dd_r": 75.8259626176126,
+          "total_pips": -174.50000000003266
+        },
+        "net": {
+          "wins": 1657,
+          "losses": 1805,
+          "breakevens": 18,
+          "win_rate": 0.4761494252873563,
+          "win_rate_including_breakevens": 0.4813218390804598,
+          "pf_r": 0.4691979835504417,
+          "total_r": -1332.6311757364956,
+          "mean_r": -0.38293999302772863,
+          "max_realized_dd_r": 1341.6723538353006,
+          "total_pips": -3654.5000000000337
+        }
+      }
+    },
+    {
+      "symbol": "AUDUSD",
+      "phase": "2017-2019",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\AUDUSD\\Bars.dat",
+        "size": 301793284,
+        "mtime_ns": 1788870489842960000,
+        "raw_slice_sha256": "22182ab8b024be45d1aa1938dc6ae1968dfd46542c0241ffb7881121d47d138d",
+        "metadata_sha256": "0492503e1636a40759b41fbabf638d2de18432bfee41027ac1f2b5ae7ffc2278",
+        "record_start": 2631388,
+        "record_end_exclusive": 3810145,
+        "first": "2016-11-02T00:00:00",
+        "last": "2019-12-31T21:59:00",
+        "rows": 1178757,
+        "metadata_spread_pips": 1.2000000000000002,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 1.4551915228366852e-11
+      },
+      "m15_bars": 78667,
+      "incomplete_m15_bars": 873,
+      "signal_counts_including_warmup": {
+        "bullish_levels": 2178,
+        "event_bars": 3796,
+        "bearish_levels": 2203,
+        "both_direction_bars": 12
+      },
+      "skips": {
+        "position_open": 97,
+        "invalid_stop": 2
+      },
+      "metrics": {
+        "trades": 3478,
+        "exit_reasons": {
+          "target_gap": 39,
+          "target": 1660,
+          "stop": 1693,
+          "both_stop_first": 56,
+          "stop_gap": 30
+        },
+        "gross": {
+          "wins": 1699,
+          "losses": 1779,
+          "breakevens": 0,
+          "win_rate": 0.48849913743530765,
+          "win_rate_including_breakevens": 0.48849913743530765,
+          "pf_r": 0.9542639115487348,
+          "total_r": -81.42989935833062,
+          "mean_r": -0.023412852029422258,
+          "max_realized_dd_r": 97.42989935832831,
+          "total_pips": -678.5999999999841
+        },
+        "net": {
+          "wins": 1514,
+          "losses": 1925,
+          "breakevens": 39,
+          "win_rate": 0.4353076480736055,
+          "win_rate_including_breakevens": 0.4465209890741806,
+          "pf_r": 0.3396069539374913,
+          "total_r": -1873.466122348035,
+          "mean_r": -0.5386619098182964,
+          "max_realized_dd_r": 1875.29655208089,
+          "total_pips": -4156.599999999982
+        }
+      }
+    },
+    {
+      "symbol": "AUDUSD",
+      "phase": "2020-2022",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\AUDUSD\\Bars.dat",
+        "size": 301793284,
+        "mtime_ns": 1788870489842960000,
+        "raw_slice_sha256": "9e5b13b261103f572af9fb641ce5638bc9982f7b973c3ffc83adec910cac7958",
+        "metadata_sha256": "0492503e1636a40759b41fbabf638d2de18432bfee41027ac1f2b5ae7ffc2278",
+        "record_start": 3752283,
+        "record_end_exclusive": 4924931,
+        "first": "2019-11-03T22:00:00",
+        "last": "2022-12-30T21:59:00",
+        "rows": 1172648,
+        "metadata_spread_pips": 1.2000000000000002,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 1.4551915228366852e-11
+      },
+      "m15_bars": 78738,
+      "incomplete_m15_bars": 3727,
+      "signal_counts_including_warmup": {
+        "bearish_levels": 2149,
+        "event_bars": 3873,
+        "bullish_levels": 2240,
+        "both_direction_bars": 13
+      },
+      "skips": {
+        "position_open": 103,
+        "invalid_stop": 3
+      },
+      "metrics": {
+        "trades": 3575,
+        "exit_reasons": {
+          "stop": 1680,
+          "target": 1786,
+          "target_gap": 36,
+          "both_stop_first": 44,
+          "stop_gap": 29
+        },
+        "gross": {
+          "wins": 1822,
+          "losses": 1753,
+          "breakevens": 0,
+          "win_rate": 0.5096503496503496,
+          "win_rate_including_breakevens": 0.5096503496503496,
+          "pf_r": 1.035453598041254,
+          "total_r": 62.384693774167594,
+          "mean_r": 0.01745026399277415,
+          "max_realized_dd_r": 63.46111111111837,
+          "total_pips": 140.0999999999375
+        },
+        "net": {
+          "wins": 1696,
+          "losses": 1849,
+          "breakevens": 30,
+          "win_rate": 0.47440559440559443,
+          "win_rate_including_breakevens": 0.4827972027972028,
+          "pf_r": 0.45484995195373307,
+          "total_r": -1417.209757777974,
+          "mean_r": -0.39642230986796473,
+          "max_realized_dd_r": 1417.2097577779678,
+          "total_pips": -3434.9000000000624
+        }
+      }
+    },
+    {
+      "symbol": "AUDUSD",
+      "phase": "2023-2025",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\AUDUSD\\Bars.dat",
+        "size": 301793284,
+        "mtime_ns": 1788870489842960000,
+        "raw_slice_sha256": "62d3e6ec6cc664096f53d1e5b0cc3d55c2d1b80b7845d05650e980df993fb37a",
+        "metadata_sha256": "0492503e1636a40759b41fbabf638d2de18432bfee41027ac1f2b5ae7ffc2278",
+        "record_start": 4863912,
+        "record_end_exclusive": 6034375,
+        "first": "2022-11-02T00:00:00",
+        "last": "2025-12-31T21:58:00",
+        "rows": 1170463,
+        "metadata_spread_pips": 1.2000000000000002,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 1.4551915228366852e-11
+      },
+      "m15_bars": 78640,
+      "incomplete_m15_bars": 3990,
+      "signal_counts_including_warmup": {
+        "bullish_levels": 2333,
+        "event_bars": 3932,
+        "bearish_levels": 2203,
+        "both_direction_bars": 16
+      },
+      "skips": {
+        "position_open": 179,
+        "invalid_stop": 10
+      },
+      "metrics": {
+        "trades": 3512,
+        "exit_reasons": {
+          "target_gap": 55,
+          "target": 1699,
+          "stop": 1660,
+          "both_stop_first": 52,
+          "stop_gap": 46
+        },
+        "gross": {
+          "wins": 1754,
+          "losses": 1758,
+          "breakevens": 0,
+          "win_rate": 0.4994305239179954,
+          "win_rate_including_breakevens": 0.4994305239179954,
+          "pf_r": 0.9969874094286897,
+          "total_r": -5.300050744980325,
+          "mean_r": -0.0015091260663383614,
+          "max_realized_dd_r": 81.39687192601741,
+          "total_pips": -43.19999999998399
+        },
+        "net": {
+          "wins": 1583,
+          "losses": 1898,
+          "breakevens": 31,
+          "win_rate": 0.45074031890660593,
+          "win_rate_including_breakevens": 0.45956719817767655,
+          "pf_r": 0.366847839947354,
+          "total_r": -1782.948453928002,
+          "mean_r": -0.5076732499794995,
+          "max_realized_dd_r": 1782.9484539279872,
+          "total_pips": -3555.199999999989
+        }
+      }
+    },
+    {
+      "symbol": "USDCHF",
+      "phase": "2017-2019",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\USDCHF\\Bars.dat",
+        "size": 442908676,
+        "mtime_ns": 1788870504234453100,
+        "raw_slice_sha256": "1edb37bc7dcb729c12716c7f9b8e45250b6e8e30be4e23856b602be491a85a9b",
+        "metadata_sha256": "34465f07cd3b9546d2a9986e0352e2fdc2db4b19b1e1a68b1c73a88442d58d57",
+        "record_start": 5611722,
+        "record_end_exclusive": 6769061,
+        "first": "2016-11-02T00:00:00",
+        "last": "2019-12-31T18:59:00",
+        "rows": 1157339,
+        "metadata_spread_pips": 1.5,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 1.4551915228366852e-11
+      },
+      "m15_bars": 77304,
+      "incomplete_m15_bars": 306,
+      "signal_counts_including_warmup": {
+        "bullish_levels": 1512,
+        "event_bars": 2462,
+        "bearish_levels": 1517,
+        "both_direction_bars": 9
+      },
+      "skips": {
+        "invalid_stop": 31,
+        "position_open": 85
+      },
+      "metrics": {
+        "trades": 2189,
+        "exit_reasons": {
+          "stop": 454,
+          "target_gap": 673,
+          "stop_gap": 678,
+          "target": 377,
+          "both_stop_first": 6,
+          "period_end": 1
+        },
+        "gross": {
+          "wins": 1051,
+          "losses": 1138,
+          "breakevens": 0,
+          "win_rate": 0.4801279122887163,
+          "win_rate_including_breakevens": 0.4801279122887163,
+          "pf_r": 0.8645116710459448,
+          "total_r": -164.619449423138,
+          "mean_r": -0.07520303765332938,
+          "max_realized_dd_r": 181.89636140004916,
+          "total_pips": -882.0000000000108
+        },
+        "net": {
+          "wins": 992,
+          "losses": 1138,
+          "breakevens": 59,
+          "win_rate": 0.4531749657377798,
+          "win_rate_including_breakevens": 0.4801279122887163,
+          "pf_r": 0.4752573633466206,
+          "total_r": -806.113001967411,
+          "mean_r": -0.36825628230580676,
+          "max_realized_dd_r": 813.2229226023229,
+          "total_pips": -3071.000000000015
+        }
+      }
+    },
+    {
+      "symbol": "USDCHF",
+      "phase": "2020-2022",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\USDCHF\\Bars.dat",
+        "size": 442908676,
+        "mtime_ns": 1788870504234453100,
+        "raw_slice_sha256": "9d6fe3e59e68cb1880ae61c7e57eb061cfb76d97738cae1947c86bc21f1a5410",
+        "metadata_sha256": "34465f07cd3b9546d2a9986e0352e2fdc2db4b19b1e1a68b1c73a88442d58d57",
+        "record_start": 6710922,
+        "record_end_exclusive": 7869275,
+        "first": "2019-11-03T23:00:00",
+        "last": "2022-12-30T21:00:00",
+        "rows": 1158353,
+        "metadata_spread_pips": 1.5,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 1.4551915228366852e-11
+      },
+      "m15_bars": 77426,
+      "incomplete_m15_bars": 500,
+      "signal_counts_including_warmup": {
+        "bearish_levels": 1423,
+        "event_bars": 2388,
+        "bullish_levels": 1444,
+        "both_direction_bars": 7
+      },
+      "skips": {
+        "position_open": 50,
+        "invalid_stop": 14
+      },
+      "metrics": {
+        "trades": 2212,
+        "exit_reasons": {
+          "target": 557,
+          "stop": 579,
+          "stop_gap": 535,
+          "target_gap": 537,
+          "both_stop_first": 4
+        },
+        "gross": {
+          "wins": 1094,
+          "losses": 1118,
+          "breakevens": 0,
+          "win_rate": 0.4945750452079566,
+          "win_rate_including_breakevens": 0.4945750452079566,
+          "pf_r": 0.931747042295636,
+          "total_r": -80.13841991341937,
+          "mean_r": -0.03622894209467422,
+          "max_realized_dd_r": 120.34366883117163,
+          "total_pips": -944.9999999999919
+        },
+        "net": {
+          "wins": 1055,
+          "losses": 1118,
+          "breakevens": 39,
+          "win_rate": 0.4769439421338155,
+          "win_rate_including_breakevens": 0.4945750452079566,
+          "pf_r": 0.5304452635653212,
+          "total_r": -694.8710982118639,
+          "mean_r": -0.3141370245080759,
+          "max_realized_dd_r": 697.1108418016007,
+          "total_pips": -3156.999999999989
+        }
+      }
+    },
+    {
+      "symbol": "USDCHF",
+      "phase": "2023-2025",
+      "inputs": {
+        "source": "C:\\ForexTester6\\data\\History\\USDCHF\\Bars.dat",
+        "size": 442908676,
+        "mtime_ns": 1788870504234453100,
+        "raw_slice_sha256": "166b6ae84ecdabdc28a814b425675391ae3885bd4a0912510bcc13b06b8b8ab6",
+        "metadata_sha256": "34465f07cd3b9546d2a9986e0352e2fdc2db4b19b1e1a68b1c73a88442d58d57",
+        "record_start": 7807851,
+        "record_end_exclusive": 8975863,
+        "first": "2022-11-02T00:00:00",
+        "last": "2025-12-31T21:58:00",
+        "rows": 1168012,
+        "metadata_spread_pips": 1.5,
+        "price_tick": 1e-05,
+        "max_off_tick_units": 1.4551915228366852e-11
+      },
+      "m15_bars": 78184,
+      "incomplete_m15_bars": 1819,
+      "signal_counts_including_warmup": {
+        "bullish_levels": 1839,
+        "event_bars": 3037,
+        "bearish_levels": 1757,
+        "both_direction_bars": 10
+      },
+      "skips": {
+        "position_open": 133,
+        "invalid_stop": 16
+      },
+      "metrics": {
+        "trades": 2742,
+        "exit_reasons": {
+          "stop_gap": 376,
+          "target_gap": 372,
+          "stop": 964,
+          "target": 1010,
+          "both_stop_first": 19,
+          "period_end": 1
+        },
+        "gross": {
+          "wins": 1383,
+          "losses": 1359,
+          "breakevens": 0,
+          "win_rate": 0.5043763676148797,
+          "win_rate_including_breakevens": 0.5043763676148797,
+          "pf_r": 0.9856177237101685,
+          "total_r": -20.17120780844443,
+          "mean_r": -0.00735638505049031,
+          "max_realized_dd_r": 77.36704939711447,
+          "total_pips": 89.19999999997627
+        },
+        "net": {
+          "wins": 1276,
+          "losses": 1430,
+          "breakevens": 36,
+          "win_rate": 0.4653537563822028,
+          "win_rate_including_breakevens": 0.4784828592268417,
+          "pf_r": 0.4313517678864371,
+          "total_r": -1165.6290229851975,
+          "mean_r": -0.42510175892968544,
+          "max_realized_dd_r": 1165.7540229851934,
+          "total_pips": -2652.8000000000243
+        }
+      }
+    }
+  ],
+  "overall": {
+    "trades": 48436,
+    "exit_reasons": {
+      "stop_gap": 1922,
+      "target_gap": 1983,
+      "stop": 21822,
+      "target": 22116,
+      "both_stop_first": 590,
+      "period_end": 3
+    },
+    "gross": {
+      "wins": 24102,
+      "losses": 24334,
+      "breakevens": 0,
+      "win_rate": 0.49760508712527873,
+      "win_rate_including_breakevens": 0.49760508712527873,
+      "pf_r": 0.9814346096579196,
+      "total_r": -455.90167967944933,
+      "mean_r": -0.009412455191994577,
+      "max_realized_dd_r": 510.99052465971874,
+      "total_pips": -4958.600000000146
+    },
+    "net": {
+      "wins": 22418,
+      "losses": 25579,
+      "breakevens": 439,
+      "win_rate": 0.46283755884053185,
+      "win_rate_including_breakevens": 0.4719010653233132,
+      "pf_r": 0.45002738777257134,
+      "total_r": -19462.48905325377,
+      "mean_r": -0.40181866903240915,
+      "max_realized_dd_r": 19463.72589535898,
+      "total_pips": -53394.60000000016
+    }
+  },
+  "by_phase": {
+    "2017-2019": {
+      "trades": 16035,
+      "exit_reasons": {
+        "stop_gap": 778,
+        "target_gap": 780,
+        "stop": 7104,
+        "target": 7186,
+        "both_stop_first": 186,
+        "period_end": 1
+      },
+      "gross": {
+        "wins": 7967,
+        "losses": 8068,
+        "breakevens": 0,
+        "win_rate": 0.4968506392266916,
+        "win_rate_including_breakevens": 0.4968506392266916,
+        "pf_r": 0.9756547337881949,
+        "total_r": -198.78329036926365,
+        "mean_r": -0.012396837565903564,
+        "max_realized_dd_r": 266.1973143370955,
+        "total_pips": -1400.7000000000544
+      },
+      "net": {
+        "wins": 7365,
+        "losses": 8498,
+        "breakevens": 172,
+        "win_rate": 0.4593077642656688,
+        "win_rate_including_breakevens": 0.47003429996881824,
+        "pf_r": 0.4408793697997771,
+        "total_r": -6562.095033968255,
+        "mean_r": -0.4092357364495326,
+        "max_realized_dd_r": 6562.0950339681685,
+        "total_pips": -17435.70000000003
+      }
+    },
+    "2020-2022": {
+      "trades": 16032,
+      "exit_reasons": {
+        "stop": 7167,
+        "target": 7358,
+        "stop_gap": 646,
+        "target_gap": 683,
+        "both_stop_first": 178
+      },
+      "gross": {
+        "wins": 8041,
+        "losses": 7991,
+        "breakevens": 0,
+        "win_rate": 0.501559381237525,
+        "win_rate_including_breakevens": 0.501559381237525,
+        "pf_r": 0.9972912730136305,
+        "total_r": -21.840032382494282,
+        "mean_r": -0.0013622774689679568,
+        "max_realized_dd_r": 162.91163497884406,
+        "total_pips": -2421.600000000078
+      },
+      "net": {
+        "wins": 7544,
+        "losses": 8352,
+        "breakevens": 136,
+        "win_rate": 0.47055888223552894,
+        "win_rate_including_breakevens": 0.47904191616766467,
+        "pf_r": 0.47913486999099125,
+        "total_r": -5913.441053096486,
+        "mean_r": -0.3688523610963377,
+        "max_realized_dd_r": 5916.332638169689,
+        "total_pips": -18453.600000000042
+      }
+    },
+    "2023-2025": {
+      "trades": 16369,
+      "exit_reasons": {
+        "stop": 7551,
+        "target": 7572,
+        "target_gap": 520,
+        "stop_gap": 498,
+        "both_stop_first": 226,
+        "period_end": 2
+      },
+      "gross": {
+        "wins": 8094,
+        "losses": 8275,
+        "breakevens": 0,
+        "win_rate": 0.4944712566436557,
+        "win_rate_including_breakevens": 0.4944712566436557,
+        "pf_r": 0.9717502935996838,
+        "total_r": -235.2783569276914,
+        "mean_r": -0.014373410527685955,
+        "max_realized_dd_r": 274.78607702096843,
+        "total_pips": -1136.300000000043
+      },
+      "net": {
+        "wins": 7509,
+        "losses": 8729,
+        "breakevens": 131,
+        "win_rate": 0.4587329708595516,
+        "win_rate_including_breakevens": 0.4667359032317185,
+        "pf_r": 0.4318874036776255,
+        "total_r": -6986.95296618903,
+        "mean_r": -0.42684055019787587,
+        "max_realized_dd_r": 6989.082735196905,
+        "total_pips": -17505.300000000076
+      }
+    }
+  },
+  "by_symbol": {
+    "USDJPY": {
+      "trades": 9952,
+      "exit_reasons": {
+        "stop_gap": 78,
+        "target": 4850,
+        "stop": 4811,
+        "both_stop_first": 126,
+        "target_gap": 87
+      },
+      "gross": {
+        "wins": 4937,
+        "losses": 5015,
+        "breakevens": 0,
+        "win_rate": 0.49608118971061094,
+        "win_rate_including_breakevens": 0.49608118971061094,
+        "pf_r": 0.9821402243870768,
+        "total_r": -89.77711126333972,
+        "mean_r": -0.009021011983856483,
+        "max_realized_dd_r": 228.76530744094111,
+        "total_pips": -1406.3000000000045
+      },
+      "net": {
+        "wins": 4638,
+        "losses": 5253,
+        "breakevens": 61,
+        "win_rate": 0.46603697749196143,
+        "win_rate_including_breakevens": 0.4721663987138264,
+        "pf_r": 0.4856848058935769,
+        "total_r": -3607.921378546863,
+        "mean_r": -0.36253229286041627,
+        "max_realized_dd_r": 3610.0909203764995,
+        "total_pips": -11358.300000000087
+      }
+    },
+    "EURUSD": {
+      "trades": 10271,
+      "exit_reasons": {
+        "stop": 4958,
+        "target": 5012,
+        "both_stop_first": 128,
+        "target_gap": 94,
+        "stop_gap": 79
+      },
+      "gross": {
+        "wins": 5106,
+        "losses": 5165,
+        "breakevens": 0,
+        "win_rate": 0.4971278356537825,
+        "win_rate_including_breakevens": 0.4971278356537825,
+        "pf_r": 0.9873512201479647,
+        "total_r": -65.41205257721094,
+        "mean_r": -0.006368615770344752,
+        "max_realized_dd_r": 121.00925563337087,
+        "total_pips": -279.99999999998715
+      },
+      "net": {
+        "wins": 4661,
+        "losses": 5517,
+        "breakevens": 93,
+        "win_rate": 0.4538019667023659,
+        "win_rate_including_breakevens": 0.46285658650569567,
+        "pf_r": 0.4139283673157766,
+        "total_r": -4573.697691199315,
+        "mean_r": -0.4453020826793219,
+        "max_realized_dd_r": 4574.072691199309,
+        "total_pips": -10550.999999999973
+      }
+    },
+    "GBPUSD": {
+      "trades": 10505,
+      "exit_reasons": {
+        "stop": 5023,
+        "target": 5165,
+        "target_gap": 90,
+        "both_stop_first": 155,
+        "stop_gap": 71,
+        "period_end": 1
+      },
+      "gross": {
+        "wins": 5256,
+        "losses": 5249,
+        "breakevens": 0,
+        "win_rate": 0.5003331746787244,
+        "win_rate_including_breakevens": 0.5003331746787244,
+        "pf_r": 0.9978284751612875,
+        "total_r": -11.438182364753498,
+        "mean_r": -0.0010888322098765823,
+        "max_realized_dd_r": 84.97538088800108,
+        "total_pips": -952.8000000001028
+      },
+      "net": {
+        "wins": 5003,
+        "losses": 5451,
+        "breakevens": 51,
+        "win_rate": 0.47624940504521657,
+        "win_rate_including_breakevens": 0.4811042360780581,
+        "pf_r": 0.5116827251207866,
+        "total_r": -3540.6325262891114,
+        "mean_r": -0.3370426012650273,
+        "max_realized_dd_r": 3541.369368394365,
+        "total_pips": -11457.800000000121
+      }
+    },
+    "AUDUSD": {
+      "trades": 10565,
+      "exit_reasons": {
+        "target_gap": 130,
+        "target": 5145,
+        "stop": 5033,
+        "both_stop_first": 152,
+        "stop_gap": 105
+      },
+      "gross": {
+        "wins": 5275,
+        "losses": 5290,
+        "breakevens": 0,
+        "win_rate": 0.4992901088499763,
+        "win_rate_including_breakevens": 0.4992901088499763,
+        "pf_r": 0.9954059878812261,
+        "total_r": -24.345256329143332,
+        "mean_r": -0.0023043309350821895,
+        "max_realized_dd_r": 97.42989935833631,
+        "total_pips": -581.700000000031
+      },
+      "net": {
+        "wins": 4793,
+        "losses": 5672,
+        "breakevens": 100,
+        "win_rate": 0.45366777094178895,
+        "win_rate_including_breakevens": 0.46313298627543775,
+        "pf_r": 0.38520541279719905,
+        "total_r": -5073.624334054011,
+        "mean_r": -0.48022946843861913,
+        "max_realized_dd_r": 5075.454763786863,
+        "total_pips": -11146.700000000052
+      }
+    },
+    "USDCHF": {
+      "trades": 7143,
+      "exit_reasons": {
+        "stop": 1997,
+        "target_gap": 1582,
+        "stop_gap": 1589,
+        "target": 1944,
+        "both_stop_first": 29,
+        "period_end": 2
+      },
+      "gross": {
+        "wins": 3528,
+        "losses": 3615,
+        "breakevens": 0,
+        "win_rate": 0.49391012179756405,
+        "win_rate_including_breakevens": 0.49391012179756405,
+        "pf_r": 0.9301283118547278,
+        "total_r": -264.9290771450018,
+        "mean_r": -0.03708932901371998,
+        "max_realized_dd_r": 327.0129418216938,
+        "total_pips": -1737.8000000000343
+      },
+      "net": {
+        "wins": 3323,
+        "losses": 3686,
+        "breakevens": 134,
+        "win_rate": 0.46521069578608426,
+        "win_rate_including_breakevens": 0.48397032059358813,
+        "pf_r": 0.47361324970515456,
+        "total_r": -2666.613123164472,
+        "mean_r": -0.3733183708756086,
+        "max_realized_dd_r": 2666.738123164429,
+        "total_pips": -8880.800000000025
+      }
+    }
+  }
+}

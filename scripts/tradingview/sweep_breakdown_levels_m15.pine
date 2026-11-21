@@ -1,0 +1,106 @@
+//@version=6
+// Only Wicks sweep detection follows Liquidity Sweeps [LuxAlgo].
+// Original author LuxAlgo, CC BY-NC-SA 4.0.
+// https://www.tradingview.com/script/JRqryeJ5-Liquidity-Sweeps-LuxAlgo/
+// This indicator adds setups after a sweep candle breaks.
+// Display rules only. Entry is the next observed candle's open, SL is the
+// original pivot, and TP is an equal distance from Entry. Costs are excluded.
+indicator("スイープ上抜け・下抜け Entry・TP・SL", overlay = true,
+     max_lines_count = 500, max_labels_count = 500, max_bars_back = 2100)
+
+int levelBars = input.int(12, "価格線の長さ（本）", minval = 1, maxval = 100)
+int keepHistory = input.int(60, "履歴を残す件数", minval = 1, maxval = 150)
+
+type SweepPivot
+    float price
+    int originBar
+
+var array<line> levelLines = array.new<line>()
+var array<label> levelLabels = array.new<label>()
+
+f_addLevel(float price, string caption, color ink) =>
+    int rightBar = bar_index + levelBars
+    array.push(levelLines, line.new(bar_index, price, rightBar, price,
+         xloc = xloc.bar_index, extend = extend.none, color = ink, width = 2))
+    array.push(levelLabels, label.new(rightBar, price,
+         caption + " " + str.tostring(price, format.mintick),
+         xloc = xloc.bar_index, style = label.style_label_left,
+         color = ink, textcolor = color.white, size = size.small))
+    while array.size(levelLines) > keepHistory * 3
+        line.delete(array.shift(levelLines))
+        label.delete(array.shift(levelLabels))
+
+// Each written call keeps its own setup and position for that direction.
+f_levels(bool isLong, float confirmedPivot) =>
+    var array<SweepPivot> pivots = array.new<SweepPivot>()
+    var float trigger = na
+    var float setupStop = na
+    var float pendingStop = na
+    var float stop = na
+    var float target = na
+    bool entered = false
+    bool skipped = false
+    bool sweptBar = false
+    bool broken = false
+    string side = isLong ? "買い" : "売り"
+
+    if not na(pendingStop)
+        if isLong ? open > pendingStop : open < pendingStop
+            stop := pendingStop
+            target := math.round_to_mintick(2.0 * open - stop)
+            entered := true
+            f_addLevel(open, side + " Entry", color.rgb(39, 100, 190))
+            f_addLevel(target, side + " 利確 TP・1R", color.rgb(0, 130, 100))
+            f_addLevel(stop, side + " 損切り SL", color.rgb(195, 55, 55))
+        else
+            skipped := true
+        pendingStop := na
+
+    if not na(stop)
+        bool finished = isLong ? (low <= stop or high >= target) : (high >= stop or low <= target)
+        if finished
+            stop := na
+            target := na
+
+    if barstate.isconfirmed
+        if not na(confirmedPivot)
+            array.push(pivots, SweepPivot.new(confirmedPivot, bar_index - 5))
+        float nearest = na
+        if array.size(pivots) > 0
+            for index = array.size(pivots) - 1 to 0
+                SweepPivot pivot = array.get(pivots, index)
+                bool swept = isLong ? (high > pivot.price and close < pivot.price) : (low < pivot.price and close > pivot.price)
+                bool invalid = isLong ? close > pivot.price : close < pivot.price
+                if swept
+                    nearest := na(nearest) ? pivot.price : (isLong ? math.min(nearest, pivot.price) : math.max(nearest, pivot.price))
+                if swept or invalid or bar_index - pivot.originBar > 2000
+                    array.remove(pivots, index)
+
+        if not na(nearest)
+            sweptBar := true
+            trigger := isLong ? high : low
+            setupStop := nearest
+        else if not na(trigger) and (isLong ? close > trigger : close < trigger)
+            broken := true
+            if na(stop)
+                pendingStop := setupStop
+            trigger := na
+            setupStop := na
+    [sweptBar, broken, entered, skipped]
+
+[bullishSweep, breakdown, enteredShort, skippedGap] = f_levels(false, ta.pivotlow(low, 5, 5))
+[bearishSweep, breakout, enteredLong, skippedLong] = f_levels(true, ta.pivothigh(high, 5, 5))
+
+plotshape(bearishSweep, title = "弱気スイープ確定", style = shape.circle, location = location.abovebar, color = color.maroon, size = size.tiny)
+plotshape(breakout, title = "スイープ足の高値を終値で上抜け", style = shape.triangleup, location = location.belowbar, color = color.lime, size = size.tiny)
+plotshape(skippedLong, title = "次足始値がSL以下のため見送り", style = shape.xcross, location = location.belowbar, color = color.gray, size = size.tiny)
+alertcondition(enteredLong, title = "買い Entry確定", message = "{{interval}} スイープ上抜け。次足始値の買いEntry・TP・SLを表示しました。")
+
+plotshape(bullishSweep, title = "強気スイープ確定", style = shape.circle,
+     location = location.belowbar, color = color.teal, size = size.tiny)
+plotshape(breakdown, title = "スイープ足の安値を終値で下抜け", style = shape.triangledown,
+     location = location.abovebar, color = color.orange, size = size.tiny)
+plotshape(skippedGap, title = "次足始値がSL以上のため見送り", style = shape.xcross,
+     location = location.abovebar, color = color.gray, size = size.tiny)
+
+alertcondition(enteredShort, title = "売り Entry確定", message = "{{interval}} スイープ下抜け。次足始値の売りEntry・TP・SLを表示しました。")

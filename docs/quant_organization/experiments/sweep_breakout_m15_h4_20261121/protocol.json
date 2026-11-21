@@ -1,0 +1,41 @@
+{
+  "experiment_id": "sweep_breakout_m15_h4_20261121",
+  "status": "SPEC_FROZEN",
+  "hypothesis": "A close through the sweep wick may continue in the breakout direction.",
+  "baseline": "Ideal gross symmetric barrier breakeven win rate 50%. Descriptive comparison.",
+  "history_directory": "C:\\ForexTester6\\data\\History",
+  "data_manifest": "data_inventory.md",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "GBPUSD",
+    "AUDUSD",
+    "USDCHF"
+  ],
+  "entry_timeframe": [
+    "15m",
+    "4h"
+  ],
+  "higher_timeframe_rules": "No higher timeframe filter. Use nonempty observed M1 buckets on saved clock aligned to midnight.",
+  "entry_rules": "Follow f_levels in source identified below. Process uninterrupted starting 2015-01-01. Confirmed 5+5 pivots. Independently track high/low wick sweep and wait for a subsequent close beyond its extreme. New same-side sweep replaces setup first. Next observed bar open entry, positive risk, one active per direction; long and short may overlap.",
+  "exit_rules": {
+    "reward_risk_ratio": 1.0,
+    "full_exit": true,
+    "execution": "SL original swept pivot, TP full 1R rounded to tick. M1 open checked first: stop gaps at open, target at limit. Intraminute dual touch stop first. Final observed 2025 M1 close for open trades."
+  },
+  "periods": {
+    "training": "2017-2019 entry dates",
+    "validation": "2020-2022 entry dates",
+    "final_confirmation": "2023-2025 entry dates"
+  },
+  "final_period_prior_exposure": "All periods previously used; splits descriptive only.",
+  "candidate_budget": 1,
+  "search_space": "No tuning; replay both requested timeframes.",
+  "cost_and_fill_model": "Fixed 1 pip round trip deducted from every trade after exit. No extra fees or swaps.",
+  "position_sizing_and_currency": "One unit initial risk per entry, PF measured in R. No capital curve assumptions.",
+  "acceptance_gates": "Descriptive only: report gross/net win rates and PF by timeframe, long/short/combined. Positive economic R counts as win. Absolute R <= 1e-10 is breakeven.",
+  "cross_symbol_rule": "Pool by trade, plus by instrument and three year period. Sensitivity excluding coarse USDCHF M1.",
+  "code_identifier": "scripts/tradingview/sweep_breakdown_levels_m15.pine SHA256 695CCB5812F53F552EFC2509491F6AC0559930C5C9BCECDDEA2707198E2DEF62",
+  "frozen_at": "2026-11-21T02:23:04.6709630Z",
+  "live_trading_authorized": false
+}

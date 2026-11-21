@@ -1,0 +1,3407 @@
+{
+  "experiment": "sweep_breakout_m15_h4_20261121",
+  "implementation_sha256": "510c2f4636229468f4fafbe8725e8ca9f62f2bf6901d12091a662c7d4a4c1e44",
+  "protocol_sha256": "8eea5c4fda3b3bcdf18e530cee671e525cbbb9eff17cc36a860c449feed17a62",
+  "pine_sha256": "695ccb5812f53f552efc2509491f6ac0559930c5c9bcecddea2707198e2def62",
+  "dependencies_sha256": {
+    "scripts/research_luxalgo_sweeps_m15.py": "fa0308b881819589e59a90af546fda944fdeb84334096f508d1f6bb5ad4d7468",
+    "scripts/research_fx65_pf15.py": "ea525e8f647d56a8131cbe3b575b859444a85e4c81b9103bdbe320e9a72ce452",
+    "scripts/research_dinapoli_3x3_daily.py": "0258f67c49fd47ce025a54bbc8b10a3838dc7c7655caba11874ea29c1c951311",
+    "src/forextester_backtest/data.py": "ee8117ad84b966912ffffa723b63fc3feb9713d522a8a4f1590f9b304f5103ec"
+  },
+  "self_check": {
+    "assertions": 12,
+    "status": "passed"
+  },
+  "inputs": [
+    {
+      "source": "C:\\ForexTester6\\data\\History\\USDJPY\\Bars.dat",
+      "size": 409681924,
+      "mtime_ns": 1788870507044051000,
+      "raw_slice_sha256": "42cec16e9b9d25119b95986d195b92353a50b7c86a650503582deb9e254d6d4f",
+      "metadata_sha256": "cea2c8b470c145f236577f466937e8c5b04a17960ac5a4f281769338b65b38c4",
+      "record_start": 4187290,
+      "record_end_exclusive": 8284343,
+      "first": "2015-01-01T22:00:00",
+      "last": "2025-12-31T21:58:00",
+      "rows": 4097053,
+      "metadata_spread_pips": 1.2,
+      "price_tick": 0.001,
+      "max_off_tick_units": 2.9103830456733704e-11,
+      "symbol": "USDJPY"
+    },
+    {
+      "source": "C:\\ForexTester6\\data\\History\\EURUSD\\Bars.dat",
+      "size": 411254788,
+      "mtime_ns": 1788870492875394400,
+      "raw_slice_sha256": "9ca34ab61eeb49f4f08e9ef9610613a28958b5746e4ee873da71bf4a70608df8",
+      "metadata_sha256": "2bf533cbaad2715e47cdb477de21c3e894bf61430a7d6ee82130f9f54fe31541",
+      "record_start": 4219936,
+      "record_end_exclusive": 8315343,
+      "first": "2015-01-01T22:00:00",
+      "last": "2025-12-31T21:58:00",
+      "rows": 4095407,
+      "metadata_spread_pips": 1.1,
+      "price_tick": 1e-05,
+      "max_off_tick_units": 1.4551915228366852e-11,
+      "symbol": "EURUSD"
+    },
+    {
+      "source": "C:\\ForexTester6\\data\\History\\GBPUSD\\Bars.dat",
+      "size": 416661508,
+      "mtime_ns": 1788870495882941900,
+      "raw_slice_sha256": "e67508c4f7b8983a83ffb6f15b7d0deabb9078fd12b17de7fb73a7a144112e9d",
+      "metadata_sha256": "fd4a6244c76ef686a52e43d9f773b77354e506fbbd8adadc08f2b81dc8dfdf31",
+      "record_start": 4330267,
+      "record_end_exclusive": 8429213,
+      "first": "2015-01-01T22:00:00",
+      "last": "2025-12-31T21:58:00",
+      "rows": 4098946,
+      "metadata_spread_pips": 1.4000000000000001,
+      "price_tick": 1e-05,
+      "max_off_tick_units": 2.9103830456733704e-11,
+      "symbol": "GBPUSD"
+    },
+    {
+      "source": "C:\\ForexTester6\\data\\History\\AUDUSD\\Bars.dat",
+      "size": 301793284,
+      "mtime_ns": 1788870489842960000,
+      "raw_slice_sha256": "30b58ba09e48d1deba22f4d4c9d52658a249b6faf132ed444b6ee4e5063ff4ba",
+      "metadata_sha256": "0492503e1636a40759b41fbabf638d2de18432bfee41027ac1f2b5ae7ffc2278",
+      "record_start": 1945650,
+      "record_end_exclusive": 6034375,
+      "first": "2015-01-01T22:00:00",
+      "last": "2025-12-31T21:58:00",
+      "rows": 4088725,
+      "metadata_spread_pips": 1.2000000000000002,
+      "price_tick": 1e-05,
+      "max_off_tick_units": 1.4551915228366852e-11,
+      "symbol": "AUDUSD"
+    },
+    {
+      "source": "C:\\ForexTester6\\data\\History\\USDCHF\\Bars.dat",
+      "size": 442908676,
+      "mtime_ns": 1788870504234453100,
+      "raw_slice_sha256": "3fb9c3a87baa15932fbace00b2bee00d918a921bd091072a9400332d62956c6f",
+      "metadata_sha256": "34465f07cd3b9546d2a9986e0352e2fdc2db4b19b1e1a68b1c73a88442d58d57",
+      "record_start": 4940157,
+      "record_end_exclusive": 8975863,
+      "first": "2015-01-01T23:01:00",
+      "last": "2025-12-31T21:58:00",
+      "rows": 4035706,
+      "metadata_spread_pips": 1.5,
+      "price_tick": 1e-05,
+      "max_off_tick_units": 1.4551915228366852e-11,
+      "symbol": "USDCHF"
+    }
+  ],
+  "records": [
+    {
+      "symbol": "USDJPY",
+      "timeframe": "M15",
+      "bars": 274227,
+      "partial_bars": 8601,
+      "signal_counts_including_warmup": {
+        "long_sweep_bars": 6526,
+        "short_sweep_bars": 6516,
+        "long_break_bars": 3794,
+        "short_break_bars": 3557
+      },
+      "execution_counts_including_warmup": {
+        "warmup_entries": 1276,
+        "long_open_skip": 100,
+        "short_invalid_gap": 11,
+        "short_open_skip": 99,
+        "long_invalid_gap": 2
+      },
+      "metrics": {
+        "all": {
+          "trades": 5863,
+          "exit_reasons": {
+            "target": 2836,
+            "both_stop_first": 61,
+            "stop": 2897,
+            "target_gap": 22,
+            "stop_gap": 47
+          },
+          "gross": {
+            "wins": 2858,
+            "losses": 3005,
+            "breakevens": 0,
+            "win_rate": 0.4874637557564387,
+            "win_rate_including_breakevens": 0.4874637557564387,
+            "pf_r": 0.9494452579234527,
+            "total_r": -152.178813521886,
+            "mean_r": -0.02595579285722088,
+            "max_realized_dd_r": 169.8606317037058,
+            "total_pips": -530.1999999999326
+          },
+          "net": {
+            "wins": 2713,
+            "losses": 3123,
+            "breakevens": 27,
+            "win_rate": 0.46273238956165785,
+            "win_rate_including_breakevens": 0.4673375405082722,
+            "pf_r": 0.4954369768679042,
+            "total_r": -2089.932550351049,
+            "mean_r": -0.35646129120775183,
+            "max_realized_dd_r": 2092.6022156127665,
+            "total_pips": -6393.19999999996
+          }
+        },
+        "long": {
+          "trades": 3026,
+          "exit_reasons": {
+            "target": 1452,
+            "stop": 1507,
+            "target_gap": 12,
+            "both_stop_first": 32,
+            "stop_gap": 23
+          },
+          "gross": {
+            "wins": 1464,
+            "losses": 1562,
+            "breakevens": 0,
+            "win_rate": 0.4838070059484468,
+            "win_rate_including_breakevens": 0.4838070059484468,
+            "pf_r": 0.9354446365993192,
+            "total_r": -101.0311549405733,
+            "mean_r": -0.03338769165253579,
+            "max_realized_dd_r": 121.16881727822927,
+            "total_pips": -610.4999999999791
+          },
+          "net": {
+            "wins": 1380,
+            "losses": 1632,
+            "breakevens": 14,
+            "win_rate": 0.4560475875743556,
+            "win_rate_including_breakevens": 0.4606741573033708,
+            "pf_r": 0.46639327139756853,
+            "total_r": -1177.017009619472,
+            "mean_r": -0.3889679476601031,
+            "max_realized_dd_r": 1178.7493299314572,
+            "total_pips": -3636.4999999999864
+          }
+        },
+        "short": {
+          "trades": 2837,
+          "exit_reasons": {
+            "both_stop_first": 29,
+            "target": 1384,
+            "stop": 1390,
+            "stop_gap": 24,
+            "target_gap": 10
+          },
+          "gross": {
+            "wins": 1394,
+            "losses": 1443,
+            "breakevens": 0,
+            "win_rate": 0.4913641170250264,
+            "win_rate_including_breakevens": 0.4913641170250264,
+            "pf_r": 0.9646073131160019,
+            "total_r": -51.14765858131271,
+            "mean_r": -0.0180287834266171,
+            "max_realized_dd_r": 65.92038585404413,
+            "total_pips": 80.30000000004657
+          },
+          "net": {
+            "wins": 1333,
+            "losses": 1491,
+            "breakevens": 13,
+            "win_rate": 0.4698625308424392,
+            "win_rate_including_breakevens": 0.47444483609446597,
+            "pf_r": 0.5285229151436557,
+            "total_r": -912.9155407315768,
+            "mean_r": -0.3217890520731677,
+            "max_realized_dd_r": 914.1602893977755,
+            "total_pips": -2756.6999999999534
+          }
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "timeframe": "H4",
+      "bars": 17723,
+      "partial_bars": 4363,
+      "signal_counts_including_warmup": {
+        "short_sweep_bars": 426,
+        "long_sweep_bars": 406,
+        "long_break_bars": 258,
+        "short_break_bars": 222
+      },
+      "execution_counts_including_warmup": {
+        "warmup_entries": 78,
+        "long_open_skip": 3,
+        "short_open_skip": 3
+      },
+      "metrics": {
+        "all": {
+          "trades": 396,
+          "exit_reasons": {
+            "stop": 207,
+            "target": 180,
+            "target_gap": 3,
+            "stop_gap": 6
+          },
+          "gross": {
+            "wins": 183,
+            "losses": 213,
+            "breakevens": 0,
+            "win_rate": 0.4621212121212121,
+            "win_rate_including_breakevens": 0.4621212121212121,
+            "pf_r": 0.8555685415752688,
+            "total_r": -30.892857330940643,
+            "mean_r": -0.07801226598722384,
+            "max_realized_dd_r": 35.8928573309406,
+            "total_pips": -869.4000000000129
+          },
+          "net": {
+            "wins": 183,
+            "losses": 213,
+            "breakevens": 0,
+            "win_rate": 0.4621212121212121,
+            "win_rate_including_breakevens": 0.4621212121212121,
+            "pf_r": 0.7317786636458857,
+            "total_r": -62.62176353109459,
+            "mean_r": -0.1581357664926631,
+            "max_realized_dd_r": 67.11960036530505,
+            "total_pips": -1265.4000000000124
+          }
+        },
+        "long": {
+          "trades": 213,
+          "exit_reasons": {
+            "stop": 104,
+            "target": 104,
+            "stop_gap": 3,
+            "target_gap": 2
+          },
+          "gross": {
+            "wins": 106,
+            "losses": 107,
+            "breakevens": 0,
+            "win_rate": 0.49765258215962443,
+            "win_rate_including_breakevens": 0.49765258215962443,
+            "pf_r": 0.988374275244206,
+            "total_r": -1.246822033899745,
+            "mean_r": -0.005853624572299273,
+            "max_realized_dd_r": 15.000000000000234,
+            "total_pips": 147.09999999997905
+          },
+          "net": {
+            "wins": 106,
+            "losses": 107,
+            "breakevens": 0,
+            "win_rate": 0.49765258215962443,
+            "win_rate_including_breakevens": 0.49765258215962443,
+            "pf_r": 0.8196177715676951,
+            "total_r": -21.591972678197088,
+            "mean_r": -0.10137076374740417,
+            "max_realized_dd_r": 27.800611112246248,
+            "total_pips": -65.90000000002095
+          }
+        },
+        "short": {
+          "trades": 183,
+          "exit_reasons": {
+            "stop": 103,
+            "target": 76,
+            "target_gap": 1,
+            "stop_gap": 3
+          },
+          "gross": {
+            "wins": 77,
+            "losses": 106,
+            "breakevens": 0,
+            "win_rate": 0.4207650273224044,
+            "win_rate_including_breakevens": 0.4207650273224044,
+            "pf_r": 0.722014651417021,
+            "total_r": -29.646035297040896,
+            "mean_r": -0.1620001928800049,
+            "max_realized_dd_r": 31.646035297040864,
+            "total_pips": -1016.499999999992
+          },
+          "net": {
+            "wins": 77,
+            "losses": 106,
+            "breakevens": 0,
+            "win_rate": 0.4207650273224044,
+            "win_rate_including_breakevens": 0.4207650273224044,
+            "pf_r": 0.6393596001655859,
+            "total_r": -41.0297908528975,
+            "mean_r": -0.2242065073928825,
+            "max_realized_dd_r": 41.831309765717,
+            "total_pips": -1199.4999999999923
+          }
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "timeframe": "M15",
+      "bars": 274168,
+      "partial_bars": 9016,
+      "signal_counts_including_warmup": {
+        "short_sweep_bars": 6590,
+        "short_break_bars": 3768,
+        "long_sweep_bars": 6617,
+        "long_break_bars": 3844
+      },
+      "execution_counts_including_warmup": {
+        "warmup_entries": 1272,
+        "short_open_skip": 77,
+        "long_open_skip": 177,
+        "long_invalid_gap": 6,
+        "short_invalid_gap": 8
+      },
+      "metrics": {
+        "all": {
+          "trades": 6072,
+          "exit_reasons": {
+            "stop": 3106,
+            "target": 2794,
+            "both_stop_first": 82,
+            "target_gap": 36,
+            "stop_gap": 54
+          },
+          "gross": {
+            "wins": 2830,
+            "losses": 3242,
+            "breakevens": 0,
+            "win_rate": 0.4660737812911726,
+            "win_rate_including_breakevens": 0.4660737812911726,
+            "pf_r": 0.8604704865007735,
+            "total_r": -458.8983926788819,
+            "mean_r": -0.07557615162695684,
+            "max_realized_dd_r": 479.59070037118124,
+            "total_pips": -2317.6999999999584
+          },
+          "net": {
+            "wins": 2578,
+            "losses": 3453,
+            "breakevens": 41,
+            "win_rate": 0.4245718050065876,
+            "win_rate_including_breakevens": 0.43132411067193677,
+            "pf_r": 0.36874876712321875,
+            "total_r": -3125.569714032359,
+            "mean_r": -0.5147512704269366,
+            "max_realized_dd_r": 3125.5697140323555,
+            "total_pips": -8389.699999999939
+          }
+        },
+        "long": {
+          "trades": 3064,
+          "exit_reasons": {
+            "stop": 1570,
+            "target": 1409,
+            "both_stop_first": 38,
+            "target_gap": 20,
+            "stop_gap": 27
+          },
+          "gross": {
+            "wins": 1429,
+            "losses": 1635,
+            "breakevens": 0,
+            "win_rate": 0.4663838120104439,
+            "win_rate_including_breakevens": 0.4663838120104439,
+            "pf_r": 0.8546945324834847,
+            "total_r": -242.94236734820356,
+            "mean_r": -0.07928928438257296,
+            "max_realized_dd_r": 265.9423673481957,
+            "total_pips": -813.2999999999502
+          },
+          "net": {
+            "wins": 1301,
+            "losses": 1743,
+            "breakevens": 20,
+            "win_rate": 0.42460835509138384,
+            "win_rate_including_breakevens": 0.43113577023498695,
+            "pf_r": 0.36560967114454085,
+            "total_r": -1616.2767155809904,
+            "mean_r": -0.5275054554768246,
+            "max_realized_dd_r": 1616.2767155809909,
+            "total_pips": -3877.2999999999442
+          }
+        },
+        "short": {
+          "trades": 3008,
+          "exit_reasons": {
+            "stop": 1536,
+            "target": 1385,
+            "both_stop_first": 44,
+            "target_gap": 16,
+            "stop_gap": 27
+          },
+          "gross": {
+            "wins": 1401,
+            "losses": 1607,
+            "breakevens": 0,
+            "win_rate": 0.46575797872340424,
+            "win_rate_including_breakevens": 0.46575797872340424,
+            "pf_r": 0.8664428580941105,
+            "total_r": -215.9560253306783,
+            "mean_r": -0.07179389139982656,
+            "max_realized_dd_r": 227.64833302298052,
+            "total_pips": -1504.4000000000094
+          },
+          "net": {
+            "wins": 1277,
+            "losses": 1710,
+            "breakevens": 21,
+            "win_rate": 0.4245345744680851,
+            "win_rate_including_breakevens": 0.4315159574468085,
+            "pf_r": 0.3720761073333404,
+            "total_r": -1509.2929984513687,
+            "mean_r": -0.5017596404426092,
+            "max_realized_dd_r": 1509.292998451369,
+            "total_pips": -4512.40000000001
+          }
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "timeframe": "H4",
+      "bars": 17719,
+      "partial_bars": 4320,
+      "signal_counts_including_warmup": {
+        "short_sweep_bars": 424,
+        "short_break_bars": 242,
+        "long_sweep_bars": 436,
+        "long_break_bars": 241
+      },
+      "execution_counts_including_warmup": {
+        "warmup_entries": 79,
+        "long_open_skip": 8,
+        "long_invalid_gap": 1,
+        "short_open_skip": 3,
+        "short_invalid_gap": 1
+      },
+      "metrics": {
+        "all": {
+          "trades": 391,
+          "exit_reasons": {
+            "target": 187,
+            "stop": 196,
+            "stop_gap": 5,
+            "target_gap": 2,
+            "both_stop_first": 1
+          },
+          "gross": {
+            "wins": 189,
+            "losses": 202,
+            "breakevens": 0,
+            "win_rate": 0.4833759590792839,
+            "win_rate_including_breakevens": 0.4833759590792839,
+            "pf_r": 0.9282401091405155,
+            "total_r": -14.611111111111729,
+            "mean_r": -0.03736857061665404,
+            "max_realized_dd_r": 19.166666666666682,
+            "total_pips": 382.3999999999829
+          },
+          "net": {
+            "wins": 188,
+            "losses": 203,
+            "breakevens": 0,
+            "win_rate": 0.48081841432225064,
+            "win_rate_including_breakevens": 0.48081841432225064,
+            "pf_r": 0.785887443175352,
+            "total_r": -47.618117453852776,
+            "mean_r": -0.12178546663389457,
+            "max_realized_dd_r": 48.4811311524829,
+            "total_pips": -8.600000000017541
+          }
+        },
+        "long": {
+          "trades": 193,
+          "exit_reasons": {
+            "target": 86,
+            "stop": 101,
+            "stop_gap": 4,
+            "target_gap": 1,
+            "both_stop_first": 1
+          },
+          "gross": {
+            "wins": 87,
+            "losses": 106,
+            "breakevens": 0,
+            "win_rate": 0.45077720207253885,
+            "win_rate_including_breakevens": 0.45077720207253885,
+            "pf_r": 0.8084667010841452,
+            "total_r": -20.61111111111172,
+            "mean_r": -0.1067933218192317,
+            "max_realized_dd_r": 21.611111111111715,
+            "total_pips": 426.99999999998147
+          },
+          "net": {
+            "wins": 86,
+            "losses": 107,
+            "breakevens": 0,
+            "win_rate": 0.44559585492227977,
+            "win_rate_including_breakevens": 0.44559585492227977,
+            "pf_r": 0.7059679550728382,
+            "total_r": -34.14664475939162,
+            "mean_r": -0.17692562051498248,
+            "max_realized_dd_r": 35.00965845802173,
+            "total_pips": 233.99999999998172
+          }
+        },
+        "short": {
+          "trades": 198,
+          "exit_reasons": {
+            "target": 101,
+            "stop": 95,
+            "target_gap": 1,
+            "stop_gap": 1
+          },
+          "gross": {
+            "wins": 102,
+            "losses": 96,
+            "breakevens": 0,
+            "win_rate": 0.5151515151515151,
+            "win_rate_including_breakevens": 0.5151515151515151,
+            "pf_r": 1.0624999999999998,
+            "total_r": 5.999999999999991,
+            "mean_r": 0.03030303030303026,
+            "max_realized_dd_r": 9.99999999999987,
+            "total_pips": -44.59999999999924
+          },
+          "net": {
+            "wins": 102,
+            "losses": 96,
+            "breakevens": 0,
+            "win_rate": 0.5151515151515151,
+            "win_rate_including_breakevens": 0.5151515151515151,
+            "pf_r": 0.8732278066300688,
+            "total_r": -13.47147269446115,
+            "mean_r": -0.06803774088111691,
+            "max_realized_dd_r": 14.438027878407642,
+            "total_pips": -242.59999999999923
+          }
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "M15",
+      "bars": 274162,
+      "partial_bars": 6386,
+      "signal_counts_including_warmup": {
+        "short_sweep_bars": 6658,
+        "short_break_bars": 3793,
+        "long_sweep_bars": 6828,
+        "long_break_bars": 3927
+      },
+      "execution_counts_including_warmup": {
+        "warmup_entries": 1320,
+        "long_open_skip": 68,
+        "short_open_skip": 65,
+        "short_invalid_gap": 15,
+        "long_invalid_gap": 6
+      },
+      "metrics": {
+        "all": {
+          "trades": 6246,
+          "exit_reasons": {
+            "target": 2951,
+            "stop": 3124,
+            "both_stop_first": 89,
+            "stop_gap": 50,
+            "target_gap": 32
+          },
+          "gross": {
+            "wins": 2983,
+            "losses": 3263,
+            "breakevens": 0,
+            "win_rate": 0.4775856548190842,
+            "win_rate_including_breakevens": 0.4775856548190842,
+            "pf_r": 0.9118708346713632,
+            "total_r": -288.2966426600025,
+            "mean_r": -0.04615700330771733,
+            "max_realized_dd_r": 293.24579520237353,
+            "total_pips": -1491.5999999999697
+          },
+          "net": {
+            "wins": 2837,
+            "losses": 3382,
+            "breakevens": 27,
+            "win_rate": 0.4542106948447006,
+            "win_rate_including_breakevens": 0.4585334614153058,
+            "pf_r": 0.4728146516027219,
+            "total_r": -2410.5674215894614,
+            "mean_r": -0.3859377876384024,
+            "max_realized_dd_r": 2413.272188417972,
+            "total_pips": -7737.599999999978
+          }
+        },
+        "long": {
+          "trades": 3199,
+          "exit_reasons": {
+            "target": 1498,
+            "stop": 1614,
+            "stop_gap": 22,
+            "target_gap": 22,
+            "both_stop_first": 43
+          },
+          "gross": {
+            "wins": 1520,
+            "losses": 1679,
+            "breakevens": 0,
+            "win_rate": 0.4751484839012191,
+            "win_rate_including_breakevens": 0.4751484839012191,
+            "pf_r": 0.9023143532846701,
+            "total_r": -164.55704430145607,
+            "mean_r": -0.05144015139151487,
+            "max_realized_dd_r": 201.3735794612065,
+            "total_pips": -619.4999999999596
+          },
+          "net": {
+            "wins": 1451,
+            "losses": 1741,
+            "breakevens": 7,
+            "win_rate": 0.453579243513598,
+            "win_rate_including_breakevens": 0.4557674273210378,
+            "pf_r": 0.4642521139060105,
+            "total_r": -1267.1855204620945,
+            "mean_r": -0.3961192624139089,
+            "max_realized_dd_r": 1271.7068314891608,
+            "total_pips": -3818.499999999958
+          }
+        },
+        "short": {
+          "trades": 3047,
+          "exit_reasons": {
+            "target": 1453,
+            "stop": 1510,
+            "both_stop_first": 46,
+            "stop_gap": 28,
+            "target_gap": 10
+          },
+          "gross": {
+            "wins": 1463,
+            "losses": 1584,
+            "breakevens": 0,
+            "win_rate": 0.48014440433212996,
+            "win_rate_including_breakevens": 0.48014440433212996,
+            "pf_r": 0.9220164427190503,
+            "total_r": -123.73959835854636,
+            "mean_r": -0.04061030467953605,
+            "max_realized_dd_r": 124.73959835854633,
+            "total_pips": -872.1000000000079
+          },
+          "net": {
+            "wins": 1386,
+            "losses": 1641,
+            "breakevens": 20,
+            "win_rate": 0.4548736462093863,
+            "win_rate_including_breakevens": 0.461437479488021,
+            "pf_r": 0.48199013490912396,
+            "total_r": -1143.3819011273667,
+            "mean_r": -0.3752484086404223,
+            "max_realized_dd_r": 1144.332149883586,
+            "total_pips": -3919.100000000015
+          }
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "H4",
+      "bars": 17718,
+      "partial_bars": 3418,
+      "signal_counts_including_warmup": {
+        "short_sweep_bars": 424,
+        "short_break_bars": 260,
+        "long_sweep_bars": 436,
+        "long_break_bars": 258
+      },
+      "execution_counts_including_warmup": {
+        "warmup_entries": 88,
+        "short_open_skip": 3,
+        "long_open_skip": 7
+      },
+      "metrics": {
+        "all": {
+          "trades": 420,
+          "exit_reasons": {
+            "target": 219,
+            "stop": 196,
+            "both_stop_first": 1,
+            "stop_gap": 3,
+            "target_gap": 1
+          },
+          "gross": {
+            "wins": 220,
+            "losses": 200,
+            "breakevens": 0,
+            "win_rate": 0.5238095238095238,
+            "win_rate_including_breakevens": 0.5238095238095238,
+            "pf_r": 1.095208134925423,
+            "total_r": 19.124939831659937,
+            "mean_r": 0.045535571027761755,
+            "max_realized_dd_r": 14.024017467248314,
+            "total_pips": 830.1000000000089
+          },
+          "net": {
+            "wins": 220,
+            "losses": 200,
+            "breakevens": 0,
+            "win_rate": 0.5238095238095238,
+            "win_rate_including_breakevens": 0.5238095238095238,
+            "pf_r": 0.9616942963822607,
+            "total_r": -8.23256742495412,
+            "mean_r": -0.019601351011795522,
+            "max_realized_dd_r": 22.535766600491005,
+            "total_pips": 410.1000000000093
+          }
+        },
+        "long": {
+          "trades": 215,
+          "exit_reasons": {
+            "stop": 99,
+            "target": 113,
+            "stop_gap": 2,
+            "target_gap": 1
+          },
+          "gross": {
+            "wins": 114,
+            "losses": 101,
+            "breakevens": 0,
+            "win_rate": 0.5302325581395348,
+            "win_rate_including_breakevens": 0.5302325581395348,
+            "pf_r": 1.1231781421210565,
+            "total_r": 12.50229832222556,
+            "mean_r": 0.05815022475453749,
+            "max_realized_dd_r": 12.024017467248562,
+            "total_pips": 333.60000000001634
+          },
+          "net": {
+            "wins": 114,
+            "losses": 101,
+            "breakevens": 0,
+            "win_rate": 0.5302325581395348,
+            "win_rate_including_breakevens": 0.5302325581395348,
+            "pf_r": 0.9948939321694242,
+            "total_r": -0.5535010139608678,
+            "mean_r": -0.0025744233207482224,
+            "max_realized_dd_r": 16.48583086955225,
+            "total_pips": 118.60000000001611
+          }
+        },
+        "short": {
+          "trades": 205,
+          "exit_reasons": {
+            "target": 106,
+            "stop": 97,
+            "both_stop_first": 1,
+            "stop_gap": 1
+          },
+          "gross": {
+            "wins": 106,
+            "losses": 99,
+            "breakevens": 0,
+            "win_rate": 0.5170731707317073,
+            "win_rate_including_breakevens": 0.5170731707317073,
+            "pf_r": 1.0666413518131805,
+            "total_r": 6.622641509434374,
+            "mean_r": 0.03230556833870426,
+            "max_realized_dd_r": 9.999999999999625,
+            "total_pips": 496.49999999999295
+          },
+          "net": {
+            "wins": 106,
+            "losses": 99,
+            "breakevens": 0,
+            "win_rate": 0.5170731707317073,
+            "win_rate_including_breakevens": 0.5170731707317073,
+            "pf_r": 0.9279075280517891,
+            "total_r": -7.679066410993254,
+            "mean_r": -0.03745886054143051,
+            "max_realized_dd_r": 17.682197000608536,
+            "total_pips": 291.4999999999929
+          }
+        }
+      }
+    },
+    {
+      "symbol": "AUDUSD",
+      "timeframe": "M15",
+      "bars": 273797,
+      "partial_bars": 8475,
+      "signal_counts_including_warmup": {
+        "short_sweep_bars": 6778,
+        "long_sweep_bars": 6712,
+        "short_break_bars": 3881,
+        "long_break_bars": 3944
+      },
+      "execution_counts_including_warmup": {
+        "warmup_entries": 1388,
+        "long_open_skip": 70,
+        "short_open_skip": 69,
+        "short_invalid_gap": 13,
+        "long_invalid_gap": 3
+      },
+      "metrics": {
+        "all": {
+          "trades": 6282,
+          "exit_reasons": {
+            "stop": 3129,
+            "target": 2945,
+            "both_stop_first": 92,
+            "stop_gap": 76,
+            "target_gap": 40
+          },
+          "gross": {
+            "wins": 2985,
+            "losses": 3297,
+            "breakevens": 0,
+            "win_rate": 0.47516714422158546,
+            "win_rate_including_breakevens": 0.47516714422158546,
+            "pf_r": 0.8985975851053076,
+            "total_r": -336.84289105360324,
+            "mean_r": -0.05362032649691233,
+            "max_realized_dd_r": 341.8428910536029,
+            "total_pips": -529.700000000035
+          },
+          "net": {
+            "wins": 2747,
+            "losses": 3482,
+            "breakevens": 53,
+            "win_rate": 0.4372811206622095,
+            "win_rate_including_breakevens": 0.44571792422795287,
+            "pf_r": 0.36539909995322073,
+            "total_r": -3291.472649926941,
+            "mean_r": -0.5239529847066127,
+            "max_realized_dd_r": 3293.3319319050393,
+            "total_pips": -6811.700000000047
+          }
+        },
+        "long": {
+          "trades": 3165,
+          "exit_reasons": {
+            "target": 1470,
+            "stop": 1592,
+            "both_stop_first": 43,
+            "stop_gap": 42,
+            "target_gap": 18
+          },
+          "gross": {
+            "wins": 1488,
+            "losses": 1677,
+            "breakevens": 0,
+            "win_rate": 0.47014218009478675,
+            "win_rate_including_breakevens": 0.47014218009478675,
+            "pf_r": 0.8817231686791157,
+            "total_r": -199.6045144976001,
+            "mean_r": -0.06306619731361772,
+            "max_realized_dd_r": 211.14022878333049,
+            "total_pips": -407.39999999997764
+          },
+          "net": {
+            "wins": 1361,
+            "losses": 1775,
+            "breakevens": 29,
+            "win_rate": 0.4300157977883096,
+            "win_rate_including_breakevens": 0.4391785150078989,
+            "pf_r": 0.3470971785469707,
+            "total_r": -1734.102038792213,
+            "mean_r": -0.5478995383229741,
+            "max_realized_dd_r": 1739.2325483725267,
+            "total_pips": -3572.399999999975
+          }
+        },
+        "short": {
+          "trades": 3117,
+          "exit_reasons": {
+            "stop": 1537,
+            "target": 1475,
+            "both_stop_first": 49,
+            "target_gap": 22,
+            "stop_gap": 34
+          },
+          "gross": {
+            "wins": 1497,
+            "losses": 1620,
+            "breakevens": 0,
+            "win_rate": 0.480269489894129,
+            "win_rate_including_breakevens": 0.480269489894129,
+            "pf_r": 0.916023036464716,
+            "total_r": -137.23837655600315,
+            "mean_r": -0.04402899472441551,
+            "max_realized_dd_r": 143.2383765560038,
+            "total_pips": -122.30000000005498
+          },
+          "net": {
+            "wins": 1386,
+            "losses": 1707,
+            "breakevens": 24,
+            "win_rate": 0.44465832531280075,
+            "win_rate_including_breakevens": 0.4523580365736285,
+            "pf_r": 0.38460714922797895,
+            "total_r": -1557.3706111347278,
+            "mean_r": -0.49963766799317544,
+            "max_realized_dd_r": 1557.9358285260214,
+            "total_pips": -3239.3000000000543
+          }
+        }
+      }
+    },
+    {
+      "symbol": "AUDUSD",
+      "timeframe": "H4",
+      "bars": 17700,
+      "partial_bars": 3612,
+      "signal_counts_including_warmup": {
+        "short_sweep_bars": 463,
+        "long_sweep_bars": 441,
+        "short_break_bars": 263,
+        "long_break_bars": 251
+      },
+      "execution_counts_including_warmup": {
+        "warmup_entries": 87,
+        "short_open_skip": 2,
+        "long_open_skip": 1,
+        "short_invalid_gap": 1
+      },
+      "metrics": {
+        "all": {
+          "trades": 423,
+          "exit_reasons": {
+            "stop": 206,
+            "target": 207,
+            "target_gap": 5,
+            "stop_gap": 4,
+            "period_end": 1
+          },
+          "gross": {
+            "wins": 212,
+            "losses": 211,
+            "breakevens": 0,
+            "win_rate": 0.5011820330969267,
+            "win_rate_including_breakevens": 0.5011820330969267,
+            "pf_r": 1.0057718636087232,
+            "total_r": 1.2166129609739773,
+            "mean_r": 0.0028761535720424995,
+            "max_realized_dd_r": 25.035087719296193,
+            "total_pips": -19.700000000014292
+          },
+          "net": {
+            "wins": 212,
+            "losses": 211,
+            "breakevens": 0,
+            "win_rate": 0.5011820330969267,
+            "win_rate_including_breakevens": 0.5011820330969267,
+            "pf_r": 0.8083390588399024,
+            "total_r": -44.68366172069179,
+            "mean_r": -0.10563513409146995,
+            "max_realized_dd_r": 52.118325396028006,
+            "total_pips": -442.70000000001465
+          }
+        },
+        "long": {
+          "trades": 204,
+          "exit_reasons": {
+            "stop": 105,
+            "target": 96,
+            "stop_gap": 2,
+            "target_gap": 1
+          },
+          "gross": {
+            "wins": 97,
+            "losses": 107,
+            "breakevens": 0,
+            "win_rate": 0.47549019607843135,
+            "win_rate_including_breakevens": 0.47549019607843135,
+            "pf_r": 0.903165735567963,
+            "total_r": -10.40000000000077,
+            "mean_r": -0.05098039215686652,
+            "max_realized_dd_r": 18.999999999999858,
+            "total_pips": -392.6000000000051
+          },
+          "net": {
+            "wins": 97,
+            "losses": 107,
+            "breakevens": 0,
+            "win_rate": 0.47549019607843135,
+            "win_rate_including_breakevens": 0.47549019607843135,
+            "pf_r": 0.7259092502165105,
+            "total_r": -32.7693463032872,
+            "mean_r": -0.1606340505063098,
+            "max_realized_dd_r": 37.670290912944054,
+            "total_pips": -596.600000000005
+          }
+        },
+        "short": {
+          "trades": 219,
+          "exit_reasons": {
+            "stop": 101,
+            "target": 111,
+            "target_gap": 4,
+            "stop_gap": 2,
+            "period_end": 1
+          },
+          "gross": {
+            "wins": 115,
+            "losses": 104,
+            "breakevens": 0,
+            "win_rate": 0.5251141552511416,
+            "win_rate_including_breakevens": 0.5251141552511416,
+            "pf_r": 1.1123644068324983,
+            "total_r": 11.616612960974749,
+            "mean_r": 0.05304389479897145,
+            "max_realized_dd_r": 13.035087719296381,
+            "total_pips": 372.89999999999065
+          },
+          "net": {
+            "wins": 115,
+            "losses": 104,
+            "breakevens": 0,
+            "win_rate": 0.5251141552511416,
+            "win_rate_including_breakevens": 0.5251141552511416,
+            "pf_r": 0.8951043551673845,
+            "total_r": -11.914315417404586,
+            "mean_r": -0.05440326674613966,
+            "max_realized_dd_r": 25.60012710878629,
+            "total_pips": 153.89999999999043
+          }
+        }
+      }
+    },
+    {
+      "symbol": "USDCHF",
+      "timeframe": "M15",
+      "bars": 269784,
+      "partial_bars": 2868,
+      "signal_counts_including_warmup": {
+        "long_sweep_bars": 4684,
+        "long_break_bars": 2837,
+        "short_sweep_bars": 4737,
+        "short_break_bars": 2788
+      },
+      "execution_counts_including_warmup": {
+        "warmup_entries": 1039,
+        "short_open_skip": 66,
+        "long_open_skip": 81,
+        "long_invalid_gap": 22,
+        "short_invalid_gap": 27
+      },
+      "metrics": {
+        "all": {
+          "trades": 4390,
+          "exit_reasons": {
+            "stop_gap": 1108,
+            "target_gap": 941,
+            "stop": 1181,
+            "target": 1146,
+            "both_stop_first": 14
+          },
+          "gross": {
+            "wins": 2087,
+            "losses": 2303,
+            "breakevens": 0,
+            "win_rate": 0.47539863325740317,
+            "win_rate_including_breakevens": 0.47539863325740317,
+            "pf_r": 0.8660085427314699,
+            "total_r": -322.9069432010573,
+            "mean_r": -0.0735551123464823,
+            "max_realized_dd_r": 327.4736098677198,
+            "total_pips": -1520.9999999999961
+          },
+          "net": {
+            "wins": 1958,
+            "losses": 2340,
+            "breakevens": 92,
+            "win_rate": 0.4460136674259681,
+            "win_rate_including_breakevens": 0.46697038724373574,
+            "pf_r": 0.45611276795802147,
+            "total_r": -1735.6349432457052,
+            "mean_r": -0.39536103490790553,
+            "max_realized_dd_r": 1735.6349432456836,
+            "total_pips": -5911.00000000001
+          }
+        },
+        "long": {
+          "trades": 2195,
+          "exit_reasons": {
+            "stop_gap": 565,
+            "target_gap": 467,
+            "stop": 614,
+            "target": 542,
+            "both_stop_first": 7
+          },
+          "gross": {
+            "wins": 1009,
+            "losses": 1186,
+            "breakevens": 0,
+            "win_rate": 0.4596810933940774,
+            "win_rate_including_breakevens": 0.4596810933940774,
+            "pf_r": 0.8146564950038163,
+            "total_r": -229.5588357646038,
+            "mean_r": -0.1045826131046031,
+            "max_realized_dd_r": 230.5588357646053,
+            "total_pips": -878.899999999995
+          },
+          "net": {
+            "wins": 948,
+            "losses": 1206,
+            "breakevens": 41,
+            "win_rate": 0.4318906605922551,
+            "win_rate_including_breakevens": 0.45056947608200454,
+            "pf_r": 0.42692194455940496,
+            "total_r": -940.8772040566485,
+            "mean_r": -0.4286456510508649,
+            "max_realized_dd_r": 940.8772040566444,
+            "total_pips": -3073.899999999996
+          }
+        },
+        "short": {
+          "trades": 2195,
+          "exit_reasons": {
+            "target_gap": 474,
+            "stop_gap": 543,
+            "target": 604,
+            "stop": 567,
+            "both_stop_first": 7
+          },
+          "gross": {
+            "wins": 1078,
+            "losses": 1117,
+            "breakevens": 0,
+            "win_rate": 0.4911161731207289,
+            "win_rate_including_breakevens": 0.4911161731207289,
+            "pf_r": 0.9203071172063867,
+            "total_r": -93.3481074364535,
+            "mean_r": -0.042527611588361505,
+            "max_realized_dd_r": 112.16441715012425,
+            "total_pips": -642.1000000000059
+          },
+          "net": {
+            "wins": 1010,
+            "losses": 1134,
+            "breakevens": 51,
+            "win_rate": 0.4601366742596811,
+            "win_rate_including_breakevens": 0.483371298405467,
+            "pf_r": 0.4870449164125898,
+            "total_r": -794.7577391890568,
+            "mean_r": -0.3620764187649462,
+            "max_realized_dd_r": 797.8458344271498,
+            "total_pips": -2837.099999999999
+          }
+        }
+      }
+    },
+    {
+      "symbol": "USDCHF",
+      "timeframe": "H4",
+      "bars": 17513,
+      "partial_bars": 2307,
+      "signal_counts_including_warmup": {
+        "long_sweep_bars": 447,
+        "long_break_bars": 242,
+        "short_sweep_bars": 411,
+        "short_break_bars": 227
+      },
+      "execution_counts_including_warmup": {
+        "warmup_entries": 88,
+        "short_open_skip": 3,
+        "long_invalid_gap": 3,
+        "short_invalid_gap": 3,
+        "long_open_skip": 1
+      },
+      "metrics": {
+        "all": {
+          "trades": 371,
+          "exit_reasons": {
+            "stop_gap": 87,
+            "target_gap": 82,
+            "target": 93,
+            "stop": 109
+          },
+          "gross": {
+            "wins": 175,
+            "losses": 196,
+            "breakevens": 0,
+            "win_rate": 0.4716981132075472,
+            "win_rate_including_breakevens": 0.4716981132075472,
+            "pf_r": 0.8795118316110205,
+            "total_r": -23.974014572889427,
+            "mean_r": -0.06461998537166962,
+            "max_realized_dd_r": 37.18764558455039,
+            "total_pips": -502.3000000000013
+          },
+          "net": {
+            "wins": 173,
+            "losses": 196,
+            "breakevens": 2,
+            "win_rate": 0.46630727762803237,
+            "win_rate_including_breakevens": 0.4716981132075472,
+            "pf_r": 0.7178393135812962,
+            "total_r": -61.73049259995331,
+            "mean_r": -0.16638946792440246,
+            "max_realized_dd_r": 63.49894693937705,
+            "total_pips": -873.3000000000009
+          }
+        },
+        "long": {
+          "trades": 186,
+          "exit_reasons": {
+            "stop_gap": 40,
+            "target_gap": 43,
+            "target": 43,
+            "stop": 60
+          },
+          "gross": {
+            "wins": 86,
+            "losses": 100,
+            "breakevens": 0,
+            "win_rate": 0.46236559139784944,
+            "win_rate_including_breakevens": 0.46236559139784944,
+            "pf_r": 0.8500198561531994,
+            "total_r": -15.174107142857334,
+            "mean_r": -0.08158122119815771,
+            "max_realized_dd_r": 19.000000000000096,
+            "total_pips": -253.5999999999983
+          },
+          "net": {
+            "wins": 86,
+            "losses": 100,
+            "breakevens": 0,
+            "win_rate": 0.46236559139784944,
+            "win_rate_including_breakevens": 0.46236559139784944,
+            "pf_r": 0.6976167498956511,
+            "total_r": -33.91623299689025,
+            "mean_r": -0.18234533869295835,
+            "max_realized_dd_r": 34.2019472826047,
+            "total_pips": -439.59999999999843
+          }
+        },
+        "short": {
+          "trades": 185,
+          "exit_reasons": {
+            "stop_gap": 47,
+            "target_gap": 39,
+            "stop": 49,
+            "target": 50
+          },
+          "gross": {
+            "wins": 89,
+            "losses": 96,
+            "breakevens": 0,
+            "win_rate": 0.4810810810810811,
+            "win_rate_including_breakevens": 0.4810810810810811,
+            "pf_r": 0.9100213112540235,
+            "total_r": -8.799907430032095,
+            "mean_r": -0.047567067189362676,
+            "max_realized_dd_r": 25.292908742445192,
+            "total_pips": -248.70000000000266
+          },
+          "net": {
+            "wins": 87,
+            "losses": 96,
+            "breakevens": 2,
+            "win_rate": 0.4702702702702703,
+            "win_rate_including_breakevens": 0.4810810810810811,
+            "pf_r": 0.7391142805497365,
+            "total_r": -27.814259603063057,
+            "mean_r": -0.15034734920574624,
+            "max_realized_dd_r": 35.16675374515738,
+            "total_pips": -433.70000000000283
+          }
+        }
+      }
+    }
+  ],
+  "by_timeframe": {
+    "M15": {
+      "all": {
+        "trades": 28853,
+        "exit_reasons": {
+          "stop": 13437,
+          "stop_gap": 1335,
+          "target": 12672,
+          "both_stop_first": 338,
+          "target_gap": 1071
+        },
+        "gross": {
+          "wins": 13743,
+          "losses": 15110,
+          "breakevens": 0,
+          "win_rate": 0.4763109555332201,
+          "win_rate_including_breakevens": 0.4763109555332201,
+          "pf_r": 0.8981106338307945,
+          "total_r": -1559.123683115431,
+          "mean_r": -0.05403679628168409,
+          "max_realized_dd_r": 1562.4427307344763,
+          "total_pips": -6390.199999999945
+        },
+        "net": {
+          "wins": 12833,
+          "losses": 15780,
+          "breakevens": 240,
+          "win_rate": 0.44477177416559804,
+          "win_rate_including_breakevens": 0.4530898000207951,
+          "pf_r": 0.42599899194676283,
+          "total_r": -12653.177279145517,
+          "mean_r": -0.4385393989930169,
+          "max_realized_dd_r": 12653.177279145062,
+          "total_pips": -35243.199999999946
+        }
+      },
+      "long": {
+        "trades": 14649,
+        "exit_reasons": {
+          "stop_gap": 679,
+          "target": 6371,
+          "stop": 6897,
+          "target_gap": 539,
+          "both_stop_first": 163
+        },
+        "gross": {
+          "wins": 6910,
+          "losses": 7739,
+          "breakevens": 0,
+          "win_rate": 0.4717045532118233,
+          "win_rate_including_breakevens": 0.4717045532118233,
+          "pf_r": 0.880513444231204,
+          "total_r": -937.6939168524368,
+          "mean_r": -0.06401078004317269,
+          "max_realized_dd_r": 947.4556384641653,
+          "total_pips": -3329.599999999858
+        },
+        "net": {
+          "wins": 6441,
+          "losses": 8097,
+          "breakevens": 111,
+          "win_rate": 0.4396887159533074,
+          "win_rate_including_breakevens": 0.4472660249846406,
+          "pf_r": 0.4100287922668959,
+          "total_r": -6735.458488511418,
+          "mean_r": -0.4597896435600668,
+          "max_realized_dd_r": 6735.959908539255,
+          "total_pips": -17978.599999999864
+        }
+      },
+      "short": {
+        "trades": 14204,
+        "exit_reasons": {
+          "stop": 6540,
+          "target": 6301,
+          "both_stop_first": 175,
+          "target_gap": 532,
+          "stop_gap": 656
+        },
+        "gross": {
+          "wins": 6833,
+          "losses": 7371,
+          "breakevens": 0,
+          "win_rate": 0.4810616727682343,
+          "win_rate_including_breakevens": 0.4810616727682343,
+          "pf_r": 0.9166361766428557,
+          "total_r": -621.429766262994,
+          "mean_r": -0.043750335557800196,
+          "max_realized_dd_r": 623.4297662629955,
+          "total_pips": -3060.600000000023
+        },
+        "net": {
+          "wins": 6392,
+          "losses": 7683,
+          "breakevens": 129,
+          "win_rate": 0.45001408054069275,
+          "win_rate_including_breakevens": 0.45909602928752463,
+          "pf_r": 0.443155400554349,
+          "total_r": -5917.718790634097,
+          "mean_r": -0.41662340119924646,
+          "max_realized_dd_r": 5917.718790634065,
+          "total_pips": -17264.60000000012
+        }
+      },
+      "by_phase": {
+        "2017-2019": {
+          "all": {
+            "trades": 9351,
+            "exit_reasons": {
+              "stop": 4318,
+              "stop_gap": 512,
+              "target": 3974,
+              "both_stop_first": 94,
+              "target_gap": 453
+            },
+            "gross": {
+              "wins": 4427,
+              "losses": 4924,
+              "breakevens": 0,
+              "win_rate": 0.47342530210672656,
+              "win_rate_including_breakevens": 0.47342530210672656,
+              "pf_r": 0.8857481128204108,
+              "total_r": -571.0349220316157,
+              "mean_r": -0.0610667224929543,
+              "max_realized_dd_r": 590.3539696506829,
+              "total_pips": -1548.59999999988
+            },
+            "net": {
+              "wins": 4127,
+              "losses": 5135,
+              "breakevens": 89,
+              "win_rate": 0.4413431718532777,
+              "win_rate_including_breakevens": 0.45086087049513424,
+              "pf_r": 0.4127958430757511,
+              "total_r": -4269.8122744198145,
+              "mean_r": -0.4566155784857036,
+              "max_realized_dd_r": 4269.812274419812,
+              "total_pips": -10899.599999999848
+            }
+          },
+          "long": {
+            "trades": 4736,
+            "exit_reasons": {
+              "stop_gap": 269,
+              "target": 1998,
+              "stop": 2194,
+              "target_gap": 233,
+              "both_stop_first": 42
+            },
+            "gross": {
+              "wins": 2231,
+              "losses": 2505,
+              "breakevens": 0,
+              "win_rate": 0.47107263513513514,
+              "win_rate_including_breakevens": 0.47107263513513514,
+              "pf_r": 0.876455022102439,
+              "total_r": -314.481449405453,
+              "mean_r": -0.06640233306702978,
+              "max_realized_dd_r": 334.8173468413507,
+              "total_pips": -607.0999999998651
+            },
+            "net": {
+              "wins": 2084,
+              "losses": 2611,
+              "breakevens": 41,
+              "win_rate": 0.44003378378378377,
+              "win_rate_including_breakevens": 0.4486908783783784,
+              "pf_r": 0.4033529987946122,
+              "total_r": -2231.584848602735,
+              "mean_r": -0.47119612512726666,
+              "max_realized_dd_r": 2231.685581203457,
+              "total_pips": -5343.099999999871
+            }
+          },
+          "short": {
+            "trades": 4615,
+            "exit_reasons": {
+              "stop": 2124,
+              "target": 1976,
+              "both_stop_first": 52,
+              "target_gap": 220,
+              "stop_gap": 243
+            },
+            "gross": {
+              "wins": 2196,
+              "losses": 2419,
+              "breakevens": 0,
+              "win_rate": 0.47583965330444206,
+              "win_rate_including_breakevens": 0.47583965330444206,
+              "pf_r": 0.8953933214954778,
+              "total_r": -256.55347262616266,
+              "mean_r": -0.05559121833719668,
+              "max_realized_dd_r": 267.55347262617676,
+              "total_pips": -941.5000000000048
+            },
+            "net": {
+              "wins": 2043,
+              "losses": 2524,
+              "breakevens": 48,
+              "win_rate": 0.4426868905742145,
+              "win_rate_including_breakevens": 0.4530877573131094,
+              "pf_r": 0.42279755385317397,
+              "total_r": -2038.22742581708,
+              "mean_r": -0.441652746655922,
+              "max_realized_dd_r": 2038.2274258170678,
+              "total_pips": -5556.50000000002
+            }
+          }
+        },
+        "2020-2022": {
+          "all": {
+            "trades": 9566,
+            "exit_reasons": {
+              "stop": 4408,
+              "target": 4252,
+              "both_stop_first": 104,
+              "stop_gap": 467,
+              "target_gap": 335
+            },
+            "gross": {
+              "wins": 4587,
+              "losses": 4979,
+              "breakevens": 0,
+              "win_rate": 0.4795107673008572,
+              "win_rate_including_breakevens": 0.4795107673008572,
+              "pf_r": 0.9093401342949783,
+              "total_r": -457.3171119422288,
+              "mean_r": -0.04780651389736868,
+              "max_realized_dd_r": 470.0179666430989,
+              "total_pips": -2774.5000000000036
+            },
+            "net": {
+              "wins": 4318,
+              "losses": 5159,
+              "breakevens": 89,
+              "win_rate": 0.451390340790299,
+              "win_rate_including_breakevens": 0.4606941250261342,
+              "pf_r": 0.4589573344322396,
+              "total_r": -3790.146484606081,
+              "mean_r": -0.3962101698312859,
+              "max_realized_dd_r": 3792.621914215855,
+              "total_pips": -12340.500000000058
+            }
+          },
+          "long": {
+            "trades": 4822,
+            "exit_reasons": {
+              "stop": 2265,
+              "target": 2111,
+              "both_stop_first": 50,
+              "stop_gap": 233,
+              "target_gap": 163
+            },
+            "gross": {
+              "wins": 2274,
+              "losses": 2548,
+              "breakevens": 0,
+              "win_rate": 0.47158855246785564,
+              "win_rate_including_breakevens": 0.47158855246785564,
+              "pf_r": 0.8760236824488713,
+              "total_r": -321.8202335845291,
+              "mean_r": -0.06673999037422834,
+              "max_realized_dd_r": 335.82023358454643,
+              "total_pips": -1370.9999999999666
+            },
+            "net": {
+              "wins": 2148,
+              "losses": 2641,
+              "breakevens": 33,
+              "win_rate": 0.44545831605143094,
+              "win_rate_including_breakevens": 0.4523019493985898,
+              "pf_r": 0.43752103424635447,
+              "total_r": -2040.584660289338,
+              "mean_r": -0.42318221905627085,
+              "max_realized_dd_r": 2043.290334199873,
+              "total_pips": -6192.9999999999545
+            }
+          },
+          "short": {
+            "trades": 4744,
+            "exit_reasons": {
+              "stop": 2143,
+              "target": 2141,
+              "stop_gap": 234,
+              "target_gap": 172,
+              "both_stop_first": 54
+            },
+            "gross": {
+              "wins": 2313,
+              "losses": 2431,
+              "breakevens": 0,
+              "win_rate": 0.4875632377740304,
+              "win_rate_including_breakevens": 0.4875632377740304,
+              "pf_r": 0.9446612002835862,
+              "total_r": -135.49687835769973,
+              "mean_r": -0.028561736584675323,
+              "max_realized_dd_r": 167.78106639188724,
+              "total_pips": -1403.500000000038
+            },
+            "net": {
+              "wins": 2170,
+              "losses": 2518,
+              "breakevens": 56,
+              "win_rate": 0.4574198988195616,
+              "win_rate_including_breakevens": 0.46922428330522764,
+              "pf_r": 0.4819830348964297,
+              "total_r": -1749.5618243167432,
+              "mean_r": -0.36879465099425446,
+              "max_realized_dd_r": 1750.5589341433222,
+              "total_pips": -6147.500000000031
+            }
+          }
+        },
+        "2023-2025": {
+          "all": {
+            "trades": 9936,
+            "exit_reasons": {
+              "target": 4446,
+              "stop": 4711,
+              "stop_gap": 356,
+              "target_gap": 283,
+              "both_stop_first": 140
+            },
+            "gross": {
+              "wins": 4729,
+              "losses": 5207,
+              "breakevens": 0,
+              "win_rate": 0.4759460547504026,
+              "win_rate_including_breakevens": 0.4759460547504026,
+              "pf_r": 0.8990884615250906,
+              "total_r": -530.7716491415864,
+              "mean_r": -0.053419046813766746,
+              "max_realized_dd_r": 553.7716491415845,
+              "total_pips": -2067.1000000000154
+            },
+            "net": {
+              "wins": 4388,
+              "losses": 5486,
+              "breakevens": 62,
+              "win_rate": 0.4416264090177134,
+              "win_rate_including_breakevens": 0.44786634460547503,
+              "pf_r": 0.40863400868747235,
+              "total_r": -4593.21852011962,
+              "mean_r": -0.4622804468719424,
+              "max_realized_dd_r": 4602.297156629255,
+              "total_pips": -12003.10000000007
+            }
+          },
+          "long": {
+            "trades": 5091,
+            "exit_reasons": {
+              "target": 2262,
+              "target_gap": 143,
+              "stop": 2438,
+              "stop_gap": 177,
+              "both_stop_first": 71
+            },
+            "gross": {
+              "wins": 2405,
+              "losses": 2686,
+              "breakevens": 0,
+              "win_rate": 0.4724022785307405,
+              "win_rate_including_breakevens": 0.4724022785307405,
+              "pf_r": 0.888636898195527,
+              "total_r": -301.39223386245476,
+              "mean_r": -0.059200988776754025,
+              "max_realized_dd_r": 323.8180580382864,
+              "total_pips": -1351.5000000000266
+            },
+            "net": {
+              "wins": 2209,
+              "losses": 2845,
+              "breakevens": 37,
+              "win_rate": 0.43390296601846395,
+              "win_rate_including_breakevens": 0.4411706933804754,
+              "pf_r": 0.3915607300802623,
+              "total_r": -2463.288979619346,
+              "mean_r": -0.4838516950735309,
+              "max_realized_dd_r": 2475.182008826249,
+              "total_pips": -6442.500000000029
+            }
+          },
+          "short": {
+            "trades": 4845,
+            "exit_reasons": {
+              "target": 2184,
+              "stop": 2273,
+              "stop_gap": 179,
+              "target_gap": 140,
+              "both_stop_first": 69
+            },
+            "gross": {
+              "wins": 2324,
+              "losses": 2521,
+              "breakevens": 0,
+              "win_rate": 0.47966976264189887,
+              "win_rate_including_breakevens": 0.47966976264189887,
+              "pf_r": 0.9101663411608358,
+              "total_r": -229.37941527913162,
+              "mean_r": -0.047343532565352245,
+              "max_realized_dd_r": 235.31044976189003,
+              "total_pips": -715.5999999999885
+            },
+            "net": {
+              "wins": 2179,
+              "losses": 2641,
+              "breakevens": 25,
+              "win_rate": 0.4497420020639835,
+              "win_rate_including_breakevens": 0.4549019607843137,
+              "pf_r": 0.42722215278782083,
+              "total_r": -2129.929540500274,
+              "mean_r": -0.4396139402477346,
+              "max_realized_dd_r": 2131.8373448556995,
+              "total_pips": -5560.599999999968
+            }
+          }
+        }
+      },
+      "by_symbol": {
+        "USDJPY": {
+          "all": {
+            "trades": 5863,
+            "exit_reasons": {
+              "target": 2836,
+              "both_stop_first": 61,
+              "stop": 2897,
+              "target_gap": 22,
+              "stop_gap": 47
+            },
+            "gross": {
+              "wins": 2858,
+              "losses": 3005,
+              "breakevens": 0,
+              "win_rate": 0.4874637557564387,
+              "win_rate_including_breakevens": 0.4874637557564387,
+              "pf_r": 0.9494452579234527,
+              "total_r": -152.178813521886,
+              "mean_r": -0.02595579285722088,
+              "max_realized_dd_r": 169.8606317037058,
+              "total_pips": -530.1999999999326
+            },
+            "net": {
+              "wins": 2713,
+              "losses": 3123,
+              "breakevens": 27,
+              "win_rate": 0.46273238956165785,
+              "win_rate_including_breakevens": 0.4673375405082722,
+              "pf_r": 0.4954369768679042,
+              "total_r": -2089.932550351049,
+              "mean_r": -0.35646129120775183,
+              "max_realized_dd_r": 2092.6022156127665,
+              "total_pips": -6393.199999999963
+            }
+          },
+          "long": {
+            "trades": 3026,
+            "exit_reasons": {
+              "target": 1452,
+              "stop": 1507,
+              "target_gap": 12,
+              "both_stop_first": 32,
+              "stop_gap": 23
+            },
+            "gross": {
+              "wins": 1464,
+              "losses": 1562,
+              "breakevens": 0,
+              "win_rate": 0.4838070059484468,
+              "win_rate_including_breakevens": 0.4838070059484468,
+              "pf_r": 0.9354446365993192,
+              "total_r": -101.0311549405733,
+              "mean_r": -0.03338769165253579,
+              "max_realized_dd_r": 121.16881727822927,
+              "total_pips": -610.4999999999791
+            },
+            "net": {
+              "wins": 1380,
+              "losses": 1632,
+              "breakevens": 14,
+              "win_rate": 0.4560475875743556,
+              "win_rate_including_breakevens": 0.4606741573033708,
+              "pf_r": 0.46639327139756853,
+              "total_r": -1177.017009619472,
+              "mean_r": -0.3889679476601031,
+              "max_realized_dd_r": 1178.7493299314572,
+              "total_pips": -3636.4999999999864
+            }
+          },
+          "short": {
+            "trades": 2837,
+            "exit_reasons": {
+              "both_stop_first": 29,
+              "target": 1384,
+              "stop": 1390,
+              "stop_gap": 24,
+              "target_gap": 10
+            },
+            "gross": {
+              "wins": 1394,
+              "losses": 1443,
+              "breakevens": 0,
+              "win_rate": 0.4913641170250264,
+              "win_rate_including_breakevens": 0.4913641170250264,
+              "pf_r": 0.9646073131160019,
+              "total_r": -51.14765858131271,
+              "mean_r": -0.0180287834266171,
+              "max_realized_dd_r": 65.92038585404413,
+              "total_pips": 80.30000000004657
+            },
+            "net": {
+              "wins": 1333,
+              "losses": 1491,
+              "breakevens": 13,
+              "win_rate": 0.4698625308424392,
+              "win_rate_including_breakevens": 0.47444483609446597,
+              "pf_r": 0.5285229151436557,
+              "total_r": -912.9155407315768,
+              "mean_r": -0.3217890520731677,
+              "max_realized_dd_r": 914.1602893977755,
+              "total_pips": -2756.6999999999534
+            }
+          }
+        },
+        "EURUSD": {
+          "all": {
+            "trades": 6072,
+            "exit_reasons": {
+              "stop": 3106,
+              "target": 2794,
+              "both_stop_first": 82,
+              "target_gap": 36,
+              "stop_gap": 54
+            },
+            "gross": {
+              "wins": 2830,
+              "losses": 3242,
+              "breakevens": 0,
+              "win_rate": 0.4660737812911726,
+              "win_rate_including_breakevens": 0.4660737812911726,
+              "pf_r": 0.8604704865007735,
+              "total_r": -458.8983926788819,
+              "mean_r": -0.07557615162695684,
+              "max_realized_dd_r": 479.59070037118124,
+              "total_pips": -2317.6999999999584
+            },
+            "net": {
+              "wins": 2578,
+              "losses": 3453,
+              "breakevens": 41,
+              "win_rate": 0.4245718050065876,
+              "win_rate_including_breakevens": 0.43132411067193677,
+              "pf_r": 0.36874876712321875,
+              "total_r": -3125.569714032359,
+              "mean_r": -0.5147512704269366,
+              "max_realized_dd_r": 3125.5697140323555,
+              "total_pips": -8389.699999999939
+            }
+          },
+          "long": {
+            "trades": 3064,
+            "exit_reasons": {
+              "stop": 1570,
+              "target": 1409,
+              "both_stop_first": 38,
+              "target_gap": 20,
+              "stop_gap": 27
+            },
+            "gross": {
+              "wins": 1429,
+              "losses": 1635,
+              "breakevens": 0,
+              "win_rate": 0.4663838120104439,
+              "win_rate_including_breakevens": 0.4663838120104439,
+              "pf_r": 0.8546945324834847,
+              "total_r": -242.94236734820356,
+              "mean_r": -0.07928928438257296,
+              "max_realized_dd_r": 265.9423673481957,
+              "total_pips": -813.2999999999502
+            },
+            "net": {
+              "wins": 1301,
+              "losses": 1743,
+              "breakevens": 20,
+              "win_rate": 0.42460835509138384,
+              "win_rate_including_breakevens": 0.43113577023498695,
+              "pf_r": 0.36560967114454085,
+              "total_r": -1616.2767155809904,
+              "mean_r": -0.5275054554768246,
+              "max_realized_dd_r": 1616.2767155809909,
+              "total_pips": -3877.2999999999442
+            }
+          },
+          "short": {
+            "trades": 3008,
+            "exit_reasons": {
+              "stop": 1536,
+              "target": 1385,
+              "both_stop_first": 44,
+              "target_gap": 16,
+              "stop_gap": 27
+            },
+            "gross": {
+              "wins": 1401,
+              "losses": 1607,
+              "breakevens": 0,
+              "win_rate": 0.46575797872340424,
+              "win_rate_including_breakevens": 0.46575797872340424,
+              "pf_r": 0.8664428580941105,
+              "total_r": -215.9560253306783,
+              "mean_r": -0.07179389139982656,
+              "max_realized_dd_r": 227.64833302298052,
+              "total_pips": -1504.4000000000094
+            },
+            "net": {
+              "wins": 1277,
+              "losses": 1710,
+              "breakevens": 21,
+              "win_rate": 0.4245345744680851,
+              "win_rate_including_breakevens": 0.4315159574468085,
+              "pf_r": 0.3720761073333404,
+              "total_r": -1509.2929984513687,
+              "mean_r": -0.5017596404426092,
+              "max_realized_dd_r": 1509.292998451369,
+              "total_pips": -4512.40000000001
+            }
+          }
+        },
+        "GBPUSD": {
+          "all": {
+            "trades": 6246,
+            "exit_reasons": {
+              "target": 2951,
+              "stop": 3124,
+              "both_stop_first": 89,
+              "stop_gap": 50,
+              "target_gap": 32
+            },
+            "gross": {
+              "wins": 2983,
+              "losses": 3263,
+              "breakevens": 0,
+              "win_rate": 0.4775856548190842,
+              "win_rate_including_breakevens": 0.4775856548190842,
+              "pf_r": 0.9118708346713632,
+              "total_r": -288.2966426600025,
+              "mean_r": -0.04615700330771733,
+              "max_realized_dd_r": 293.24579520237353,
+              "total_pips": -1491.5999999999692
+            },
+            "net": {
+              "wins": 2837,
+              "losses": 3382,
+              "breakevens": 27,
+              "win_rate": 0.4542106948447006,
+              "win_rate_including_breakevens": 0.4585334614153058,
+              "pf_r": 0.4728146516027219,
+              "total_r": -2410.5674215894614,
+              "mean_r": -0.3859377876384024,
+              "max_realized_dd_r": 2413.272188417972,
+              "total_pips": -7737.599999999978
+            }
+          },
+          "long": {
+            "trades": 3199,
+            "exit_reasons": {
+              "target": 1498,
+              "stop": 1614,
+              "stop_gap": 22,
+              "target_gap": 22,
+              "both_stop_first": 43
+            },
+            "gross": {
+              "wins": 1520,
+              "losses": 1679,
+              "breakevens": 0,
+              "win_rate": 0.4751484839012191,
+              "win_rate_including_breakevens": 0.4751484839012191,
+              "pf_r": 0.9023143532846701,
+              "total_r": -164.55704430145607,
+              "mean_r": -0.05144015139151487,
+              "max_realized_dd_r": 201.3735794612065,
+              "total_pips": -619.4999999999596
+            },
+            "net": {
+              "wins": 1451,
+              "losses": 1741,
+              "breakevens": 7,
+              "win_rate": 0.453579243513598,
+              "win_rate_including_breakevens": 0.4557674273210378,
+              "pf_r": 0.4642521139060105,
+              "total_r": -1267.1855204620945,
+              "mean_r": -0.3961192624139089,
+              "max_realized_dd_r": 1271.7068314891608,
+              "total_pips": -3818.499999999958
+            }
+          },
+          "short": {
+            "trades": 3047,
+            "exit_reasons": {
+              "target": 1453,
+              "stop": 1510,
+              "both_stop_first": 46,
+              "stop_gap": 28,
+              "target_gap": 10
+            },
+            "gross": {
+              "wins": 1463,
+              "losses": 1584,
+              "breakevens": 0,
+              "win_rate": 0.48014440433212996,
+              "win_rate_including_breakevens": 0.48014440433212996,
+              "pf_r": 0.9220164427190503,
+              "total_r": -123.73959835854636,
+              "mean_r": -0.04061030467953605,
+              "max_realized_dd_r": 124.73959835854633,
+              "total_pips": -872.1000000000079
+            },
+            "net": {
+              "wins": 1386,
+              "losses": 1641,
+              "breakevens": 20,
+              "win_rate": 0.4548736462093863,
+              "win_rate_including_breakevens": 0.461437479488021,
+              "pf_r": 0.48199013490912396,
+              "total_r": -1143.3819011273667,
+              "mean_r": -0.3752484086404223,
+              "max_realized_dd_r": 1144.332149883586,
+              "total_pips": -3919.100000000015
+            }
+          }
+        },
+        "AUDUSD": {
+          "all": {
+            "trades": 6282,
+            "exit_reasons": {
+              "stop": 3129,
+              "target": 2945,
+              "both_stop_first": 92,
+              "stop_gap": 76,
+              "target_gap": 40
+            },
+            "gross": {
+              "wins": 2985,
+              "losses": 3297,
+              "breakevens": 0,
+              "win_rate": 0.47516714422158546,
+              "win_rate_including_breakevens": 0.47516714422158546,
+              "pf_r": 0.8985975851053076,
+              "total_r": -336.84289105360324,
+              "mean_r": -0.05362032649691233,
+              "max_realized_dd_r": 341.8428910536029,
+              "total_pips": -529.700000000035
+            },
+            "net": {
+              "wins": 2747,
+              "losses": 3482,
+              "breakevens": 53,
+              "win_rate": 0.4372811206622095,
+              "win_rate_including_breakevens": 0.44571792422795287,
+              "pf_r": 0.36539909995322073,
+              "total_r": -3291.472649926941,
+              "mean_r": -0.5239529847066127,
+              "max_realized_dd_r": 3293.3319319050393,
+              "total_pips": -6811.700000000047
+            }
+          },
+          "long": {
+            "trades": 3165,
+            "exit_reasons": {
+              "target": 1470,
+              "stop": 1592,
+              "both_stop_first": 43,
+              "stop_gap": 42,
+              "target_gap": 18
+            },
+            "gross": {
+              "wins": 1488,
+              "losses": 1677,
+              "breakevens": 0,
+              "win_rate": 0.47014218009478675,
+              "win_rate_including_breakevens": 0.47014218009478675,
+              "pf_r": 0.8817231686791157,
+              "total_r": -199.6045144976001,
+              "mean_r": -0.06306619731361772,
+              "max_realized_dd_r": 211.14022878333049,
+              "total_pips": -407.39999999997764
+            },
+            "net": {
+              "wins": 1361,
+              "losses": 1775,
+              "breakevens": 29,
+              "win_rate": 0.4300157977883096,
+              "win_rate_including_breakevens": 0.4391785150078989,
+              "pf_r": 0.3470971785469707,
+              "total_r": -1734.102038792213,
+              "mean_r": -0.5478995383229741,
+              "max_realized_dd_r": 1739.2325483725267,
+              "total_pips": -3572.399999999975
+            }
+          },
+          "short": {
+            "trades": 3117,
+            "exit_reasons": {
+              "stop": 1537,
+              "target": 1475,
+              "both_stop_first": 49,
+              "target_gap": 22,
+              "stop_gap": 34
+            },
+            "gross": {
+              "wins": 1497,
+              "losses": 1620,
+              "breakevens": 0,
+              "win_rate": 0.480269489894129,
+              "win_rate_including_breakevens": 0.480269489894129,
+              "pf_r": 0.916023036464716,
+              "total_r": -137.23837655600315,
+              "mean_r": -0.04402899472441551,
+              "max_realized_dd_r": 143.2383765560038,
+              "total_pips": -122.30000000005498
+            },
+            "net": {
+              "wins": 1386,
+              "losses": 1707,
+              "breakevens": 24,
+              "win_rate": 0.44465832531280075,
+              "win_rate_including_breakevens": 0.4523580365736285,
+              "pf_r": 0.38460714922797895,
+              "total_r": -1557.3706111347278,
+              "mean_r": -0.49963766799317544,
+              "max_realized_dd_r": 1557.9358285260214,
+              "total_pips": -3239.3000000000543
+            }
+          }
+        },
+        "USDCHF": {
+          "all": {
+            "trades": 4390,
+            "exit_reasons": {
+              "stop_gap": 1108,
+              "target_gap": 941,
+              "stop": 1181,
+              "target": 1146,
+              "both_stop_first": 14
+            },
+            "gross": {
+              "wins": 2087,
+              "losses": 2303,
+              "breakevens": 0,
+              "win_rate": 0.47539863325740317,
+              "win_rate_including_breakevens": 0.47539863325740317,
+              "pf_r": 0.8660085427314699,
+              "total_r": -322.9069432010573,
+              "mean_r": -0.0735551123464823,
+              "max_realized_dd_r": 327.4736098677198,
+              "total_pips": -1520.9999999999961
+            },
+            "net": {
+              "wins": 1958,
+              "losses": 2340,
+              "breakevens": 92,
+              "win_rate": 0.4460136674259681,
+              "win_rate_including_breakevens": 0.46697038724373574,
+              "pf_r": 0.45611276795802147,
+              "total_r": -1735.6349432457055,
+              "mean_r": -0.3953610349079056,
+              "max_realized_dd_r": 1735.6349432456836,
+              "total_pips": -5911.00000000001
+            }
+          },
+          "long": {
+            "trades": 2195,
+            "exit_reasons": {
+              "stop_gap": 565,
+              "target_gap": 467,
+              "stop": 614,
+              "target": 542,
+              "both_stop_first": 7
+            },
+            "gross": {
+              "wins": 1009,
+              "losses": 1186,
+              "breakevens": 0,
+              "win_rate": 0.4596810933940774,
+              "win_rate_including_breakevens": 0.4596810933940774,
+              "pf_r": 0.8146564950038163,
+              "total_r": -229.5588357646038,
+              "mean_r": -0.1045826131046031,
+              "max_realized_dd_r": 230.5588357646053,
+              "total_pips": -878.899999999995
+            },
+            "net": {
+              "wins": 948,
+              "losses": 1206,
+              "breakevens": 41,
+              "win_rate": 0.4318906605922551,
+              "win_rate_including_breakevens": 0.45056947608200454,
+              "pf_r": 0.42692194455940496,
+              "total_r": -940.8772040566485,
+              "mean_r": -0.4286456510508649,
+              "max_realized_dd_r": 940.8772040566444,
+              "total_pips": -3073.899999999996
+            }
+          },
+          "short": {
+            "trades": 2195,
+            "exit_reasons": {
+              "target_gap": 474,
+              "stop_gap": 543,
+              "target": 604,
+              "stop": 567,
+              "both_stop_first": 7
+            },
+            "gross": {
+              "wins": 1078,
+              "losses": 1117,
+              "breakevens": 0,
+              "win_rate": 0.4911161731207289,
+              "win_rate_including_breakevens": 0.4911161731207289,
+              "pf_r": 0.9203071172063867,
+              "total_r": -93.3481074364535,
+              "mean_r": -0.042527611588361505,
+              "max_realized_dd_r": 112.16441715012425,
+              "total_pips": -642.1000000000059
+            },
+            "net": {
+              "wins": 1010,
+              "losses": 1134,
+              "breakevens": 51,
+              "win_rate": 0.4601366742596811,
+              "win_rate_including_breakevens": 0.483371298405467,
+              "pf_r": 0.4870449164125898,
+              "total_r": -794.7577391890568,
+              "mean_r": -0.3620764187649462,
+              "max_realized_dd_r": 797.8458344271498,
+              "total_pips": -2837.099999999999
+            }
+          }
+        }
+      },
+      "excluding_usdchf": {
+        "all": {
+          "trades": 24463,
+          "exit_reasons": {
+            "stop": 12256,
+            "target": 11526,
+            "both_stop_first": 324,
+            "stop_gap": 227,
+            "target_gap": 130
+          },
+          "gross": {
+            "wins": 11656,
+            "losses": 12807,
+            "breakevens": 0,
+            "win_rate": 0.4764746760413686,
+            "win_rate_including_breakevens": 0.4764746760413686,
+            "pf_r": 0.9041113902400489,
+            "total_r": -1236.2167399143736,
+            "mean_r": -0.05053414298795625,
+            "max_realized_dd_r": 1242.2167399143702,
+            "total_pips": -4869.199999999899
+          },
+          "net": {
+            "wins": 10875,
+            "losses": 13440,
+            "breakevens": 148,
+            "win_rate": 0.44454891059968116,
+            "win_rate_including_breakevens": 0.4505988635899113,
+            "pf_r": 0.4209016688098437,
+            "total_r": -10917.542335899809,
+            "mean_r": -0.4462879587908191,
+            "max_realized_dd_r": 10917.542335899552,
+            "total_pips": -29332.1999999999
+          }
+        },
+        "long": {
+          "trades": 12454,
+          "exit_reasons": {
+            "target": 5829,
+            "stop": 6283,
+            "both_stop_first": 156,
+            "stop_gap": 114,
+            "target_gap": 72
+          },
+          "gross": {
+            "wins": 5901,
+            "losses": 6553,
+            "breakevens": 0,
+            "win_rate": 0.47382367110968365,
+            "win_rate_including_breakevens": 0.47382367110968365,
+            "pf_r": 0.8928551054866213,
+            "total_r": -708.1350810878331,
+            "mean_r": -0.05686005147646002,
+            "max_realized_dd_r": 728.5100578060195,
+            "total_pips": -2450.699999999878
+          },
+          "net": {
+            "wins": 5493,
+            "losses": 6891,
+            "breakevens": 70,
+            "win_rate": 0.44106311225309136,
+            "win_rate_including_breakevens": 0.446683796370644,
+            "pf_r": 0.40719138082847695,
+            "total_r": -5794.581284454769,
+            "mean_r": -0.46527872847717755,
+            "max_realized_dd_r": 5796.948663818897,
+            "total_pips": -14904.699999999875
+          }
+        },
+        "short": {
+          "trades": 12009,
+          "exit_reasons": {
+            "stop": 5973,
+            "target": 5697,
+            "both_stop_first": 168,
+            "stop_gap": 113,
+            "target_gap": 58
+          },
+          "gross": {
+            "wins": 5755,
+            "losses": 6254,
+            "breakevens": 0,
+            "win_rate": 0.47922391539678577,
+            "win_rate_including_breakevens": 0.47922391539678577,
+            "pf_r": 0.9159518071701839,
+            "total_r": -528.0816588265405,
+            "mean_r": -0.04397382453381135,
+            "max_realized_dd_r": 528.0816588265395,
+            "total_pips": -2418.5000000000255
+          },
+          "net": {
+            "wins": 5382,
+            "losses": 6549,
+            "breakevens": 78,
+            "win_rate": 0.44816387709218086,
+            "win_rate_including_breakevens": 0.45465900574569074,
+            "pf_r": 0.43566452617192714,
+            "total_r": -5122.96105144504,
+            "mean_r": -0.42659347584686813,
+            "max_realized_dd_r": 5122.961051445058,
+            "total_pips": -14427.500000000127
+          }
+        }
+      }
+    },
+    "H4": {
+      "all": {
+        "trades": 2001,
+        "exit_reasons": {
+          "target": 886,
+          "stop": 914,
+          "stop_gap": 105,
+          "target_gap": 93,
+          "both_stop_first": 2,
+          "period_end": 1
+        },
+        "gross": {
+          "wins": 979,
+          "losses": 1022,
+          "breakevens": 0,
+          "win_rate": 0.4892553723138431,
+          "win_rate_including_breakevens": 0.4892553723138431,
+          "pf_r": 0.9522082587700123,
+          "total_r": -49.13643022230789,
+          "mean_r": -0.02455593714258265,
+          "max_realized_dd_r": 58.360100599547756,
+          "total_pips": -178.9000000000366
+        },
+        "net": {
+          "wins": 976,
+          "losses": 1023,
+          "breakevens": 2,
+          "win_rate": 0.4877561219390305,
+          "win_rate_including_breakevens": 0.48875562218890556,
+          "pf_r": 0.7996917260612677,
+          "total_r": -224.88660273054654,
+          "mean_r": -0.11238710781136758,
+          "max_realized_dd_r": 225.83165767560152,
+          "total_pips": -2179.9000000000365
+        }
+      },
+      "long": {
+        "trades": 1011,
+        "exit_reasons": {
+          "target": 442,
+          "stop": 469,
+          "stop_gap": 51,
+          "target_gap": 48,
+          "both_stop_first": 1
+        },
+        "gross": {
+          "wins": 490,
+          "losses": 521,
+          "breakevens": 0,
+          "win_rate": 0.4846686449060336,
+          "win_rate_including_breakevens": 0.4846686449060336,
+          "pf_r": 0.9334582532229041,
+          "total_r": -34.92974196564401,
+          "mean_r": -0.03454969531715531,
+          "max_realized_dd_r": 43.77349196564292,
+          "total_pips": 261.49999999997374
+        },
+        "net": {
+          "wins": 489,
+          "losses": 522,
+          "breakevens": 0,
+          "win_rate": 0.4836795252225519,
+          "win_rate_including_breakevens": 0.4836795252225519,
+          "pf_r": 0.7864799541625344,
+          "total_r": -122.97769775172702,
+          "mean_r": -0.12163966147549655,
+          "max_realized_dd_r": 125.28930406953249,
+          "total_pips": -749.5000000000268
+        }
+      },
+      "short": {
+        "trades": 990,
+        "exit_reasons": {
+          "target": 444,
+          "stop": 445,
+          "stop_gap": 54,
+          "target_gap": 45,
+          "both_stop_first": 1,
+          "period_end": 1
+        },
+        "gross": {
+          "wins": 489,
+          "losses": 501,
+          "breakevens": 0,
+          "win_rate": 0.49393939393939396,
+          "win_rate_including_breakevens": 0.49393939393939396,
+          "pf_r": 0.9717676879337946,
+          "total_r": -14.206688256663876,
+          "mean_r": -0.014350190158246338,
+          "max_realized_dd_r": 35.00428385962422,
+          "total_pips": -440.4000000000106
+        },
+        "net": {
+          "wins": 487,
+          "losses": 501,
+          "breakevens": 2,
+          "win_rate": 0.4919191919191919,
+          "win_rate_including_breakevens": 0.49393939393939396,
+          "pf_r": 0.813609220633175,
+          "total_r": -101.90890497881955,
+          "mean_r": -0.10293828785739348,
+          "max_realized_dd_r": 104.31493389909048,
+          "total_pips": -1430.4000000000096
+        }
+      },
+      "by_phase": {
+        "2017-2019": {
+          "all": {
+            "trades": 658,
+            "exit_reasons": {
+              "target": 279,
+              "stop": 302,
+              "stop_gap": 43,
+              "target_gap": 33,
+              "both_stop_first": 1
+            },
+            "gross": {
+              "wins": 312,
+              "losses": 346,
+              "breakevens": 0,
+              "win_rate": 0.47416413373860183,
+              "win_rate_including_breakevens": 0.47416413373860183,
+              "pf_r": 0.8965337120744455,
+              "total_r": -36.0069915921825,
+              "mean_r": -0.0547218717206421,
+              "max_realized_dd_r": 37.74562795581869,
+              "total_pips": -208.20000000001411
+            },
+            "net": {
+              "wins": 312,
+              "losses": 346,
+              "breakevens": 0,
+              "win_rate": 0.47416413373860183,
+              "win_rate_including_breakevens": 0.47416413373860183,
+              "pf_r": 0.746025702251607,
+              "total_r": -97.07618041765119,
+              "mean_r": -0.14753218908457627,
+              "max_realized_dd_r": 98.02123536270605,
+              "total_pips": -866.2000000000132
+            }
+          },
+          "long": {
+            "trades": 329,
+            "exit_reasons": {
+              "target": 138,
+              "stop": 151,
+              "stop_gap": 26,
+              "target_gap": 14
+            },
+            "gross": {
+              "wins": 152,
+              "losses": 177,
+              "breakevens": 0,
+              "win_rate": 0.46200607902735563,
+              "win_rate_including_breakevens": 0.46200607902735563,
+              "pf_r": 0.8530629491663989,
+              "total_r": -26.181457943440307,
+              "mean_r": -0.07957889952413467,
+              "max_realized_dd_r": 31.02520794343981,
+              "total_pips": -384.8000000000006
+            },
+            "net": {
+              "wins": 152,
+              "losses": 177,
+              "breakevens": 0,
+              "win_rate": 0.46200607902735563,
+              "win_rate_including_breakevens": 0.46200607902735563,
+              "pf_r": 0.7173479730512586,
+              "total_r": -55.291979478159774,
+              "mean_r": -0.16806072789714216,
+              "max_realized_dd_r": 57.31787151025099,
+              "total_pips": -713.8000000000006
+            }
+          },
+          "short": {
+            "trades": 329,
+            "exit_reasons": {
+              "target": 141,
+              "stop": 151,
+              "stop_gap": 17,
+              "target_gap": 19,
+              "both_stop_first": 1
+            },
+            "gross": {
+              "wins": 160,
+              "losses": 169,
+              "breakevens": 0,
+              "win_rate": 0.48632218844984804,
+              "win_rate_including_breakevens": 0.48632218844984804,
+              "pf_r": 0.942143366561916,
+              "total_r": -9.825533648742201,
+              "mean_r": -0.02986484391714955,
+              "max_realized_dd_r": 14.200173160173998,
+              "total_pips": 176.59999999998632
+            },
+            "net": {
+              "wins": 160,
+              "losses": 169,
+              "breakevens": 0,
+              "win_rate": 0.48632218844984804,
+              "win_rate_including_breakevens": 0.48632218844984804,
+              "pf_r": 0.7760878711875476,
+              "total_r": -41.78420093949143,
+              "mean_r": -0.1270036502720104,
+              "max_realized_dd_r": 43.58639874168939,
+              "total_pips": -152.40000000001356
+            }
+          }
+        },
+        "2020-2022": {
+          "all": {
+            "trades": 640,
+            "exit_reasons": {
+              "target": 289,
+              "stop": 279,
+              "stop_gap": 35,
+              "target_gap": 37
+            },
+            "gross": {
+              "wins": 326,
+              "losses": 314,
+              "breakevens": 0,
+              "win_rate": 0.509375,
+              "win_rate_including_breakevens": 0.509375,
+              "pf_r": 1.029190039882825,
+              "total_r": 9.24606013762477,
+              "mean_r": 0.014446968965038703,
+              "max_realized_dd_r": 27.035087719297646,
+              "total_pips": 1310.9999999999989
+            },
+            "net": {
+              "wins": 326,
+              "losses": 314,
+              "breakevens": 0,
+              "win_rate": 0.509375,
+              "win_rate_including_breakevens": 0.509375,
+              "pf_r": 0.8732559908942139,
+              "total_r": -43.80104310265849,
+              "mean_r": -0.06843912984790389,
+              "max_realized_dd_r": 53.2526582424493,
+              "total_pips": 670.9999999999987
+            }
+          },
+          "long": {
+            "trades": 323,
+            "exit_reasons": {
+              "target": 146,
+              "stop": 142,
+              "stop_gap": 14,
+              "target_gap": 21
+            },
+            "gross": {
+              "wins": 167,
+              "losses": 156,
+              "breakevens": 0,
+              "win_rate": 0.5170278637770898,
+              "win_rate_including_breakevens": 0.5170278637770898,
+              "pf_r": 1.057891958472626,
+              "total_r": 9.138888888887083,
+              "mean_r": 0.02829377364980521,
+              "max_realized_dd_r": 16.44444444444494,
+              "total_pips": 433.1999999999938
+            },
+            "net": {
+              "wins": 167,
+              "losses": 156,
+              "breakevens": 0,
+              "win_rate": 0.5170278637770898,
+              "win_rate_including_breakevens": 0.5170278637770898,
+              "pf_r": 0.8983607076759648,
+              "total_r": -17.62354586230422,
+              "mean_r": -0.05456206149320192,
+              "max_realized_dd_r": 26.19283874885582,
+              "total_pips": 110.19999999999347
+            }
+          },
+          "short": {
+            "trades": 317,
+            "exit_reasons": {
+              "target": 143,
+              "stop": 137,
+              "stop_gap": 21,
+              "target_gap": 16
+            },
+            "gross": {
+              "wins": 159,
+              "losses": 158,
+              "breakevens": 0,
+              "win_rate": 0.501577287066246,
+              "win_rate_including_breakevens": 0.501577287066246,
+              "pf_r": 1.0006744876378624,
+              "total_r": 0.10717124873768613,
+              "mean_r": 0.00033807964901478275,
+              "max_realized_dd_r": 33.21769292512139,
+              "total_pips": 877.8000000000055
+            },
+            "net": {
+              "wins": 159,
+              "losses": 158,
+              "breakevens": 0,
+              "win_rate": 0.501577287066246,
+              "win_rate_including_breakevens": 0.501577287066246,
+              "pf_r": 0.8479764114835493,
+              "total_r": -26.177497240354278,
+              "mean_r": -0.08257885564780529,
+              "max_realized_dd_r": 51.871974156298705,
+              "total_pips": 560.8000000000054
+            }
+          }
+        },
+        "2023-2025": {
+          "all": {
+            "trades": 703,
+            "exit_reasons": {
+              "stop": 333,
+              "target": 318,
+              "stop_gap": 27,
+              "target_gap": 23,
+              "both_stop_first": 1,
+              "period_end": 1
+            },
+            "gross": {
+              "wins": 341,
+              "losses": 362,
+              "breakevens": 0,
+              "win_rate": 0.4850640113798009,
+              "win_rate_including_breakevens": 0.4850640113798009,
+              "pf_r": 0.9384232045263695,
+              "total_r": -22.375498767750145,
+              "mean_r": -0.03182858999679964,
+              "max_realized_dd_r": 31.38684857082752,
+              "total_pips": -1281.7000000000198
+            },
+            "net": {
+              "wins": 338,
+              "losses": 363,
+              "breakevens": 2,
+              "win_rate": 0.48079658605974396,
+              "win_rate_including_breakevens": 0.48364153627311524,
+              "pf_r": 0.7872574121444794,
+              "total_r": -84.0093792102369,
+              "mean_r": -0.11950125065467554,
+              "max_realized_dd_r": 84.0400948045778,
+              "total_pips": -1984.7000000000226
+            }
+          },
+          "long": {
+            "trades": 359,
+            "exit_reasons": {
+              "target": 158,
+              "stop_gap": 11,
+              "stop": 176,
+              "target_gap": 13,
+              "both_stop_first": 1
+            },
+            "gross": {
+              "wins": 171,
+              "losses": 188,
+              "breakevens": 0,
+              "win_rate": 0.4763231197771588,
+              "win_rate_including_breakevens": 0.4763231197771588,
+              "pf_r": 0.9053023419461615,
+              "total_r": -17.88717291109078,
+              "mean_r": -0.049824994181311366,
+              "max_realized_dd_r": 24.166666666666334,
+              "total_pips": 213.09999999998018
+            },
+            "net": {
+              "wins": 170,
+              "losses": 189,
+              "breakevens": 0,
+              "win_rate": 0.4735376044568245,
+              "win_rate_including_breakevens": 0.4735376044568245,
+              "pf_r": 0.7580863077211788,
+              "total_r": -50.062172411263035,
+              "mean_r": -0.1394489482207884,
+              "max_realized_dd_r": 51.3314393285564,
+              "total_pips": -145.9000000000197
+            }
+          },
+          "short": {
+            "trades": 344,
+            "exit_reasons": {
+              "stop": 157,
+              "stop_gap": 16,
+              "target": 160,
+              "target_gap": 10,
+              "period_end": 1
+            },
+            "gross": {
+              "wins": 170,
+              "losses": 174,
+              "breakevens": 0,
+              "win_rate": 0.4941860465116279,
+              "win_rate_including_breakevens": 0.4941860465116279,
+              "pf_r": 0.9742772140507181,
+              "total_r": -4.488325856659364,
+              "mean_r": -0.013047458885637684,
+              "max_realized_dd_r": 24.111455108360627,
+              "total_pips": -1494.8000000000015
+            },
+            "net": {
+              "wins": 168,
+              "losses": 174,
+              "breakevens": 2,
+              "win_rate": 0.4883720930232558,
+              "win_rate_including_breakevens": 0.4941860465116279,
+              "pf_r": 0.8193770725062732,
+              "total_r": -33.94720679897385,
+              "mean_r": -0.09868374069469144,
+              "max_realized_dd_r": 37.54268836140111,
+              "total_pips": -1838.800000000002
+            }
+          }
+        }
+      },
+      "by_symbol": {
+        "USDJPY": {
+          "all": {
+            "trades": 396,
+            "exit_reasons": {
+              "stop": 207,
+              "target": 180,
+              "target_gap": 3,
+              "stop_gap": 6
+            },
+            "gross": {
+              "wins": 183,
+              "losses": 213,
+              "breakevens": 0,
+              "win_rate": 0.4621212121212121,
+              "win_rate_including_breakevens": 0.4621212121212121,
+              "pf_r": 0.8555685415752688,
+              "total_r": -30.892857330940643,
+              "mean_r": -0.07801226598722384,
+              "max_realized_dd_r": 35.8928573309406,
+              "total_pips": -869.4000000000129
+            },
+            "net": {
+              "wins": 183,
+              "losses": 213,
+              "breakevens": 0,
+              "win_rate": 0.4621212121212121,
+              "win_rate_including_breakevens": 0.4621212121212121,
+              "pf_r": 0.7317786636458857,
+              "total_r": -62.62176353109459,
+              "mean_r": -0.1581357664926631,
+              "max_realized_dd_r": 67.11960036530505,
+              "total_pips": -1265.4000000000124
+            }
+          },
+          "long": {
+            "trades": 213,
+            "exit_reasons": {
+              "stop": 104,
+              "target": 104,
+              "stop_gap": 3,
+              "target_gap": 2
+            },
+            "gross": {
+              "wins": 106,
+              "losses": 107,
+              "breakevens": 0,
+              "win_rate": 0.49765258215962443,
+              "win_rate_including_breakevens": 0.49765258215962443,
+              "pf_r": 0.988374275244206,
+              "total_r": -1.246822033899745,
+              "mean_r": -0.005853624572299273,
+              "max_realized_dd_r": 15.000000000000234,
+              "total_pips": 147.09999999997905
+            },
+            "net": {
+              "wins": 106,
+              "losses": 107,
+              "breakevens": 0,
+              "win_rate": 0.49765258215962443,
+              "win_rate_including_breakevens": 0.49765258215962443,
+              "pf_r": 0.8196177715676951,
+              "total_r": -21.591972678197088,
+              "mean_r": -0.10137076374740417,
+              "max_realized_dd_r": 27.800611112246248,
+              "total_pips": -65.90000000002095
+            }
+          },
+          "short": {
+            "trades": 183,
+            "exit_reasons": {
+              "stop": 103,
+              "target": 76,
+              "target_gap": 1,
+              "stop_gap": 3
+            },
+            "gross": {
+              "wins": 77,
+              "losses": 106,
+              "breakevens": 0,
+              "win_rate": 0.4207650273224044,
+              "win_rate_including_breakevens": 0.4207650273224044,
+              "pf_r": 0.722014651417021,
+              "total_r": -29.646035297040896,
+              "mean_r": -0.1620001928800049,
+              "max_realized_dd_r": 31.646035297040864,
+              "total_pips": -1016.499999999992
+            },
+            "net": {
+              "wins": 77,
+              "losses": 106,
+              "breakevens": 0,
+              "win_rate": 0.4207650273224044,
+              "win_rate_including_breakevens": 0.4207650273224044,
+              "pf_r": 0.6393596001655859,
+              "total_r": -41.0297908528975,
+              "mean_r": -0.2242065073928825,
+              "max_realized_dd_r": 41.831309765717,
+              "total_pips": -1199.4999999999923
+            }
+          }
+        },
+        "EURUSD": {
+          "all": {
+            "trades": 391,
+            "exit_reasons": {
+              "target": 187,
+              "stop": 196,
+              "stop_gap": 5,
+              "target_gap": 2,
+              "both_stop_first": 1
+            },
+            "gross": {
+              "wins": 189,
+              "losses": 202,
+              "breakevens": 0,
+              "win_rate": 0.4833759590792839,
+              "win_rate_including_breakevens": 0.4833759590792839,
+              "pf_r": 0.9282401091405155,
+              "total_r": -14.611111111111729,
+              "mean_r": -0.03736857061665404,
+              "max_realized_dd_r": 19.166666666666682,
+              "total_pips": 382.3999999999829
+            },
+            "net": {
+              "wins": 188,
+              "losses": 203,
+              "breakevens": 0,
+              "win_rate": 0.48081841432225064,
+              "win_rate_including_breakevens": 0.48081841432225064,
+              "pf_r": 0.785887443175352,
+              "total_r": -47.618117453852776,
+              "mean_r": -0.12178546663389457,
+              "max_realized_dd_r": 48.4811311524829,
+              "total_pips": -8.600000000017541
+            }
+          },
+          "long": {
+            "trades": 193,
+            "exit_reasons": {
+              "target": 86,
+              "stop": 101,
+              "stop_gap": 4,
+              "target_gap": 1,
+              "both_stop_first": 1
+            },
+            "gross": {
+              "wins": 87,
+              "losses": 106,
+              "breakevens": 0,
+              "win_rate": 0.45077720207253885,
+              "win_rate_including_breakevens": 0.45077720207253885,
+              "pf_r": 0.8084667010841452,
+              "total_r": -20.61111111111172,
+              "mean_r": -0.1067933218192317,
+              "max_realized_dd_r": 21.611111111111715,
+              "total_pips": 426.99999999998147
+            },
+            "net": {
+              "wins": 86,
+              "losses": 107,
+              "breakevens": 0,
+              "win_rate": 0.44559585492227977,
+              "win_rate_including_breakevens": 0.44559585492227977,
+              "pf_r": 0.7059679550728382,
+              "total_r": -34.14664475939162,
+              "mean_r": -0.17692562051498248,
+              "max_realized_dd_r": 35.00965845802173,
+              "total_pips": 233.99999999998172
+            }
+          },
+          "short": {
+            "trades": 198,
+            "exit_reasons": {
+              "target": 101,
+              "stop": 95,
+              "target_gap": 1,
+              "stop_gap": 1
+            },
+            "gross": {
+              "wins": 102,
+              "losses": 96,
+              "breakevens": 0,
+              "win_rate": 0.5151515151515151,
+              "win_rate_including_breakevens": 0.5151515151515151,
+              "pf_r": 1.0624999999999998,
+              "total_r": 5.999999999999991,
+              "mean_r": 0.03030303030303026,
+              "max_realized_dd_r": 9.99999999999987,
+              "total_pips": -44.59999999999924
+            },
+            "net": {
+              "wins": 102,
+              "losses": 96,
+              "breakevens": 0,
+              "win_rate": 0.5151515151515151,
+              "win_rate_including_breakevens": 0.5151515151515151,
+              "pf_r": 0.8732278066300688,
+              "total_r": -13.47147269446115,
+              "mean_r": -0.06803774088111691,
+              "max_realized_dd_r": 14.438027878407642,
+              "total_pips": -242.59999999999923
+            }
+          }
+        },
+        "GBPUSD": {
+          "all": {
+            "trades": 420,
+            "exit_reasons": {
+              "target": 219,
+              "stop": 196,
+              "both_stop_first": 1,
+              "stop_gap": 3,
+              "target_gap": 1
+            },
+            "gross": {
+              "wins": 220,
+              "losses": 200,
+              "breakevens": 0,
+              "win_rate": 0.5238095238095238,
+              "win_rate_including_breakevens": 0.5238095238095238,
+              "pf_r": 1.095208134925423,
+              "total_r": 19.124939831659937,
+              "mean_r": 0.045535571027761755,
+              "max_realized_dd_r": 14.024017467248314,
+              "total_pips": 830.1000000000089
+            },
+            "net": {
+              "wins": 220,
+              "losses": 200,
+              "breakevens": 0,
+              "win_rate": 0.5238095238095238,
+              "win_rate_including_breakevens": 0.5238095238095238,
+              "pf_r": 0.9616942963822607,
+              "total_r": -8.23256742495412,
+              "mean_r": -0.019601351011795522,
+              "max_realized_dd_r": 22.535766600491005,
+              "total_pips": 410.1000000000093
+            }
+          },
+          "long": {
+            "trades": 215,
+            "exit_reasons": {
+              "stop": 99,
+              "target": 113,
+              "stop_gap": 2,
+              "target_gap": 1
+            },
+            "gross": {
+              "wins": 114,
+              "losses": 101,
+              "breakevens": 0,
+              "win_rate": 0.5302325581395348,
+              "win_rate_including_breakevens": 0.5302325581395348,
+              "pf_r": 1.1231781421210565,
+              "total_r": 12.50229832222556,
+              "mean_r": 0.05815022475453749,
+              "max_realized_dd_r": 12.024017467248562,
+              "total_pips": 333.60000000001634
+            },
+            "net": {
+              "wins": 114,
+              "losses": 101,
+              "breakevens": 0,
+              "win_rate": 0.5302325581395348,
+              "win_rate_including_breakevens": 0.5302325581395348,
+              "pf_r": 0.9948939321694242,
+              "total_r": -0.5535010139608678,
+              "mean_r": -0.0025744233207482224,
+              "max_realized_dd_r": 16.48583086955225,
+              "total_pips": 118.60000000001611
+            }
+          },
+          "short": {
+            "trades": 205,
+            "exit_reasons": {
+              "target": 106,
+              "stop": 97,
+              "both_stop_first": 1,
+              "stop_gap": 1
+            },
+            "gross": {
+              "wins": 106,
+              "losses": 99,
+              "breakevens": 0,
+              "win_rate": 0.5170731707317073,
+              "win_rate_including_breakevens": 0.5170731707317073,
+              "pf_r": 1.0666413518131805,
+              "total_r": 6.622641509434374,
+              "mean_r": 0.03230556833870426,
+              "max_realized_dd_r": 9.999999999999625,
+              "total_pips": 496.49999999999295
+            },
+            "net": {
+              "wins": 106,
+              "losses": 99,
+              "breakevens": 0,
+              "win_rate": 0.5170731707317073,
+              "win_rate_including_breakevens": 0.5170731707317073,
+              "pf_r": 0.9279075280517891,
+              "total_r": -7.679066410993254,
+              "mean_r": -0.03745886054143051,
+              "max_realized_dd_r": 17.682197000608536,
+              "total_pips": 291.4999999999929
+            }
+          }
+        },
+        "AUDUSD": {
+          "all": {
+            "trades": 423,
+            "exit_reasons": {
+              "stop": 206,
+              "target": 207,
+              "target_gap": 5,
+              "stop_gap": 4,
+              "period_end": 1
+            },
+            "gross": {
+              "wins": 212,
+              "losses": 211,
+              "breakevens": 0,
+              "win_rate": 0.5011820330969267,
+              "win_rate_including_breakevens": 0.5011820330969267,
+              "pf_r": 1.0057718636087232,
+              "total_r": 1.2166129609739773,
+              "mean_r": 0.0028761535720424995,
+              "max_realized_dd_r": 25.035087719296193,
+              "total_pips": -19.700000000014292
+            },
+            "net": {
+              "wins": 212,
+              "losses": 211,
+              "breakevens": 0,
+              "win_rate": 0.5011820330969267,
+              "win_rate_including_breakevens": 0.5011820330969267,
+              "pf_r": 0.8083390588399024,
+              "total_r": -44.68366172069179,
+              "mean_r": -0.10563513409146995,
+              "max_realized_dd_r": 52.118325396028006,
+              "total_pips": -442.70000000001465
+            }
+          },
+          "long": {
+            "trades": 204,
+            "exit_reasons": {
+              "stop": 105,
+              "target": 96,
+              "stop_gap": 2,
+              "target_gap": 1
+            },
+            "gross": {
+              "wins": 97,
+              "losses": 107,
+              "breakevens": 0,
+              "win_rate": 0.47549019607843135,
+              "win_rate_including_breakevens": 0.47549019607843135,
+              "pf_r": 0.903165735567963,
+              "total_r": -10.40000000000077,
+              "mean_r": -0.05098039215686652,
+              "max_realized_dd_r": 18.999999999999858,
+              "total_pips": -392.6000000000051
+            },
+            "net": {
+              "wins": 97,
+              "losses": 107,
+              "breakevens": 0,
+              "win_rate": 0.47549019607843135,
+              "win_rate_including_breakevens": 0.47549019607843135,
+              "pf_r": 0.7259092502165105,
+              "total_r": -32.7693463032872,
+              "mean_r": -0.1606340505063098,
+              "max_realized_dd_r": 37.670290912944054,
+              "total_pips": -596.600000000005
+            }
+          },
+          "short": {
+            "trades": 219,
+            "exit_reasons": {
+              "stop": 101,
+              "target": 111,
+              "target_gap": 4,
+              "stop_gap": 2,
+              "period_end": 1
+            },
+            "gross": {
+              "wins": 115,
+              "losses": 104,
+              "breakevens": 0,
+              "win_rate": 0.5251141552511416,
+              "win_rate_including_breakevens": 0.5251141552511416,
+              "pf_r": 1.1123644068324983,
+              "total_r": 11.616612960974749,
+              "mean_r": 0.05304389479897145,
+              "max_realized_dd_r": 13.035087719296381,
+              "total_pips": 372.89999999999065
+            },
+            "net": {
+              "wins": 115,
+              "losses": 104,
+              "breakevens": 0,
+              "win_rate": 0.5251141552511416,
+              "win_rate_including_breakevens": 0.5251141552511416,
+              "pf_r": 0.8951043551673845,
+              "total_r": -11.914315417404586,
+              "mean_r": -0.05440326674613966,
+              "max_realized_dd_r": 25.60012710878629,
+              "total_pips": 153.89999999999043
+            }
+          }
+        },
+        "USDCHF": {
+          "all": {
+            "trades": 371,
+            "exit_reasons": {
+              "stop_gap": 87,
+              "target_gap": 82,
+              "target": 93,
+              "stop": 109
+            },
+            "gross": {
+              "wins": 175,
+              "losses": 196,
+              "breakevens": 0,
+              "win_rate": 0.4716981132075472,
+              "win_rate_including_breakevens": 0.4716981132075472,
+              "pf_r": 0.8795118316110205,
+              "total_r": -23.974014572889427,
+              "mean_r": -0.06461998537166962,
+              "max_realized_dd_r": 37.18764558455039,
+              "total_pips": -502.3000000000013
+            },
+            "net": {
+              "wins": 173,
+              "losses": 196,
+              "breakevens": 2,
+              "win_rate": 0.46630727762803237,
+              "win_rate_including_breakevens": 0.4716981132075472,
+              "pf_r": 0.7178393135812962,
+              "total_r": -61.73049259995331,
+              "mean_r": -0.16638946792440246,
+              "max_realized_dd_r": 63.49894693937705,
+              "total_pips": -873.3000000000009
+            }
+          },
+          "long": {
+            "trades": 186,
+            "exit_reasons": {
+              "stop_gap": 40,
+              "target_gap": 43,
+              "target": 43,
+              "stop": 60
+            },
+            "gross": {
+              "wins": 86,
+              "losses": 100,
+              "breakevens": 0,
+              "win_rate": 0.46236559139784944,
+              "win_rate_including_breakevens": 0.46236559139784944,
+              "pf_r": 0.8500198561531994,
+              "total_r": -15.174107142857334,
+              "mean_r": -0.08158122119815771,
+              "max_realized_dd_r": 19.000000000000096,
+              "total_pips": -253.5999999999983
+            },
+            "net": {
+              "wins": 86,
+              "losses": 100,
+              "breakevens": 0,
+              "win_rate": 0.46236559139784944,
+              "win_rate_including_breakevens": 0.46236559139784944,
+              "pf_r": 0.6976167498956511,
+              "total_r": -33.91623299689025,
+              "mean_r": -0.18234533869295835,
+              "max_realized_dd_r": 34.2019472826047,
+              "total_pips": -439.59999999999843
+            }
+          },
+          "short": {
+            "trades": 185,
+            "exit_reasons": {
+              "stop_gap": 47,
+              "target_gap": 39,
+              "stop": 49,
+              "target": 50
+            },
+            "gross": {
+              "wins": 89,
+              "losses": 96,
+              "breakevens": 0,
+              "win_rate": 0.4810810810810811,
+              "win_rate_including_breakevens": 0.4810810810810811,
+              "pf_r": 0.9100213112540235,
+              "total_r": -8.799907430032095,
+              "mean_r": -0.047567067189362676,
+              "max_realized_dd_r": 25.292908742445192,
+              "total_pips": -248.70000000000266
+            },
+            "net": {
+              "wins": 87,
+              "losses": 96,
+              "breakevens": 2,
+              "win_rate": 0.4702702702702703,
+              "win_rate_including_breakevens": 0.4810810810810811,
+              "pf_r": 0.7391142805497365,
+              "total_r": -27.814259603063057,
+              "mean_r": -0.15034734920574624,
+              "max_realized_dd_r": 35.16675374515738,
+              "total_pips": -433.70000000000283
+            }
+          }
+        }
+      },
+      "excluding_usdchf": {
+        "all": {
+          "trades": 1630,
+          "exit_reasons": {
+            "target": 793,
+            "stop": 805,
+            "target_gap": 11,
+            "both_stop_first": 2,
+            "stop_gap": 18,
+            "period_end": 1
+          },
+          "gross": {
+            "wins": 804,
+            "losses": 826,
+            "breakevens": 0,
+            "win_rate": 0.49325153374233127,
+            "win_rate_including_breakevens": 0.49325153374233127,
+            "pf_r": 0.9696532124774245,
+            "total_r": -25.162415649418456,
+            "mean_r": -0.015437064815594145,
+            "max_realized_dd_r": 48.647449663023906,
+            "total_pips": 323.3999999999646
+          },
+          "net": {
+            "wins": 803,
+            "losses": 827,
+            "breakevens": 0,
+            "win_rate": 0.49263803680981594,
+            "win_rate_including_breakevens": 0.49263803680981594,
+            "pf_r": 0.8195025464372694,
+            "total_r": -163.15611013059325,
+            "mean_r": -0.10009577308625353,
+            "max_realized_dd_r": 164.10116507564823,
+            "total_pips": -1306.6000000000367
+          }
+        },
+        "long": {
+          "trades": 825,
+          "exit_reasons": {
+            "target": 399,
+            "stop": 409,
+            "stop_gap": 11,
+            "target_gap": 5,
+            "both_stop_first": 1
+          },
+          "gross": {
+            "wins": 404,
+            "losses": 421,
+            "breakevens": 0,
+            "win_rate": 0.4896969696969697,
+            "win_rate_including_breakevens": 0.4896969696969697,
+            "pf_r": 0.9533796528014348,
+            "total_r": -19.75563482278667,
+            "mean_r": -0.023946224027620207,
+            "max_realized_dd_r": 30.424017467249197,
+            "total_pips": 515.0999999999716
+          },
+          "net": {
+            "wins": 403,
+            "losses": 422,
+            "breakevens": 0,
+            "win_rate": 0.48848484848484847,
+            "win_rate_including_breakevens": 0.48848484848484847,
+            "pf_r": 0.8079706121473692,
+            "total_r": -89.06146475483678,
+            "mean_r": -0.10795329061192337,
+            "max_realized_dd_r": 93.72821905659345,
+            "total_pips": -309.9000000000285
+          }
+        },
+        "short": {
+          "trades": 805,
+          "exit_reasons": {
+            "target": 394,
+            "stop": 396,
+            "target_gap": 6,
+            "both_stop_first": 1,
+            "stop_gap": 7,
+            "period_end": 1
+          },
+          "gross": {
+            "wins": 400,
+            "losses": 405,
+            "breakevens": 0,
+            "win_rate": 0.4968944099378882,
+            "win_rate_including_breakevens": 0.4968944099378882,
+            "pf_r": 0.9866633192084079,
+            "total_r": -5.406780826631781,
+            "mean_r": -0.006716497921281716,
+            "max_realized_dd_r": 32.43096472838009,
+            "total_pips": -191.70000000000846
+          },
+          "net": {
+            "wins": 400,
+            "losses": 405,
+            "breakevens": 0,
+            "win_rate": 0.4968944099378882,
+            "win_rate_including_breakevens": 0.4968944099378882,
+            "pf_r": 0.8316543142397552,
+            "total_r": -74.0946453757565,
+            "mean_r": -0.09204303773385901,
+            "max_realized_dd_r": 86.15708793919922,
+            "total_pips": -996.7000000000073
+          }
+        }
+      }
+    }
+  },
+  "configuration": {
+    "state_start": "2015-01-01",
+    "reported_entry_start": "2017-01-01",
+    "end_exclusive": "2026-01-01",
+    "anchor": "naive saved timestamp midnight",
+    "nonempty_buckets": true,
+    "reset_at_period_boundaries": false,
+    "independent_long_and_short": true,
+    "costs_roundtrip_pips": 1.0,
+    "breakeven_tolerance_r": 1e-10
+  }
+}

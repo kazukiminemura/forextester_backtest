@@ -1,0 +1,658 @@
+{
+  "experiment": "sweep_breakout_m15_h4_20261121",
+  "pine_sha256": "695ccb5812f53f552efc2509491f6ac0559930c5c9bcecddea2707198e2def62",
+  "inputs": {
+    "USDJPY": {
+      "source": "C:\\ForexTester6\\data\\History\\USDJPY\\Bars.dat",
+      "rows": 4097053,
+      "first": "2015-01-01T22:00:00",
+      "last": "2025-12-31T21:58:00",
+      "raw_slice_sha256": "42cec16e9b9d25119b95986d195b92353a50b7c86a650503582deb9e254d6d4f"
+    },
+    "EURUSD": {
+      "source": "C:\\ForexTester6\\data\\History\\EURUSD\\Bars.dat",
+      "rows": 4095407,
+      "first": "2015-01-01T22:00:00",
+      "last": "2025-12-31T21:58:00",
+      "raw_slice_sha256": "9ca34ab61eeb49f4f08e9ef9610613a28958b5746e4ee873da71bf4a70608df8"
+    },
+    "GBPUSD": {
+      "source": "C:\\ForexTester6\\data\\History\\GBPUSD\\Bars.dat",
+      "rows": 4098946,
+      "first": "2015-01-01T22:00:00",
+      "last": "2025-12-31T21:58:00",
+      "raw_slice_sha256": "e67508c4f7b8983a83ffb6f15b7d0deabb9078fd12b17de7fb73a7a144112e9d"
+    },
+    "AUDUSD": {
+      "source": "C:\\ForexTester6\\data\\History\\AUDUSD\\Bars.dat",
+      "rows": 4088725,
+      "first": "2015-01-01T22:00:00",
+      "last": "2025-12-31T21:58:00",
+      "raw_slice_sha256": "30b58ba09e48d1deba22f4d4c9d52658a249b6faf132ed444b6ee4e5063ff4ba"
+    },
+    "USDCHF": {
+      "source": "C:\\ForexTester6\\data\\History\\USDCHF\\Bars.dat",
+      "rows": 4035706,
+      "first": "2015-01-01T23:01:00",
+      "last": "2025-12-31T21:58:00",
+      "raw_slice_sha256": "3fb9c3a87baa15932fbace00b2bee00d918a921bd091072a9400332d62956c6f"
+    }
+  },
+  "independent_code_sha256": "830b0992e728ad738276e5ed395b3ed9b753dcce0aa8d5a0b9f243d67a2b7465",
+  "records": [
+    {
+      "symbol": "USDJPY",
+      "timeframe": "15m",
+      "side": -1,
+      "sweeps": 6516,
+      "breakout_events": 3557,
+      "metrics": {
+        "trades": 2837,
+        "gross_r": {
+          "wins": 1394,
+          "breakevens": 0,
+          "win_rate": 0.4913641170250264,
+          "pf_r": 0.9646073131160019,
+          "mean_r": -0.0180287834266171,
+          "total_r": -51.14765858131271,
+          "max_realized_dd_r": 65.92038585404413
+        },
+        "net_r": {
+          "wins": 1333,
+          "breakevens": 13,
+          "win_rate": 0.4698625308424392,
+          "pf_r": 0.5285229151436556,
+          "mean_r": -0.32178905207316777,
+          "total_r": -912.9155407315769,
+          "max_realized_dd_r": 914.1602893977754
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "timeframe": "15m",
+      "side": 1,
+      "sweeps": 6526,
+      "breakout_events": 3794,
+      "metrics": {
+        "trades": 3026,
+        "gross_r": {
+          "wins": 1464,
+          "breakevens": 0,
+          "win_rate": 0.4838070059484468,
+          "pf_r": 0.9354446365993192,
+          "mean_r": -0.03338769165253579,
+          "total_r": -101.0311549405733,
+          "max_realized_dd_r": 121.16881727822927
+        },
+        "net_r": {
+          "wins": 1380,
+          "breakevens": 14,
+          "win_rate": 0.4560475875743556,
+          "pf_r": 0.46639327139756864,
+          "mean_r": -0.3889679476601031,
+          "total_r": -1177.017009619472,
+          "max_realized_dd_r": 1178.7493299314576
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "timeframe": "4h",
+      "side": -1,
+      "sweeps": 426,
+      "breakout_events": 222,
+      "metrics": {
+        "trades": 183,
+        "gross_r": {
+          "wins": 77,
+          "breakevens": 0,
+          "win_rate": 0.4207650273224044,
+          "pf_r": 0.722014651417021,
+          "mean_r": -0.1620001928800049,
+          "total_r": -29.646035297040896,
+          "max_realized_dd_r": 31.646035297040864
+        },
+        "net_r": {
+          "wins": 77,
+          "breakevens": 0,
+          "win_rate": 0.4207650273224044,
+          "pf_r": 0.6393596001655859,
+          "mean_r": -0.2242065073928825,
+          "total_r": -41.0297908528975,
+          "max_realized_dd_r": 41.831309765717
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "timeframe": "4h",
+      "side": 1,
+      "sweeps": 406,
+      "breakout_events": 258,
+      "metrics": {
+        "trades": 213,
+        "gross_r": {
+          "wins": 106,
+          "breakevens": 0,
+          "win_rate": 0.49765258215962443,
+          "pf_r": 0.988374275244206,
+          "mean_r": -0.005853624572299273,
+          "total_r": -1.246822033899745,
+          "max_realized_dd_r": 15.000000000000234
+        },
+        "net_r": {
+          "wins": 106,
+          "breakevens": 0,
+          "win_rate": 0.49765258215962443,
+          "pf_r": 0.8196177715676951,
+          "mean_r": -0.10137076374740417,
+          "total_r": -21.591972678197088,
+          "max_realized_dd_r": 27.800611112246248
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "timeframe": "15m",
+      "side": -1,
+      "sweeps": 6590,
+      "breakout_events": 3768,
+      "metrics": {
+        "trades": 3008,
+        "gross_r": {
+          "wins": 1401,
+          "breakevens": 0,
+          "win_rate": 0.46575797872340424,
+          "pf_r": 0.8664428580941105,
+          "mean_r": -0.07179389139982656,
+          "total_r": -215.9560253306783,
+          "max_realized_dd_r": 227.64833302298052
+        },
+        "net_r": {
+          "wins": 1277,
+          "breakevens": 21,
+          "win_rate": 0.4245345744680851,
+          "pf_r": 0.3720761073333404,
+          "mean_r": -0.5017596404426092,
+          "total_r": -1509.2929984513687,
+          "max_realized_dd_r": 1509.292998451369
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "timeframe": "15m",
+      "side": 1,
+      "sweeps": 6617,
+      "breakout_events": 3844,
+      "metrics": {
+        "trades": 3064,
+        "gross_r": {
+          "wins": 1429,
+          "breakevens": 0,
+          "win_rate": 0.4663838120104439,
+          "pf_r": 0.8546945324834847,
+          "mean_r": -0.07928928438257296,
+          "total_r": -242.94236734820356,
+          "max_realized_dd_r": 265.9423673481957
+        },
+        "net_r": {
+          "wins": 1301,
+          "breakevens": 20,
+          "win_rate": 0.42460835509138384,
+          "pf_r": 0.36560967114454085,
+          "mean_r": -0.5275054554768246,
+          "total_r": -1616.2767155809906,
+          "max_realized_dd_r": 1616.2767155809909
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "timeframe": "4h",
+      "side": -1,
+      "sweeps": 424,
+      "breakout_events": 242,
+      "metrics": {
+        "trades": 198,
+        "gross_r": {
+          "wins": 102,
+          "breakevens": 0,
+          "win_rate": 0.5151515151515151,
+          "pf_r": 1.0624999999999998,
+          "mean_r": 0.030303030303030255,
+          "total_r": 5.99999999999999,
+          "max_realized_dd_r": 9.99999999999987
+        },
+        "net_r": {
+          "wins": 102,
+          "breakevens": 0,
+          "win_rate": 0.5151515151515151,
+          "pf_r": 0.8732278066300688,
+          "mean_r": -0.06803774088111693,
+          "total_r": -13.471472694461152,
+          "max_realized_dd_r": 14.438027878407642
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "timeframe": "4h",
+      "side": 1,
+      "sweeps": 436,
+      "breakout_events": 241,
+      "metrics": {
+        "trades": 193,
+        "gross_r": {
+          "wins": 87,
+          "breakevens": 0,
+          "win_rate": 0.45077720207253885,
+          "pf_r": 0.8084667010841452,
+          "mean_r": -0.1067933218192317,
+          "total_r": -20.61111111111172,
+          "max_realized_dd_r": 21.611111111111715
+        },
+        "net_r": {
+          "wins": 86,
+          "breakevens": 0,
+          "win_rate": 0.44559585492227977,
+          "pf_r": 0.7059679550728382,
+          "mean_r": -0.17692562051498253,
+          "total_r": -34.14664475939163,
+          "max_realized_dd_r": 35.00965845802175
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "15m",
+      "side": -1,
+      "sweeps": 6658,
+      "breakout_events": 3793,
+      "metrics": {
+        "trades": 3047,
+        "gross_r": {
+          "wins": 1463,
+          "breakevens": 0,
+          "win_rate": 0.48014440433212996,
+          "pf_r": 0.9220164427190503,
+          "mean_r": -0.04061030467953605,
+          "total_r": -123.73959835854636,
+          "max_realized_dd_r": 124.7395983585463
+        },
+        "net_r": {
+          "wins": 1386,
+          "breakevens": 20,
+          "win_rate": 0.4548736462093863,
+          "pf_r": 0.48199013490912396,
+          "mean_r": -0.3752484086404223,
+          "total_r": -1143.3819011273667,
+          "max_realized_dd_r": 1144.332149883586
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "15m",
+      "side": 1,
+      "sweeps": 6828,
+      "breakout_events": 3927,
+      "metrics": {
+        "trades": 3199,
+        "gross_r": {
+          "wins": 1520,
+          "breakevens": 0,
+          "win_rate": 0.4751484839012191,
+          "pf_r": 0.9023143532846701,
+          "mean_r": -0.05144015139151487,
+          "total_r": -164.55704430145607,
+          "max_realized_dd_r": 201.3735794612065
+        },
+        "net_r": {
+          "wins": 1451,
+          "breakevens": 7,
+          "win_rate": 0.453579243513598,
+          "pf_r": 0.46425211390601046,
+          "mean_r": -0.39611926241390893,
+          "total_r": -1267.1855204620947,
+          "max_realized_dd_r": 1271.7068314891612
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "4h",
+      "side": -1,
+      "sweeps": 424,
+      "breakout_events": 260,
+      "metrics": {
+        "trades": 205,
+        "gross_r": {
+          "wins": 106,
+          "breakevens": 0,
+          "win_rate": 0.5170731707317073,
+          "pf_r": 1.0666413518131805,
+          "mean_r": 0.03230556833870426,
+          "total_r": 6.622641509434373,
+          "max_realized_dd_r": 9.999999999999625
+        },
+        "net_r": {
+          "wins": 106,
+          "breakevens": 0,
+          "win_rate": 0.5170731707317073,
+          "pf_r": 0.9279075280517891,
+          "mean_r": -0.03745886054143051,
+          "total_r": -7.679066410993254,
+          "max_realized_dd_r": 17.682197000608532
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "timeframe": "4h",
+      "side": 1,
+      "sweeps": 436,
+      "breakout_events": 258,
+      "metrics": {
+        "trades": 215,
+        "gross_r": {
+          "wins": 114,
+          "breakevens": 0,
+          "win_rate": 0.5302325581395348,
+          "pf_r": 1.1231781421210565,
+          "mean_r": 0.05815022475453749,
+          "total_r": 12.50229832222556,
+          "max_realized_dd_r": 12.024017467248562
+        },
+        "net_r": {
+          "wins": 114,
+          "breakevens": 0,
+          "win_rate": 0.5302325581395348,
+          "pf_r": 0.9948939321694242,
+          "mean_r": -0.0025744233207482224,
+          "total_r": -0.5535010139608678,
+          "max_realized_dd_r": 16.48583086955225
+        }
+      }
+    },
+    {
+      "symbol": "AUDUSD",
+      "timeframe": "15m",
+      "side": -1,
+      "sweeps": 6778,
+      "breakout_events": 3881,
+      "metrics": {
+        "trades": 3117,
+        "gross_r": {
+          "wins": 1497,
+          "breakevens": 0,
+          "win_rate": 0.480269489894129,
+          "pf_r": 0.916023036464716,
+          "mean_r": -0.04402899472441551,
+          "total_r": -137.23837655600315,
+          "max_realized_dd_r": 143.2383765560038
+        },
+        "net_r": {
+          "wins": 1386,
+          "breakevens": 24,
+          "win_rate": 0.44465832531280075,
+          "pf_r": 0.38460714922797884,
+          "mean_r": -0.4996376679931755,
+          "total_r": -1557.370611134728,
+          "max_realized_dd_r": 1557.9358285260214
+        }
+      }
+    },
+    {
+      "symbol": "AUDUSD",
+      "timeframe": "15m",
+      "side": 1,
+      "sweeps": 6712,
+      "breakout_events": 3944,
+      "metrics": {
+        "trades": 3165,
+        "gross_r": {
+          "wins": 1488,
+          "breakevens": 0,
+          "win_rate": 0.47014218009478675,
+          "pf_r": 0.8817231686791157,
+          "mean_r": -0.06306619731361772,
+          "total_r": -199.6045144976001,
+          "max_realized_dd_r": 211.14022878333049
+        },
+        "net_r": {
+          "wins": 1361,
+          "breakevens": 29,
+          "win_rate": 0.4300157977883096,
+          "pf_r": 0.3470971785469707,
+          "mean_r": -0.5478995383229741,
+          "total_r": -1734.102038792213,
+          "max_realized_dd_r": 1739.2325483725267
+        }
+      }
+    },
+    {
+      "symbol": "AUDUSD",
+      "timeframe": "4h",
+      "side": -1,
+      "sweeps": 463,
+      "breakout_events": 263,
+      "metrics": {
+        "trades": 219,
+        "gross_r": {
+          "wins": 115,
+          "breakevens": 0,
+          "win_rate": 0.5251141552511416,
+          "pf_r": 1.1123644068324983,
+          "mean_r": 0.05304389479897145,
+          "total_r": 11.616612960974749,
+          "max_realized_dd_r": 13.035087719296381
+        },
+        "net_r": {
+          "wins": 115,
+          "breakevens": 0,
+          "win_rate": 0.5251141552511416,
+          "pf_r": 0.8951043551673845,
+          "mean_r": -0.05440326674613968,
+          "total_r": -11.91431541740459,
+          "max_realized_dd_r": 25.60012710878629
+        }
+      }
+    },
+    {
+      "symbol": "AUDUSD",
+      "timeframe": "4h",
+      "side": 1,
+      "sweeps": 441,
+      "breakout_events": 251,
+      "metrics": {
+        "trades": 204,
+        "gross_r": {
+          "wins": 97,
+          "breakevens": 0,
+          "win_rate": 0.47549019607843135,
+          "pf_r": 0.903165735567963,
+          "mean_r": -0.05098039215686652,
+          "total_r": -10.40000000000077,
+          "max_realized_dd_r": 18.999999999999858
+        },
+        "net_r": {
+          "wins": 97,
+          "breakevens": 0,
+          "win_rate": 0.47549019607843135,
+          "pf_r": 0.7259092502165105,
+          "mean_r": -0.1606340505063098,
+          "total_r": -32.7693463032872,
+          "max_realized_dd_r": 37.67029091294406
+        }
+      }
+    },
+    {
+      "symbol": "USDCHF",
+      "timeframe": "15m",
+      "side": -1,
+      "sweeps": 4737,
+      "breakout_events": 2788,
+      "metrics": {
+        "trades": 2195,
+        "gross_r": {
+          "wins": 1078,
+          "breakevens": 0,
+          "win_rate": 0.4911161731207289,
+          "pf_r": 0.9203071172063867,
+          "mean_r": -0.042527611588361505,
+          "total_r": -93.3481074364535,
+          "max_realized_dd_r": 112.16441715012425
+        },
+        "net_r": {
+          "wins": 1010,
+          "breakevens": 51,
+          "win_rate": 0.4601366742596811,
+          "pf_r": 0.4870449164125898,
+          "mean_r": -0.3620764187649462,
+          "total_r": -794.7577391890568,
+          "max_realized_dd_r": 797.8458344271498
+        }
+      }
+    },
+    {
+      "symbol": "USDCHF",
+      "timeframe": "15m",
+      "side": 1,
+      "sweeps": 4684,
+      "breakout_events": 2837,
+      "metrics": {
+        "trades": 2195,
+        "gross_r": {
+          "wins": 1009,
+          "breakevens": 0,
+          "win_rate": 0.4596810933940774,
+          "pf_r": 0.8146564950038163,
+          "mean_r": -0.1045826131046031,
+          "total_r": -229.5588357646038,
+          "max_realized_dd_r": 230.5588357646053
+        },
+        "net_r": {
+          "wins": 948,
+          "breakevens": 41,
+          "win_rate": 0.4318906605922551,
+          "pf_r": 0.42692194455940496,
+          "mean_r": -0.4286456510508649,
+          "total_r": -940.8772040566485,
+          "max_realized_dd_r": 940.8772040566444
+        }
+      }
+    },
+    {
+      "symbol": "USDCHF",
+      "timeframe": "4h",
+      "side": -1,
+      "sweeps": 411,
+      "breakout_events": 227,
+      "metrics": {
+        "trades": 185,
+        "gross_r": {
+          "wins": 89,
+          "breakevens": 0,
+          "win_rate": 0.4810810810810811,
+          "pf_r": 0.9100213112540235,
+          "mean_r": -0.047567067189362676,
+          "total_r": -8.799907430032095,
+          "max_realized_dd_r": 25.292908742445192
+        },
+        "net_r": {
+          "wins": 87,
+          "breakevens": 2,
+          "win_rate": 0.4702702702702703,
+          "pf_r": 0.7391142805497365,
+          "mean_r": -0.15034734920574627,
+          "total_r": -27.81425960306306,
+          "max_realized_dd_r": 35.16675374515738
+        }
+      }
+    },
+    {
+      "symbol": "USDCHF",
+      "timeframe": "4h",
+      "side": 1,
+      "sweeps": 447,
+      "breakout_events": 242,
+      "metrics": {
+        "trades": 186,
+        "gross_r": {
+          "wins": 86,
+          "breakevens": 0,
+          "win_rate": 0.46236559139784944,
+          "pf_r": 0.8500198561531994,
+          "mean_r": -0.08158122119815771,
+          "total_r": -15.174107142857334,
+          "max_realized_dd_r": 19.000000000000096
+        },
+        "net_r": {
+          "wins": 86,
+          "breakevens": 0,
+          "win_rate": 0.46236559139784944,
+          "pf_r": 0.6976167498956511,
+          "mean_r": -0.18234533869295835,
+          "total_r": -33.91623299689025,
+          "max_realized_dd_r": 34.2019472826047
+        }
+      }
+    }
+  ],
+  "by_timeframe": {
+    "15m": {
+      "trades": 28853,
+      "gross_r": {
+        "wins": 13743,
+        "breakevens": 0,
+        "win_rate": 0.4763109555332201,
+        "pf_r": 0.8981106338307945,
+        "mean_r": -0.05403679628168409,
+        "total_r": -1559.123683115431,
+        "max_realized_dd_r": 1562.4427307344763
+      },
+      "net_r": {
+        "wins": 12833,
+        "breakevens": 240,
+        "win_rate": 0.44477177416559804,
+        "pf_r": 0.42599899194676283,
+        "mean_r": -0.4385393989930169,
+        "total_r": -12653.177279145517,
+        "max_realized_dd_r": 12653.17727914506
+      }
+    },
+    "4h": {
+      "trades": 2001,
+      "gross_r": {
+        "wins": 979,
+        "breakevens": 0,
+        "win_rate": 0.4892553723138431,
+        "pf_r": 0.9522082587700123,
+        "mean_r": -0.024555937142582654,
+        "total_r": -49.136430222307894,
+        "max_realized_dd_r": 58.360100599547756
+      },
+      "net_r": {
+        "wins": 976,
+        "breakevens": 2,
+        "win_rate": 0.4877561219390305,
+        "pf_r": 0.7996917260612677,
+        "mean_r": -0.11238710781136761,
+        "total_r": -224.8866027305466,
+        "max_realized_dd_r": 225.83165767560152
+      }
+    }
+  },
+  "comparison": {
+    "rows": 30854,
+    "missing": 0,
+    "extra": 0,
+    "differences": {},
+    "max_absolute_difference": 3.552713678800501e-15,
+    "matching_input_slices": 5,
+    "research_ledger_sha256": "2a938f275c0d6308c2c47312d7d7b5e37a06a9014b4117c8eaf497f4ed03eb05",
+    "research_results_sha256": "e3fe2709963778a17de4ac7d01deba184363ea083bc1941be96a30ac2fd83888"
+  }
+}

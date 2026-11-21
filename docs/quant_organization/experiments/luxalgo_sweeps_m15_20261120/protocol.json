@@ -1,0 +1,38 @@
+{
+  "experiment_id": "luxalgo_sweeps_m15_20261120",
+  "status": "SPEC_FROZEN",
+  "hypothesis": "Descriptive win rate of fading the first wick sweep of a confirmed swing.",
+  "baseline": "50 percent gross breakeven for ideal symmetric barrier fills.",
+  "history_directory": "C:\\ForexTester6\\data\\History",
+  "data_manifest": "data_inventory.md",
+  "symbols": [
+    "USDJPY",
+    "EURUSD",
+    "GBPUSD",
+    "AUDUSD",
+    "USDCHF"
+  ],
+  "entry_timeframe": "15 minutes from observed Forex Tester M1, no synthetic candles.",
+  "higher_timeframe_rules": "None",
+  "entry_rules": "Default Only Wicks, Swings=5. Confirmed pivots, rightmost tie, strict penetration and close back. Wick once, close beyond invalidates, evaluate before removing age >2000. Merge same-side signals, skip two-sided bars. At next observed M15 open enter in reversal direction if flat, positive risk and both bars in same period. Warm up each three-year period with 60 prior calendar days (over 2006 observed M15 bars). Partial nonempty M15 buckets retained; next observed open includes weekend gaps.",
+  "exit_rules": {
+    "reward_risk_ratio": 1.0,
+    "full_exit": true,
+    "barriers": "Sweep bar extreme for SL, equal-distance TP. Check M1 opens first, adverse gaps at open, favorable gaps at target. Same minute ambiguity resolved stop first. Period end close."
+  },
+  "periods": {
+    "training": "2017-2019",
+    "validation": "2020-2022",
+    "final_confirmation": "2023-2025"
+  },
+  "final_period_prior_exposure": "Historical periods previously used in this repository.",
+  "candidate_budget": 1,
+  "search_space": "Fixed defaults only.",
+  "cost_and_fill_model": "Round trip fixed 1.0 pip deducted after exit. No additional variable spread, slippage, commissions or financing. Pip 0.01 JPY and 0.0001 others.",
+  "position_sizing_and_currency": "Each trade has one unit of initial risk; aggregate gross and net R.",
+  "acceptance_gates": "Descriptive study only; report counts, gross and net win rates, net PF in R. Strictly positive P/L counts as win, zero remains in denominator.",
+  "cross_symbol_rule": "Pool all closed trades by count; also summarize per symbol and period.",
+  "code_identifier": "scripts/research_luxalgo_sweeps_m15.py",
+  "frozen_at": "2026-11-20T12:18:44.3143283Z",
+  "live_trading_authorized": false
+}
